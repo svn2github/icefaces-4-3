@@ -22,7 +22,7 @@
 
     <groupId>org.icefaces.tutorial</groupId>
     <artifactId>windowScope-tutorial</artifactId>
-    <version>3.3.0</version>
+    <version>4.0.0-BETA</version>
 
     <repositories>
         <repository>
@@ -34,7 +34,7 @@
     <parent>
         <groupId>org.icefaces.tutorial.core</groupId>
         <artifactId>base</artifactId>
-        <version>3.3.0</version>
+        <version>4.0.0-BETA</version>
     </parent>
 
     <name>Window Scope Tutorial</name>

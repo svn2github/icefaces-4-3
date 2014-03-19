@@ -22,7 +22,7 @@
 
     <groupId>org.icefaces.tutorial</groupId>
     <artifactId>spring-webflow-booking</artifactId>
-    <version>3.3.0</version>
+    <version>4.0.0-BETA</version>
 
     <repositories>
         <repository>
@@ -168,7 +168,7 @@
     <parent>
         <groupId>org.icefaces.tutorial.ace</groupId>
         <artifactId>base</artifactId>
-        <version>3.3.0</version>
+        <version>4.0.0-BETA</version>
     </parent>
 
     <name>Spring Web Flow integration with ICEfaces and ACE components tutorial</name>

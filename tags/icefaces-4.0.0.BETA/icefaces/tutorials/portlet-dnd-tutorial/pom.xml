@@ -22,7 +22,7 @@
 	
 	<groupId>org.icefaces.tutorial</groupId>
 	<artifactId>portlet-dnd-tutorial</artifactId>
-	<version>3.3.0</version>
+	<version>4.0.0-BETA</version>
 	<packaging>pom</packaging>
     <name>ICEfaces Inter-Portlet Drag and Drop Tutorial</name>
     <url>http://www.icesoft.org/wiki/display/ICE/Inter-portlet+Drag+and+Drop</url>

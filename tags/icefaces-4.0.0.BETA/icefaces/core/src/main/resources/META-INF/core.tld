@@ -14,13 +14,6 @@
   ~ governing permissions and limitations under the License.
   -->
 
-<!--
-	!!! Special Note !!!
-	
-	Any updates made to this file must also be applied to the core.tld file.
-	These two files must be kept in sync.
--->
-
 
 <taglib xmlns="http://java.sun.com/xml/ns/javaee"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -28,7 +21,7 @@
         version="2.1">
     <description>
     </description>
-    <tlib-version>3.3.0</tlib-version>
+    <tlib-version>4.0.0.BETA</tlib-version>
     <short-name>icecore</short-name>
     <uri>http://icefaces.org/tld/core</uri>
     <listener>
