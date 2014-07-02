@@ -69,6 +69,9 @@
     <property name="ace-chart.js.base" location="${resources}/icefaces.ace/chart/ace-chart"/>
     <property name="ace-chart.js" location="${ace-chart.js.base}.js"/>
     <property name="ace-chart.js.uncompressed" location="${ace-chart.js.base}.uncompressed.js"/>
+    <property name="ace-borderlayout.js.base" value="${resources}/icefaces.ace/util/ace-borderlayout"/>
+    <property name="ace-borderlayout.js" location="${ace-borderlayout.js.base}.js"/>
+    <property name="ace-borderlayout.js.uncompressed" location="${ace-borderlayout.js.base}.uncompressed.js"/>
 
     <property name="root.dir.path" location="${build}/skins/in"/>
     <property name="output.dir.path" location="${build}/skins/out"/>
@@ -305,6 +308,15 @@
                 <file name="icefaces.ace/chart/chart.js"/>
             </filelist>
         </concat>
+      <!-- ace-layout.js -->
+        <available file="${ace-borderlayout.js.uncompressed}" property="ace-borderlayout.js.uncompressed.present"/>
+        <delete file="${ace-borderlayout.js.uncompressed}" verbose="${ace-borderlayout.js.uncompressed.present}"/>
+        <concat destfile="${ace-borderlayout.js.uncompressed}" force="true" fixlastline="true">
+            <filelist dir="${resources}">
+                <file name="icefaces.ace/borderlayout/borderlayout.js"/>
+                <file name="icefaces.ace/borderlayout/jquery.layout-latest.js"/>
+            </filelist>
+        </concat>
     </target>
 
     <macrodef name="minify">
@@ -336,6 +348,10 @@
         <minify src="${ace-components.js.uncompressed}" dest="${ace-components.js}"/>
         <echo message="Compressing ace-chart.js"/>
         <minify src="${ace-chart.js.uncompressed}" dest="${ace-chart.js}"/>
+     <echo message="Compressing ace-borderlayout.js"/>
+        <minify src="${ace-borderlayout.js.uncompressed}" dest="${ace-borderlayout.js}"/>
+      <!--       <copy file="${ace-borderlayout.js.uncompressed}" tofile="${ace-borderlayout.js}" overwrite="yes">
+        </copy> -->
     </target>
 
     <target name="res-js-no-compress" depends="res-js-combine" if="no-compress">
@@ -351,6 +367,8 @@
         <copy file="${ace-components.js.uncompressed}" tofile="${ace-components.js}" overwrite="yes">
         </copy>
         <copy file="${ace-chart.js.uncompressed}" tofile="${ace-chart.js}" overwrite="yes">
+        </copy>
+        <copy file="${ace-borderlayout.js.uncompressed}" tofile="${ace-borderlayout.js}" overwrite="yes">
         </copy>
     </target>
 
@@ -574,6 +592,8 @@
         <delete file="${ace-components.js}"/>
         <delete file="${ace-chart.js.uncompressed}"/>
         <delete file="${ace-chart.js}"/>
+        <delete file="${ace-borderlayout.js.uncompressed}"/>
+        <delete file="${ace-borderlayout.js}"/>
     </target>
 
     <target name="skins"

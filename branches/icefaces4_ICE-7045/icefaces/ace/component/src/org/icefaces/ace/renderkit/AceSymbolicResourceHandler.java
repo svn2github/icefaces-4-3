@@ -46,6 +46,7 @@ public class AceSymbolicResourceHandler extends ResourceHandlerWrapper {
                                 resourceName.equals("util/ace-jquery.js") ||
                                 resourceName.equals("util/ace-datatable.js") ||
                                 resourceName.equals("util/ace-menu.js") ||
+                                resourceName.equals("util/ace-borderlayout.js") ||
                                 resourceName.equals("util/ace-components.js") ||
                                 resourceName.equals("chart/ace-chart.js"))))) {
             String uncompressedResourceName = resourceName.replaceAll("\\.", ".uncompressed.");

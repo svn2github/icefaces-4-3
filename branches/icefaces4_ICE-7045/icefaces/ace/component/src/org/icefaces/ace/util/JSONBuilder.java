@@ -517,4 +517,17 @@ public class JSONBuilder {
             }
         }
     }
+
+    /**
+     * having a JSON object embedded in another and wanting to append the objects.
+     * @param other
+     * @return
+     */
+    public JSONBuilder appendToOriginal(String other, boolean needComma){
+        if (needComma){
+            params.append(", ") ;
+        }
+        params.append(other);
+        return this;
+    }
 }

@@ -80,4 +80,9 @@
             <resource name="fileentry/fileEntry.css" library="icefaces.ace"/>
         </requires>
     </resource>
+    <resource name="util/ace-borderlayout.js" library="icefaces.ace">
+         <requires>
+             <resource name="util/ace-components.js" library="icefaces.ace"/>
+        </requires>
+    </resource>
 </dependencies>
