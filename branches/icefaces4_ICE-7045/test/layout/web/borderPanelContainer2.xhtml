@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ace="http://www.icefaces.org/icefaces/components">
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+    <title>no css on page</title>
+    <style type="text/css">
+
+       .pane {
+           display:	none; /* will appear when layout inits */
+       }
+       </style>
+
+
+</h:head>
+<h:body>
+    <div id="containerWrapper" class="ui-container-wrapper" >
+        <h2>Panel Only</h2>
+        <ace:borderLayout id="container">
+              <ace:borderPanel location="NORTH">
+                  <div id="north_inner" class="ui-panel-content ui-widget-content">
+                      NORTH
+                      NORTH
+                      NORTH
+                  </div>
+              </ace:borderPanel>
+              <ace:borderPanel location="EAST">
+                 <div id="e_inner" class="ui-panel-content ui-widget-content">
+                  EAST
+                  EAST
+                  EAST
+                 </div>
+              </ace:borderPanel>
+              <ace:borderPanel location="CENTER">
+                  <div id="c_inner" class="ui-panel-content ui-widget-content">
+                     CENTER
+                      <a href="index.html">index page</a>
+                  </div>
+              </ace:borderPanel>
+              <ace:borderPanel location="WEST">
+                  <div id="w_inner" class="ui-panel-content ui-widget-content">
+                       WEST
+                  </div>
+              </ace:borderPanel>
+              <ace:borderPanel location="SOUTH">
+                 <div id="s_inner" class= "ui-panel-content ui-widget-content">
+                      SOUTH
+                   </div>
+              </ace:borderPanel>
+        </ace:borderLayout>
+      </div>
+    <br/>
+
+</h:body>
+</html>

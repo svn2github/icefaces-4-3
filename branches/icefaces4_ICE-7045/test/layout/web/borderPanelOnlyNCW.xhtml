@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ace="http://www.icefaces.org/icefaces/components">
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+    <title>no css on page</title>
+    <style type="text/css">
+
+       .pane {
+           display:	none; /* will appear when layout inits */
+       }
+       </style>
+
+
+</h:head>
+<h:body>
+        <ace:borderLayout id="container" defaults="#{layoutBean.defaultModel}" widgetVar="aLayout">
+              <ace:borderPanel location="NORTH" resizable="true" closable="false">
+                  <div class="ui-panel-titlebar ui-widget-header ui-corner-all">
+                      <span class="ui-panel-title">North</span>
+                  </div>
+                  <div id="north_inner" class="ui-panel-content ui-widget-content">
+                      NORTH   is resizable but not closable
+                      All other panels are closable and resizable.
+                  </div>
+              </ace:borderPanel>
+
+              <ace:borderPanel location="CENTER">
+                  <h3 class="header">Center </h3>
+                  <div id="c_inner" class="ui-panel-content ui-widget-content">
+                    <h:form id="c1a">
+
+                        <ace:panel header="hide and show west">
+                            <ace:pushButton value="hide West" id="wh">
+                                <ace:ajax execute="@this" render="@none" onStart="aLayout.hidePanel('west');"/>
+                            </ace:pushButton>
+                            <ace:pushButton value="show west open" id="wso">
+                                <ace:ajax execute="@this" render="@none" onStart="aLayout.showPanel('west', true);"/>
+                            </ace:pushButton>
+                            <ace:pushButton value="show west closed" id="wsc">
+                                <ace:ajax execute="@this" render="@none" onStart="aLayout.showPanel('west', false);"/>
+                            </ace:pushButton>
+                        </ace:panel>
+
+                    </h:form>
+                      <a href="index.html">index page</a>
+                  </div>
+              </ace:borderPanel>
+              <ace:borderPanel location="WEST">
+                  <h3 class="header">West</h3>
+                  <div id="w_inner" class="ui-panel-content ui-widget-content">
+                      contents for west
+                  </div>
+              </ace:borderPanel>
+
+        </ace:borderLayout>
+
+</h:body>
+</html>

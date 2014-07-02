@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ace="http://www.icefaces.org/icefaces/components">
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+    <title>no options layout</title>
+    <style src="/borderLayout/javax.faces.resource/util/combined.css.jsf?ln=icefaces.ace" type="text/css"></style>
+     <SCRIPT  src="/borderLayout/javax.faces.resource/util/ace-jquery.js.jsf?ln=icefaces.ace" type="text/javascript"></SCRIPT>
+     <SCRIPT src="/borderLayout/javax.faces.resource/util/util.js.jsf?ln=icefaces.ace" type="text/javascript"></SCRIPT>
+     <script src="/borderLayout/javax.faces.resource/util/component.js.jsf?ln=icefaces.ace" type="text/javascript"></script>
+     <script src="/borderLayout/javax.faces.resource/util/ace-components.js.jsf?ln=icefaces.ace" type="text/javascript"> </script>
+    <script src="/borderLayout/javax.faces.resource/util/ace-borderlayout.js.jsf?ln=icefaces.ace" type="text/javascript"> </script>
+</h:head>
+<h:body>
+
+     <div id="mylayout" >
+        <DIV class="ui-layout-center">Center
+            <P><A href="http://layout.jquery-dev.net/demos.html">Go to the Demos page</A></P>
+            <P>* Pane-resizing is disabled because ui.draggable.js is not linked</P>
+            <P>* Pane-animation is disabled because ui.effects.js is not linked</P>
+        </DIV>
+        <DIV class="ui-layout-north">North</DIV>
+        <DIV class="ui-layout-south">South</DIV>
+        <DIV class="ui-layout-east">East</DIV>
+        <DIV class="ui-layout-west">West</DIV>
+    </div>
+  <script type="text/javascript">
+
+      //var widget_frm_panel = ice.ace.BorderLayout("mylayout",{config: true});
+      var $ = ice.ace.jq;
+      $('#mylayout').layout();
+      console.log(" after creating the layout");
+  </script>
+
+
+    <br/>
+    <a href="index.html">Goto Main page</a>
+</h:body>
+</html>

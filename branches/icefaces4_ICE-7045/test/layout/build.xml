@@ -1,0 +1,8 @@
+<project name="borderLayout" default="servlet-profile">
+
+<property file="build.properties"/>
+<property name="common.build.file" location="../build-common.xml"/>
+
+<import file="${common.build.file}"/>
+
+</project>
