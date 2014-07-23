@@ -1,0 +1,87 @@
+/*
+ * Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+
+.ui-tableconf {
+    width:550px;
+    position: absolute;
+    left:50%;
+    margin-left:-250px !important;
+    z-index:5;
+}
+
+.ui-tableconf-modal {
+    height:100%;
+    width:100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: none;
+    z-index: 4;
+    background: #aaaaaa;
+    opacity: .3;
+    filter: Alpha(Opacity=30);
+}
+
+.ui-tableconf-header {
+    padding: 4px;
+    line-height:1.9;
+    zoom:1;
+}
+
+.ui-tableconf-body {
+    border-top: 0;
+}
+
+/*
+.ui-tableconf-body > table {
+    width:100%;
+}
+*/
+
+*+html .ui-tableconf-head-button {
+    /* IE7 inline block hack */
+    display:inline;
+}
+
+.ui-tableconf-head-button {
+    text-align: left;
+    padding: 2px 4px;
+    margin: 0px 2px;
+    display: inline-block;
+    width:16px; /* required for inline-block on IE7 */
+}
+
+.ui-tableconf-item .handle-container {
+    padding:0 5px 0 5px;
+}
+.ui-tableconf-item .handle-container .ui-sortable-handle {
+    display:inline-block;
+    text-align:left;
+    vertical-align:middle;
+}
+.ui-tableconf-item .handle-container .icon-spacer {
+    display:inline-block;
+    background-position: -2000px -2000px;
+}
+.ui-tableconf-item .stacked-subsequent .handle-container .ui-sortable-handle .ui-icon {
+    background-position: -2000px -2000px;
+}
+/* padding has to line up with .handle-container padding */
+.ui-tableconf-body .ordering, .ui-tableconf-body .name, .ui-tableconf-body .visibility, .ui-tableconf-body .sorting {
+    display: inline-table;
+    padding: 0 5px 0 5px;
+    vertical-align: middle;
+}
