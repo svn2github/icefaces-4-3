@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<!--
+  ~ Copyright 2004-2013 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:ace="http://www.icefaces.org/icefaces/components"
+    xmlns:ice="http://www.icesoft.com/icefaces/component"
+    xmlns:icecore="http://www.icefaces.org/icefaces/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/resources/templates/content-template.xhtml">
+
+    <ui:param name="title" value="#{msgs[ajaxBean.title]}"/>
+    <ui:param name="description" value="#{msgs[ajaxBean.description]}"/>
+    <ui:param name="subMenuTitle" value="#{msgs[ajaxBean.subMenuTitle]}"/>
+    <ui:param name="subMenuLinks" value="#{ajaxBean.subMenuLinks}"/>
+    <ui:param name="resourceValue" value="#{ajaxBean.exampleResource}"/>
+    
+    <ui:param name="wikiResources" value="#{ajaxResources.wikiResources}"/>
+    <ui:param name="tldResources" value="#{ajaxResources.tldResources}"/>
+
+    <ui:define name="example">
+
+		<h:form id="form">
+
+            <ace:panel id="ajaxSettings" header="Settings" style="width: 100%;">
+				 <h:outputLabel for="ajaxEnabled" value="Enable Ajax? "/>
+				 <ace:checkboxButton id="ajaxEnabled" value="#{ajaxBean.ajaxEnabled}">
+					 <ace:ajax execute="@all" render="@all"/>
+				 </ace:checkboxButton>
+            </ace:panel>
+
+            <ace:panel id="ajaxInput" header="Input" style="width: 100%;">
+                <h:panelGrid width="60%" columns="2" cellpadding="20" cellspacing="20">
+					<ace:textEntry id="ajaxText" value="#{ajaxBean.textValue}">
+						<ace:ajax disabled="#{!ajaxBean.ajaxEnabled}" />
+					</ace:textEntry>
+					<h:outputText value="#{ajaxBean.textValue}"/>
+
+					<ace:simpleSelectOneMenu id="ajaxSelect" value="#{ajaxBean.selectValue}">
+						<ace:ajax disabled="#{!ajaxBean.ajaxEnabled}" />
+						<f:selectItem itemLabel="item1" itemValue="item1" />
+						<f:selectItem itemLabel="item2" itemValue="item2" />
+						<f:selectItem itemLabel="item3" itemValue="item3" />
+						<f:selectItem itemLabel="item4" itemValue="item4" />
+						<f:selectItem itemLabel="item5" itemValue="item5" />
+					</ace:simpleSelectOneMenu>
+					<h:outputText value="#{ajaxBean.selectValue}"/>
+
+					<ace:sliderEntry id="ajaxSlider"
+									 axis="x"
+									 clickableRail="true"
+									 length="300"
+									 min="0"
+									 max="100"
+									 value="#{ajaxBean.sliderValue}">
+						<ace:ajax disabled="#{!ajaxBean.ajaxEnabled}" />
+					</ace:sliderEntry>
+					<h:outputText value="#{ajaxBean.sliderValue}"/>
+
+					<h:commandButton value="Submit" />
+					<h:outputText value="" />
+                </h:panelGrid>
+            </ace:panel>
+
+		</h:form>
+
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,105 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:ace="http://www.icefaces.org/icefaces/components">
+
+<composite:interface>
+    <composite:attribute name="menuLink"
+                         type="org.icefaces.samples.showcase.metadata.context.MenuLink"
+                         required="true"/>
+</composite:interface>
+
+<composite:implementation>
+
+<li>
+    <c:set var="mainSelected"
+           value="#{(navigationModel.currentComponentExample['class']['package'] == window[cc.attrs.menuLink.exampleBeanName]['class']['package']) ||
+                    (navigationModel.componentExample == null and cc.attrs.menuLink['default']) ? 'selected' : '' }"/>
+    <!--
+     ~  <ui:repeat var="menuLink" ... > is used below to create links dynamically from the array navigationModel.currentComponentGroup.menuLinks
+     -->
+	<c:choose>
+		<c:when test="#{cc.attrs.menuLink.fullPageLoad}">
+			<h:outputLink value="/showcase/showcase.jsf"
+					title="#{msgs[cc.attrs.menuLink.title]}"
+					disabled="#{cc.attrs.menuLink.disabled}"
+					rendered="#{!('selected' eq mainSelected)}"
+					class="#{mainSelected}">
+				<h:outputText value="#{msgs[cc.attrs.menuLink.title]}"
+							  escape="false" nospan="true"/>
+				<f:param name="grp"
+							 value="#{navigationModel.currentComponentGroup.beanName}"/>
+				<f:param name="exp"
+							 value="#{cc.attrs.menuLink.exampleBeanName}"/>
+			</h:outputLink>
+		</c:when>
+		<c:when test="#{!cc.attrs.menuLink.fullPageLoad}">
+			<h:commandLink value="#{msgs[cc.attrs.menuLink.title]}"
+					title="#{msgs[cc.attrs.menuLink.title]}"
+					actionListener="#{navigationController.navigateActionListener}"
+					disabled="#{cc.attrs.menuLink.disabled}"
+					class="#{mainSelected}"
+					rendered="#{!('selected' eq mainSelected)}"
+					onclick="updateAddressBarURL('#{navigationModel.currentComponentGroup.beanName}','#{cc.attrs.menuLink.exampleBeanName}');">
+				<f:ajax render="@all"/>
+				<f:attribute name="grp"
+							 value="#{navigationModel.currentComponentGroup.beanName}"/>
+				<f:attribute name="exp"
+							 value="#{cc.attrs.menuLink.exampleBeanName}"/>
+			</h:commandLink>
+		</c:when>
+	</c:choose>
+
+    <ace:panel style="border: none; padding: 0em; font-size: 0.9em;" header="#{msgs[cc.attrs.menuLink.title]}" rendered="#{'selected' eq mainSelected}">
+        <ul>
+            <ui:repeat var="subMenuLink"
+                       value="#{navigationModel.currentComponentExample.subMenuLinks}">
+                <li style="padding-left: 0px;">
+					<c:choose>
+						<c:when test="#{cc.attrs.menuLink.fullPageLoad}">
+							<h:outputLink value="/showcase/showcase.jsf"
+									title="#{msgs[subMenuLink.title]}"
+									disabled="#{subMenuLink.disabled}"
+									class="#{(subMenuLink.exampleBeanName eq navigationModel.componentExample) ||
+															   (navigationModel.componentExample eq null and subMenuLink['default'])
+															   ? 'selected'
+															   : ''}">
+								<h:outputText style="font-size: 1em;" value="#{msgs[subMenuLink.title]}"
+											  escape="false" nospan="true"/>
+								<f:param name="grp"
+											 value="#{navigationModel.currentComponentGroup.beanName}"/>
+								<f:param name="exp"
+											 value="#{subMenuLink.exampleBeanName}"/>
+							</h:outputLink>
+						</c:when>
+						<c:when test="#{!cc.attrs.menuLink.fullPageLoad}">
+							<h:commandLink actionListener="#{navigationController.navigateActionListener}"
+										   title="#{msgs[subMenuLink.title]}"
+										   disabled="#{subMenuLink.disabled}"
+										   class="#{(subMenuLink.exampleBeanName eq navigationModel.currentComponentExample.beanName) ||
+															   (navigationModel.componentExample eq null and subMenuLink['default'])
+															   ? 'selected'
+															   : ''}"
+										   onclick="updateAddressBarURL('#{navigationModel.currentComponentGroup.beanName}','#{subMenuLink.exampleBeanName}');">
+								<h:outputText style="font-size: 0.9em;" value="#{msgs[subMenuLink.title]}"
+											  escape="false" nospan="true"/>
+								<f:attribute name="grp"
+											 value="#{navigationModel.currentComponentGroup.beanName}"/>
+								<f:attribute name="exp"
+											 value="#{subMenuLink.exampleBeanName}"/>
+								<f:ajax render="@all"/>
+							</h:commandLink>
+						</c:when>
+					</c:choose>
+                </li>
+            </ui:repeat>
+        </ul>
+    </ace:panel>
+</li>
+
+</composite:implementation>
+
+</html>

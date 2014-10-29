@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!--
+  ~ Copyright 2004-2013 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:ace="http://www.icefaces.org/icefaces/components"
+                xmlns:ice="http://www.icesoft.com/icefaces/component"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/resources/templates/content-template.xhtml">
+
+    <ui:param name="title" value="#{msgs[gMapLayerBean.title]}"/>
+    <ui:param name="description" value="#{msgs[gMapLayerBean.description]}"/>
+    <ui:param name="subMenuTitle" value="#{msgs[gMapLayerBean.subMenuTitle]}"/>
+    <ui:param name="subMenuLinks" value="#{gMapLayerBean.subMenuLinks}"/>
+    <ui:param name="resourceValue" value="#{gMapLayerBean.exampleResource}"/>
+
+    <ui:param name="wikiResources" value="#{gMapLayerResources.wikiResources}"/>
+    <ui:param name="tldResources" value="#{gMapLayerResources.tldResources}"/>
+
+    <ui:define name="example">
+    <ace:gMap id="gMapLayer"  style="width: 675px; height: 500px" zoomLevel="16" latitude="${gMapLayerBean.lat}" longitude="${gMapLayerBean.lon}">
+        <ace:gMapLayer id="BikeLayer" layerType="Bicycling" visible="${gMapLayerBean.bikeLayer}"/>
+        <ace:gMapLayer id="TrafficLayer" layerType="Traffic" visible="${gMapLayerBean.trafficLayer}"/>
+        <ace:gMapLayer id="TransitLayer" layerType="Transit" visible="${gMapLayerBean.transitLayer}"/>
+        <ace:gMapLayer id="KMLLayer" layerType="KML" visible="${gMapLayerBean.kmlLayer}" url="${gMapLayerBean.kmlURL}"/>
+    </ace:gMap>
+	<br/>
+    <h:form id="input">
+        <h:selectOneRadio id="layerButtons" value="#{gMapLayerBean.chosenLayer}" name="RadioGroup">
+            <f:ajax event="valueChange" render="@all"/>
+            <f:selectItem id="biking" itemLabel="Biking" itemValue="Biking"/>
+            <f:selectItem id="traffic" itemLabel="Traffic" itemValue="Traffic"/>
+            <f:selectItem id="transit" itemLabel="Transit" itemValue="Transit"/>
+            <f:selectItem id="kml" itemLabel="KML" itemValue="KML"/>
+        </h:selectOneRadio>
+        <ace:panel id="kmlinputs"
+                   header="KML layer inputs"
+                   closable="false"
+                   toggleable="false"
+                   collapsed="false"
+                   visible="${gMapLayerBean.kmlLayer}"
+                   >
+            <h:outputLabel for="kmlLayer" value="Options for KML"/>
+            <h:inputText id="kmlLayer" value="${gMapLayerBean.kmlURL}" size="60"><f:ajax render="@all"/></h:inputText>
+            <br/><br/>
+            <p>Use the above textbox to submit a URL to render a KML Map layer from. A few examples:<br/>
+                http://coinatlantic.ca/kmlfiles/EnvironmentCanadaAtlantic/ECHydrometricNL.kml - Envirnoment Canada Realtime Hydroelectric<br/>
+                http://www.austindarts.org/darts.kml - Darts locations in Austin Texas<br/>
+                http://www.ourairports.com/countries/CA/NT/airports.kml - Northwest Territories Airports
+                </p>
+				<br/>
+				<h:commandButton value="Submit" type="submit"/>
+            </ace:panel>
+			
+    </h:form>
+	<p>Relevant sections of the Google Maps API: <a style="color:blue;" href="https://developers.google.com/maps/documentation/javascript/reference#BicyclingLayer">Bicycling</a>, 
+	<a style="color:blue;" href="https://developers.google.com/maps/documentation/javascript/reference#KmlLayer">KML</a>, 
+	<a style="color:blue;" href="https://developers.google.com/maps/documentation/javascript/reference#TrafficLayer">Traffic</a>, 
+	<a style="color:blue;" href="https://developers.google.com/maps/documentation/javascript/reference#TransitLayer">Transit</a><br/>
+	</p>
+</ui:define>
+</ui:composition>

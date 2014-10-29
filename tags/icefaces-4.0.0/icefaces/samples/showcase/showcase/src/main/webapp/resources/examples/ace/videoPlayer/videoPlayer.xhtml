@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<!--
+  ~ Copyright 2004-2013 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:ace="http://www.icefaces.org/icefaces/components"
+    xmlns:ice="http://www.icesoft.com/icefaces/component"
+    xmlns:icecore="http://www.icefaces.org/icefaces/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/resources/templates/content-template.xhtml">
+
+    <ui:param name="title" value="#{msgs[videoPlayerBean.title]}"/>
+    <ui:param name="description" value="#{msgs[videoPlayerBean.description]}"/>
+    <ui:param name="subMenuTitle" value="#{msgs[videoPlayerBean.subMenuTitle]}"/>
+    <ui:param name="subMenuLinks" value="#{videoPlayerBean.subMenuLinks}"/>
+    <ui:param name="resourceValue" value="#{videoPlayerBean.exampleResource}"/>
+    
+    <ui:param name="wikiResources" value="#{videoPlayerResources.wikiResources}"/>
+    <ui:param name="tldResources" value="#{videoPlayerResources.tldResources}"/>
+
+    <ui:define name="example">
+
+		<h:form id="form">
+
+            <ace:panel id="videoPlayerPanel" header="Video Player" style="width: 100%;">
+                <h:panelGrid width="60%" columns="2" cellpadding="20" cellspacing="20">
+                    <h:outputLabel for="value" value="Illusion video: "/>
+                    <h:selectOneMenu id="value" value="#{videoPlayerBean.value}">
+						<f:ajax render="videoPlayer" />
+                        <f:selectItem itemLabel="Penrose Triangle" itemValue="./resources/media/penrosetriangle.mp4"/>
+                        <f:selectItem itemLabel="Lilac Chaser" itemValue="./resources/media/lilacchaser.mp4"/>
+                        <f:selectItem itemLabel="Spinning Dancer" itemValue="./resources/media/spinningdancer.mp4"/>
+                        <f:selectItem itemLabel="Missing Square" itemValue="./resources/media/missingsquare.mp4"/>
+                        <f:selectItem itemLabel="Ebbinghaus Illusion" itemValue="./resources/media/ebbinghaus.mp4"/>
+                    </h:selectOneMenu>
+
+                    <h:outputLabel for="autoplay" value="Autoplay: "/>
+                    <h:selectBooleanCheckbox id="autoplay" value="#{videoPlayerBean.autoplay}">
+						<f:ajax render="videoPlayer" />
+                    </h:selectBooleanCheckbox>
+
+                    <h:outputLabel for="loop" value="Loop: "/>
+                    <h:selectBooleanCheckbox id="loop" value="#{videoPlayerBean.loop}">
+						<f:ajax render="videoPlayer" />
+                    </h:selectBooleanCheckbox>
+
+                    <h:outputLabel for="newwindow" value="Play file in new window: "/>
+                    <h:selectBooleanCheckbox id="newwindow" value="#{videoPlayerBean.newWindow}">
+						<f:ajax render="videoPlayer" />
+                    </h:selectBooleanCheckbox>
+				</h:panelGrid>
+
+            <ace:videoPlayer id="videoPlayer"
+                             value="#{videoPlayerBean.value}"
+                             type="video/mp4"
+                             linkLabel="#{!videoPlayerBean.newWindow ? '' : 'Click here to load video clip in new window.'}"
+                             autoplay="#{!videoPlayerBean.newWindow ? videoPlayerBean.autoplay : false}"
+                             controls="#{!videoPlayerBean.newWindow}"
+                             loop="#{videoPlayerBean.loop}"/>
+            </ace:panel>
+
+		</h:form>
+
+    </ui:define>
+
+</ui:composition>
