@@ -21,12 +21,10 @@ import org.icefaces.util.JavaScriptRunner;
 import javax.faces.component.ActionSource;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIComponentBase;
-import javax.faces.component.behavior.AjaxBehavior;
-import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.context.FacesContext;
 import javax.faces.event.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class ImmediateComponentCollector implements SystemEventListener {
 
@@ -36,7 +34,7 @@ public class ImmediateComponentCollector implements SystemEventListener {
     }
 
     public void processEvent(SystemEvent event) throws AbortProcessingException {
-        ArrayList<ImmediateEntry> immediateComponents = new ArrayList();
+        ArrayList<String> immediateComponents = new ArrayList();
         ArrayList<UIComponent> queue = new ArrayList();
 
 
@@ -50,9 +48,8 @@ public class ImmediateComponentCollector implements SystemEventListener {
                 queue.add(kids.next());
             }
 
-            ImmediateEntry entry = isImmediate(component);
-            if (entry != null) {
-                immediateComponents.add(entry);
+            if (isImmediate(component)) {
+                immediateComponents.add(component.getClientId());
             }
         }
 
@@ -60,8 +57,11 @@ public class ImmediateComponentCollector implements SystemEventListener {
         if (!immediateComponents.isEmpty()) {
             StringBuffer buffer = new StringBuffer();
             buffer.append("window.ice.ace.immediateComponents = [");
-            for (Iterator<ImmediateEntry> iterator = immediateComponents.iterator(); iterator.hasNext(); ) {
-                iterator.next().toJSEntry(buffer);
+            for (Iterator<String> iterator = immediateComponents.iterator(); iterator.hasNext(); ) {
+                String next = iterator.next();
+                buffer.append("'");
+                buffer.append(next);
+                buffer.append("'");
                 if (iterator.hasNext()) {
                     buffer.append(", ");
                 }
@@ -72,55 +72,16 @@ public class ImmediateComponentCollector implements SystemEventListener {
         }
     }
 
-    private ImmediateEntry isImmediate(UIComponent component) {
-        ImmediateEntry immediate = null;
+    private boolean isImmediate(UIComponent component) {
+        boolean immediate = false;
 
-        if (component instanceof EditableValueHolder && ((EditableValueHolder) component).isImmediate()) {
-            immediate = new ImmediateEntry(component.getClientId());
-        } else if (component instanceof ActionSource && ((ActionSource) component).isImmediate()) {
-            immediate = new ImmediateEntry(component.getClientId());
-        }
-
-        if (component instanceof UIComponentBase) {
-            Set<Map.Entry<String, List<ClientBehavior>>> clientBehaviors = ((UIComponentBase) component).getClientBehaviors().entrySet();
-            for (Map.Entry<String, List<ClientBehavior>> entry : clientBehaviors) {
-                List<ClientBehavior> behaviors = entry.getValue();
-                for (ClientBehavior behavior : behaviors) {
-                    if ((behavior instanceof AjaxBehavior && ((AjaxBehavior) behavior).isImmediate()) ||
-                            (behavior instanceof org.icefaces.ace.component.ajax.AjaxBehavior && ((org.icefaces.ace.component.ajax.AjaxBehavior) behavior).isImmediate())) {
-                        immediate = new ImmediateEntry(component.getClientId(), entry.getKey());
-                    }
-                }
-            }
+        if (component instanceof EditableValueHolder) {
+            immediate = ((EditableValueHolder) component).isImmediate();
+        } else if (component instanceof ActionSource) {
+            immediate = ((ActionSource) component).isImmediate();
         }
 
         return immediate;
     }
 
-    private static class ImmediateEntry {
-        private String clientId;
-        private String event;
-
-        public ImmediateEntry(String clientId) {
-            this.clientId = clientId;
-        }
-
-        public ImmediateEntry(String clientId, String event) {
-            this.clientId = clientId;
-            this.event = event;
-        }
-
-        public void toJSEntry(StringBuffer buffer) {
-            buffer.append("['");
-            buffer.append(clientId);
-            buffer.append("'");
-            if (event == null) {
-                buffer.append("]");
-            } else {
-                buffer.append(", '");
-                buffer.append(event);
-                buffer.append("']");
-            }
-        }
-    }
 }
