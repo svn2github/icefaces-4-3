@@ -83,7 +83,9 @@ public class PushButtonRenderer extends CoreRenderer {
 
 		// button element
 		writer.startElement(HTML.BUTTON_ELEM, null);
-		writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
+		String type = pushButton.getType();
+		type = "submit".equalsIgnoreCase(type) ? "submit" : "button";
+		writer.writeAttribute(HTML.TYPE_ATTR, type, null);
         writer.writeAttribute(HTML.NAME_ATTR, clientId+"_button", null);
 
         if (disabled)
@@ -137,8 +139,8 @@ public class PushButtonRenderer extends CoreRenderer {
         String style = pushButton.getStyle();
 
         if (styleClass != null)
-            rootStyle = " " + styleClass;
-
+            rootStyle += " " + styleClass;
+            
         if (style != null)
             writer.writeAttribute(HTML.STYLE_ATTR, style, null);
 
@@ -173,11 +175,14 @@ public class PushButtonRenderer extends CoreRenderer {
             json.endMap();
         }
 
-		if ("clear".equalsIgnoreCase(pushButton.getType())) {
+		String type = pushButton.getType();
+		if ("clear".equalsIgnoreCase(type)) {
 			UIComponent parentForm = ComponentUtils.findParentForm(facesContext, pushButton);
 			if (parentForm != null) {
 				json.entry("clear", parentForm.getClientId(facesContext));
 			}
+		} else if ("submit".equalsIgnoreCase(type)) {
+			json.entry("submit", true);
 		}
 
         json.endMap().endArray().endFunction();
