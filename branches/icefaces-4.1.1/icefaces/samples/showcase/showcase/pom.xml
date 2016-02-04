@@ -23,7 +23,7 @@
         <groupId>org.icefaces.samples</groupId>
 		<!--		<groupId>com.icesoft.icefaces-ee.samples</groupId>  -->
         <artifactId>showcase-parent</artifactId>
-        <version>4.1.0</version>
+        <version>4.1.1-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
 
