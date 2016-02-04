@@ -577,11 +577,7 @@ public class EnvUtils {
         return PlutoPortalClass != null;
     }
 
-    public static boolean isPortal() {
-        return isLiferay() || isPlutoPortal() || isWebSpherePortal();
-    }
-    
-    
+
     /**
      * Returns true if JSF Partial State Saving is active.
      *
