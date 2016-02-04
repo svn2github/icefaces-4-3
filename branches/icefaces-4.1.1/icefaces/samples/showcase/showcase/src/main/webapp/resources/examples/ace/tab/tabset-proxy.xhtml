@@ -41,7 +41,7 @@
                     <f:facet name="label">Confirmation</f:facet>
                     
                     <h:form id="proxyForm2">
-                        <ace:tabSetProxy for="#{proxiedTabSet.clientId}" />
+                        <ace:tabSetProxy id="tsProxyTwo" for="#{proxiedTabSet.clientId}" />
                         <h:panelGrid styleClass="centeredPanelGrid">
                             <h:outputText id="entered" value="You entered: #{tabProxy.exampleText}"/>
                             <h:panelGroup>
@@ -71,7 +71,7 @@
             </ace:tabSet>
         
         <h:panelGrid styleClass="centeredPanelGrid">
-            <ace:messages id="msgs" style="color: #ff3333; font-weight: bold;"/>
+            <ace:messages id="msgs" for="@inView" style="color: #ff3333; font-weight: bold;"/>
         </h:panelGrid>
     </ui:define>
 </ui:composition>
