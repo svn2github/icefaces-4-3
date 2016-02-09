@@ -558,9 +558,13 @@ ice.ace.fileentry = {
 					}
                 }
             }
+			fileEntryInputs = root.getElementsByTagName("input");
+			if (fileEntryInputs[0]) {
+				fileEntryInputs[0].parentNode.innerHTML = fileEntryInputs[0].parentNode.innerHTML;
+			}
         }
     },
-
+    
     clearSingleFileSelection : function(clientId) {
         var root = document.getElementById(clientId);
         if (root && root.firstChild) {
