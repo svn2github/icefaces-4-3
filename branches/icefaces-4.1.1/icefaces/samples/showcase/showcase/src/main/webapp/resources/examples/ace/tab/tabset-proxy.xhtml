@@ -1,4 +1,3 @@
-<?xml version="1.0"?>
 <!--
   ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
   ~
@@ -22,14 +21,16 @@
     xmlns:ace="http://www.icefaces.org/icefaces/components" 
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets" 
     template="/resources/templates/content-template.xhtml">
-    
+    <ui:param name="title" value="#{msgs['example.ace.tabSet.proxy.title']}"/>
+    <ui:param name="description" value="#{msgs['example.ace.tabSet.proxy.description']}"/>
+
     <ui:define name="example">
             
             <ace:tabSet id="myTabSet" cancelOnInvalid="#{not tabProxy.invalidSwitch}" clientSide="false" binding="#{proxiedTabSet}">
                 <ace:tabPane id="txtEntry">
                     <f:facet name="label">Text Entry</f:facet>
                     <h:form id="proxyForm">
-                        <ace:tabSetProxy for="#{proxiedTabSet.clientId}"/>
+                        <ace:tabSetProxy id="tsProxyOne"  for="#{proxiedTabSet.clientId}"/>
                         <h:panelGrid columns="2" styleClass="centeredPanelGrid">
                             <h:outputLabel value="Some Text:" for="txt"/>
                             <h:inputText id="txt" required="true" value="#{tabProxy.exampleText}" requiredMessage="You must enter some text before selecting any other tab"/>   
@@ -71,7 +72,7 @@
             </ace:tabSet>
         
         <h:panelGrid styleClass="centeredPanelGrid">
-            <ace:messages id="msgs" for="@inView" style="color: #ff3333; font-weight: bold;"/>
+            <ace:messages for="@inView" id="msgs" style="color: #ff3333; font-weight: bold;"/>
         </h:panelGrid>
     </ui:define>
 </ui:composition>
