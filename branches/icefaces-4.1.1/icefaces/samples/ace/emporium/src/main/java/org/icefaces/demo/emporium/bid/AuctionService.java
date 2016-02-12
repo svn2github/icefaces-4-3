@@ -38,7 +38,7 @@ import org.icefaces.demo.emporium.util.StringUtil;
 import org.icefaces.demo.emporium.util.TimestampUtil;
 import org.icefaces.demo.emporium.watcher.AuctionWatcher;
 
-@ManagedBean(name=AuctionService.BEAN_NAME,eager=true)
+@ManagedBean(name=AuctionService.BEAN_NAME)
 @ApplicationScoped
 public class AuctionService implements Serializable {
 	private static final long serialVersionUID = -7792292390252586384L;
