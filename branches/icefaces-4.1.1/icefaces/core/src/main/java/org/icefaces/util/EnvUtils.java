@@ -147,7 +147,12 @@ public class EnvUtils {
         try {
             LiferayClass = Class.forName("com.liferay.portal.theme.ThemeDisplay");
         } catch (Throwable t) {
-            log.log(Level.FINE, "Liferay class not available: ", t);
+            try {
+                //class moved in Liferay 7.*
+                LiferayClass = Class.forName("com.liferay.portal.kernel.theme.ThemeDisplay");
+            } catch (Throwable tt) {
+                log.log(Level.FINE, "Liferay class not available: ", tt);
+            }
         }
     }
 
@@ -280,7 +285,12 @@ public class EnvUtils {
         private Method GetOriginalServletRequest;
 
         private LiferayOriginalRequestGetter() throws ClassNotFoundException, NoSuchMethodException {
-            PortalUtilClass = Class.forName("com.liferay.portal.util.PortalUtil");
+            try {
+                PortalUtilClass = Class.forName("com.liferay.portal.util.PortalUtil");
+            } catch (ClassNotFoundException e) {
+                //the class moved in Liferay 7.*
+                PortalUtilClass = Class.forName("com.liferay.portal.kernel.util.PortalUtil");
+            }
             GetHttpServletRequest = PortalUtilClass.getDeclaredMethod("getHttpServletRequest", javax.portlet.PortletRequest.class);
             GetOriginalServletRequest = PortalUtilClass.getDeclaredMethod("getOriginalServletRequest", HttpServletRequest.class);
         }
@@ -577,6 +587,9 @@ public class EnvUtils {
         return PlutoPortalClass != null;
     }
 
+    public static boolean isPortal() {
+        return isLiferay() || isPlutoPortal() || isWebSpherePortal();
+    }
 
     /**
      * Returns true if JSF Partial State Saving is active.
@@ -996,7 +1009,17 @@ public class EnvUtils {
      * @return true if JSF implementation is 2.2
      */
     public static boolean isJSF22() {
-        return FacesContext.class.getPackage().getImplementationVersion().startsWith("2.2");
+        final String version = FacesContext.class.getPackage().getImplementationVersion();
+        if (version == null) {
+            try {
+                Class.forName("javax.faces.flow.Flow");
+                return true;
+            } catch (ClassNotFoundException ex) {
+                return false;
+            }
+        } else {
+            return version.startsWith("2.2");
+        }
     }
 
 
