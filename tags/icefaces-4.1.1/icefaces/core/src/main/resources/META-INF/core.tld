@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright 2004-2015 ICEsoft Technologies Canada Corp.
+  ~ Copyright 2004-2016 ICEsoft Technologies Canada Corp.
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the
@@ -21,7 +21,7 @@
         version="2.1">
     <description>
     </description>
-    <tlib-version>4.1.0</tlib-version>
+    <tlib-version>4.1.1</tlib-version>
     <short-name>icecore</short-name>
     <uri>http://icefaces.org/tld/core</uri>
     <listener>
