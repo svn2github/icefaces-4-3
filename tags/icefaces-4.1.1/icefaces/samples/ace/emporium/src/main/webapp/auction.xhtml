@@ -1,0 +1,142 @@
+<!--
+  ~ Copyright 2004-2015 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:ace="http://www.icefaces.org/icefaces/components"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
+      xmlns:icecore="http://www.icefaces.org/icefaces/core">
+<h:head>
+    <title>ICEfaces Emporium</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+    <mobi:smallView>
+        <mobi:deviceResource/>
+    </mobi:smallView>
+    <h:outputStylesheet library="css" name="demo_template.css"/>
+    <h:outputStylesheet library="css" name="auction_styles.css"/>
+    <link href="./resources/images/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+    <link href="./resources/images/favicon.ico" rel="icon" type="image/x-icon"/>
+    
+    <mobi:largeView>
+	    <script type="text/javascript">
+		    function focusBid() {
+		    	var bidIn = document.getElementById('a:bidIn_input');
+		    	if (bidIn) {
+			    	bidIn.focus();
+			    	bidIn.select();
+		    	}
+		    }
+	    </script>
+    </mobi:largeView>
+</h:head>
+
+<h:body>
+    <h:outputText value="#{pushBean.init}" styleClass="hidden"/>
+    <h:outputText value="#{bidRobot.init}" styleClass="hidden"/>
+    <h:outputText value="#{userBean.init}" styleClass="hidden"/>
+    <f:event type="preRenderView" listener="#{settingsController.initializeTheme}"/>
+    <ace:themeSelect value="#{settingsBean.themeName}" styleClass="hidden"
+                     rendered="#{!settingsBean.hasSetTheme}"/>
+    <script>
+	    ice.onSessionExpiry(function() {
+	    	ice.ace.instance('expiredPopup').show();
+	    });
+    </script>
+    
+    <mobi:largeView>
+	    <table cellspacing="0" cellpadding="0"><tr>
+	       <td valign="bottom"><h:graphicImage library="images" name="banner_hdr_auction.jpg"/></td>
+    	   <td valign="bottom" class="headerText"><b>ICEfaces</b> Emporium</td>
+    	   <td valign="middle" class="headerTextSmall">Demo</td>
+	    </tr></table>
+	    
+	    <div class="emporiumContainer">
+		    <h:panelGroup layout="block" styleClass="submitMonitorWrap">
+		        <ace:submitMonitor blockUI="@none"/>
+		    </h:panelGroup>
+		    
+	        <ace:tabSet id="at" selectedIndex="#{tabBean.selectedIndex}"
+	                    orientation="#{settingsBean.tabOrientation}"
+	                    cancelOnInvalid="false" immediate="true"
+	                    tabChangeListener="#{tabController.changeListener}">
+	            <ace:tabPane id="Tb" label="Auction List">
+			        <h:form id="f" prependId="false">
+			            <ace:tabSetProxy for="at"/>
+			            
+			            <ui:include src="/WEB-INF/includes/list-tab.xhtml"/>
+			        </h:form>
+		        </ace:tabPane>
+		        <ace:tabPane id="Tal" label="Auction Logs">
+		            <h:form id="al" prependId="false">
+			            <ace:tabSetProxy for="at"/>
+			            
+			            <ui:include src="/WEB-INF/includes/logs-tab.xhtml"/>
+	                </h:form>
+		        </ace:tabPane>
+	            <ace:tabPane id="Tp" label="Add Auction">
+	                <h:form id="p">
+	                    <ace:tabSetProxy for="at"/>
+	                    
+	                    <ui:include src="/WEB-INF/includes/post-tab.xhtml"/>
+	                </h:form>
+	            </ace:tabPane>
+	            <ace:tabPane id="Tc" label="Chat" disabled="#{!chatBean.isPositionTab}">
+	                <h:form id="c">
+	                    <ace:tabSetProxy for="at"/>
+	                    
+	                    <ui:include src="/WEB-INF/includes/chat-tab.xhtml"/>
+	                </h:form>
+	            </ace:tabPane>
+	            <ace:tabPane id="Ts" label="Settings">
+	                <h:form id="s">
+	                    <ace:tabSetProxy for="at"/>
+	                    
+	                    <ui:include src="/WEB-INF/includes/settings-tab.xhtml"/>
+	                </h:form>
+	            </ace:tabPane>
+	            <ace:tabPane id="Tab" label="About">
+	                <h:form id="ab">
+	                    <ace:tabSetProxy for="at"/>
+	                    
+	                    <ui:include src="/WEB-INF/includes/about-tab.xhtml"/>
+	                </h:form>
+	            </ace:tabPane>
+	        </ace:tabSet>
+	        
+	        <c:if test="#{!testFlags.testGrowlMessages}">
+	           <h3><ace:messages globalOnly="true" redisplay="false"/></h3>
+	        </c:if>
+	        
+		    <icecore:idleMonitor interval="#{userCounter.sessionTimeoutWarnInterval}">
+	            <h3>Note your session will expire in #{userCounter.sessionTimeoutWarnSeconds} seconds</h3>
+		    </icecore:idleMonitor>
+	    </div>
+    </mobi:largeView>
+    
+    <mobi:smallView>
+        <h:form id="f" prependId="false">
+            <ui:include src="/WEB-INF/includes/list-tab.xhtml"/>
+        </h:form>
+    </mobi:smallView>
+    
+    <ui:include src="/WEB-INF/includes/popups.xhtml"/>
+</h:body>
+</html>

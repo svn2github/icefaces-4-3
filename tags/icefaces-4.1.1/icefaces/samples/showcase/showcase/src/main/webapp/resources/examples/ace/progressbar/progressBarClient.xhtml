@@ -1,0 +1,86 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+    xmlns:ace="http://www.icefaces.org/icefaces/components"
+    xmlns:icecore="http://www.icefaces.org/icefaces/core"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    template="/resources/templates/content-template.xhtml">
+    <ui:param name="title" value="#{msgs['example.ace.progressBarClient.title']}"/>
+    <ui:param name="description" value="#{msgs['example.ace.progressBarClient.description']}"/>
+
+    <ui:define name="example">
+        <script type="text/javascript">
+			window.indeterminate = false;
+            function begin()
+            {
+				if (this.inProgress) return;
+                var instance = ice.ace.instance('#{progressBar.clientId}');
+				if (!window.indeterminate) {
+					instance.setValue(instance.getValue() + 10);
+					this.inProgress = true;
+					this.progressInterval = setInterval (
+					function()
+					{
+						if (instance) {
+							instance.setValue(instance.getValue() + 10);
+						} else {
+							//page content was modified, progress bar is not present in the page anymore
+							stop();
+						}
+					}
+					, 2000);
+				} else {
+					instance.startIndeterminateState();
+					this.progressInterval = setInterval (
+					function()
+					{
+						instance.setValue(100);
+					}
+					, 6000);
+				}
+            }
+
+            function stop()
+            {
+                clearInterval(this.progressInterval);
+                var instance = ice.ace.instance('#{progressBar.clientId}');
+                if(instance) {
+                    instance.setValue(0);
+                }
+				this.inProgress = false;
+            }
+        </script>
+
+        <h:form id="form">
+			<input type="checkbox" id="clientIndeterminate" onchange="window.indeterminate = !window.indeterminate; return false;" /><label for="clientIndeterminate"> Enable indeterminate mode</label>
+            <ace:panel>
+                <ace:progressBar id="progressBar" binding="#{progressBar}"/>
+            </ace:panel>
+
+            <h:panelGrid width="100%">
+                    <h:panelGroup>
+                        <h:commandButton id="start" value="Start" onclick="begin();" type="button" style="float: left;"/>
+                        <h:commandButton id="cancel" value="Cancel" onclick="stop();" type="button" style="float: right;"/>
+                    </h:panelGroup>
+            </h:panelGrid>
+
+        </h:form>
+    </ui:define>
+</ui:composition>

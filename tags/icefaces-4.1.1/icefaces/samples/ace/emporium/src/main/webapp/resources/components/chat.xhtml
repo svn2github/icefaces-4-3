@@ -1,0 +1,121 @@
+<!--
+  ~ Copyright 2004-2015 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+-->
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:f="http://xmlns.jcp.org/jsf/core"
+              xmlns:h="http://xmlns.jcp.org/jsf/html"
+              xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+              xmlns:ace="http://www.icefaces.org/icefaces/components"
+              xmlns:icecore="http://www.icefaces.org/icefaces/core"
+              xmlns:composite="http://xmlns.jcp.org/jsf/composite"
+              xmlns:emporium="http://xmlns.jcp.org/jsf/composite/components">
+    <composite:interface>
+    </composite:interface>
+    
+    <composite:implementation>
+        <h:panelGroup id="chat" layout="block" styleClass="w100">
+        <icecore:defaultAction actionListener="#{chatController.submitMessage}" key="Enter"/>
+        
+	        <h:panelGrid id="ncw" columns="4" rendered="#{!chatBean.hasCurrentRoom}">
+	            <h:outputLabel for="roomIn" value="Select a Chat Room:"/>
+	            <ace:simpleSelectOneMenu id="roomIn" value="#{chatBean.selectedRoom}" required="true">
+	                <f:selectItems value="#{chatService.rooms}" var="room"
+	                               itemLabel="#{room.name} (#{room.occupantsSize} occupants)" itemValue="#{room.name}"/>
+	            </ace:simpleSelectOneMenu>
+	            <emporium:chatPosition id="chatPosition" label="Position:"/>
+	            <ace:message for="roomIn"/>
+	            
+	            <f:facet name="footer">
+	                <h:panelGrid columns="3">
+			            <ace:pushButton id="joinBttn" value="Join Room" actionListener="#{chatController.joinRoom}"/>
+			            <ace:pushButton id="cancelBttn" value="Cancel" actionListener="#{tabController.auctionListTab}"
+			                            rendered="#{chatBean.isPositionTab}" immediate="true"/>
+		            </h:panelGrid>
+	            </f:facet>
+	        </h:panelGrid>
+	        
+		    <h:panelGrid id="cw" columns="2" columnClasses="w25 valignTop,w75 valignTop" styleClass="w100"
+		                 rendered="#{chatBean.hasCurrentRoom}">
+		        <ace:dataTable id="odt" value="#{chatBean.currentRoom.occupantsList}" var="occupant"
+		                       emptyMessage="No occupants yet."
+		                       rows="#{chatBean.currentRoom.maxMessages}"
+		                       paginator="true"
+		                       paginatorAlwaysVisible="bottom"
+		                       paginatorPosition="top"
+		                       paginatorTemplate="{PreviousPageLink} {NextPageLink}"
+		                       rendered="#{chatBean.renderOccupants}">
+		            <f:facet name="header">
+		               Occupants (#{chatBean.currentRoom.occupantsSize})
+		               <h:commandButton image="resources/images/chat-contract.png" immediate="true"
+		                                title="Minimize the occupants list"
+		                                actionListener="#{chatController.toggleOccupantsList}"
+		                                styleClass="floatR"/>
+		            </f:facet>
+		            <ace:column>
+		                #{occupant}
+		            </ace:column>
+		            <f:facet name="footer">
+		                <ace:pushButton id="leaveBttn" value="Leave Room" immediate="true"
+		                                actionListener="#{chatController.leaveRoom}"
+		                                title="Leave the current chat room and return to the available list"/>
+		            </f:facet>
+		        </ace:dataTable>
+		        
+		        <!-- TODO Customize which columns the user wants to see (mainly timestamp), maybe via ace:tableConfigPanel? -->
+		        <ace:dataTable id="mdt" value="#{chatBean.currentRoom.messages}" var="message"
+		                       rows="#{chatBean.currentRoom.maxMessages}" paginator="false"
+		                       styleClass="chatMessages">
+		            <f:facet name="header">
+	                    <h:commandButton image="resources/images/chat-expand.png" immediate="true"
+	                                     title="Restore the width of the occupants list"
+	                                     actionListener="#{chatController.toggleOccupantsList}"
+	                                     rendered="#{!chatBean.renderOccupants}"
+	                                     styleClass="floatL"/>
+	                    <h:outputText value="Chat Messages for '#{chatBean.currentRoom.name}'"/>
+                        <emporium:chatPosition/>
+		            </f:facet>
+		            <ace:column styleClass="w10">
+		                #{message.timestampFormatted}
+		            </ace:column>
+		            <ace:column styleClass="w15" style="text-align: right;#{message.system ? ' font-weight: bold;' : ''}">
+		                #{message.senderFormatted}
+		            </ace:column>
+		            <ace:column styleClass="w75" style="text-align: left;#{message.system ? ' font-style: italic;' : ''}">
+		                #{message.text}
+		            </ace:column>
+		        </ace:dataTable>
+		        
+		        <f:facet name="footer">
+		           <h:panelGrid columns="2" cellspacing="2" cellpadding="0"
+		                        styleClass="w50 center"
+		                        columnClasses="w90,w10">
+		                <ace:textEntry id="cin" value="#{chatBean.currentMessage}"
+		                               autocorrect="true"
+		                               maxlength="140" styleClass="w100"
+		                               placeholder="Enter your chat message">
+		                    <f:validateLength minimum="0" maximum="140"/>
+		                </ace:textEntry>
+		                <h:commandButton image="resources/images/chat-submit.png" title="Submit your chat message"
+		                                 actionListener="#{chatController.submitMessage}"/>
+		                
+		                <f:facet name="footer">
+		                    <ace:message for="cin"/>
+		                </f:facet>
+		           </h:panelGrid>
+		       </f:facet>
+		    </h:panelGrid>
+	    </h:panelGroup>
+    </composite:implementation>
+</ui:component>

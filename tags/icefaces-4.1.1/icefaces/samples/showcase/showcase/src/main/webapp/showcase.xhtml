@@ -1,0 +1,134 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:ace="http://www.icefaces.org/icefaces/components"
+                xmlns:showcase="http://xmlns.jcp.org/jsf/composite/components"
+                template="/resources/templates/main-template.xhtml">
+
+    <ui:define name="suite-select-menu">
+        <h:panelGroup layout="block" styleClass="headerCenter">
+            <h:panelGroup layout="block" styleClass="headerLogo">
+                <h:graphicImage value="/resources/css/images/topBannerImages/title.png" alt="ICEfaces Logo"/>
+            </h:panelGroup>
+            <h:panelGroup layout="block" styleClass="headerTabs">
+                <h:panelGrid styleClass="linkTableStyle">
+                    <h:panelGroup styleClass="linksHolder">
+                        <h:link id="aceSuiteLink"
+                                styleClass="aceSuiteLink"
+                                outcome="showcase">
+                                <h:graphicImage value="/resources/css/images/topBannerImages/desktop-on.png"
+                                                alt="Desktop Components Showcase"
+                                                styleClass="suiteLinkImageStyle"
+                                                title="Desktop Components Showcase"/>
+                        </h:link>
+                        <h:outputLink id="mobiSuiteLink"
+                                styleClass="mobiSuiteLink"
+                                value="showcase-mobile.jsf"  >
+                                <h:graphicImage value="/resources/css/images/topBannerImages/mobile-off.png"
+                                                alt="Mobile Components Showcase"
+                                                styleClass="suiteLinkImageStyle"
+                                                title="Mobile Components Showcase"/>
+                        </h:outputLink>
+                    </h:panelGroup>
+                </h:panelGrid>
+            </h:panelGroup>
+        </h:panelGroup>
+        
+    </ui:define>
+
+    <ui:define name="suite-menu">
+    
+        <h:form id="searchForm">
+            <ace:comboBox id="searchBox"
+                          value="#{userMenuState.searchFieldHolder}"
+                          valueChangeListener="#{showcaseMenu.searchChanged}"
+                          placeholder="Search"
+                          filterMatchMode="contains"
+                          width="232"
+                          styleClass="search-box"
+                          required="true">
+                <f:selectItems value="#{showcaseMenu.searchItems}"/>
+                <ace:ajax resetValues="true" render="@all"/>
+            </ace:comboBox>
+        </h:form>
+
+        <h:form id="sm">
+            <ace:accordion autoHeight="false" collapsible="true" effect="slide" activeIndex="#{userMenuState.activeIndex}">
+                <c:forEach var="categoryGroup" items="#{showcaseMenu.categories}">
+                    <ace:accordionPane title="#{categoryGroup.name}">
+                        <ul>
+                            <c:forEach var="componentGroup" items="#{categoryGroup.components}">
+                                <li>
+                                    <h:panelGroup layout="block" rendered="#{userMenuState.selectedComponent ne componentGroup}">
+	                                    <h:commandLink value="#{componentGroup.name}"
+	                                                   rendered="#{!componentGroup.fullPageRefresh}"
+	                                                   action="#{showcaseMenu.clickComponentGroup}"
+	                                                   onclick="updateAddressBarURL('#{componentGroup.name}');"
+	                                                   styleClass="mlNor">
+	                                        <f:ajax render="@all"/>
+	                                        <f:setPropertyActionListener target="#{userMenuState.selectedComponent}" value="#{componentGroup}"/>
+	                                    </h:commandLink>
+	                                    <h:link outcome="showcase" value="#{componentGroup.name}" rendered="#{componentGroup.fullPageRefresh}"
+	                                            styleClass="mlNor">
+	                                        <f:param name="#{showcaseMenu.urlParamGroup}" value="#{componentGroup.name}"/>
+	                                        <f:param name="#{showcaseMenu.urlParamDemo}" value="#{componentGroup.firstDemo.name}"/>
+	                                    </h:link>
+                                    </h:panelGroup>
+                                    
+                                    <ace:panel header="#{userMenuState.selectedComponent.name}"
+                                               styleClass="smHeader"
+                                               rendered="#{userMenuState.selectedComponent eq componentGroup}">
+                                        <ul>
+                                            <ui:repeat var="demo"
+                                                       value="#{userMenuState.selectedComponent.demos}">
+                                                <li>
+                                                    <h:commandLink value="#{demo.name}" styleClass="#{userMenuState.selectedDemo eq demo ? 'mlSelS' : 'mlNorS'}"
+                                                                   onclick="updateAddressBarURL('#{userMenuState.selectedComponent.name}','#{demo.name}');"
+                                                                   rendered="#{!componentGroup.fullPageRefresh}">
+                                                        <f:ajax render="@all"/>
+                                                        <f:setPropertyActionListener target="#{userMenuState.selectedDemo}" value="#{demo}"/>
+                                                    </h:commandLink>
+				                                    <h:link outcome="showcase" value="#{demo.name}"
+				                                            styleClass="#{userMenuState.selectedDemo eq demo ? 'mlSelS' : 'mlNorS'}"
+				                                            rendered="#{componentGroup.fullPageRefresh}">
+				                                        <f:param name="#{showcaseMenu.urlParamGroup}" value="#{componentGroup.name}"/>
+				                                        <f:param name="#{showcaseMenu.urlParamDemo}" value="#{demo.name}"/>
+				                                    </h:link>
+                                                </li>
+                                            </ui:repeat>
+                                        </ul>
+                                    </ace:panel>
+                                </li>
+                            </c:forEach>
+                        </ul>
+                    </ace:accordionPane>
+                </c:forEach>
+            </ace:accordion>
+        </h:form>
+        
+    </ui:define>
+
+    <ui:define name="component-example">
+        <ui:include src="#{paramHandler.selectedDemo.includedPath}"/>
+    </ui:define>
+
+</ui:composition>

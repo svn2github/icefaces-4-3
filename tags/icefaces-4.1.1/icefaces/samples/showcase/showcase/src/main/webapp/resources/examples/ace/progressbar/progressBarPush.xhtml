@@ -1,0 +1,97 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+    xmlns:ace="http://www.icefaces.org/icefaces/components"
+    xmlns:icecore="http://www.icefaces.org/icefaces/core"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    template="/resources/templates/content-template.xhtml">
+    <ui:param name="title" value="#{msgs['example.ace.progressBarPush.title']}"/>
+    <ui:param name="description" value="#{msgs['example.ace.progressBarPush.description']}"/>
+
+    <ui:define name="example">
+        <h:form id="form">
+            <ace:panel> 
+                <h:panelGrid width="100%" style="text-align: center;" columns="1">
+                    <h:panelGrid columns="2" styleClass="centeredPanelGrid">
+                        <h:outputText value="Progress "/>
+                        <h:outputText id="progress" value="@ #{longtask.progress} %" rendered="#{longtask.progress ne 100 and longtask.taskRunning}" style="font-weight: bold;"/>    
+                        <h:outputText id="completed" value="completed" rendered="#{longtask.progress eq 100}" style="font-weight: bold;"/>
+                        <h:outputText id="paused" value="paused" rendered="#{(longtask.progress gt 0 and longtask.progress lt 100) and !longtask.taskRunning}" style="font-weight: bold;"/>
+                        <h:outputText id="stopped" value="stopped" rendered="#{(longtask.progress eq 0) and !longtask.taskRunning}" style="font-weight: bold;"/>
+                    </h:panelGrid>
+                    
+                    <ace:progressBar   id="myProgressBar" indeterminate="#{progressBarPush.indeterminate}"
+                                       value="#{longtask.progress}"/>
+                    
+                    
+                    <h:panelGrid columns="2" style="text-align: center; margin-left: auto; margin-right: auto; width: 150px; height: 50px;">                                
+                        <h:commandLink  id="start"
+										actionListener="#{progressBarPush.startTask}"
+										rendered="#{!longtask.taskRunning}"
+										disabled="#{longtask.taskRunning}">
+                            <h:graphicImage id="playImg" value="#{progressBarPush.playImage.path}" alt="#{progressBarPush.playImage.description}"/>
+							<f:ajax execute="@this" render="@all"/> 
+                        </h:commandLink>
+                        <h:commandLink id="reset"
+									   actionListener="#{longtask.resetTask}"
+									   rendered="#{!longtask.taskRunning}"
+									   disabled="#{longtask.taskRunning}">
+                            <h:graphicImage id="stopImg" value="#{progressBarPush.stopImage.path}" alt="#{progressBarPush.stopImage.description}"/>
+							<f:ajax execute="@this" render="@all"/> 
+                        </h:commandLink>
+                        <h:commandLink id="stop"
+									   actionListener="#{longtask.stopTask}"
+                                       rendered="#{longtask.taskRunning}"
+                                       disabled="#{!longtask.taskRunning}">
+                            <h:graphicImage id="pauseImg" value="#{progressBarPush.pauseImage.path}" alt="#{progressBarPush.pauseImage.description}"/>
+							<f:ajax execute="@this" render="@all"/> 
+                        </h:commandLink>
+                        <h:panelGroup rendered="#{longtask.taskRunning}"/>
+                   </h:panelGrid>
+                </h:panelGrid>
+            </ace:panel>
+			<h:panelGroup>
+				<h:selectBooleanCheckbox id="pushIndeterminate" value="#{progressBarPush.indeterminate}">
+					<f:ajax />
+				</h:selectBooleanCheckbox>
+				<h:outputLabel for="pushIndeterminate"> Enable indeterminate mode</h:outputLabel>
+			</h:panelGroup>
+            
+            <ui:remove>
+                <ace:panel>
+                    <h:dataTable id="messages" var="message" value="#{pushManagementBean.messages}" width="100%" style="text-align: center;">
+                        <h:column>
+                            <f:facet name="header">
+                                Session ID
+                            </f:facet>
+                            <h:outputText value="#{message.id}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                Message
+                            </f:facet>
+                            <h:outputText id="desc" value="#{message.description}"/>
+                        </h:column>
+                    </h:dataTable>
+                </ace:panel>
+            </ui:remove>
+        </h:form>
+    </ui:define>
+</ui:composition>
