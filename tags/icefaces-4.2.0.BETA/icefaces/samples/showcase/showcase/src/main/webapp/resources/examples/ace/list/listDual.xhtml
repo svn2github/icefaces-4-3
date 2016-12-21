@@ -1,0 +1,69 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:ace="http://www.icefaces.org/icefaces/components"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/resources/templates/content-template.xhtml">
+    <ui:param name="title" value="#{msgs['example.ace.list.dual.title']}"/>
+    <ui:param name="description" value="#{msgs['example.ace.list.dual.description']}"/>
+
+    <ui:param value="#{listDualBean}" name="backing" />
+
+    <ui:define name="example">
+
+        <h:form id="form">
+            <ace:panel header="List Customization">
+                <h:panelGrid columns="2" cellspacing="6" cellpadding="6">
+                    <h:outputLabel for="posIn" value="List Control Position:"/>
+                    <h:selectOneRadio id="posIn" value="#{backing.controlPosition}">
+                        <f:ajax event="valueChange" render="dualList"/>
+                        <f:selectItems value="#{backing.availablePositions}"/>
+                    </h:selectOneRadio>
+                </h:panelGrid>
+            </ace:panel>
+        
+            <ace:panel header="Dual List">
+                <style type="text/css">
+                        /* To layout lists side by side if space is available */
+                    .subList {
+                        font-size: 80% !important;
+                    }
+                </style>
+                
+                <ace:listControl id="dualList" style="width:40%; margin: 0 auto 0 auto;"
+                        position="#{backing.controlPosition}">
+                    <f:facet name="header">
+                        Dual Header
+                    </f:facet>
+
+                    <ace:list id="listOne" value="#{backing.stringList}"
+                              styleClass="subList"
+                              dropGroup="textGroup"
+                              selectionMode="multiple"/>
+
+                    <ace:list id="listTwo" value="#{backing.destStringList}"
+                              styleClass="subList"
+                              dropGroup="textGroup"
+                              selectionMode="multiple"/>
+                </ace:listControl>
+            </ace:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

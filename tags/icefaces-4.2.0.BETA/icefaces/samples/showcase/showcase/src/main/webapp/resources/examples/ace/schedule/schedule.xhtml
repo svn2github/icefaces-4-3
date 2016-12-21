@@ -1,0 +1,88 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+    xmlns:ace="http://www.icefaces.org/icefaces/components"
+    xmlns:icecore="http://www.icefaces.org/icefaces/core"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    template="/resources/templates/content-template.xhtml">
+    <ui:param name="title" value="#{msgs['example.ace.accordionpanel.title']}"/>
+    <ui:param name="description" value="#{msgs['example.ace.accordionpanel.description']}"/>
+
+    <ui:define name="example">
+		<style type="text/css">
+			.ice-ace-schedule .schedule-event.meeting {
+				background-image: none;
+				background-color: #fc6;
+				border-color: #f93;
+			}
+			.ice-ace-schedule .schedule-list-event.ui-state-highlight {
+				background-image: none;
+				background-color: #efefff;
+			}
+		</style>
+        <h:form id="form">
+			<ace:panel header="Configuration">
+				<h:panelGrid width="100%" columns="2" cellpadding="6" cellspacing="6">
+						<ace:radioButtons id="viewMode" header="Select view mode" value="#{scheduleBean.viewMode}" labelPosition="top">
+							<ace:ajax render="@all" />
+							<f:selectItem itemValue="month" itemLabel="Month" />
+							<f:selectItem itemValue="week" itemLabel="Week" />
+							<f:selectItem itemValue="day" itemLabel="Day" />
+						</ace:radioButtons>
+						<ace:selectMenu id="timeZone" value="#{scheduleBean.timeZone}" 
+										label="Select time zone: " labelPosition="top">
+							<ace:ajax render="@all"/>
+							<f:selectItems value="#{scheduleBean.timeZoneList}" />
+						</ace:selectMenu>
+						<ace:checkboxButton id="scrollable" value="#{scheduleBean.scrollable}"
+											label="Enable scrolling (Week and Day views): " labelPosition="left">
+							<ace:ajax render="@all"/>
+						</ace:checkboxButton>
+						<ace:selectMenu id="sideBar" value="#{scheduleBean.sideBar}"
+										label="Select side bar location: " labelPosition="top">
+							<ace:ajax render="@all"/>
+							<f:selectItem itemValue="right" itemLabel="Right" />
+							<f:selectItem itemValue="left" itemLabel="Left" />
+							<f:selectItem itemValue="hidden" itemLabel="Hidden" />
+						</ace:selectMenu>
+						<ace:textEntry 	id="scrollHeight" value="#{scheduleBean.scrollHeight}"
+										label="Set scroll height: " labelPosition="left">
+							<ace:ajax render="@all"/>
+						</ace:textEntry>
+						<ace:selectMenu id="eventDetails" value="#{scheduleBean.eventDetails}"
+										label="Select event details mode: " labelPosition="top">
+							<ace:ajax render="@all"/>
+							<f:selectItem itemValue="popup" itemLabel="Pop-up" />
+							<f:selectItem itemValue="sidebar" itemLabel="Side Bar" />
+							<f:selectItem itemValue="disabled" itemLabel="Disabled" />
+						</ace:selectMenu>
+				</h:panelGrid>
+			</ace:panel>
+			<ace:schedule 	id="schedule"
+							value="#{scheduleBean.lazyScheduleEventList}"
+							eventDetails="#{scheduleBean.eventDetails}"
+							scrollable="#{scheduleBean.scrollable}"
+							scrollHeight="#{scheduleBean.scrollHeight}"
+							sideBar="#{scheduleBean.sideBar}"
+							timeZone="#{scheduleBean.timeZone}"
+							viewMode="#{scheduleBean.viewMode}" />
+        </h:form>
+    </ui:define>
+</ui:composition>

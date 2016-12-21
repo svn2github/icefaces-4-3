@@ -1,0 +1,92 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+    xmlns:ace="http://www.icefaces.org/icefaces/components"
+    xmlns:icecore="http://www.icefaces.org/icefaces/core"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    template="/resources/templates/content-template.xhtml">
+    <ui:param name="title" value="#{msgs['example.ace.contextMenu.table.title']}"/>
+    <ui:param name="description" value="#{msgs['example.ace.contextMenu.table.description']}"/>
+
+    <ui:define name="example">
+        <h:form id="form">
+            
+           <ace:dataTable id="carTable"
+                          value="#{dataTableDynamic.carsData}"
+                          var="car">
+                <ace:column>
+                    <f:facet name="header">
+                       ID
+                    </f:facet>
+                    #{car.id}
+                </ace:column>
+                <ace:column>
+                    <f:facet name="header">
+                       Name
+                    </f:facet>
+                    #{car.name}
+                </ace:column>
+                <ace:column>
+                    <f:facet name="header">
+                       Chassis
+                    </f:facet>
+                    #{car.chassis}
+                </ace:column>
+                <ace:column>
+                    <f:facet name="header">
+                       Weight
+                    </f:facet>
+                    #{car.weight}lbs.
+                </ace:column>
+                <ace:column>
+                    <f:facet name="header">
+                       Accel
+                    </f:facet>
+                    #{car.acceleration}
+                </ace:column>
+                <ace:column>
+                    <f:facet name="header">
+                       MPG
+                    </f:facet>
+                    #{car.mpg}
+                </ace:column>
+                <ace:column>
+                    <f:facet name="header">
+                       Cost
+                    </f:facet>
+                    <h:outputText value="#{car.cost}">
+                        <f:convertNumber type="currency"
+                                         currencySymbol="$"
+                                         groupingUsed="true"
+                                         minFractionDigits="2"
+                                         maxFractionDigits="2"/>
+                    </h:outputText>
+                </ace:column>
+            </ace:dataTable>
+            
+            <ace:contextMenu id="contextMenu" for="carTable">
+                <ace:menuItem value="Undo All" icon="ui-icon ui-icon-arrowrefresh-1-w"
+                              actionListener="#{dataTableDynamic.restoreDefault}"/>
+                <ace:menuItem value="Add Cars" icon="ui-icon ui-icon-disk"
+                              actionListener="#{dataTableDynamic.bulkAdd}"/>
+            </ace:contextMenu>
+        </h:form>
+    </ui:define>
+</ui:composition>

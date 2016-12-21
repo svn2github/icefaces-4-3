@@ -1,0 +1,76 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ace="http://www.icefaces.org/icefaces/components"
+                xmlns:icecore="http://www.icefaces.org/icefaces/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/resources/templates/content-template.xhtml">
+
+    <ui:define name="example">
+        <icecore:config messagePersistence="false"/>
+        <h:form id="messageDemoForm">
+            <ace:panel header="Some important ace:growlMessages attributes">
+                <h:panelGrid columns="1" width="100%" columnClasses="growl-attr-col,growl-attr-col,growl-attr-col,growl-attr-col">
+                    <h:outputText value="header"/>
+                    <ace:textEntry value="#{nativeMessagesBean.header}">
+                        <ace:ajax render="allMsgsGrowl"/>
+                    </ace:textEntry>
+					<h:outputText value=""/>
+					<h:outputText value=""/>
+                </h:panelGrid>
+            </ace:panel>
+        </h:form>
+        <h:form id="demoform2">
+            <ace:panel id="personalInfoInputPanel" header="Choose the types of messages to show">
+                <h:panelGrid id="inputGrid" columns="2" width="100%" styleClass="textEntryInputTable">
+
+                    <h:panelGroup>
+                        <ace:checkboxButton id="infoBox" value="#{nativeMessagesBean.info}" >
+                            <ace:ajax execute="@this"/>
+                        </ace:checkboxButton>
+                        <h:outputText value=" Info" />
+                    </h:panelGroup>
+                    <h:panelGroup>
+                        <ace:checkboxButton id="warnBox" value="#{nativeMessagesBean.warn}">
+                            <ace:ajax execute="@this"/>
+                        </ace:checkboxButton>
+                        <h:outputText value=" Warn" />
+                    </h:panelGroup>
+                    <h:panelGroup>
+                        <ace:checkboxButton id="errorBox" value="#{nativeMessagesBean.error}">
+                            <ace:ajax execute="@this"/>
+                        </ace:checkboxButton>
+                        <h:outputText value=" Error" />
+                    </h:panelGroup>
+                    <h:panelGroup>
+                        <ace:checkboxButton id="fatalBox" value="#{nativeMessagesBean.fatal}">
+                            <ace:ajax execute="@this"/>
+                        </ace:checkboxButton>
+                        <h:outputText value=" Fatal" />
+                    </h:panelGroup>
+
+                </h:panelGrid>
+                <ace:pushButton id="messageButton" value="Show Messages"
+                                actionListener="#{nativeMessagesBean.listener}" />
+            </ace:panel>
+
+        </h:form>
+        <ace:growlMessages  id="allMsgsGrowl"
+                            for="@inView" header="#{nativeMessagesBean.header}" useNativeNotifications="true"/>
+    </ui:define>
+</ui:composition>

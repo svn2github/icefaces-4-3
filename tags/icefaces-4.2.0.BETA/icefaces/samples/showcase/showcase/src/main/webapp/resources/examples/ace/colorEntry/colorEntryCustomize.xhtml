@@ -1,0 +1,81 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+    xmlns:ace="http://www.icefaces.org/icefaces/components"
+    xmlns:icecore="http://www.icefaces.org/icefaces/core"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    template="/resources/templates/content-template.xhtml">
+    <ui:param name="title" value="#{msgs['example.ace.colorEntry.customize.title']}"/>
+    <ui:param name="description" value="#{msgs['example.ace.colorEntry.customize.description']}"/>
+
+    <ui:define name="example">
+
+        <h:form id="inputOptionsForm">
+        <ace:panel id="inpOptionsPan" header="Options">
+            <h:panelGrid id="inputOptions" columns="2">
+                    <h:outputLabel for="valueFormat" value="Choose Color Format: "/>
+                    <h:selectOneMenu id="valueFormat" value="#{colorEntryCustomBean.valueFormat}">
+                          <f:selectItems value="#{colorEntryCustomBean.colorFormats}"/>
+                          <f:ajax execute="@this" render="@all"/>
+                      </h:selectOneMenu>
+                    <h:outputLabel for="alternateLayout" value="Choose Custom Layout: "/>
+                    <h:selectOneMenu id="alternateLayout" value="#{colorEntryCustomBean.customLayout}">
+                        <f:selectItem itemLabel="Hex and RGB Slider" itemValue="layout1"/>
+                        <f:selectItem itemLabel="Full Control" itemValue="layout2"/>
+                        <f:ajax execute="@this" render="@all" listener="#{colorEntryCustomBean.changeLayout}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+            </ace:panel>
+        </h:form>
+
+        <h:form>
+            <ace:panel id="colorInputPanel" header="ColorEntry - Customizable" styleClass="required-styling-demo">
+                <h:panelGrid id="inputGrid" columns="1" width="100%" >
+                    <ace:colorEntry id="colorInput" value="#{colorEntryCustomBean.value}"
+                               colorFormat="#{colorEntryCustomBean.valueFormat}"
+                               customParts="#{colorEntryCustomBean.parts}"
+                               customLayout="#{colorEntryCustomBean.layout}"
+                               alpha = "#{colorEntryCustomBean.alpha}"
+                               showNoneButton ="#{colorEntryCustomBean.showNoneButton}"
+                               renderAsPopup="true"
+                               title="#{colorEntryCustomBean.title}">
+                        <ace:ajax execute="@this" render="@all" />
+                    </ace:colorEntry>
+                </h:panelGrid>
+            </ace:panel>
+            
+            <ace:panel id="colorOutputPanel" header="Entered data">
+                <h:panelGrid id="outputGrid" width="100%" style="text-align: left;">
+                    <h:outputText id="basicValue" value="Color Selected: #{colorEntryCustomBean.value}"/>
+                </h:panelGrid>
+            </ace:panel>
+            <ace:panel id="layoutvalues" header="Custom Parts and Layout">
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="Parts Defined: " for="partsDefined"/>
+                    <h:outputText id="partsDefined" value="#{colorEntryCustomBean.partsDefined}"/>
+                    <h:outputLabel value="Layout Defined: " for="layoutDefined"/>
+                    <h:outputText id="layoutDefined" value="#{colorEntryCustomBean.layoutDefined}"/>
+                </h:panelGrid>
+            </ace:panel>
+        </h:form>
+        
+    </ui:define>
+</ui:composition>
+

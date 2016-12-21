@@ -1,0 +1,66 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html" 
+    xmlns:f="http://xmlns.jcp.org/jsf/core" 
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" 
+    xmlns:ace="http://www.icefaces.org/icefaces/components" 
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets" 
+    template="/resources/templates/content-template.xhtml">
+    <ui:param name="title" value="#{msgs['example.ace.checkboxButton.custom.title']}"/>
+    <ui:param name="description" value="#{msgs['example.ace.checkboxButton.custom.description']}"/>
+
+    <ui:define name="example">
+        <style type="text/css">
+            .ice-checkboxbutton button {
+                height:24px;
+                width:24px;
+            }
+
+            .ice-checkboxbutton button.ui-state-hover {
+                background: url("#{resource['css/images/checkGrey.png']}") no-repeat;
+                border:none;
+            }
+
+            .ice-checkboxbutton-checked {
+                background: url("#{resource['css/images/check.png']}") no-repeat;
+                border:none;
+            }
+
+            .ice-checkboxbutton-unchecked {
+                background: url("#{resource['css/images/uncheck.png']}") no-repeat;
+            }
+
+            .ice-checkboxbutton .fa {
+                background: transparent;
+				visibility: hidden;
+            }
+        </style>
+
+        <h:form id="form" style="text-align: center">
+            <ace:panel>
+                <ace:checkboxButton id="checkBox" value="#{checkboxButton.selected}">
+                    <ace:ajax />
+                </ace:checkboxButton>
+                <br/>
+
+                The checkbox is:
+                <h:outputText id="valueDescription" value="#{checkboxButton.boxValueDescription}" style="font-weight: bold;"/>
+            </ace:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

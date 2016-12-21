@@ -1,0 +1,179 @@
+/*
+ * Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+
+package org.icefaces.impl.application;
+
+import org.icefaces.application.SessionExpiredException;
+import org.icefaces.util.EnvUtils;
+
+import javax.faces.FacesException;
+import javax.faces.FactoryFinder;
+import javax.faces.application.Application;
+import javax.faces.application.ApplicationFactory;
+import javax.faces.application.ProjectStage;
+import javax.faces.application.ViewExpiredException;
+import javax.faces.component.UIViewRoot;
+import javax.faces.context.ExceptionHandler;
+import javax.faces.context.ExceptionHandlerWrapper;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ExceptionQueuedEvent;
+import javax.faces.event.ExceptionQueuedEventContext;
+import javax.faces.event.PhaseId;
+import javax.servlet.http.HttpSession;
+import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+public class ExtendedExceptionHandler extends ExceptionHandlerWrapper {
+
+    private final static Logger log = Logger.getLogger(ExtendedExceptionHandler.class.getName());
+
+    private ExceptionHandler wrapped;
+
+    public ExtendedExceptionHandler(ExceptionHandler wrapped) {
+        this.wrapped = wrapped;
+    }
+
+    public ExceptionHandler getWrapped() {
+        return wrapped;
+    }
+
+    @Override
+    public boolean isListenerForSource(Object o) {
+        return super.isListenerForSource(o);
+    }
+
+    /**
+     * Logic in here is based on Ed Burn's example at
+     * http://weblogs.java.net/blog/edburns/archive/2009/09/03/dealing-gracefully-viewexpiredexception-jsf2
+     * <p/>
+     * The basic premise is that when sessions expire, the next request from the client will trigger a
+     * ViewExpiredException and we'd rather see a SessionExpiredException.  So under specific circumstances,
+     * we handle ViewExpiredExceptions by removing them and pushing a custom SessionExpiredException into the
+     * queue.
+     *
+     * @throws FacesException
+     */
+    @Override
+    public void handle() throws FacesException {
+        boolean sessionExpired = false;
+        final FacesContext fc = FacesContext.getCurrentInstance();
+        final ExternalContext ec = fc.getExternalContext();
+        final Iterator<ExceptionQueuedEvent> exceptionQueuedEventIterator = getUnhandledExceptionQueuedEvents().iterator();
+        if (exceptionQueuedEventIterator.hasNext()) {
+            for (Iterator<ExceptionQueuedEvent> iter = exceptionQueuedEventIterator; iter.hasNext(); ) {
+                ExceptionQueuedEvent event = iter.next();
+                ExceptionQueuedEventContext queueContext = (ExceptionQueuedEventContext) event.getSource();
+                Throwable ex = queueContext.getException();
+
+                if (fc.isProjectStage(ProjectStage.Development)) {
+                    log.log(Level.WARNING, "queued exception", ex);
+                }
+
+                if (ex instanceof ViewExpiredException && PhaseId.RESTORE_VIEW.equals(queueContext.getPhaseId())) {
+                    ViewExpiredException vex = (ViewExpiredException) ex;
+                    String viewId = vex.getViewId();
+
+                    Object sessObj = ec.getSession(false);
+
+                    boolean isPortalEnvironment = EnvUtils.instanceofPortletSession(sessObj);
+
+                    if (sessObj != null || !isPortalEnvironment) {
+                        if (!isValidSession(fc, viewId) || isPortalEnvironment) {
+                            //Remove the ViewExpiredException and set the sessionExpired flag so that we know
+                            //to add the SessionExpiredException which is done late to avoid ConcurrentModificationException.
+                            iter.remove();
+                            sessionExpired = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        } else {
+            if (PhaseId.RESTORE_VIEW.equals(fc.getCurrentPhaseId())) {
+                ec.getSessionMap().put(this.getClass().getName() + "Marker", true);
+            }
+        }
+
+        //Do the processing outside of the iterator to avoid ConcurrentModificationException
+        if (sessionExpired) {
+            Application app = fc.getApplication();
+            final HttpSession session = EnvUtils.getSafeSession(fc, false);
+            //mark session as being expired
+            session.setAttribute(this.getClass().getName(), true);
+            if (app == null) {
+                ApplicationFactory factory = (ApplicationFactory) FactoryFinder.getFactory(FactoryFinder.APPLICATION_FACTORY);
+                app = factory.getApplication();
+            }
+
+            ExceptionQueuedEventContext ctxt =
+                    new ExceptionQueuedEventContext(fc, new SessionExpiredException("session expired (causing view to expire)"));
+            app.publishEvent(fc, ExceptionQueuedEvent.class, ctxt);
+        }
+
+        //create fake view root to workaround Mojarra's failure to send the exception message when javax.faces.PARTIAL_STATE_SAVING=false
+        if (fc.getViewRoot() == null)  {
+            UIViewRoot viewRoot = new UIViewRoot();
+            viewRoot.setRenderKitId("HTML_BASIC");
+            fc.setViewRoot(viewRoot);
+        }
+
+        //Once we've removed the ViewExpiredException and added the SessionExpiredException, we can
+        //let default processing take over again.
+        getWrapped().handle();
+    }
+
+    private boolean isValidSession(FacesContext fc, String viewId) {
+
+        //If the session is available but the getters on the session throw IllegalStateExceptions,
+        //then the session is considered invalid.  If the session is not new and the calculation
+        //passes, then the session is considered valid.
+        boolean validSession = false;
+        HttpSession httpSession = EnvUtils.getSafeSession(fc,false);
+        try {
+
+            boolean newSession = httpSession.isNew();
+            long lastAccessed = httpSession.getLastAccessedTime();
+            int maxInactive = httpSession.getMaxInactiveInterval();
+            long now = System.currentTimeMillis();
+
+            Object marker = httpSession.getAttribute(this.getClass().getName() + "Marker");
+            //verify presence of the marker, when missing the session was expired
+            if (!newSession && (now - lastAccessed) <= (maxInactive * 1000) && marker != null) {
+                validSession = true;
+            }
+
+            log.log(Level.FINE, "checking for session validity: " +
+                    "\n  isNew         : " + newSession +
+                    "\n  now           : " + now +
+                    "\n  last accessed : " + lastAccessed +
+                    "\n  max inactive  : " + (maxInactive * 1000) +
+                    "\n  time is fine  : " + ((now - lastAccessed) <= (maxInactive * 1000)) +
+                    "\n  valid         : " + validSession
+            );
+
+            //expired session still in use, make sure it's considered invalid/expired
+            if (httpSession.getAttribute(this.getClass().getName()) != null) {
+                validSession = false;
+            }
+        } catch (IllegalStateException ignored) {
+            //An IllegalStateException here simply means the session is invalid
+        }
+
+        return validSession;
+    }
+}
