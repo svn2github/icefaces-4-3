@@ -288,7 +288,6 @@ public class ColorEntryRenderer extends InputRenderer {
         encodeClientBehaviors(context, picker, jb);
         jb.endMap().endArray().endFunction();
         String script = jb.toString();
-   //System.out.println(" script="+script);
 
         writeLabelAndIndicatorAfter(labelAttributes);
 

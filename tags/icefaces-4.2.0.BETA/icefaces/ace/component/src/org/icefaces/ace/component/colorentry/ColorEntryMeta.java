@@ -63,13 +63,6 @@ public class ColorEntryMeta extends UIInputMeta{
     @Property(defaultValue="false", tlddoc="Whether or not to show the inputs for alpha ")
     private boolean alpha;
 
- /*   @Property(defaultValue="true",
-            tlddoc="Change the opacity of the altField element(s) according to the alpha setting")
-    private boolean altAlpha;
-
-    @Property(defaultValue="", tlddoc="Change the background color of the elements specified in this element")
-    private String altField; */
-
     @Property(tlddoc="This is the preferred format to display the chosen color under the input field.  Valid values are listed in the ColorFormat enumeration  HEX(\"HEX\"), HEX3(\"HEX3\"), HEXA(\"HEXA\"), RGB(\"RGB\"), RGBA(\"RGBA\"), RGBPERCENT(\"RGB%\"),\n" +
             "         HSL(\"HSL\"), HSLA(\"HSLA\"), HSLPERCENT(\"HSL%\"),\n" +
             "         HSLAPERCENT(\"HSLA%\"),NAME(\"NAME\"), EXACT(\"EXACT\").",
@@ -104,8 +97,6 @@ public class ColorEntryMeta extends UIInputMeta{
     @Property(defaultValue="false", tlddoc="Show the None/Revert button if buttonpane on popup is visible.")
     private boolean showNoneButton;
 
- /*   @Property(defaultValue="false", tlddoc="Close the popup window when pressing the Enter key on the keyboard, keeping the selected color")
-    private boolean okOnEnter;  */
 
     @Property(defaultValue = "focus", tlddoc = "Have the colorEntry appear automatically when the field receives focus (\"focus\"), " +
             "appear only when a button (specified by popupIcon attribute) is clicked (\"button\"), or appear when either event takes place (\"all\").")
@@ -126,8 +117,7 @@ public class ColorEntryMeta extends UIInputMeta{
     @Property(tlddoc="Close the window when pressing the Escape key on the keyboard.")
     private boolean closeOnEscape;
 
-  /*  @Property(tlddoc="A list of available palettes may be used for the user to select from.  This must be a list of String arrays at this time")
-    private List<String[]> swatches; */
+
     @Property( tlddoc="Limit the selectable colors to any of the predefined limits. Default is empty string. \'websafe\'=Set of 216 colors composed of 00, 33, 66, 99, cc and ff color channel values in #rrggbb." +
             " \'nibble\'= 4 bits per color, can be easily converted to #rgb format.  The palette is limited to 4096 colors. \'binary\'=Allow only #00 or #ff as color channel values for primary " +
             "colors; only 8 colors are available with this limit, or \'name\'=limits to closes color name.")
