@@ -79,7 +79,7 @@ ice.ace.Schedule = function(id, cfg) {
 			self.jqRoot.find('.calendar-day-' + eventData.startDate + ' .schedule-state').addClass('schedule-selected');
 		}
 		document.getElementById(self.id + '_selectedDate').setAttribute('value', eventData.startDate);
-		if (behaviors && behaviors.selectEvent) {
+		if (behaviors && behaviors.eventClick) {
 			self.sendClickRequest(event, 'event', eventIndex);
 		}
 	});
@@ -565,11 +565,11 @@ ice.ace.Schedule.prototype.sendClickRequest = function(event, type, data) {
     var options = {};
 	var behaviors = this.cfg.behaviors || {};
 
-	if (!behaviors.selectEvent && !behaviors.dayDblclick && !behaviors.timeDblclick)
+	if (!behaviors.eventClick && !behaviors.dayDblclick && !behaviors.timeDblclick)
 		return;
 
     var params = {};
-	if (type == 'event') params[this.id + "_selectEvent"] = data;
+	if (type == 'event') params[this.id + "_eventClick"] = data;
     else if (type == 'day') params[this.id + "_dayDblclick"] = data;
     else if (type == 'time') params[this.id + "_timeDblclick"] = data;
 	else return;
@@ -589,8 +589,8 @@ ice.ace.Schedule.prototype.sendClickRequest = function(event, type, data) {
 
     options.params = params;
 
-	if (type == 'event' && behaviors.selectEvent) {
-		ice.ace.AjaxRequest(ice.ace.extendAjaxArgs(behaviors.selectEvent, options));
+	if (type == 'event' && behaviors.eventClick) {
+		ice.ace.AjaxRequest(ice.ace.extendAjaxArgs(behaviors.eventClick, options));
 	} else if (type == 'day' && behaviors.dayDblclick) {
 		ice.ace.AjaxRequest(ice.ace.extendAjaxArgs(behaviors.dayDblclick, options));
 	} else if (type == 'time' && behaviors.timeDblclick) {

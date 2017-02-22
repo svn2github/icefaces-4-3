@@ -22,9 +22,9 @@ import javax.faces.event.AjaxBehaviorEvent;
 
 public class ScheduleClickEvent extends AjaxBehaviorEvent {
 
-	private boolean selectEvent = false;
-	private boolean dayClick = false;
-	private boolean timeClick = false;
+	private boolean eventClick = false;
+	private boolean dayDblClick = false;
+	private boolean timeDblClick = false;
 
 	private String day; // YYYY-MM-DD
 	private String time; // HH:mm (24-hour clock)
@@ -33,9 +33,9 @@ public class ScheduleClickEvent extends AjaxBehaviorEvent {
     public ScheduleClickEvent(AjaxBehaviorEvent event, String type, String day, String time, ScheduleEvent scheduleEvent) {
         super(event.getComponent(), event.getBehavior());
 		if (type != null) {
-			if ("selectEvent".equals(type)) this.selectEvent = true;
-			else if ("dayClick".equals(type)) this.dayClick = true;
-			else if ("timeClick".equals(type)) this.timeClick = true;
+			if ("eventClick".equals(type)) this.eventClick = true;
+			else if ("dayDblClick".equals(type)) this.dayDblClick = true;
+			else if ("timeDblClick".equals(type)) this.timeDblClick = true;
 		}
 		this.day = day != null ? day : "";
 		this.time = time != null ? time : "";
@@ -44,8 +44,8 @@ public class ScheduleClickEvent extends AjaxBehaviorEvent {
 
 	/**
      * Returns a String representing the day that was clicked, in the format YYYY-MM-DD.
-     * This only applies to 'dayClick' and 'timeClick' events.
-     * This method will return the empty string for 'selectEvent' events.
+     * This only applies to 'dayDblClick' and 'timeDblClick' events.
+     * This method will return the empty string for 'eventClick' events.
      *
      * @return			the day that was clicked, in the format YYYY-MM-DD
      */
@@ -59,8 +59,8 @@ public class ScheduleClickEvent extends AjaxBehaviorEvent {
 
 	/**
      * Returns a String representing the time slot that was clicked, in the format HH:mm (24-hour clock).
-     * This only applies to 'timeClick' events.
-     * This method will return the empty string for 'selectEvent' and 'dayClick' events.
+     * This only applies to 'timeDblClick' events.
+     * This method will return the empty string for 'eventClick' and 'dayDblClick' events.
      *
      * @return			the time that was clicked, in the format HH:mm (24-hour clock)
      */
@@ -74,8 +74,8 @@ public class ScheduleClickEvent extends AjaxBehaviorEvent {
 
 	/**
      * Returns an instance of ScheduleEvent that corresponds to the event that was clicked on the client.
-     * This only applies to 'selectEvent' events.
-     * This method will return null for 'dayClick' and 'timeClick' events.
+     * This only applies to 'eventClick' events.
+     * This method will return null for 'dayDblClick' and 'timeDblClick' events.
      *
      * @return			the ScheduleEvent object that was clicked
      */
@@ -87,7 +87,7 @@ public class ScheduleClickEvent extends AjaxBehaviorEvent {
         this.scheduleEvent = scheduleEvent;
     }
 
-	public boolean isSelectEvent() { return selectEvent; }
-	public boolean isDayClick() { return dayClick; }
-	public boolean isTimeClick() { return timeClick; }
+	public boolean isEventClick() { return eventClick; }
+	public boolean isDayDblClick() { return dayDblClick; }
+	public boolean isTimeDblClick() { return timeDblClick; }
 }

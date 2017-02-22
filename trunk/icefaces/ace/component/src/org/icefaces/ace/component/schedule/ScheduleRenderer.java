@@ -184,7 +184,7 @@ public class ScheduleRenderer extends CoreRenderer {
 
 		schedule.resetDataModel();
 
-		String enhancedStylingClass = schedule.isEnhancedStylingEnabled() ? " schedule-styling-enhanced" : "";
+		String enhancedStylingClass = schedule.isEnhancedStyling() ? " schedule-styling-enhanced" : "";
 		String sideBar = schedule.getSideBar();
 		String sideBarClass = "schedule-config-sidebar-right";
 		if (sideBar != null) {
@@ -235,9 +235,9 @@ public class ScheduleRenderer extends CoreRenderer {
 					.entry("eventDetails", eventDetails)
 					.entry("displayTooltip", displayTooltip)
 					.entry("defaultDuration", schedule.getDefaultDuration())
-					.entry("isEventAddition", schedule.isEnableAddition())
-					.entry("isEventEditing", schedule.isEnableEditing())
-					.entry("isEventDeletion", schedule.isEnableDeletion());
+					.entry("isEventAddition", schedule.isAddEvents())
+					.entry("isEventEditing", schedule.isEditEvents())
+					.entry("isEventDeletion", schedule.isDeleteEvents());
 
 					if (schedule.isScrollable()) jb.entry("scrollHeight", schedule.getScrollHeight());
 					if (schedule.isTwelveHourClock()) jb.entry("isTwelveHourClock", true);

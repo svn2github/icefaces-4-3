@@ -52,9 +52,9 @@ public class Schedule extends ScheduleBase implements Serializable {
             String eventName = params.get("javax.faces.behavior.event");
 			String clientId = getClientId(context);
 
-            if (eventName.equals("selectEvent")) {
+            if (eventName.equals("eventClick")) {
 				ScheduleEvent scheduleEvent = ScheduleUtils.buildScheduleEventFromRequest(this, params, clientId);
-                event = new ScheduleClickEvent((AjaxBehaviorEvent) event, "selectEvent", "", "", scheduleEvent);
+                event = new ScheduleClickEvent((AjaxBehaviorEvent) event, "eventClick", "", "", scheduleEvent);
             } else if (eventName.equals("dayDblclick")) {
 				String day = params.get(clientId + "_dayDblclick");
                 event = new ScheduleClickEvent((AjaxBehaviorEvent) event, "dayDblclick", day, "", null);
