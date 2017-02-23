@@ -8,6 +8,7 @@
 	-khtml-user-select:		none;
 	-ms-user-select:		none;
 	user-select:			none;
+    font-size:              .9em; /* added to original */
 }
 
 .ui-colorpicker-inline {
@@ -206,6 +207,7 @@
 .ui-colorpicker-number {
 	margin:					.1em;
 	width:					4em;
+	font-size: .9em;
 }
 
 /* Hex */
@@ -247,4 +249,5 @@
 }
 .ui-colorpicker-input {
 	border-left: 12px solid !important;
+	font-size: .9em;
 }
