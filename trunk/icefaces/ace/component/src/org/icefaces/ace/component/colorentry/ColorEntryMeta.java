@@ -67,7 +67,7 @@ import java.util.List;
 public class ColorEntryMeta extends UIInputMeta{
 
     @Property(defaultValue="false", tlddoc="Whether or not to show the inputs for alpha ")
-    private boolean alpha;
+    private boolean showAlpha;
 
     @Property(tlddoc="This is the preferred format to display the chosen color under the input field.  Valid values are listed in the ColorFormat enumeration  HEX(\"HEX\"), HEX3(\"HEX3\"), HEXA(\"HEXA\"), RGB(\"RGB\"), RGBA(\"RGBA\"), RGBPERCENT(\"RGB%\"),\n" +
             "         HSL(\"HSL\"), HSLA(\"HSLA\"), HSLPERCENT(\"HSL%\"),\n" +
@@ -76,7 +76,8 @@ public class ColorEntryMeta extends UIInputMeta{
             defaultValueType = DefaultValueType.EXPRESSION)
     private ColorFormat colorFormat;
 
-    @Property(tlddoc="The title to display in the header.")
+    @Property(tlddoc="The title to display in the header. The title is not included in the renderAsPopup is true version of this component.  It is applicable" +
+            " if used within a custom version which does list \'header\'; as one of its parts")
     private String title;
 
     @Property(tlddoc = "Locale to be used for labels on this component. May be Locale string or java.util.Locale object" +
@@ -177,8 +178,6 @@ public class ColorEntryMeta extends UIInputMeta{
     @Property(defaultValue = "normal", tlddoc = "Control the speed at which colorEntry appears, it may be a time in milliseconds or a string representing one of the three predefined speeds (\"slow\", \"normal\", \"fast\").")
     private String effectDuration;
 
-    @Property(tlddoc="Sets the language to use.  Note that you must load the appropriate language file from the i8n directory. Local is included by default.")
-    private String regional;
     @Property(tlddoc = "If true then this colorEntry will be disabled and can not be entered.", defaultValue = "false")
     private boolean disabled;
 

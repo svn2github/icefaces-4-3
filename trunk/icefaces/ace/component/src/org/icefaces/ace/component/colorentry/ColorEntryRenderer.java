@@ -111,8 +111,7 @@ public class ColorEntryRenderer extends InputRenderer {
         String valueToRender = getValueAsString(context,picker);
         String inputId = clientId + "_input";
         boolean popup = picker.isRenderAsPopup();
-
-        String showOn = picker.getShowOn();   //default is focus
+        String showOn = picker.getShowOn();   //default is focus for use of popup on input field
         boolean customParts=false;
         List<String> partsList = picker.getCustomParts();
         if (partsList !=null  && partsList.size()> 0) {
@@ -121,20 +120,50 @@ public class ColorEntryRenderer extends InputRenderer {
         Map paramMap = context.getExternalContext().getRequestParameterMap();
         String iceFocus = (String) paramMap.get("ice.focus");
         boolean ariaEnabled = EnvUtils.isAriaEnabled(context);
-        String type = popup ? "text" : "hidden";
-        String iconSrc = picker.getPopupIcon() != null ? getResourceURL(context, picker.getPopupIcon()) : getResourceRequestPath(context, ColorEntry.POPUP_ICON);
-        if (picker.isPopupIconOnly()){
-            type="hidden";
+        String buttonText = null;
+        if (!isValueEmpty(picker.getButtonText())){
+            buttonText = picker.getButtonText();
         }
+        boolean isPopupIconOnly = picker.isPopupIconOnly();
+        boolean useButton =
+                isPopupIconOnly || buttonText!=null || picker.getPopupIcon() !=null;
+        String type = "text";
+        String inputStyleClass = ColorEntry.INPUT_STYLE_CLASS;
+        String preferredFormat = picker.getColorFormat().HEX.getValue();
+        if (picker.getColorFormat()!=null){
+            preferredFormat = picker.getColorFormat().getValue();
+        }
+        String iconSrc = null;
+        String styleClasses = "";
         Map<String, Object> labelAttributes = getLabelAttributes(component);
         labelAttributes.put("fieldClientId", clientId + "_input");
-        if (popup) {
-             writeLabelAndIndicatorBefore(labelAttributes);
-        }
+        if (popup){
+            if (!useButton){
+                /* style for popup on input field */
+                if (isValueBlank(valueToRender))  {
+                    inputStyleClass = ColorEntry.INPUT_EMPTY_STYLE_CLASS;
+                }
+            } else {
+                /* style for popup on buttons */
+             //   inputStyleClass = ColorEntry.BUTTON_STYLE_CLASS;
+                type="hidden";
 
-        writer.startElement(HTML.DIV_ELEM, component);
+                if (!isValueEmpty(picker.getPopupIcon())  ){
+                    iconSrc = getResourceURL(context, picker.getPopupIcon()) ;
+                }  else {
+                    iconSrc = getResourceRequestPath(context, ColorEntry.POPUP_ICON);
+                }
+                if (showOn.equals("focus")){
+                    showOn="button click"; //force the button to not fire on focus.
+                }
+            }
+            styleClasses = (themeForms() ? inputStyleClass : "");
+            /* only popup has label abilities */
+            writeLabelAndIndicatorBefore(labelAttributes);
+        }
+        /* common writes for both inline and popup */
+        writer.startElement(HTML.SPAN_ELEM, component);
         writer.writeAttribute("id", clientId, "clientId");
-        renderResetSettings(context, component);
         ComponentUtils.enableOnElementUpdateNotify(writer, clientId);
         String style = picker.getStyle();
         if(style != null) {
@@ -144,23 +173,22 @@ public class ColorEntryRenderer extends InputRenderer {
         if(styleClass != null){
             writer.writeAttribute("class", styleClass, null);
         }
+        String tabindex = picker.getTabindex();
         //inline container
         if(!popup) {
             writer.startElement("span", null);
-            writer.writeAttribute("id", inputId, null);
+            writer.writeAttribute("id", clientId+"_input", null);
+            renderResetSettings(context, component);
             writer.writeAttribute("style", "display:inline-block", null);
+            commonAttributes(picker, writer, tabindex);
+            if (ariaEnabled) {
+                writer.writeAttribute("role", "region", null);
+                writeCommonAriaAttribs((ColorEntry) component, labelAttributes);
+            }
             writer.endElement("span");
         }
-
-        writer.startElement("input", null);
-        String inputFieldId=clientId+"hidden";
-        String preferredFormat = picker.getColorFormat().HEX.getValue();
-        if (picker.getColorFormat()!=null){
-            preferredFormat = picker.getColorFormat().getValue();
-        }
-
         if (popup){
-            inputFieldId=inputId;
+            writer.startElement("input", null);
             String borderColor = "#f2eaea";
             if (valueToRender!=null && valueToRender.length()>0) {
                 borderColor=valueToRender ;
@@ -175,65 +203,43 @@ public class ColorEntryRenderer extends InputRenderer {
                 String popupStyleBorder = "border-left-color: "+borderColor+" !important;";
                 writer.writeAttribute("style", popupStyleBorder, null);
             }
-        }
-        writer.writeAttribute("id", inputFieldId, null);
-        writer.writeAttribute("name", inputFieldId, null);
-        writer.writeAttribute("type", type, null);
- 		String tabindex = picker.getTabindex();
- 		if (tabindex != null)
- 			writer.writeAttribute("tabindex", tabindex, null);
- 		String accesskey = picker.getAccesskey();
- 		if (accesskey != null) {
- 			writer.writeAttribute("accesskey", accesskey, null);
- 			if (tabindex == null) writer.writeAttribute("tabindex", "0", null);
- 		}
-        boolean showCloseButton = picker.isShowCloseButton();
+            writer.writeAttribute("id", clientId+"_input", null);
+            writer.writeAttribute("name", clientId+"_input", null);
+            renderResetSettings(context, component);
+            writer.writeAttribute("type", type, null);
+            commonAttributes(picker, writer, tabindex);
+            boolean showCloseButton = picker.isShowCloseButton();
 
-        if (popup && ariaEnabled) {
-            writer.writeAttribute("role", "textbox", null);
-        }
-        String inputStyleClass = ColorEntry.INPUT_STYLE_CLASS;
-        if (isValueBlank(valueToRender))  {
-            inputStyleClass = ColorEntry.INPUT_EMPTY_STYLE_CLASS;
-        }
-        String styleClasses = (themeForms() ? inputStyleClass : "");
-        if(!isValueBlank(valueToRender)) {
-            writer.writeAttribute("value", valueToRender, null);
-        } else if (popup && !clientId.equals(iceFocus)) {
-            String inFieldLabel = (String) labelAttributes.get("inFieldLabel");
-            if (!isValueBlank(inFieldLabel)) {
-                writer.writeAttribute("name", clientId + "_label", null);
-                writer.writeAttribute("value", inFieldLabel, null);
-                styleClasses += " " + IN_FIELD_LABEL_STYLE_CLASS;
-                labelAttributes.put("labelIsInField", true);
+            if(!isValueBlank(valueToRender)) {
+                writer.writeAttribute("value", valueToRender, null);
+            } else if (popup && !useButton && !clientId.equals(iceFocus)) {
+                String inFieldLabel = (String) labelAttributes.get("inFieldLabel");
+                if (!isValueBlank(inFieldLabel)) {
+                    writer.writeAttribute("name", clientId + "_label", null);
+                    writer.writeAttribute("value", inFieldLabel, null);
+                    styleClasses += " " + IN_FIELD_LABEL_STYLE_CLASS;
+                    labelAttributes.put("labelIsInField", true);
+                }
+                if (ariaEnabled) {
+                   writer.writeAttribute("role", "textbox", null);
+                }
             }
-        }
-        writer.writeAttribute("data-ice-clear-ignore", "true", null);
-        if (ariaEnabled) {
-            writer.writeAttribute("role", "region", null);
-        }
+          /*  if (useButton && ariaEnabled){
+                writer.writeAttribute("role", "button", null);
+            }                */
+            writer.writeAttribute("data-ice-clear-ignore", "true", null);
 
-        if (ariaEnabled) {
-            final ColorEntry comp = (ColorEntry) component;
-            Map<String, Object> ariaAttributes = new HashMap<String, Object>() {{
-                put("readonly", comp.isReadonly());
-                put("required", comp.isRequired());
-                put("disabled", comp.isDisabled());
-                put("invalid", !comp.isValid());
-            }};
-            writeAriaAttributes(ariaAttributes, labelAttributes);
-        }
+            if (ariaEnabled) {
+                writeCommonAriaAttribs((ColorEntry) component, labelAttributes);
+            }
 
-        if(picker.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
-        if(picker.isReadonly()) writer.writeAttribute("readonly", "readonly", "readonly");
+            if(picker.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
+            if(picker.isReadonly()) writer.writeAttribute("readonly", "readonly", "readonly");
 
-        if (popup) {
             if(!isValueBlank(styleClasses)) {
                 writer.writeAttribute("class", styleClasses, null);
             }
-        }
-        writer.endElement("input");
-        if (popup){
+            writer.endElement("input");
             writeLabelAndIndicatorAfter(labelAttributes);
         }
 
@@ -249,6 +255,7 @@ public class ColorEntryRenderer extends InputRenderer {
         if (valueToRender!=null && valueToRender.length()>0){
             jb.entry("color", valueToRender) ;
         }
+        jb.entry("draggable", false);
         if (lookupLocale!=null){
             jb.entry("regional", lookupLocale);
         }
@@ -257,6 +264,9 @@ public class ColorEntryRenderer extends InputRenderer {
         }
         if (picker.getTitle()!=null && picker.getTitle().length()>0){
             jb.entry("title", picker.getTitle());
+        }
+        if (showOn !=null) {
+            jb.entry("showOn", showOn);
         }
         if (customParts) {  /* custom layout */
             jb.beginArray("parts");
@@ -278,32 +288,24 @@ public class ColorEntryRenderer extends InputRenderer {
                 jb.endMap();
             }
         }
-   /*     String altField = picker.getAltField();
-        if (!isValueEmpty(altField)){
-            jb.entry("altField", altField);
-            String altProps = picker.getAltProperties();
-            if (!isValueEmpty(altProps)){
-                jb.entry("altProperties", altProps);
-            }
-        }  */
 
         if (popup){
-         //   jb.entry("autoOpen", !picker.isRenderAsPopup());
-            jb.entry("alpha", picker.isAlpha());
-            jb.entry("buttonImage", iconSrc);
-            boolean buttonImageOnly = picker.isPopupIconOnly();
-            if (picker.getButtonText()==null || picker.getButtonText().length()<1){
-                buttonImageOnly = true;
+            jb.entry("alpha", picker.isShowAlpha());
+            if (iconSrc !=null) {
+                jb.entry("buttonImage", iconSrc);
             }
-            jb.entry("showCloseButton", showCloseButton);
+            if (buttonText !=null){
+                jb.entry("buttonText", buttonText);
+            }
+    /*        if (!customParts){
+                jb.entry("parts", "popup");
+            }*/
+            if (isPopupIconOnly)jb.entry("buttonImageOnly", isPopupIconOnly);
+            jb.entry("showCloseButton", picker.isShowCloseButton());
             jb.entry("showCancelButton", picker.isShowCancelButton());
             jb.entry("buttonColorize", picker.isButtonColorize());
             jb.entry("showNoneButton", picker.isShowNoneButton());
-            if (!showOn.equalsIgnoreCase("focus")) {
-                jb.entry("showOn", showOn)
-                        .entry("buttonImage", iconSrc)
-                        .entry("buttonImageOnly", buttonImageOnly);
-            }
+
             if (picker.getEffect() !=null && picker.getEffect().length()> 0) {
                  jb.entry("showAnim", picker.getEffect()) ;
                 String duration = picker.getEffectDuration();
@@ -322,23 +324,18 @@ public class ColorEntryRenderer extends InputRenderer {
         if (!picker.isRequired()){
             jb.entry("allowEmpty", "true");
         }
-
-
         jb.endMap();
 
         encodeClientBehaviors(context, picker, jb);
         jb.endMap().endArray().endFunction();
         String script = jb.toString();
-
-        writeLabelAndIndicatorAfter(labelAttributes);
-
+  //System.out.println(" script="+script);
         writer.startElement("span", null);
         writer.writeAttribute("id", clientId+"_script", null);
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
         if (localeScript !=null){
             //check to see if the script for this locale is already loaded
-
             writer.write(localeScript.toString());
         }
         writer.write(script);
@@ -355,8 +352,29 @@ public class ColorEntryRenderer extends InputRenderer {
         if (preferredFormat.startsWith("HSL")){
             createHiddenField(writer, clientId+"_hiddenHex") ;
         }
-        writer.endElement(HTML.DIV_ELEM);
+        writer.endElement(HTML.SPAN_ELEM);
 
+    }
+
+    private void writeCommonAriaAttribs(ColorEntry component, Map<String, Object> labelAttributes) throws IOException {
+        final ColorEntry comp = component;
+        Map<String, Object> ariaAttributes = new HashMap<String, Object>() {{
+            put("readonly", comp.isReadonly());
+            put("required", comp.isRequired());
+            put("disabled", comp.isDisabled());
+            put("invalid", !comp.isValid());
+        }};
+        writeAriaAttributes(ariaAttributes, labelAttributes);
+    }
+
+    private void commonAttributes(ColorEntry picker, ResponseWriter writer, String tabindex) throws IOException {
+        if (tabindex != null)
+            writer.writeAttribute("tabindex", tabindex, null);
+        String accesskey = picker.getAccesskey();
+        if (accesskey != null) {
+            writer.writeAttribute("accesskey", accesskey, null);
+            if (tabindex == null) writer.writeAttribute("tabindex", "0", null);
+        }
     }
 
     private void encodeSwatch(ResponseWriter writer, String swatchName, List<SwatchEntry> swatches, String clientId,
