@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.ace.schedule;
 
 import org.icefaces.ace.model.schedule.ScheduleEvent;
 import org.icefaces.ace.model.schedule.LazyScheduleEventList;
+import org.icefaces.samples.showcase.dataGenerators.DefaultDistributionEventGenerator;
 
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
@@ -44,7 +45,11 @@ public class ScheduleConfigurationBean implements Serializable {
 	private Random randomMinutes = new Random();
 	private Random randomDurationHours = new Random();
 
+    private List<ScheduleEvent> events;
+
 	public ScheduleConfigurationBean() {
+		events = (new DefaultDistributionEventGenerator()).getEvents();
+
 		Calendar cal = Calendar.getInstance();
 		int year = cal.get(Calendar.YEAR);
 		int nextYear = year + 1;
@@ -54,6 +59,9 @@ public class ScheduleConfigurationBean implements Serializable {
 			}
 		}
 	}
+
+	public List<ScheduleEvent> getEvents() { return events; }
+	public void setEvents(List<ScheduleEvent> events) { this.events = events; }
 
 	private LazyScheduleEventList lazyScheduleEventList =
 		new LazyScheduleEventList() {

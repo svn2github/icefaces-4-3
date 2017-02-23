@@ -27,46 +27,38 @@
 
     <ui:define name="example">
 		<style type="text/css">
-			.ice-ace-schedule .schedule-event.meeting {
-				background-image: none;
-				background-color: #fc6;
-				border-color: #f93;
-			}
-			.ice-ace-schedule .schedule-list-event.ui-state-highlight {
-				background-image: none;
-				background-color: #efefff;
-			}
+
 		</style>
         <h:form id="form">
 			<ace:panel header="Configuration">
 				<h:panelGrid width="100%" columns="2" cellpadding="6" cellspacing="6">
-						<ace:radioButtons id="viewMode" header="Select view mode" value="#{scheduleBean.viewMode}" labelPosition="top">
+						<ace:radioButtons id="viewMode" header="Select view mode" value="#{scheduleConfigurationBean.viewMode}" labelPosition="top">
 							<ace:ajax render="@all" />
 							<f:selectItem itemValue="month" itemLabel="Month" />
 							<f:selectItem itemValue="week" itemLabel="Week" />
 							<f:selectItem itemValue="day" itemLabel="Day" />
 						</ace:radioButtons>
-						<ace:selectMenu id="timeZone" value="#{scheduleBean.timeZone}" 
+						<ace:selectMenu id="timeZone" value="#{scheduleConfigurationBean.timeZone}" 
 										label="Select time zone: " labelPosition="top">
 							<ace:ajax render="@all"/>
-							<f:selectItems value="#{scheduleBean.timeZoneList}" />
+							<f:selectItems value="#{scheduleConfigurationBean.timeZoneList}" />
 						</ace:selectMenu>
-						<ace:checkboxButton id="scrollable" value="#{scheduleBean.scrollable}"
+						<ace:checkboxButton id="scrollable" value="#{scheduleConfigurationBean.scrollable}"
 											label="Enable scrolling (Week and Day views): " labelPosition="left">
 							<ace:ajax render="@all"/>
 						</ace:checkboxButton>
-						<ace:selectMenu id="sideBar" value="#{scheduleBean.sideBar}"
+						<ace:selectMenu id="sideBar" value="#{scheduleConfigurationBean.sideBar}"
 										label="Select side bar location: " labelPosition="top">
 							<ace:ajax render="@all"/>
 							<f:selectItem itemValue="right" itemLabel="Right" />
 							<f:selectItem itemValue="left" itemLabel="Left" />
 							<f:selectItem itemValue="hidden" itemLabel="Hidden" />
 						</ace:selectMenu>
-						<ace:textEntry 	id="scrollHeight" value="#{scheduleBean.scrollHeight}"
+						<ace:textEntry 	id="scrollHeight" value="#{scheduleConfigurationBean.scrollHeight}"
 										label="Set scroll height: " labelPosition="left">
 							<ace:ajax render="@all"/>
 						</ace:textEntry>
-						<ace:selectMenu id="eventDetails" value="#{scheduleBean.eventDetails}"
+						<ace:selectMenu id="eventDetails" value="#{scheduleConfigurationBean.eventDetails}"
 										label="Select event details mode: " labelPosition="top">
 							<ace:ajax render="@all"/>
 							<f:selectItem itemValue="popup" itemLabel="Pop-up" />
@@ -74,15 +66,27 @@
 							<f:selectItem itemValue="disabled" itemLabel="Disabled" />
 						</ace:selectMenu>
 				</h:panelGrid>
+				<ace:pushButton id="generateSchedule" value="Generate Schedule" onclick="ice.ace.instance('#{dialog.clientId}').show();" />
 			</ace:panel>
-			<ace:schedule 	id="schedule"
-							value="#{scheduleBean.lazyScheduleEventList}"
-							eventDetails="#{scheduleBean.eventDetails}"
-							scrollable="#{scheduleBean.scrollable}"
-							scrollHeight="#{scheduleBean.scrollHeight}"
-							sideBar="#{scheduleBean.sideBar}"
-							timeZone="#{scheduleBean.timeZone}"
-							viewMode="#{scheduleBean.viewMode}" />
+            <ace:dialog id="dialog" binding="#{dialog}"
+                               header="A sample dialog overview example"
+                               closable="true"
+                               modal="false"
+                               draggable="false"
+                               showEffect="fade"
+                               hideEffect="fade"
+                               width="1200" height="600"
+                               maximizableRestorable="true">
+                
+				<ace:schedule 	id="schedule"
+								value="#{scheduleConfigurationBean.events}"
+								eventDetails="#{scheduleConfigurationBean.eventDetails}"
+								scrollable="#{scheduleConfigurationBean.scrollable}"
+								scrollHeight="#{scheduleConfigurationBean.scrollHeight}"
+								sideBar="#{scheduleConfigurationBean.sideBar}"
+								timeZone="#{scheduleConfigurationBean.timeZone}"
+								viewMode="#{scheduleConfigurationBean.viewMode}" />
+            </ace:dialog>
         </h:form>
     </ui:define>
 </ui:composition>

@@ -43,15 +43,15 @@
 				</h:panelGrid>
 			</ace:panel>
 			<ace:schedule 	id="schedule"
-							value="#{scheduleBean.lazyScheduleEventList}"
+							value="#{scheduleBean.events}"
 							showEventDetails="disabled"
 							showTooltip="true"
 							scrollable="false"
 							sideBar="hidden"
-							enhancedStylingEnabled="false"
-							additionEnabled="false"
-							editingEnabled="false"
-							deletionEnabled="false"
+							enhancedStyling="false"
+							addEvents="false"
+							editEvents="false"
+							deleteEvents="false"
 							timeZone="#{scheduleBean.timeZone}"
 							viewMode="#{scheduleBean.viewMode}" />
         </h:form>

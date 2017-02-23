@@ -69,31 +69,31 @@
         <h:form id="form">
 			<ace:panel header="Configuration">
 				<h:panelGrid width="100%" columns="2" cellpadding="6" cellspacing="6">
-						<ace:radioButtons id="viewMode" header="Select view mode" value="#{scheduleBean.viewMode}" labelPosition="top">
+						<ace:radioButtons id="viewMode" header="Select view mode" value="#{scheduleCustomStylingBean.viewMode}" labelPosition="top">
 							<ace:ajax render="@all" />
 							<f:selectItem itemValue="month" itemLabel="Month" />
 							<f:selectItem itemValue="week" itemLabel="Week" />
 							<f:selectItem itemValue="day" itemLabel="Day" />
 						</ace:radioButtons>
-						<ace:selectMenu id="timeZone" value="#{scheduleBean.timeZone}" 
+						<ace:selectMenu id="timeZone" value="#{scheduleCustomStylingBean.timeZone}" 
 										label="Select time zone: " labelPosition="top">
 							<ace:ajax render="@all"/>
-							<f:selectItems value="#{scheduleBean.timeZoneList}" />
+							<f:selectItems value="#{scheduleCustomStylingBean.timeZoneList}" />
 						</ace:selectMenu>
 				</h:panelGrid>
 			</ace:panel>
 			<ace:schedule 	id="schedule"
-							value="#{scheduleBean.lazyScheduleEventList}"
+							value="#{scheduleCustomStylingBean.events}"
 							showEventDetails="disabled"
 							showTooltip="true"
 							scrollable="false"
 							sideBar="hidden"
-							enhancedStylingEnabled="true"
-							additionEnabled="false"
-							editingEnabled="false"
-							deletionEnabled="false"
-							timeZone="#{scheduleBean.timeZone}"
-							viewMode="#{scheduleBean.viewMode}" />
+							enhancedStyling="true"
+							addEvents="false"
+							editEvents="false"
+							deleteEvents="false"
+							timeZone="#{scheduleCustomStylingBean.timeZone}"
+							viewMode="#{scheduleCustomStylingBean.viewMode}" />
         </h:form>
     </ui:define>
 </ui:composition>
