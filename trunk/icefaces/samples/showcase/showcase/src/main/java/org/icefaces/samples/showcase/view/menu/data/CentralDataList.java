@@ -126,14 +126,20 @@ public class CentralDataList {
 								new DemoSource[] { new DemoSource(DemoSource.Type.XHTML, "redirect.xhtml", DemoSource.CORE_XHTML_PATH_BASE, true),
 												   new DemoSource(DemoSource.Type.JAVA, "RedirectBean.java", DemoSource.CORE_JAVA_PATH_BASE + "redirect/", true),
 												   new DemoSource(DemoSource.Type.JAVA, "RedirectViewScopeBean.java", DemoSource.CORE_JAVA_PATH_BASE + "redirect/", true)})),
-				new ComponentGroup("icecore:refresh",
-						new DemoResource[] { new DemoResource(DemoResource.Type.WIKI, "refresh"),
-						 new DemoResource(DemoResource.Type.TLD, "icecore:refresh", DemoResource.CORE_TLD_PATH_BASE + "refresh.html", true) },
-						new Demo(msgs("overview"), msgs("example.core.refreshBean.description"),
-								new DemoSource[] { new DemoSource(DemoSource.Type.XHTML, "refresh.xhtml", DemoSource.CORE_XHTML_PATH_BASE, true),
-												   new DemoSource(DemoSource.Type.JAVA, "RefreshBean.java", DemoSource.CORE_JAVA_PATH_BASE + "refresh/", true),
-												   new DemoSource(DemoSource.Type.JAVA, "RefreshViewScopeBean.java", DemoSource.CORE_JAVA_PATH_BASE + "refresh/", true)}))
-		));
+                new ComponentGroup("icecore:refresh",
+                        new DemoResource[] { new DemoResource(DemoResource.Type.WIKI, "refresh"),
+                                new DemoResource(DemoResource.Type.TLD, "icecore:refresh", DemoResource.CORE_TLD_PATH_BASE + "refresh.html", true) },
+                        new Demo(msgs("overview"), msgs("example.core.refreshBean.description"),
+                                new DemoSource[] { new DemoSource(DemoSource.Type.XHTML, "refresh.xhtml", DemoSource.CORE_XHTML_PATH_BASE, true),
+                                        new DemoSource(DemoSource.Type.JAVA, "RefreshBean.java", DemoSource.CORE_JAVA_PATH_BASE + "refresh/", true),
+                                        new DemoSource(DemoSource.Type.JAVA, "RefreshViewScopeBean.java", DemoSource.CORE_JAVA_PATH_BASE + "refresh/", true)})),
+                new ComponentGroup("icecore:repeat",
+                        new DemoResource[] { new DemoResource(DemoResource.Type.WIKI, "repeat"),
+                                new DemoResource(DemoResource.Type.TLD, "icecore:repeat", DemoResource.CORE_TLD_PATH_BASE + "repeat.html", true) },
+                        new Demo(msgs("overview"), msgs("example.core.repeatBean.description"),
+                                new DemoSource[] { new DemoSource(DemoSource.Type.XHTML, "repeat.xhtml", DemoSource.CORE_XHTML_PATH_BASE, true),
+                                        new DemoSource(DemoSource.Type.JAVA, "RepeatBean.java", DemoSource.CORE_JAVA_PATH_BASE + "repeat/", true)}))
+        ));
 		
 		toReturn.add(new CategoryGroup(msgs("menu.ace.group.ajax.title"),
 				new ComponentGroup("ace:ajax", "Ajax", "ajax.html", "singleSubmit, partialSubmit",
