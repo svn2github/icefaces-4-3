@@ -233,6 +233,7 @@ ice.ace.Dialog.prototype.show = function() {
         self.jq.dialog('open');
 		self.resizeScrollableTables();
 		self.resizeMaps();
+		self.reRenderScheduleEvents();
         if ('**none' != focusOn) {
             self.focusInput(focusOn);
         }
@@ -273,6 +274,8 @@ ice.ace.Dialog.prototype.restoreOriginalState = function() {
 	root.css({left: this.originalLeft});
 	this.originalPosition = this.jq.dialog('option', 'position', this.originalPosition);
 	this.maximized = false;
+
+	this.reRenderScheduleEvents();
 };
 
 ice.ace.Dialog.prototype.maximize = function() {
@@ -301,6 +304,8 @@ ice.ace.Dialog.prototype.maximize = function() {
 	this.jq.dialog('option', 'width', newWidth);
 	root.css({position: 'fixed', height: newHeight, width: newWidth, top: newTop, left: newLeft});
 	this.maximized = true;
+
+	this.reRenderScheduleEvents();
 };
 
 /**
@@ -391,6 +396,19 @@ ice.ace.Dialog.prototype.resizeScrollableTables = function() {
 			var table = ice.ace.instance(id);
 			if (table.cfg.scrollable) table.resizeScrolling();
 			if (table.cfg.paginator) table.resizePaginator();
+		}
+	});
+};
+
+ice.ace.Dialog.prototype.reRenderScheduleEvents = function() {
+	var schedules = this.jq.find('.ice-ace-schedule');
+	schedules.each(function(){
+		var id = this.id;
+		if (id) {
+			var schedule = ice.ace.instance(id);
+			if (schedule && (schedule.cfg.viewMode == 'week' || schedule.cfg.viewMode == 'day')) {
+				schedule.render();
+			}
 		}
 	});
 };
