@@ -27,7 +27,7 @@ public class RepeatBean implements Serializable {
             new Person("John","Doe"),
             new Person("Huckleberry","Finn"),
             new Person("Louis", "Armstrong"),
-            new Person("Caterine", "Deneuve")
+            new Person("Catherine", "Deneuve")
     };
 
     public static final String BEAN_NAME = "repeatBean";
