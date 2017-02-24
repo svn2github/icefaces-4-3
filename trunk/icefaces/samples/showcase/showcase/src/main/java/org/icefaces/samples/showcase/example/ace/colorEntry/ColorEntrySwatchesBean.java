@@ -76,10 +76,7 @@ public class ColorEntrySwatchesBean implements Serializable
      }
 
      public ColorEntrySwatchesBean(){
-         colorList = new ArrayList<String>();
-         for (int i=0; i < 4; i++){
-             colorList.add("");
-         }
+         resetColorList();
          layout.add(new ColorEntryLayout("preview", 0, 0, 1, 1));
          layout.add(new ColorEntryLayout("hex", 1,0,1,1));
          layout.add(new ColorEntryLayout("rgbslider", 0, 1, 2, 1));
@@ -96,8 +93,21 @@ public class ColorEntrySwatchesBean implements Serializable
 
      }
 
-     public boolean isHaveValues() {
+    private void resetColorList() {
+        colorList = new ArrayList<String>();
+        for (int i=0; i < 4; i++){
+            colorList.add("");
+        }
+    }
+
+    public boolean isHaveValues() {
          return (colorList.get(1).length()>0 && colorList.get(2).length()>0 && colorList.get(3).length()>0  && colorList.get(0).length()>0 );
+     }
+
+     public void reset(ActionEvent event){
+         resetColorList();
+         this.haveValues = false;
+       //  swatchEntries = new ArrayList<SwatchEntry>();
      }
 
      public void updateSwatch(ActionEvent event){

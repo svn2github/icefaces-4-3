@@ -67,8 +67,8 @@
                     </ace:colorEntry>
                 </ace:panel>
         </h:form>
-        <h:form id="form3_dynamic">
-            <ace:panel header="Dynamically Choose Four Colours to Create a Swatch">
+        <h:form id="form3_dynamic" rendered="#{not colorEntrySwatchesBean.haveValues}">
+            <ace:panel header="Dynamically Choose Four Colours to Create a Swatch" >
                 <h:panelGrid columns="1">
                     <c:forEach items="#{colorEntrySwatchesBean.colorList}" var="entry" varStatus="status" >
                         <ace:colorEntry id="ce_#{status.index}" value="#{entry}"
@@ -88,17 +88,25 @@
         </h:form>
         <h:form id="form2" rendered="#{colorEntrySwatchesBean.haveValues}">
                 <h3>ColorEntry Created from Chosen Colors </h3>
-                 <ace:colorEntry id="swatchesId" value="#{colorEntrySwatchesBean.dynamic}"
+            <h:panelGrid columns="2">
+
+                <ace:colorEntry id="swatchesId" value="#{colorEntrySwatchesBean.dynamic}"
                                     title="Swatch Created from above colors"
                                     swatchesName="myswatch"
                                     swatchesWidth="80"
                                     renderAsPopup="true"
+                                    label="Choose A Color "
+                                    labelPosition="left"
                                     swatches="#{colorEntrySwatchesBean.swatchEntries}"
                                     customParts="#{colorEntrySwatchesBean.swatchParts}"
                                     customLayout="#{colorEntrySwatchesBean.swatchLayout}">
-                         <ace:ajax execute="@this" render="@all"/>
-                 </ace:colorEntry>
-
+                    <ace:ajax execute="@this" render="@all"/>
+                </ace:colorEntry>
+                <h:commandButton value="Reset"
+                                 actionListener="#{colorEntrySwatchesBean.reset}">
+                    <f:ajax execute="@this" render="@all"/>
+                </h:commandButton>
+            </h:panelGrid>
         </h:form>
     </ui:define>
 </ui:composition>
