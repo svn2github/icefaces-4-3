@@ -217,9 +217,9 @@ public class PushRenderer {
         if (EnvUtils.isICEpushPresent()) {
             FacesContext context = FacesContext.getCurrentInstance();
             missingFacesContext(context);
-            Boolean pushOthers = (Boolean)options.getAttribute(PushOthers.PUSH_OTHERS);
+            Boolean pushOthers = (Boolean)options.getAttributes().get(PushOthers.PUSH_OTHERS);
             if (pushOthers != null && pushOthers) {
-                options.putAttribute("pushIDSet", SessionViewManager.get(context).getCurrentSessionViewSet());
+                options.getAttributes().put("pushIDSet", SessionViewManager.get(context).getCurrentSessionViewSet());
             }
             Map<String, Object> applicationMap = context.getExternalContext().getApplicationMap();
             PushIsolator.render(applicationMap, group, options);
@@ -373,10 +373,10 @@ class PushIsolator {
         } else {
             if (options instanceof PushMessage) {
                 pushContext.push(group,
-                        new PushNotification(options.getAttributeMap()));
+                        new PushNotification(options.getAttributes()));
             } else {
                 pushContext.push(group,
-                        new PushConfiguration(options.getAttributeMap()));
+                        new PushConfiguration(options.getAttributes()));
             }
         }
     }
@@ -387,9 +387,9 @@ class PushIsolator {
             log.fine("PushContext not initialized yet.");
         } else {
             if (options instanceof PushMessage) {
-                pushContext.push(group, new PushNotification(options.getAttributeMap()));
+                pushContext.push(group, new PushNotification(options.getAttributes()));
             } else {
-                pushContext.push(group, new PushConfiguration(options.getAttributeMap()));
+                pushContext.push(group, new PushConfiguration(options.getAttributes()));
             }
         }
     }

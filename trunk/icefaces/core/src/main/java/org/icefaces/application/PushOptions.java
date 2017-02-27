@@ -16,88 +16,27 @@
 
 package org.icefaces.application;
 
-import static org.icesoft.util.ObjectUtilities.*;
-import static org.icesoft.util.PreCondition.checkArgument;
-import static org.icesoft.util.StringUtilities.isNotNullAndIsNotEmpty;
-
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class PushOptions {
-    private static final Logger LOGGER = Logger.getLogger(PushOptions.class.getName());
-
-    private final Map<String, Object> attributeMap = new HashMap<String, Object>();
+    private HashMap<String, Object> attributes = new HashMap();
 
     public PushOptions()  {
-        // Do nothing.
+        attributes = new HashMap<String, Object>();
     }
 
-    public PushOptions(final Map<String, Object> attributeMap)
-    throws IllegalArgumentException {
-        putAllAttributes(attributeMap);
+    public PushOptions(HashMap<String, Object> attributes)  {
+        this.attributes = attributes;
     }
 
     public PushOptions and(final PushOptions pushOptions) {
-        putAllAttributes(pushOptions.getAttributeMap());
+        attributes.putAll(pushOptions.attributes);
         return this;
     }
 
-    public boolean containsAttributeKey(final String key) {
-        return getAttributeMap().containsKey(key);
+    public Map<String, Object> getAttributes()  {
+        return attributes;
     }
 
-    public Object getAttribute(final String key) {
-        return getAttributeMap().get(key);
-    }
-
-    public Map<String, Object> getAttributeMap() {
-        return Collections.unmodifiableMap(getModifiableAttributeMap());
-    }
-
-    public void putAllAttributes(final Map<String, Object> attributeMap)
-    throws IllegalArgumentException {
-        for (final Map.Entry<String, Object> _attributeEntry : attributeMap.entrySet()) {
-            // throws IllegalArgumentException
-            putAttribute(_attributeEntry.getKey(), _attributeEntry.getValue());
-        }
-    }
-
-    public Object putAttribute(final String key, final Object value)
-    throws IllegalArgumentException {
-        checkArgument(
-            isNotNullAndIsNotEmpty(key), "Illegal argument key: '" + key + "'.  Argument cannot be null or empty."
-        );
-        checkArgument(
-            isNotNull(value), "Illegal argument value: '" + value + "'.  Argument cannot be null."
-        );
-        return getModifiableAttributeMap().put(key, value);
-    }
-
-    public Object removeAttribute(final String key) {
-        return getModifiableAttributeMap().remove(key);
-    }
-
-    @Override
-    public String toString() {
-        return
-            new StringBuilder().
-                append("PushOptions[").
-                    append(classMembersToString()).
-                append("]").
-                    toString();
-    }
-
-    protected String classMembersToString() {
-        return
-            new StringBuilder().
-                append("attributeMap: '").append(getAttributeMap()).append("'").
-                    toString();
-    }
-
-    protected Map<String, Object> getModifiableAttributeMap() {
-        return attributeMap;
-    }
 }
