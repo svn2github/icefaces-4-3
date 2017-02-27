@@ -17,6 +17,7 @@
 package org.icefaces.util;
 
 
+import javax.faces.component.UINamingContainer;
 import javax.servlet.http.HttpServletRequest;
 
 
@@ -970,6 +971,24 @@ public class EnvUtils {
         }
     }
 
+    /**
+     * Determine whether the current JSF implementation is version 2.3 or greater
+     * @return true if JSF implementation is 2.3 or greater
+     */
+    public static boolean isJSF23OrGreater() {
+        final String version = FacesContext.class.getPackage().getImplementationVersion();
+        if (version == null) {
+            try {
+                Class.forName("javax.faces.component.UIImportConstants");
+                return true;
+            } catch (ClassNotFoundException ex) {
+                return false;
+            }
+        } else {
+            return Integer.parseInt(version.substring(2, 3)) >= 3;
+        }
+    }
+
     private static void testImpl() {
         if (!isImplTested) {
             String implName = FacesContext.getCurrentInstance()
@@ -1222,8 +1241,18 @@ public class EnvUtils {
     }
 
     public static String getParameterNamespace(FacesContext context) {
-        return EnvConfig.getEnvConfig(context).namespaceParameters && (context.getViewRoot() instanceof NamingContainer)
-                ? context.getViewRoot().getContainerClientId(context) : "";
+        UIViewRoot viewRoot = context.getViewRoot();
+        if (EnvConfig.getEnvConfig(context).namespaceParameters && (viewRoot instanceof NamingContainer)) {
+            if (EnvUtils.isJSF23OrGreater()) {
+            	return viewRoot.getContainerClientId(context) + UINamingContainer.getSeparatorChar(context);
+            }
+            else {
+                return viewRoot.getContainerClientId(context);
+            }
+        }
+        else {
+            return "";
+        }
     }
 
     public static String getUpdateNetworkErrorRetryTimeouts(FacesContext context) {
@@ -1391,7 +1420,7 @@ class EnvConfig {
     public void init(Map initMap) {
         StringBuilder info = new StringBuilder();
 
-        namespaceParameters = decodeBoolean(initMap, EnvUtils.NAMESPACE_PARAMETERS, false, info);
+        namespaceParameters = decodeBoolean(initMap, EnvUtils.NAMESPACE_PARAMETERS, EnvUtils.isJSF23OrGreater(), info);
         autoRender = decodeBoolean(initMap, EnvUtils.ICEFACES_AUTO, true, info);
         autoId = decodeBoolean(initMap, EnvUtils.ICEFACES_AUTOID, true, info);
         ariaEnabled = decodeBoolean(initMap, EnvUtils.ARIA_ENABLED, true, info);
