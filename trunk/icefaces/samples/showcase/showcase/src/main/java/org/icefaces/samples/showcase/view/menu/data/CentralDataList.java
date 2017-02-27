@@ -797,13 +797,13 @@ public class CentralDataList {
 				new ComponentGroup("ace:schedule", "Schedule", "schedule.html",
 						new Demo(msgs("overview"), msgs("example.ace.schedule.description"),
 								 "schedule", "schedule.xhtml", "ScheduleBean.java"),
-						new Demo(msgs("example.ace.schedule.event.title"), msgs("example.ace.schedule.event.description"),
+						new Demo(msgs("menu.ace.schedule.subMenu.event"), msgs("example.ace.schedule.event.description"),
 								 "schedule", "scheduleEventEditing.xhtml", "ScheduleEventEditingBean.java"),
-						new Demo(msgs("example.ace.schedule.lazy.title"), msgs("example.ace.schedule.lazy.description"),
+						new Demo(msgs("menu.ace.schedule.subMenu.lazy"), msgs("example.ace.schedule.lazy.description"),
 								 "schedule", "scheduleLazyLoading.xhtml", "ScheduleLazyLoadingBean.java"),
-						new Demo(msgs("example.ace.schedule.config.title"), msgs("example.ace.schedule.config.description"),
+						new Demo(msgs("menu.ace.schedule.subMenu.config"), msgs("example.ace.schedule.config.description"),
 								 "schedule", "scheduleConfiguration.xhtml", "ScheduleConfigurationBean.java"),
-						new Demo(msgs("example.ace.schedule.styling.title"), msgs("example.ace.schedule.styling.description"),
+						new Demo(msgs("menu.ace.schedule.subMenu.styling"), msgs("example.ace.schedule.styling.description"),
 								 "schedule", "scheduleCustomStyling.xhtml", "ScheduleCustomStylingBean.java"))
 		));
 	

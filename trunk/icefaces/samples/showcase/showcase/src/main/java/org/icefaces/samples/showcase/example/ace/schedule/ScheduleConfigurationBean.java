@@ -163,7 +163,7 @@ public class ScheduleConfigurationBean implements Serializable {
 	public int getScrollHeight() { return scrollHeight; }
 	public void setScrollHeight(int scrollHeight) { this.scrollHeight = scrollHeight; }
 
-	private String timeZone;
+	private String timeZone = "UTC";
 	public String getTimeZone() { return timeZone; }
 	public void setTimeZone(String timeZone) { this.timeZone = timeZone; }
 
@@ -171,6 +171,7 @@ public class ScheduleConfigurationBean implements Serializable {
     public List<SelectItem> getTimeZoneList() {
 		if (timeZoneList == null) {
 			timeZoneList = new ArrayList<SelectItem>();
+			timeZoneList.add(new SelectItem("UTC"));
 			timeZoneList.add(new SelectItem(TimeZone.getDefault().getID(),
 				"System Default (" + TimeZone.getDefault().getID() + ")"));
 			timeZoneList.add(new SelectItem("America/Vancouver"));
@@ -188,4 +189,20 @@ public class ScheduleConfigurationBean implements Serializable {
 	private String eventDetails = "popup";
 	public String getEventDetails() { return eventDetails; }
 	public void setEventDetails(String eventDetails) { this.eventDetails = eventDetails; }
+
+	private boolean enhancedStyling = true;
+	public boolean isEnhancedStyling() { return enhancedStyling; }
+	public void setEnhancedStyling(boolean enhancedStyling) { this.enhancedStyling = enhancedStyling; }
+
+	private boolean twelveHourClock = false;
+	public boolean isTwelveHourClock() { return twelveHourClock; }
+	public void setTwelveHourClock(boolean twelveHourClock) { this.twelveHourClock = twelveHourClock; }
+
+	private boolean tooltip = false;
+	public boolean isTooltip() { return tooltip; }
+	public void setTooltip(boolean tooltip) { this.tooltip = tooltip; }
+
+	private int defaultDuration = 60;
+	public int getDefaultDuration() { return defaultDuration; }
+	public void setDefaultDuration(int defaultDuration) { this.defaultDuration = defaultDuration; }
 }

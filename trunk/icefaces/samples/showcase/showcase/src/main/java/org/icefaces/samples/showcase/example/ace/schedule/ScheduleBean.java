@@ -50,22 +50,4 @@ public class ScheduleBean implements Serializable {
 	private String viewMode = "month";
 	public String getViewMode() { return viewMode; }
 	public void setViewMode(String viewMode) { this.viewMode = viewMode; }
-
-	private String timeZone;
-	public String getTimeZone() { return timeZone; }
-	public void setTimeZone(String timeZone) { this.timeZone = timeZone; }
-
-    private List<SelectItem> timeZoneList = null;
-    public List<SelectItem> getTimeZoneList() {
-		if (timeZoneList == null) {
-			timeZoneList = new ArrayList<SelectItem>();
-			timeZoneList.add(new SelectItem(TimeZone.getDefault().getID(),
-				"System Default (" + TimeZone.getDefault().getID() + ")"));
-			timeZoneList.add(new SelectItem("America/Vancouver"));
-			timeZoneList.add(new SelectItem("America/Edmonton"));
-			timeZoneList.add(new SelectItem("America/Toronto"));
-		}
-		return timeZoneList;
-	}
-    public void setTimeZoneList(List<SelectItem> timeZoneList) { this.timeZoneList = timeZoneList; }
 }

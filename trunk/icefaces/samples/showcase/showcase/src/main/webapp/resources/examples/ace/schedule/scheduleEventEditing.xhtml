@@ -26,6 +26,43 @@
     <ui:param name="description" value="#{msgs['example.ace.accordionpanel.description']}"/>
 
     <ui:define name="example">
+		<style type="text/css">
+			/* Custom style classes */
+
+			/* custom highlight colour on the sidebar */
+			.ice-ace-schedule .schedule-list-event.ui-state-highlight {
+				background-image: none;
+				background-color: #efefff;
+			}
+
+			/* custom styling for meeting events, month view */
+			.ice-ace-schedule .schedule-styling-enhanced .schedule-days .ui-widget-content .schedule-event.meeting {
+				background-color: #ffc;
+				border-color: #cc6;
+			}
+
+			/* custom styling for meeting events, week and day views */
+			.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.meeting {
+				background-color: #ffc;
+				border-color: #cc6;
+			}
+
+			/* custom styling for public events, month view */			
+			.ice-ace-schedule .schedule-styling-enhanced .schedule-days .ui-widget-content .schedule-event.public {
+				background-color: #cfc;
+				border-color: #696;
+			}
+
+			/* custom styling for public events, week and day views */
+			.ice-ace-schedule .schedule-styling-enhanced.schedule-view-week .schedule-days .ui-widget-content .schedule-event.public, .ice-ace-schedule .schedule-styling-enhanced.schedule-view-day .schedule-days .ui-widget-content .schedule-event.public {
+				background-color: #cfc;
+				border-left: 3px solid #696;
+				border-top: none;
+				border-right: none;
+				border-bottom: none;
+				padding: 2px 2px 2px 3px;
+			}
+		</style>
         <h:form id="form">
 			<ace:panel header="Configuration">
 				<h:panelGrid width="100%" columns="2" cellpadding="6" cellspacing="6">
@@ -35,11 +72,6 @@
 							<f:selectItem itemValue="week" itemLabel="Week" />
 							<f:selectItem itemValue="day" itemLabel="Day" />
 						</ace:radioButtons>
-						<ace:selectMenu id="timeZone" value="#{scheduleEventEditingBean.timeZone}" 
-										label="Select time zone: " labelPosition="top">
-							<ace:ajax render="@all"/>
-							<f:selectItems value="#{scheduleEventEditingBean.timeZoneList}" />
-						</ace:selectMenu>
 				</h:panelGrid>
 			</ace:panel>
 			<ace:schedule 	id="schedule"
@@ -48,11 +80,10 @@
 							showTooltip="false"
 							scrollable="false"
 							sideBar="hidden"
-							enhancedStyling="false"
 							addEvents="true"
 							editEvents="true"
 							deleteEvents="true"
-							timeZone="#{scheduleEventEditingBean.timeZone}"
+							timeZone="UTC"
 							viewMode="#{scheduleEventEditingBean.viewMode}" />
         </h:form>
     </ui:define>
