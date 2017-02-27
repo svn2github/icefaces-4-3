@@ -259,7 +259,8 @@ ice.ace.fileentry = {
         // To support portlets, as well as flagging FileEntry server code to
         // handle this multipart request, and not handle multipart requests
         // from other upload components which will omit this parameter.
-        var encodedURL = f.elements['ice.fileEntry.encodedURL'];
+        var paramPrefix = ice.ace.fileentry.parameterPrefix(f);
+        var encodedURL = f.elements[paramPrefix + 'ice.fileEntry.encodedURL'];
         if(encodedURL){
             f.action = encodedURL.value;
         }
@@ -283,7 +284,21 @@ ice.ace.fileentry = {
             ice.ace.fileentry.formOnsubmit(event, f, iframeId, progressPushId);
         };
     },
-    
+
+	parameterPrefix : function(formElem) {
+		var formElemChildNodes = formElem.elements, paramPrefix = '';
+		for (var i = 0; i < formElemChildNodes.length; i++) {
+			var childNodeName = formElemChildNodes[i].name;
+			if (childNodeName) {
+				var namePos = childNodeName.indexOf("javax.faces.encodedURL");
+				if (namePos > 0) {
+					paramPrefix = childNodeName.substring(0, namePos);
+				}
+			}
+		}
+		return paramPrefix;
+	},
+
     formOnsubmit : function(event, formElem, iframeId, progressPushId) {
         ice.ace.fileentry.consoleLog(false, "formOnsubmit()  begin");
 
@@ -308,12 +323,13 @@ ice.ace.fileentry = {
             formElem.enctype = 'multipart/form-data';
         }
 
-        ice.ace.fileentry.addOrUpdateHiddenInput(formElem, 'javax.faces.source', context.sourceid);
-        ice.ace.fileentry.addOrUpdateHiddenInput(formElem, 'javax.faces.partial.execute', context_execute);
-        ice.ace.fileentry.addOrUpdateHiddenInput(formElem, 'javax.faces.partial.render', context.render);
-        ice.ace.fileentry.addOrUpdateHiddenInput(formElem, 'javax.faces.partial.ajax', 'true');
+        var paramPrefix = ice.ace.fileentry.parameterPrefix(formElem);
+        ice.ace.fileentry.addOrUpdateHiddenInput(formElem, paramPrefix + 'javax.faces.source', context.sourceid);
+        ice.ace.fileentry.addOrUpdateHiddenInput(formElem, paramPrefix + 'javax.faces.partial.execute', context_execute);
+        ice.ace.fileentry.addOrUpdateHiddenInput(formElem, paramPrefix + 'javax.faces.partial.render', context.render);
+        ice.ace.fileentry.addOrUpdateHiddenInput(formElem, paramPrefix + 'javax.faces.partial.ajax', 'true');
         // Flag specifying javascript, to differentiate our non-javascript mode
-        ice.ace.fileentry.addOrUpdateHiddenInput(formElem, 'ice.fileEntry.ajaxResponse', 'true');
+        ice.ace.fileentry.addOrUpdateHiddenInput(formElem, paramPrefix + 'ice.fileEntry.ajaxResponse', 'true');
 
         formElem.target = iframeId;
         var iframeElem = document.getElementById(iframeId);

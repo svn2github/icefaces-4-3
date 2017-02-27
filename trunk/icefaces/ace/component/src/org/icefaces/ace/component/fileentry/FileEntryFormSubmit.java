@@ -112,17 +112,18 @@ public class FileEntryFormSubmit implements SystemEventListener {
                 String encodedPartialActionURL = externalContext.encodePartialActionURL(url.toString());
                 log.finer("RENDER ENCODED_URL  clientId: " + clientId + "  encodedPartialActionURL: " + encodedPartialActionURL);
                 ResponseWriter writer = context.getResponseWriter();
+                String parameterPrefix = EnvUtils.getParameterNamespace(context);
                 if (encodedPartialActionURL != null) {
                     writer.startElement(HTML.INPUT_ELEM, this);
                     writer.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_HIDDEN, null);
                     writer.writeAttribute(HTML.ID_ATTR, clientId, "clientId");
-                    writer.writeAttribute(HTML.NAME_ATTR, ENCODED_URL_NAME, null);
+                    writer.writeAttribute(HTML.NAME_ATTR, parameterPrefix + ENCODED_URL_NAME, null);
                     writer.writeAttribute(HTML.VALUE_ATTR, encodedPartialActionURL, "clientId");
                     writer.endElement(HTML.INPUT_ELEM);
                 }
                 writer.startElement(HTML.INPUT_ELEM, this);
                 writer.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_HIDDEN, null);
-                writer.writeAttribute(HTML.NAME_ATTR, "file-entry-id", null);
+                writer.writeAttribute(HTML.NAME_ATTR, parameterPrefix + "file-entry-id", null);
                 writer.writeAttribute(HTML.VALUE_ATTR, fileEntry.getId(), null);
                 writer.endElement(HTML.INPUT_ELEM);
             }
