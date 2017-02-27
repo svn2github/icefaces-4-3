@@ -112,7 +112,7 @@ public class CloudPushBean implements Serializable {
      * @param event jsf action event
      */
     public void sendPriorityPushMessage(ActionEvent event) {
-        final PushMessage myMessage = new PushMessage(subject, message, null);
+        final PushMessage myMessage = new PushMessage(subject, message);
         clearPreviousPushMessage();
         final PortableRenderer portable = PushRenderer.getPortableRenderer();
         scheduledPushExecutor.schedule(new Runnable() {
