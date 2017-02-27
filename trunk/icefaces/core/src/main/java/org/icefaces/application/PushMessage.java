@@ -30,31 +30,18 @@ extends PushOptions {
     public static final String SUBJECT = "subject";
     public static final String DETAIL = "detail";
     public static final String TARGET_URI = "targetURI";
-    public static final String FORCED = "forced";
 
     public PushMessage(final String subject, final String detail, final URI targetURI)
-    throws IllegalArgumentException {
-        this(subject, detail, targetURI, false);
-    }
-
-    public PushMessage(final String subject, final String detail, final URI targetURI, final boolean forced)
     throws IllegalArgumentException {
         setSubject(subject);
         setDetail(detail);
         setTargetURI(targetURI);
-        setForced(forced);
     }
 
     public PushMessage(final String subject, final URI targetURI)
     throws IllegalArgumentException {
-        this(subject, targetURI, false);
-    }
-
-    public PushMessage(final String subject, final URI targetURI, final boolean forced)
-    throws IllegalArgumentException {
         setSubject(subject);
         setTargetURI(targetURI);
-        setForced(forced);
     }
 
     public String getDetail() {
@@ -69,10 +56,6 @@ extends PushOptions {
         return (String)getAttribute(TARGET_URI);
     }
 
-    public boolean isForced() {
-        return (Boolean)getAttribute(FORCED);
-    }
-
     public void setDetail(final String detail)
     throws IllegalArgumentException {
         checkArgument(
@@ -80,11 +63,6 @@ extends PushOptions {
             "Illegal argument detail: '" + detail + "'.  Argument cannot be null or empty."
         );
         putAttribute(DETAIL, detail);
-    }
-
-    public void setForced(final boolean forced)
-    throws IllegalArgumentException {
-        putAttribute(FORCED, forced);
     }
 
     public void setSubject(final String subject)
