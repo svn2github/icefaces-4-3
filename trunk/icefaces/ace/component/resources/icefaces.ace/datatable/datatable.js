@@ -907,6 +907,26 @@ ice.ace.DataTable.prototype.setupSortEventsForColumn = function (id) {
 };
 
 ice.ace.DataTable.prototype.setupClickEvents = function() {
+
+    function isInputTarget(parent, target) {
+        var inputTypes = ['input', 'textarea', 'button', 'select'];
+
+        //test if target is an input element
+        if (inputTypes.indexOf(target[0].nodeName.toLowerCase()) > -1) {
+            return true;
+        }
+
+        //test if any of the parents of the target is an input element
+        var ancestors = target.parentsUntil(parent);
+        for (var i = 0, l = ancestors.length; i < l; i++) {
+            if (inputTypes.indexOf(ancestors[i].nodeName.toLowerCase()) > -1) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
      function setupCellClick(obsList, options) {
         if (obsList.length == 0) return;
 
@@ -924,7 +944,7 @@ ice.ace.DataTable.prototype.setupClickEvents = function() {
 
             var target = ice.ace.jq(event.target);
 
-            if (options.allColumnClicks || this == target[0] || !target.is('input,textarea,button,select')) {
+            if (options.allColumnClicks || this == target[0] || !isInputTarget(this, target)) {
                 // wait for dblclick
                 self.cellClickWaiting = setTimeout(function() {
                     execObsList.call(self, event);
@@ -960,7 +980,7 @@ ice.ace.DataTable.prototype.setupClickEvents = function() {
 
             var target = ice.ace.jq(event.target);
 
-            if (options.allColumnClicks || this == target[0] || !target.is('input,textarea,button,select')) {
+            if (options.allColumnClicks || this == target[0] || !isInputTarget(this, target)) {
                 self.rowClickWaiting = setTimeout(function() {
                     execObsList.call(self, event);
                     // console.log('row click');
@@ -990,7 +1010,7 @@ ice.ace.DataTable.prototype.setupClickEvents = function() {
         this.element.on('dblclick', this.cellSelector, function (event) {
             var target = ice.ace.jq(event.target);
 
-            if (options.allColumnClicks ||  this == target[0] || !target.is('input,textarea,button,select')) {
+            if (options.allColumnClicks ||  this == target[0] || !isInputTarget(this, target)) {
                 if (self.rowClickWaiting) clearTimeout(self.rowClickWaiting);
                 if (self.cellClickWaiting) clearTimeout(self.cellClickWaiting);
 
@@ -1017,7 +1037,7 @@ ice.ace.DataTable.prototype.setupClickEvents = function() {
         this.element.on('dblclick', this.rowSelector, function (event) {
             var target = ice.ace.jq(event.target);
 
-            if (options.allColumnClicks || this == target[0] || !target.is('input,textarea,button,select')) {
+            if (options.allColumnClicks || this == target[0] || !isInputTarget(this, target)) {
                 if (self.rowClickWaiting) clearTimeout(self.rowClickWaiting);
                 if (self.cellClickWaiting) clearTimeout(self.cellClickWaiting);
 
