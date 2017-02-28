@@ -422,7 +422,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 
             writer.startElement("div", null);
             writer.writeAttribute("style", "display: none;", null);
-            writer.startElement("div", null);
+            writer.startElement("a", null);
             Map requestMap = facesContext.getExternalContext().getRequestMap();
             //set index to 0, so child components can get client id from autoComplete component
             autoCompleteEntry.setIndex(0);
@@ -462,14 +462,14 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
             }
             autoCompleteEntry.setIndex(-1);
 
-            writer.endElement("div");
+            writer.endElement("a");
             String call = "ice.ace.Autocompleters[\"" + clientId +
                     "\"].extractAndUpdateNOW();";
             encodeDynamicScript(writer, null, call + "// " + text + " " + timestamp);
             writer.endElement("div");
         } else {
             if (matches.hasNext()) {
-                StringBuffer sb = new StringBuffer("<div>");
+                StringBuffer sb = new StringBuffer("<a>");
                 SelectItem item = null;
                 while (matches.hasNext() && rowCounter < rows) {
                     item = (SelectItem) matches.next();
@@ -497,7 +497,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
                         rowCounter++;
                     }
                 }
-                sb.append("</div>");
+                sb.append("</a>");
                 String call = "ice.ace.Autocompleters[\"" + clientId + "\"]" +
                         ".updateNOW('" + escapeSingleQuote(sb.toString()) + "');";
                 encodeDynamicScript(writer, null, call + "// " + text + " " + timestamp);
