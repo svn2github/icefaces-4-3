@@ -909,7 +909,7 @@ ice.ace.DataTable.prototype.setupSortEventsForColumn = function (id) {
 ice.ace.DataTable.prototype.setupClickEvents = function() {
 
     function isInputTarget(parent, target) {
-        var inputTypes = ['input', 'textarea', 'button', 'select'];
+        var inputTypes = ['a', 'input', 'textarea', 'button', 'select'];
 
         //test if target is an input element
         if (inputTypes.indexOf(target[0].nodeName.toLowerCase()) > -1) {
