@@ -279,18 +279,18 @@ ice.ace.Schedule.prototype.extractDayOfWeek = function(node) {
 };
 
 ice.ace.Schedule.prototype.getEventDetailsMarkup = function(data, isEventAddition, isEventEditing, isEventDeletion) {
-	if (data) {// *** escape HTML characters
+	if (data) {
 		var markup = '';
 		if (isEventAddition || isEventEditing) {
 			markup += '<div class="ui-state-error ui-corner-all" style="display:none;">Error: Start date must be in the format YYYY-MM-DD.</div>';
 			markup += '<div class="ui-state-error ui-corner-all" style="display:none;">Error: End date must be in the format YYYY-MM-DD.</div>';
 			markup += '<div class="ui-state-error ui-corner-all" style="display:none;">Error: End date must be later than start date.</div>';
-			markup += '<table><tr><td>Start&nbsp;Date:</td><td><input type="text" name="'+this.id+'_date" value="'+data.startDate+'"/></td></tr><tr><td>Start&nbsp;Time:</td><td>'+this.getHourSelectionMarkup(data.startTime, data.isAllDay)+'&nbsp;:&nbsp;'+this.getMinuteSelectionMarkup(data.startTime, data.isAllDay)+'</td></tr><tr><td>End&nbsp;Date:</td><td><input type="text" name="'+this.id+'_endDate" value="'+data.endDate+'"/></td></tr><tr><td>End&nbsp;Time:</td><td>'+this.getHourSelectionMarkup(data.endTime, data.isAllDay)+'&nbsp;:&nbsp;'+this.getMinuteSelectionMarkup(data.endTime, data.isAllDay)+'</td></tr><tr><td>All Day Event: </td><td><input type="checkbox" name="'+this.id+'_allDay" '+(data.isAllDay?'checked':'')+'/></td></tr><tr><td>Title:</td><td><input type="text" name="'+this.id+'_title" value="'+data.title+'"/></td></tr><tr><td>Location:</td><td><input type="text" name="'+this.id+'_location" value="'+data.location+'"/></td></tr><tr><td>Notes:</td><td><textarea name="'+this.id+'_notes">'+data.notes+'</textarea></td></tr></table><input type="hidden" name="'+this.id+'_index" value="'+data.index+'"/>';
+			markup += '<table><tr><td>Start&nbsp;Date:</td><td><input type="text" name="'+this.id+'_date" value="'+data.startDate+'"/></td></tr><tr><td>Start&nbsp;Time:</td><td>'+this.getHourSelectionMarkup(data.startTime, data.isAllDay)+'&nbsp;:&nbsp;'+this.getMinuteSelectionMarkup(data.startTime, data.isAllDay)+'</td></tr><tr><td>End&nbsp;Date:</td><td><input type="text" name="'+this.id+'_endDate" value="'+data.endDate+'"/></td></tr><tr><td>End&nbsp;Time:</td><td>'+this.getHourSelectionMarkup(data.endTime, data.isAllDay)+'&nbsp;:&nbsp;'+this.getMinuteSelectionMarkup(data.endTime, data.isAllDay)+'</td></tr><tr><td>All Day Event: </td><td><input type="checkbox" name="'+this.id+'_allDay" '+(data.isAllDay?'checked':'')+'/></td></tr><tr><td>Title:</td><td><input type="text" name="'+this.id+'_title" value="'+this.escapeHtml(data.title)+'"/></td></tr><tr><td>Location:</td><td><input type="text" name="'+this.id+'_location" value="'+this.escapeHtml(data.location)+'"/></td></tr><tr><td>Notes:</td><td><textarea name="'+this.id+'_notes">'+this.escapeHtml(data.notes)+'</textarea></td></tr></table><input type="hidden" name="'+this.id+'_index" value="'+data.index+'"/>';
 			if (isEventEditing) {
-				markup += '<input type="hidden" name="'+this.id+'_old_startDate" value="'+data.startDate+'"/><input type="hidden" name="'+this.id+'_old_startTime" value="'+data.startTime+'"/><input type="hidden" name="'+this.id+'_old_endDate" value="'+data.endDate+'"/><input type="hidden" name="'+this.id+'_old_endTime" value="'+data.endTime+'"/><input type="hidden" name="'+this.id+'_old_allDay" value="'+data.isAllDay+'"/><input type="hidden" name="'+this.id+'_old_title" value="'+data.title+'"/><input type="hidden" name="'+this.id+'_old_location" value="'+data.location+'"/><input type="hidden" name="'+this.id+'_old_notes" value="'+data.notes+'"/>';
+				markup += '<input type="hidden" name="'+this.id+'_old_startDate" value="'+data.startDate+'"/><input type="hidden" name="'+this.id+'_old_startTime" value="'+data.startTime+'"/><input type="hidden" name="'+this.id+'_old_endDate" value="'+data.endDate+'"/><input type="hidden" name="'+this.id+'_old_endTime" value="'+data.endTime+'"/><input type="hidden" name="'+this.id+'_old_allDay" value="'+data.isAllDay+'"/><input type="hidden" name="'+this.id+'_old_title" value="'+this.escapeHtml(data.title)+'"/><input type="hidden" name="'+this.id+'_old_location" value="'+this.escapeHtml(data.location)+'"/><input type="hidden" name="'+this.id+'_old_notes" value="'+this.escapeHtml(data.notes)+'"/>';
 			}
 		} else {
-			markup = '<table><tr><td>Start Date:</td><td>'+data.startDate+'</td></tr><tr><td>Start Time:</td><td>'+data.startTime+'</td></tr><tr><td>End Date:</td><td>'+data.endDate+'</td></tr><tr><td>End Time:</td><td>'+data.endTime+'</td></tr><tr><td>Title:</td><td>'+data.title+'</td></tr><tr><td>Location:</td><td>'+data.location+'</td></tr><tr><td>Notes:</td><td>'+data.notes+'</td></tr></table>';
+			markup = '<table><tr><td>Start Date:</td><td>'+data.startDate+'</td></tr><tr><td>Start Time:</td><td>'+data.startTime+'</td></tr><tr><td>End Date:</td><td>'+data.endDate+'</td></tr><tr><td>End Time:</td><td>'+data.endTime+'</td></tr><tr><td>Title:</td><td>'+this.escapeHtml(data.title)+'</td></tr><tr><td>Location:</td><td>'+this.escapeHtml(data.location)+'</td></tr><tr><td>Notes:</td><td>'+this.escapeHtml(data.notes)+'</td></tr></table>';
 		}
 		if (data.styleClass) markup += '<input type="hidden" name="'+this.id+'_styleClass" value="'+data.styleClass+'"/>';
 		if (data.id) markup += '<input type="hidden" name="'+this.id+'_id" value="'+data.id+'"/>';
@@ -784,7 +784,7 @@ ice.ace.Schedule.prototype.renderMonthEvents = function(data) {
 			} else {
 				startTime = event.startTime;
 			}
-			eventElement.html('<span>' + startTime + ' ' + event.title + '</span>');
+			eventElement.html('<span>' + startTime + ' ' + this.escapeHtml(event.title) + '</span>');
 			if (event.isAllDay) {
 				eventElement.addClass('schedule-event-allday');
 				eventElement.insertAfter(dayDiv.find('.day-number'));
@@ -792,7 +792,7 @@ ice.ace.Schedule.prototype.renderMonthEvents = function(data) {
 				eventElement.appendTo(dayDiv);
 			}
 			var highlightClass = listing % 2 == 1 ? ' ui-state-highlight' : '';
-			ice.ace.jq('<div class="schedule-list-event schedule-event-' + event.index + highlightClass + '"><span class="schedule-list-event-day">'+event.startDate.substring(8,10)+'</span><span class="schedule-list-event-name">'+event.title+'</span><span class="schedule-list-event-location">'+event.location+'</span></div>').appendTo(sidebarEventsContainer);
+			ice.ace.jq('<div class="schedule-list-event schedule-event-' + event.index + highlightClass + '"><span class="schedule-list-event-day">'+event.startDate.substring(8,10)+'</span><span class="schedule-list-event-name">'+this.escapeHtml(event.title)+'</span><span class="schedule-list-event-location">'+this.escapeHtml(event.location)+'</span></div>').appendTo(sidebarEventsContainer);
 			listing++;
 			// spans multiple days
 			if (eventStartYear == eventEndYear && eventStartMonth == eventEndMonth && eventEndDay > eventStartDay) {
@@ -803,13 +803,13 @@ ice.ace.Schedule.prototype.renderMonthEvents = function(data) {
 						+ '-' + this.addLeadingZero(j) + ' .schedule-state');
 					var eventElement = ice.ace.jq('<div class=\"ui-state-default ui-corner-all schedule-event schedule-event-' + event.index + customStyleClass + '\"></div>');
 					if (event.isAllDay) {
-						eventElement.html('<span>ALL DAY ' + event.title + '</span>');
+						eventElement.html('<span>ALL DAY ' + this.escapeHtml(event.title) + '</span>');
 						eventElement.addClass('schedule-event-allday');
 						var lastAllDayEvent = dayDiv.find('.schedule-event-allday:last');
 						if (lastAllDayEvent.size() > 0) eventElement.insertAfter(lastAllDayEvent);
 						else eventElement.insertAfter(dayDiv.find('.day-number'));
 					} else {
-						eventElement.html('<span>(cont.) ' + event.title + '</span>');
+						eventElement.html('<span>(cont.) ' + this.escapeHtml(event.title) + '</span>');
 						eventElement.appendTo(dayDiv);
 					}
 				}
@@ -822,13 +822,13 @@ ice.ace.Schedule.prototype.renderMonthEvents = function(data) {
 						+ '-' + this.addLeadingZero(j) + ' .schedule-state');
 					var eventElement = ice.ace.jq('<div class=\"ui-state-default ui-corner-all schedule-event schedule-event-' + event.index + customStyleClass + '\"></div>');
 					if (event.isAllDay) {
-						eventElement.html('<span>ALL DAY ' + event.title + '</span>');
+						eventElement.html('<span>ALL DAY ' + this.escapeHtml(event.title) + '</span>');
 						eventElement.addClass('schedule-event-allday');
 						var lastAllDayEvent = dayDiv.find('.schedule-event-allday:last');
 						if (lastAllDayEvent.size() > 0) eventElement.insertAfter(lastAllDayEvent);
 						else eventElement.insertAfter(dayDiv.find('.day-number'));
 					} else {
-						eventElement.html('<span>(cont.) ' + event.title + '</span>');
+						eventElement.html('<span>(cont.) ' + this.escapeHtml(event.title) + '</span>');
 						eventElement.appendTo(dayDiv);
 					}
 				}
@@ -841,13 +841,13 @@ ice.ace.Schedule.prototype.renderMonthEvents = function(data) {
 					+ '-' + this.addLeadingZero(j) + ' .schedule-state');
 				var eventElement = ice.ace.jq('<div class=\"ui-state-default ui-corner-all schedule-event schedule-event-' + event.index + customStyleClass + '\"></div>');
 				if (event.isAllDay) {
-					eventElement.html('<span>ALL DAY ' + event.title + '</span>');
+					eventElement.html('<span>ALL DAY ' + this.escapeHtml(event.title) + '</span>');
 					eventElement.addClass('schedule-event-allday');
 					var lastAllDayEvent = dayDiv.find('.schedule-event-allday:last');
 					if (lastAllDayEvent.size() > 0) eventElement.insertAfter(lastAllDayEvent);
 					else eventElement.insertAfter(dayDiv.find('.day-number'));
 				} else {
-					eventElement.html('<span>(cont.) ' + event.title + '</span>');
+					eventElement.html('<span>(cont.) ' + this.escapeHtml(event.title) + '</span>');
 					eventElement.appendTo(dayDiv);
 				}
 			}
@@ -859,13 +859,13 @@ ice.ace.Schedule.prototype.renderMonthEvents = function(data) {
 					+ '-' + this.addLeadingZero(j) + ' .schedule-state');
 				var eventElement = ice.ace.jq('<div class=\"ui-state-default ui-corner-all schedule-event schedule-event-' + event.index + customStyleClass + '\"></div>');
 				if (event.isAllDay) {
-					eventElement.html('<span>ALL DAY ' + event.title + '</span>');
+					eventElement.html('<span>ALL DAY ' + this.escapeHtml(event.title) + '</span>');
 					eventElement.addClass('schedule-event-allday');
 					var lastAllDayEvent = dayDiv.find('.schedule-event-allday:last');
 					if (lastAllDayEvent.size() > 0) eventElement.insertAfter(lastAllDayEvent);
 					else eventElement.insertAfter(dayDiv.find('.day-number'));
 				} else {
-					eventElement.html('<span>(cont.) ' + event.title + '</span>');
+					eventElement.html('<span>(cont.) ' + this.escapeHtml(event.title) + '</span>');
 					eventElement.appendTo(dayDiv);
 				}
 			}
@@ -1027,7 +1027,7 @@ ice.ace.Schedule.prototype.renderWeekEvents = function() {
 
 				var customStyleClass = event.styleClass ? ' ' + event.styleClass : '';
 				var eventElement = ice.ace.jq('<div class="ui-state-default schedule-dow-' + dow + ' schedule-event schedule-event-allday schedule-event-' + event.index + customStyleClass + '"></div>');
-				eventElement.html('<span class="schedule-event-bold">' + event.title + '</span>, ' + event.location);
+				eventElement.html('<span class="schedule-event-bold">' + this.escapeHtml(event.title) + '</span>, ' + this.escapeHtml(event.location));
 				var selector = '.schedule-dow-'+dow+'.schedule-time-allday-'+allDayEventCount+' .schedule-state';
 				eventElement.appendTo(ice.ace.jq(selector));
 
@@ -1040,7 +1040,7 @@ ice.ace.Schedule.prototype.renderWeekEvents = function() {
 
 						if (eventEndDate >= eventStartDate) {
 							var eventElement = ice.ace.jq('<div class="ui-state-default schedule-dow-' + dow + ' schedule-event schedule-event-allday schedule-event-' + event.index + customStyleClass + '"></div>');
-							eventElement.html('<span class="schedule-event-bold">' + event.title + '</span>, ' + event.location);
+							eventElement.html('<span class="schedule-event-bold">' + this.escapeHtml(event.title) + '</span>, ' + this.escapeHtml(event.location));
 							var selector = '.schedule-dow-'+dow+'.schedule-time-allday-'+allDayEventCount+' .schedule-state';
 							eventElement.appendTo(ice.ace.jq(selector));
 						}
@@ -1065,7 +1065,7 @@ ice.ace.Schedule.prototype.renderWeekEvents = function() {
 					if (eventEndDate >= date) {
 						var customStyleClass = event.styleClass ? ' ' + event.styleClass : '';
 						var eventElement = ice.ace.jq('<div class="ui-state-default schedule-dow-' + dow + ' schedule-event schedule-event-allday schedule-event-' + event.index + customStyleClass + '"></div>');
-						eventElement.html('<span class="schedule-event-bold">' + event.title + '</span>, ' + event.location);
+						eventElement.html('<span class="schedule-event-bold">' + this.escapeHtml(event.title) + '</span>, ' + this.escapeHtml(event.location));
 						var selector = '.schedule-dow-'+dow+'.schedule-time-allday-'+allDayEventCount+' .schedule-state';
 						eventElement.appendTo(ice.ace.jq(selector));
 					}
@@ -1080,7 +1080,7 @@ ice.ace.Schedule.prototype.renderWeekEvents = function() {
 				for (dow = 0; dow <= 6; dow++) {
 					var customStyleClass = event.styleClass ? ' ' + event.styleClass : '';
 					var eventElement = ice.ace.jq('<div class="ui-state-default schedule-dow-' + dow + ' schedule-event schedule-event-allday schedule-event-' + event.index + customStyleClass + '"></div>');
-					eventElement.html('<span class="schedule-event-bold">' + event.title + '</span>, ' + event.location);
+					eventElement.html('<span class="schedule-event-bold">' + this.escapeHtml(event.title) + '</span>, ' + this.escapeHtml(event.location));
 					var selector = '.schedule-dow-'+dow+'.schedule-time-allday-'+allDayEventCount+' .schedule-state';
 					eventElement.appendTo(ice.ace.jq(selector));
 				}
@@ -1142,7 +1142,7 @@ ice.ace.Schedule.prototype.renderWeekEvents = function() {
 				width: (width - multiplicityAdjustment) + 'px', 
 				height: (endPosition.top - position.top + height) + 'px'}).appendTo(eventsContainer);
 			var highlightClass = listing % 2 == 1 ? ' ui-state-highlight' : '';
-			ice.ace.jq('<div class="schedule-list-event schedule-event-' + event.index + highlightClass + '"><span class="schedule-list-event-day">'+this.getMonthNameShort(eventStartDate.getMonth())+' '+event.startDate.substring(8)+'</span><span class="schedule-list-event-name">'+event.title+'</span><span class="schedule-list-event-location">'+event.location+'</span></div>').appendTo(sidebarEventsContainer);
+			ice.ace.jq('<div class="schedule-list-event schedule-event-' + event.index + highlightClass + '"><span class="schedule-list-event-day">'+this.getMonthNameShort(eventStartDate.getMonth())+' '+event.startDate.substring(8)+'</span><span class="schedule-list-event-name">'+this.escapeHtml(event.title)+'</span><span class="schedule-list-event-location">'+this.escapeHtml(event.location)+'</span></div>').appendTo(sidebarEventsContainer);
 			this.markUsedTimeSlots(this.weekTimeSlots[dow], startingTimeSlot, endingTimeSlot);
 			listing++;
 			if (spansMultipleDays) {
@@ -1168,7 +1168,7 @@ ice.ace.Schedule.prototype.renderWeekEvents = function() {
 						var height = endTimeCell.outerHeight() - 1;
 						var customStyleClass = event.styleClass ? ' ' + event.styleClass : '';
 						var eventElement = ice.ace.jq('<div class=\"ui-state-default schedule-dow-' + dow + ' schedule-event schedule-event-' + event.index + customStyleClass + '\"></div>');
-						eventElement.html('(cont.) ' + event.title);
+						eventElement.html('(cont.) ' + this.escapeHtml(event.title));
 						var timeSlotMultiplicity = this.weekTimeSlots[dow][this.timeSlotIndexMap[startingTimeSlot]];
 						timeSlotMultiplicity = timeSlotMultiplicity < 4 ? timeSlotMultiplicity : 4;
 						var multiplicityAdjustment = timeSlotMultiplicity * 5;
@@ -1210,7 +1210,7 @@ ice.ace.Schedule.prototype.renderWeekEvents = function() {
 					var height = endTimeCell.outerHeight() - 1;
 					var customStyleClass = event.styleClass ? ' ' + event.styleClass : '';
 					var eventElement = ice.ace.jq('<div class=\"ui-state-default schedule-dow-' + dow + ' schedule-event schedule-event-' + event.index + customStyleClass + '\"></div>');
-					eventElement.html('(cont.) ' + event.title);
+					eventElement.html('(cont.) ' + this.escapeHtml(event.title));
 					var timeSlotMultiplicity = this.weekTimeSlots[dow][this.timeSlotIndexMap[startingTimeSlot]];
 					timeSlotMultiplicity = timeSlotMultiplicity < 4 ? timeSlotMultiplicity : 4;
 					var multiplicityAdjustment = timeSlotMultiplicity * 5;
@@ -1240,7 +1240,7 @@ ice.ace.Schedule.prototype.renderWeekEvents = function() {
 				var height = endTimeCell.outerHeight() - 1;
 				var customStyleClass = event.styleClass ? ' ' + event.styleClass : '';
 				var eventElement = ice.ace.jq('<div class=\"ui-state-default schedule-dow-' + dow + ' schedule-event schedule-event-' + event.index + customStyleClass + '\"></div>');
-				eventElement.html('(cont.) ' + event.title);
+				eventElement.html('(cont.) ' + this.escapeHtml(event.title));
 				var timeSlotMultiplicity = this.weekTimeSlots[dow][this.timeSlotIndexMap[startingTimeSlot]];
 				timeSlotMultiplicity = timeSlotMultiplicity < 4 ? timeSlotMultiplicity : 4;
 				var multiplicityAdjustment = timeSlotMultiplicity * 5;
@@ -1380,7 +1380,7 @@ ice.ace.Schedule.prototype.renderDayEvents = function() {
 
 				var customStyleClass = event.styleClass ? ' ' + event.styleClass : '';
 				var eventElement = ice.ace.jq('<div class="ui-state-default schedule-dow-single schedule-event schedule-event-allday schedule-event-' + event.index + customStyleClass + '"></div>');
-				eventElement.html('<span class="schedule-event-bold">' + event.title + '</span>, ' + event.location);
+				eventElement.html('<span class="schedule-event-bold">' + this.escapeHtml(event.title) + '</span>, ' + this.escapeHtml(event.location));
 				var selector = '.schedule-dow-single.schedule-time-allday-'+allDayEventCount+' .schedule-state';
 				eventElement.appendTo(ice.ace.jq(this.jqId).find(selector));
 			}
@@ -1436,7 +1436,7 @@ ice.ace.Schedule.prototype.renderDayEvents = function() {
 				width: (width - multiplicityAdjustment) + 'px',
 				height: (endPosition.top - position.top + height) + 'px'}).appendTo(eventsContainer);
 			var highlightClass = listing % 2 == 1 ? ' ui-state-highlight' : '';
-			ice.ace.jq('<div class="schedule-list-event schedule-event-' + event.index + highlightClass + '"><span class="schedule-list-event-day">'+event.startTime+'</span><span class="schedule-list-event-name">'+event.title+'</span><span class="schedule-list-event-location">'+event.location+'</span></div>').appendTo(sidebarEventsContainer);
+			ice.ace.jq('<div class="schedule-list-event schedule-event-' + event.index + highlightClass + '"><span class="schedule-list-event-day">'+event.startTime+'</span><span class="schedule-list-event-name">'+this.escapeHtml(event.title)+'</span><span class="schedule-list-event-location">'+this.escapeHtml(event.location)+'</span></div>').appendTo(sidebarEventsContainer);
 			this.markUsedTimeSlots(this.dayTimeSlots, startingTimeSlot, endingTimeSlot);
 			listing++;
 		// events that don't start on this day but end on this day
@@ -1469,7 +1469,7 @@ ice.ace.Schedule.prototype.renderDayEvents = function() {
 				width: (width - multiplicityAdjustment) + 'px',
 				height: (endPosition.top - position.top + height) + 'px'}).appendTo(eventsContainer);
 			var highlightClass = listing % 2 == 1 ? ' ui-state-highlight' : '';
-			ice.ace.jq('<div class="schedule-list-event schedule-event-' + event.index + highlightClass + '"><span class="schedule-list-event-day">(continued)</span><span class="schedule-list-event-name">'+event.title+'</span><span class="schedule-list-event-location">'+event.location+'</span></div>').appendTo(sidebarEventsContainer);
+			ice.ace.jq('<div class="schedule-list-event schedule-event-' + event.index + highlightClass + '"><span class="schedule-list-event-day">(continued)</span><span class="schedule-list-event-name">'+this.escapeHtml(event.title)+'</span><span class="schedule-list-event-location">'+this.escapeHtml(event.location)+'</span></div>').appendTo(sidebarEventsContainer);
 			this.markUsedTimeSlots(this.dayTimeSlots, startingTimeSlot, endingTimeSlot);
 			listing++;
 		// events that neither start nor end on this day but that encompass it
@@ -1501,7 +1501,7 @@ ice.ace.Schedule.prototype.renderDayEvents = function() {
 				width: (width - multiplicityAdjustment) + 'px',
 				height: (endPosition.top - position.top + height) + 'px'}).appendTo(eventsContainer);
 			var highlightClass = listing % 2 == 1 ? ' ui-state-highlight' : '';
-			ice.ace.jq('<div class="schedule-list-event schedule-event-' + event.index + highlightClass + '"><span class="schedule-list-event-day">(continued)</span><span class="schedule-list-event-name">'+event.title+'</span><span class="schedule-list-event-location">'+event.location+'</span></div>').appendTo(sidebarEventsContainer);
+			ice.ace.jq('<div class="schedule-list-event schedule-event-' + event.index + highlightClass + '"><span class="schedule-list-event-day">(continued)</span><span class="schedule-list-event-name">'+this.escapeHtml(event.title)+'</span><span class="schedule-list-event-location">'+this.escapeHtml(event.location)+'</span></div>').appendTo(sidebarEventsContainer);
 			this.markUsedTimeSlots(this.dayTimeSlots, startingTimeSlot, endingTimeSlot);
 			listing++;
 		}
@@ -1549,7 +1549,7 @@ ice.ace.Schedule.prototype.getEventDivMarkup = function(startHour, startMinutes,
 		lines = 3;
 	}
 	if (lines == 1) {
-		return (continued?'(cont.)':'') + '<span class="schedule-event-bold">' + event.title + '</span>, ' + event.location;
+		return (continued?'(cont.)':'') + '<span class="schedule-event-bold">' + this.escapeHtml(event.title) + '</span>, ' + this.escapeHtml(event.location);
 	} else {
 		var startTime;
 		if (continued) {
@@ -1562,9 +1562,9 @@ ice.ace.Schedule.prototype.getEventDivMarkup = function(startHour, startMinutes,
 			startTime = event.startTime;		
 		}
 		if (lines == 2) {
-			return startTime + '<br/><span class="schedule-event-bold">' + event.title + '</span>, ' + event.location;
+			return startTime + '<br/><span class="schedule-event-bold">' + this.escapeHtml(event.title) + '</span>, ' + this.escapeHtml(event.location);
 		} else {
-			return startTime + '<br/><span class="schedule-event-bold">' + event.title + '</span><br/>' + event.location;
+			return startTime + '<br/><span class="schedule-event-bold">' + this.escapeHtml(event.title) + '</span><br/>' + this.escapeHtml(event.location);
 		}
 	}
 };
@@ -2089,3 +2089,9 @@ ice.ace.Schedule.prototype.addLeadingZero = function(number) {
 	if (number < 10) return ('0' + number);
 	else return ('' + number);
 };
+
+ice.ace.Schedule.prototype.escapeHtml = function(str) {
+	var div = document.createElement('div');
+	div.appendChild(document.createTextNode(str));
+	return div.innerHTML;
+}
