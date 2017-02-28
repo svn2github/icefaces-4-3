@@ -20,6 +20,7 @@ import org.icefaces.ace.model.schedule.ScheduleEvent;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.JSONBuilder;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -67,7 +68,8 @@ public class ScheduleRenderer extends CoreRenderer {
 		try {
 			index = Integer.valueOf(indexParam);
 		} catch(Exception e) {
-			/* TO_DO: log warning */
+			FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Event editing failed. Incorrect index.", "Event editing failed. Incorrect index.");
+			context.addMessage(clientId, fm);
 			return;
 		}
 
@@ -84,7 +86,8 @@ public class ScheduleRenderer extends CoreRenderer {
 			try {
 				index = Integer.valueOf(indexParam);
 			} catch(Exception e) {
-				/* TO_DO: log warning */
+				FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Event editing failed. Incorrect index.", "Event editing failed. Incorrect index.");
+				context.addMessage(clientId, fm);
 				return;
 			}
 			schedule.deleteEvent(index);
@@ -159,11 +162,13 @@ public class ScheduleRenderer extends CoreRenderer {
 			if (previousViewMode != null && !viewMode.equalsIgnoreCase(previousViewMode)) {
 				if (selectedDateString != null && !"".equals(selectedDateString)) {
 					Date selectedDate = ScheduleUtils.convertDateTimeToServerFormat(selectedDateString, "00:00");
-					Calendar cal = Calendar.getInstance();
-					cal.setTime(selectedDate);
-					schedule.setCurrentYear(cal.get(Calendar.YEAR));
-					schedule.setCurrentMonth(cal.get(Calendar.MONTH));
-					schedule.setCurrentDay(cal.get(Calendar.DATE));
+					if (selectedDate != null) {
+						Calendar cal = Calendar.getInstance();
+						cal.setTime(selectedDate);
+						schedule.setCurrentYear(cal.get(Calendar.YEAR));
+						schedule.setCurrentMonth(cal.get(Calendar.MONTH));
+						schedule.setCurrentDay(cal.get(Calendar.DATE));
+					}
 				}
 			}
 		} else {
@@ -271,13 +276,16 @@ public class ScheduleRenderer extends CoreRenderer {
 						ScheduleUtils.DateIntegerValues endDateValues = ScheduleUtils.getDateIntegerValues(endDate);
 						jb.entry("endDate", convertDateToClientFormat(endDateValues));
 						jb.entry("endTime", convertTimeToClientFormat(endDateValues));
-						jb.entry("title", scheduleEvent.getTitle());
-						jb.entry("location", scheduleEvent.getLocation());
-						jb.entry("notes", scheduleEvent.getNotes());
-						jb.entry("isAllDay", scheduleEvent.isAllDay());
+						String title = scheduleEvent.getTitle();
+						jb.entry("title", (title != null ? title : ""));
+						String location = scheduleEvent.getLocation();
+						jb.entry("location", (location != null ? location : ""));
+						String notes = scheduleEvent.getNotes();
+						jb.entry("notes", (notes != null ? notes : ""));
 						String styleClass = scheduleEvent.getStyleClass();
 						if (styleClass != null) jb.entry("styleClass", styleClass);
 						String id = scheduleEvent.getId();
+						jb.entry("isAllDay", scheduleEvent.isAllDay());
 						if (id != null) jb.entry("id", id);
 						jb.endMap();
 					}

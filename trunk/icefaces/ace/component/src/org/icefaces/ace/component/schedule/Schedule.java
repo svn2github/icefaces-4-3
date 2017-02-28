@@ -22,6 +22,7 @@ import org.icefaces.ace.event.ScheduleNavigationEvent;
 import org.icefaces.ace.model.schedule.LazyScheduleEventList;
 import org.icefaces.ace.model.schedule.ScheduleEvent;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
@@ -224,6 +225,16 @@ public class Schedule extends ScheduleBase implements Serializable {
 
 	public void addEvent(ScheduleEvent scheduleEvent) {
 		if (scheduleEvent == null) return;
+
+		// validate that end date is later than start date
+		Date endDate = scheduleEvent.getEndDate();
+		if (endDate != null && !endDate.after(scheduleEvent.getStartDate())) {
+			FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Start date is later than end date.", "Start date is later than end date.");
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(getClientId(context), fm);
+			return;
+		}
+
 		Object value = getValue();
 		if (value instanceof List) {
 			((List) value).add(scheduleEvent);
@@ -240,6 +251,16 @@ public class Schedule extends ScheduleBase implements Serializable {
 
 	public void editEvent(int index, ScheduleEvent scheduleEvent) {
 		if (scheduleEvent == null) return;
+
+		// validate that end date is later than start date
+		Date endDate = scheduleEvent.getEndDate();
+		if (endDate != null && !endDate.after(scheduleEvent.getStartDate())) {
+			FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Start date is later than end date.", "Start date is later than end date.");
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(getClientId(context), fm);
+			return;
+		}
+
 		Object value = getValue();
 		if (value instanceof List) {
 			((List) value).set(index, scheduleEvent);

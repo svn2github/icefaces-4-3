@@ -280,9 +280,12 @@ ice.ace.Schedule.prototype.extractDayOfWeek = function(node) {
 
 ice.ace.Schedule.prototype.getEventDetailsMarkup = function(data, isEventAddition, isEventEditing, isEventDeletion) {
 	if (data) {// *** escape HTML characters
-		var markup;
+		var markup = '';
 		if (isEventAddition || isEventEditing) {
-			markup = '<table><tr><td>Start&nbsp;Date:</td><td><input type="text" name="'+this.id+'_date" value="'+data.startDate+'"/></td></tr><tr><td>Start&nbsp;Time:</td><td>'+this.getHourSelectionMarkup(data.startTime, data.isAllDay)+'&nbsp;:&nbsp;'+this.getMinuteSelectionMarkup(data.startTime, data.isAllDay)+'</td></tr><tr><td>End&nbsp;Date:</td><td><input type="text" name="'+this.id+'_endDate" value="'+data.endDate+'"/></td></tr><tr><td>End&nbsp;Time:</td><td>'+this.getHourSelectionMarkup(data.endTime, data.isAllDay)+'&nbsp;:&nbsp;'+this.getMinuteSelectionMarkup(data.endTime, data.isAllDay)+'</td></tr><tr><td>All Day Event: </td><td><input type="checkbox" name="'+this.id+'_allDay" '+(data.isAllDay?'checked':'')+'/></td></tr><tr><td>Title:</td><td><input type="text" name="'+this.id+'_title" value="'+data.title+'"/></td></tr><tr><td>Location:</td><td><input type="text" name="'+this.id+'_location" value="'+data.location+'"/></td></tr><tr><td>Notes:</td><td><textarea name="'+this.id+'_notes">'+data.notes+'</textarea></td></tr></table><input type="hidden" name="'+this.id+'_index" value="'+data.index+'"/>';
+			markup += '<div class="ui-state-error ui-corner-all" style="display:none;">Error: Start date must be in the format YYYY-MM-DD.</div>';
+			markup += '<div class="ui-state-error ui-corner-all" style="display:none;">Error: End date must be in the format YYYY-MM-DD.</div>';
+			markup += '<div class="ui-state-error ui-corner-all" style="display:none;">Error: End date must be later than start date.</div>';
+			markup += '<table><tr><td>Start&nbsp;Date:</td><td><input type="text" name="'+this.id+'_date" value="'+data.startDate+'"/></td></tr><tr><td>Start&nbsp;Time:</td><td>'+this.getHourSelectionMarkup(data.startTime, data.isAllDay)+'&nbsp;:&nbsp;'+this.getMinuteSelectionMarkup(data.startTime, data.isAllDay)+'</td></tr><tr><td>End&nbsp;Date:</td><td><input type="text" name="'+this.id+'_endDate" value="'+data.endDate+'"/></td></tr><tr><td>End&nbsp;Time:</td><td>'+this.getHourSelectionMarkup(data.endTime, data.isAllDay)+'&nbsp;:&nbsp;'+this.getMinuteSelectionMarkup(data.endTime, data.isAllDay)+'</td></tr><tr><td>All Day Event: </td><td><input type="checkbox" name="'+this.id+'_allDay" '+(data.isAllDay?'checked':'')+'/></td></tr><tr><td>Title:</td><td><input type="text" name="'+this.id+'_title" value="'+data.title+'"/></td></tr><tr><td>Location:</td><td><input type="text" name="'+this.id+'_location" value="'+data.location+'"/></td></tr><tr><td>Notes:</td><td><textarea name="'+this.id+'_notes">'+data.notes+'</textarea></td></tr></table><input type="hidden" name="'+this.id+'_index" value="'+data.index+'"/>';
 			if (isEventEditing) {
 				markup += '<input type="hidden" name="'+this.id+'_old_startDate" value="'+data.startDate+'"/><input type="hidden" name="'+this.id+'_old_startTime" value="'+data.startTime+'"/><input type="hidden" name="'+this.id+'_old_endDate" value="'+data.endDate+'"/><input type="hidden" name="'+this.id+'_old_endTime" value="'+data.endTime+'"/><input type="hidden" name="'+this.id+'_old_allDay" value="'+data.isAllDay+'"/><input type="hidden" name="'+this.id+'_old_title" value="'+data.title+'"/><input type="hidden" name="'+this.id+'_old_location" value="'+data.location+'"/><input type="hidden" name="'+this.id+'_old_notes" value="'+data.notes+'"/>';
 			}
@@ -291,7 +294,8 @@ ice.ace.Schedule.prototype.getEventDetailsMarkup = function(data, isEventAdditio
 		}
 		if (data.styleClass) markup += '<input type="hidden" name="'+this.id+'_styleClass" value="'+data.styleClass+'"/>';
 		if (data.id) markup += '<input type="hidden" name="'+this.id+'_id" value="'+data.id+'"/>';
-		if (isEventAddition) markup += '<button onclick="ice.ace.instance(\''+this.id+'\').sendEditRequest(event, \'add\');return false;">Add</button>';
+		if (isEventAddition) markup += '<button onclick="var s = ice.ace.instance(\''+this.id+'\');'
+			+ 'if (s.validateInputs()) { s.sendEditRequest(event, \'add\'); } return false;">Add</button>';
 		else {
 			if (isEventEditing) {
 				var closeDetailsMarkup = '';
@@ -300,8 +304,9 @@ ice.ace.Schedule.prototype.getEventDetailsMarkup = function(data, isEventAdditio
 				} else if (this.cfg.eventDetails == 'sidebar') {
 					closeDetailsMarkup = 'ice.ace.instance(\''+this.id+'\').expandEventList();';
 				}
-				markup += '<button onclick="ice.ace.instance(\''+this.id+'\').sendEditRequest(event, \'edit\');'
-					+ closeDetailsMarkup + 'return false;">Save</button> ';
+				markup += '<button onclick="var s = ice.ace.instance(\''+this.id+'\');'
+					+ 'if (s.validateInputs()) { s.sendEditRequest(event, \'edit\');'
+					+ closeDetailsMarkup + '} return false;">Save</button> ';
 			}
 			if (isEventDeletion) markup += '<span><button onclick="ice.ace.instance(\''+this.id+'\').confirmDeletion(this);return false;">Delete</button><span style="display:none;"><span>Are you sure? </span><button onclick="ice.ace.instance(\''+this.id+'\').sendEditRequest(event, \'delete\');return false;">Yes</button> <button onclick="ice.ace.instance(\''+this.id+'\').cancelDeletion(this);return false;">No</button></span></span>';
 		}
@@ -464,6 +469,73 @@ ice.ace.Schedule.prototype.displayEventDetailsSidebar = function(markup, event) 
 	eventDetails.find('button').button();
 	if (!event.isAllDay) this.addDefaultDurationFunctionality();
 	this.addAllDayFunctionality();
+};
+
+ice.ace.Schedule.prototype.validateInputs = function() {
+	var displayLocation = this.cfg.eventDetails == 'sidebar' ? '' : 'popup-';
+	var dateInputs = ice.ace.jq(this.jqId).find('.schedule-details-'+displayLocation+'content').find('input.hasDatepicker');
+	var startDateInput = dateInputs.get(0);
+	var endDateInput = dateInputs.get(1);
+	var errorMessages = ice.ace.jq(this.jqId).find('.schedule-details-'+displayLocation+'content').find('.ui-state-error');
+	var startDateErrorMessage = errorMessages.get(0);
+	var endDateErrorMessage = errorMessages.get(1);
+	var logicalErrorMessage = errorMessages.get(2);
+
+	var valid = true;
+	var dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+
+	if (startDateInput && endDateInput) {
+		// validate start date format yyyy-mm-dd
+		if (!startDateInput.value.match(dateRegex)) {
+			valid = false;
+			if (startDateErrorMessage) startDateErrorMessage.setAttribute('style', 'display:block;');
+		} else {
+			if (startDateErrorMessage) startDateErrorMessage.setAttribute('style', 'display:none;');
+		}
+		// validate end date format yyyy-mm-dd
+		if (!endDateInput.value.match(dateRegex)) {
+			valid = false;
+			if (endDateErrorMessage) endDateErrorMessage.setAttribute('style', 'display:block;');
+		} else {
+			if (endDateErrorMessage) endDateErrorMessage.setAttribute('style', 'display:none;');
+		}
+		// if formats are valid, make sure that the end date is later than the start date
+		if (valid) {
+			var timeInputs = ice.ace.jq(this.jqId).find('.schedule-details-'+displayLocation+'content').find('select');
+			if (timeInputs.size() >= 4) {
+				var startHour = parseInt(ice.ace.jq(timeInputs.get(0)).val());
+				var startMinute = parseInt(ice.ace.jq(timeInputs.get(1)).val());
+				var endHour = parseInt(ice.ace.jq(timeInputs.get(2)).val());
+				var endMinute = parseInt(ice.ace.jq(timeInputs.get(3)).val());
+
+				var startHour = isNaN(startHour) ? 0 : startHour;
+				var startMinute = isNaN(startMinute) ? 0 : startMinute;
+				var endHour = isNaN(endHour) ? 0 : endHour;
+				var endMinute = isNaN(endMinute) ? 0 : endMinute;
+
+				var startYear = startDateInput.value.substring(0,4);
+				var startMonth = parseInt(startDateInput.value.substring(5,7)) - 1;
+				var startDay = startDateInput.value.substring(8,10);
+				var startDate = new Date(startYear, startMonth, startDay, startHour, startMinute, 0, 0);
+
+				var endYear = endDateInput.value.substring(0,4);
+				var endMonth = parseInt(endDateInput.value.substring(5,7)) - 1;
+				var endDay = endDateInput.value.substring(8,10);
+				var endDate = new Date(endYear, endMonth, endDay, endHour, endMinute, 0, 0);
+
+				if (endDate.getTime() < startDate.getTime()) {
+					valid = false;
+					if (logicalErrorMessage) logicalErrorMessage.setAttribute('style', 'display:block;');
+				} else {
+					if (logicalErrorMessage) logicalErrorMessage.setAttribute('style', 'display:none;');
+				}
+			}
+		} else {
+			if (logicalErrorMessage) logicalErrorMessage.setAttribute('style', 'display:none;');
+		}
+	}
+
+	return valid;
 };
 
 ice.ace.Schedule.prototype.displayEventDetailsTooltip = function(markup, node) {
