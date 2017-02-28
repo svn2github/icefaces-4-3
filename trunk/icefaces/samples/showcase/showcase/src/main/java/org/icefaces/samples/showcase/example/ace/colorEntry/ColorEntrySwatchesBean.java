@@ -23,6 +23,7 @@ import org.icefaces.ace.model.colorEntry.SwatchEntry;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,22 +40,7 @@ public class ColorEntrySwatchesBean implements Serializable
      private String color, fromPalette, fromPredefined, dynamic;
      private boolean haveValues = false;
      private String swatchName="html";
-
-     public String getColor() {
-         return color;
-     }
-
-     public void setColor(String color) {
-         this.color = color;
-     }
-
-     public List<String> getColorList() {
-         return colorList;
-     }
-
-     public void setColorList(List<String> colorList) {
-         this.colorList = colorList;
-     }
+     private int swatchWidth=83;
 
      private List<String> parts = new ArrayList<String>(Arrays.asList("header", "preview", "hex", "rgbslider", "footer"));
      private List<String> swatchParts = new ArrayList<String>(Arrays.asList("header", "preview", "hex", "swatches", "footer"));
@@ -64,6 +50,16 @@ public class ColorEntrySwatchesBean implements Serializable
      private List<ColorEntryLayout> swatchLayout = new ArrayList<ColorEntryLayout>();
      private List<ColorEntryLayout> swatchLayoutLong = new ArrayList<ColorEntryLayout>();
      private ColorFormat colorFormat = ColorFormat.RGB;
+
+    public ColorFormat getColorFormatName() {
+        return colorFormatName;
+    }
+
+    public void setColorFormatName(ColorFormat colorFormatName) {
+        this.colorFormatName = colorFormatName;
+    }
+
+    private ColorFormat colorFormatName = ColorFormat.NAME;
      private String title;
      private List<String> colorList ;
 
@@ -101,7 +97,7 @@ public class ColorEntrySwatchesBean implements Serializable
     }
 
     public boolean isHaveValues() {
-         return (colorList.get(1).length()>0 && colorList.get(2).length()>0 && colorList.get(3).length()>0  && colorList.get(0).length()>0 );
+         return (colorList.get(1).length()>0 || colorList.get(2).length()>0 || colorList.get(3).length()>0  || colorList.get(0).length()>0 );
      }
 
      public void reset(ActionEvent event){
@@ -227,7 +223,34 @@ public class ColorEntrySwatchesBean implements Serializable
         return swatchLayoutLong;
     }
 
+    public int getSwatchWidth() {
+        if (this.swatchName.equals("pantone")){
+            return 200;
+        }
+        return 84;
+    }
+
+    public void setSwatchWidth(int swatchWidth) {
+        this.swatchWidth = swatchWidth;
+    }
+
     public void setSwatchLayoutLong(List<ColorEntryLayout> swatchLayoutLong) {
         this.swatchLayoutLong = swatchLayoutLong;
     }
+    public String getColor() {
+           return color;
+       }
+
+    public void setColor(String color) {
+           this.color = color;
+       }
+
+    public List<String> getColorList() {
+           return colorList;
+       }
+
+    public void setColorList(List<String> colorList) {
+           this.colorList = colorList;
+       }
+
 }

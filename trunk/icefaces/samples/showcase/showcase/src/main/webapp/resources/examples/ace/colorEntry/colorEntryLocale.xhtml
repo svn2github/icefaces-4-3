@@ -26,14 +26,6 @@
     <ui:param name="description" value="#{msgs['example.ace.colorEntry.locale.description']}"/>
 
     <ui:define name="example">
-        <ace:panel>
-             <h:panelGrid style="text-align: center;" width="100%">
-                 <h:panelGroup>
-                     <h:outputLabel for="localeValue" value="Selected Color: "/>
-                     <h:outputText id="localeValue" value="#{colorEntryLocaleBean.color}"/>
-                 </h:panelGroup>
-             </h:panelGrid>
-        </ace:panel>
         <h:form id="inputOptionsForm">
             <ace:panel id="inpOptionsPan" header="Options">
                 <h:panelGrid id="inputOptions" columns="2">
@@ -55,8 +47,9 @@
         </h:form>
 
         <h:form>
-            <ace:panel id="colorInputPanel" header="ColorEntry - Customizable" styleClass="required-styling-demo">
-                <h:panelGrid id="inputGrid" columns="1" width="100%" >
+            <ace:panel id="colorInputPanel" header="ColorEntry - Customizable"
+                       styleClass="required-styling-demo">
+                <h:panelGrid id="inputGrid" columns="1" width="100%" style="background-color: #f2eaea;">
                           <ace:colorEntry id="swatchNameID" value="#{colorEntryLocaleBean.color}"
                                       renderAsPopup="true"
                                       customParts="#{colorEntryLocaleBean.full}"
@@ -68,7 +61,14 @@
                 </h:panelGrid>
             </ace:panel>
         </h:form>
-        
+        <ace:panel>
+             <h:panelGrid style="text-align: center; background-color: ##{colorEntryLocaleBean.color};" width="100%">
+                 <h:panelGroup style="background-color: #f2eaea;">
+                     <h:outputLabel for="localeValue" value="Selected Color: "/>
+                     <h:outputText id="localeValue" value="#{colorEntryLocaleBean.color}"/>
+                 </h:panelGroup>
+             </h:panelGrid>
+        </ace:panel>
     </ui:define>
 </ui:composition>
 

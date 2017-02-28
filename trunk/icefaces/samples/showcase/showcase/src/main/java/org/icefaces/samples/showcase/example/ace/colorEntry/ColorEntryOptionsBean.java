@@ -34,6 +34,15 @@ public class ColorEntryOptionsBean implements Serializable
     private List<ColorFormat> colorFormats = new ArrayList<ColorFormat>();
     private ColorFormat colorFormat = ColorFormat.RGB;
     private String value;
+    private String labelPosition="left";
+
+    public String getLabelPosition() {
+        return labelPosition;
+    }
+
+    public void setLabelPosition(String labelPosition) {
+        this.labelPosition = labelPosition;
+    }
 
     private String effect, duration;
     private boolean showAlpha,inline,showNoneButton;
@@ -105,4 +114,5 @@ public class ColorEntryOptionsBean implements Serializable
     public void setColorFormat(ColorFormat colorFormat) {
           this.colorFormat = colorFormat;
       }
+
 }

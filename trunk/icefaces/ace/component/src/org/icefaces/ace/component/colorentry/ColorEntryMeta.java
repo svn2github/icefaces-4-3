@@ -144,7 +144,7 @@ public class ColorEntryMeta extends UIInputMeta{
     @Property( tlddoc="Limit the selectable colors to any of the predefined limits. Default is empty string. \'websafe\'=Set of 216 colors composed of 00, 33, 66, 99, cc and ff color channel values in #rrggbb." +
             " \'nibble\'= 4 bits per color, can be easily converted to #rgb format.  The palette is limited to 4096 colors. \'binary\'=Allow only #00 or #ff as color channel values for primary " +
             "colors; only 8 colors are available with this limit, or \'name\'=limits to closes color name.")
-    private String limit;
+    private String limitSelection;
 
     @Property(tlddoc = "Indicator indicating that the user is required to provide a submitted value for this input component.")
     private String requiredIndicator;

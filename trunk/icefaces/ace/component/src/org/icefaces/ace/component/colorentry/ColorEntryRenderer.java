@@ -109,7 +109,6 @@ public class ColorEntryRenderer extends InputRenderer {
         }
         String clientId = picker.getClientId(context);
         String valueToRender = getValueAsString(context,picker);
-        String inputId = clientId + "_input";
         boolean popup = picker.isRenderAsPopup();
         String showOn = picker.getShowOn();   //default is focus for use of popup on input field
         boolean customParts=false;
@@ -208,7 +207,6 @@ public class ColorEntryRenderer extends InputRenderer {
             renderResetSettings(context, component);
             writer.writeAttribute("type", type, null);
             commonAttributes(picker, writer, tabindex);
-            boolean showCloseButton = picker.isShowCloseButton();
 
             if(!isValueBlank(valueToRender)) {
                 writer.writeAttribute("value", valueToRender, null);
@@ -224,9 +222,6 @@ public class ColorEntryRenderer extends InputRenderer {
                    writer.writeAttribute("role", "textbox", null);
                 }
             }
-          /*  if (useButton && ariaEnabled){
-                writer.writeAttribute("role", "button", null);
-            }                */
             writer.writeAttribute("data-ice-clear-ignore", "true", null);
 
             if (ariaEnabled) {
@@ -258,6 +253,9 @@ public class ColorEntryRenderer extends InputRenderer {
         jb.entry("draggable", false);
         if (lookupLocale!=null){
             jb.entry("regional", lookupLocale);
+        }
+        if (picker.getSwatchesWidth() > 0){
+            jb.entry("swatchesWidth", picker.getSwatchesWidth());
         }
         if (swatchName!=null && swatchName.length()>0){
             jb.entry("swatches", swatchName);
@@ -297,9 +295,6 @@ public class ColorEntryRenderer extends InputRenderer {
             if (buttonText !=null){
                 jb.entry("buttonText", buttonText);
             }
-    /*        if (!customParts){
-                jb.entry("parts", "popup");
-            }*/
             if (isPopupIconOnly)jb.entry("buttonImageOnly", isPopupIconOnly);
             jb.entry("showCloseButton", picker.isShowCloseButton());
             jb.entry("showCancelButton", picker.isShowCancelButton());
@@ -318,8 +313,8 @@ public class ColorEntryRenderer extends InputRenderer {
             jb.entry("inlineForm", true);
         }
 
-        if (picker.getLimit()!=null ){
-            jb.entry("limit", picker.getLimit());
+        if (picker.getLimitSelection()!=null ){
+            jb.entry("limit", picker.getLimitSelection());
         }
         if (!picker.isRequired()){
             jb.entry("allowEmpty", "true");
@@ -329,7 +324,6 @@ public class ColorEntryRenderer extends InputRenderer {
         encodeClientBehaviors(context, picker, jb);
         jb.endMap().endArray().endFunction();
         String script = jb.toString();
-  //System.out.println(" script="+script);
         writer.startElement("span", null);
         writer.writeAttribute("id", clientId+"_script", null);
         writer.startElement("script", null);

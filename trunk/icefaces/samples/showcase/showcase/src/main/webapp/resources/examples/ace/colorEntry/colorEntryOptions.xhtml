@@ -26,41 +26,40 @@
     <ui:param name="description" value="#{msgs['example.ace.colorEntry.options.description']}"/>
 
     <ui:define name="example">
-        <ace:panel>
-             <h:panelGrid style="text-align: center;" width="100%">
-                 <h:panelGroup>
-                     <h:outputLabel for="selColorOptions" value="Selected Color: "/>
-                     <h:outputText id="selColorOptions" value="#{colorEntryOptionsBean.value}"
-                                       style="font-weight: bold;"/>
-                 </h:panelGroup>
-             </h:panelGrid>
-        </ace:panel>
         <h:form id="inputOptionsForm">
             <ace:panel id="inpOptionsPan" header="Options">
                <h:panelGrid id="inputOptions" columns="1">
-                   <h:outputLabel for="colorFormat" value="Choose Format of Color "/>
+                   <h:outputLabel for="colorFormat" value="Color Value Format: "/>
                    <h:selectOneMenu id="colorFormat" value="#{colorEntryOptionsBean.colorFormat}">
                          <f:selectItems value="#{colorEntryOptionsBean.colorFormats}"/>
                          <f:ajax execute="@this" render="@all"/>
                    </h:selectOneMenu>
-                   <h:outputLabel for="showNoneButton" value="Show &#39;None&#39; Button "/>
+                   <h:outputLabel for="showNoneButton" value="Show &#39;None&#39; Button: "/>
                    <h:selectBooleanCheckbox id="showNoneButton"  value="#{colorEntryOptionsBean.showNoneButton}">
                        <f:ajax execute="@this" render="@all"/>
                    </h:selectBooleanCheckbox>
-                   <h:outputLabel for="effectType" value="Effect "/>
+                   <h:outputLabel for="effectType" value="Effect: "/>
                    <h:selectOneMenu id="effectType" value="#{colorEntryOptionsBean.effect}">
                         <f:selectItem itemLabel="fadeIn" itemValue="fadeIn"/>
                         <f:selectItem itemLabel="slideDown" itemValue="slideDown"/>
                         <f:selectItem itemLabel="show" itemValue="show"/>
                         <f:ajax execute="@this" render="@all"/>
                     </h:selectOneMenu>
-                    <h:outputLabel id="durationId" for="duration" value="Duration "/>
+                    <h:outputLabel id="durationId" for="duration" value="Effect Duration: "/>
                     <h:selectOneMenu id="duration" value="#{colorEntryOptionsBean.duration}">
                         <f:selectItem itemLabel="slow" itemValue="slow"/>
                         <f:selectItem itemLabel="fast" itemValue="fast"/>
                         <f:selectItem itemLabel="normal" itemValue="normal"/>
                         <f:ajax execute="@this" render="@all"/>
                     </h:selectOneMenu>
+                   <h:outputLabel id="labelPositionId" for="labelPosition" value="Label Position:"/>
+                   <h:selectOneMenu id="labelPosition" value="#{colorEntryOptionsBean.labelPosition}">
+                       <f:selectItem itemLabel="none" itemValue="none"/>
+                       <f:selectItem itemLabel="left" itemValue="left"/>
+                       <f:selectItem itemLabel="right" itemValue="right"/>
+                       <f:selectItem itemLabel="top" itemValue="top"/>
+                       <f:selectItem itemLabel="bottom" itemValue="bottom"/>
+                   </h:selectOneMenu>
                </h:panelGrid>
            </ace:panel>
 
@@ -79,7 +78,15 @@
                 </h:panelGrid>
             </ace:panel>
         </h:form>
-
+        <ace:panel>
+             <h:panelGrid style="text-align: center; background-color: ##{colorEntryOptionsBean.value};" width="100%">
+                 <h:panelGroup style="background-color: #f2eaea;">
+                     <h:outputLabel for="selColorOptions" value="Selected Color: "/>
+                     <h:outputText id="selColorOptions" value="#{colorEntryOptionsBean.value}"
+                                       style="font-weight: bold;"/>
+                 </h:panelGroup>
+             </h:panelGrid>
+        </ace:panel>
     </ui:define>
 </ui:composition>
 

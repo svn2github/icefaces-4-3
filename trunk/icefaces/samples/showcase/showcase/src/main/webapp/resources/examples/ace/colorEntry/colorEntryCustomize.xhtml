@@ -26,15 +26,6 @@
     <ui:param name="description" value="#{msgs['example.ace.colorEntry.customize.description']}"/>
 
     <ui:define name="example">
-        <ace:panel>
-             <h:panelGrid style="text-align: center;" width="100%">
-                 <h:panelGroup>
-                     <h:outputLabel for="selColorCustom" value="Selected Color: "/>
-                     <h:outputText id="selColorCustom" value="#{colorEntryCustomBean.value}"
-                                       style="font-weight: bold;"/>
-                 </h:panelGroup>
-             </h:panelGrid>
-        </ace:panel>
         <h:form id="inputOptionsForm">
             <ace:panel id="inpOptionsPan" header="Options">
                 <h:panelGrid id="inputOptions" columns="2">
@@ -52,7 +43,14 @@
                 </h:panelGrid>
             </ace:panel>
         </h:form>
-
+        <ace:panel id="layoutvalues" header="Custom Parts and Layout">
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="Parts Defined: " for="partsDefined"/>
+                    <h:outputText id="partsDefined" value="#{colorEntryCustomBean.partsDefined}"/>
+                    <h:outputLabel value="Layout Defined: " for="layoutDefined"/>
+                    <h:outputText id="layoutDefined" value="#{colorEntryCustomBean.layoutDefined}"/>
+                </h:panelGrid>
+            </ace:panel>
         <h:form>
             <ace:panel id="colorInputPanel" header="ColorEntry - Customizable" styleClass="required-styling-demo">
                 <h:panelGrid id="inputGrid" columns="1" width="100%" >
@@ -68,17 +66,25 @@
                     </ace:colorEntry>
                 </h:panelGrid>
             </ace:panel>
-
-            <ace:panel id="layoutvalues" header="Custom Parts and Layout">
-                <h:panelGrid columns="2">
-                    <h:outputLabel value="Parts Defined: " for="partsDefined"/>
-                    <h:outputText id="partsDefined" value="#{colorEntryCustomBean.partsDefined}"/>
-                    <h:outputLabel value="Layout Defined: " for="layoutDefined"/>
-                    <h:outputText id="layoutDefined" value="#{colorEntryCustomBean.layoutDefined}"/>
-                </h:panelGrid>
+            <ace:panel>
+                    <h:panelGrid style="text-align: center; background-color:##{colorEntryCustomBean.value};" width="100%">
+                        <h:panelGroup style="background-color: #f2eaea;">
+                            <h:outputLabel for="selColorCustom" value="Selected Color: "/>
+                            <h:outputText id="selColorCustom" value="#{colorEntryCustomBean.value}"
+                                              style="font-weight: bold;"/>
+                        </h:panelGroup>
+                    </h:panelGrid>
             </ace:panel>
         </h:form>
-        
+        <ace:panel>
+             <h:panelGrid style="text-align: center;" width="100%">
+                 <h:panelGroup>
+                     <h:outputLabel for="selColorCustom" value="Selected Color: "/>
+                     <h:outputText id="selColorCustom" value="#{colorEntryCustomBean.value}"
+                                       style="font-weight: bold;"/>
+                 </h:panelGroup>
+             </h:panelGrid>
+        </ace:panel>
     </ui:define>
 </ui:composition>
 

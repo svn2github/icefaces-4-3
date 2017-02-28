@@ -27,15 +27,6 @@
 
     <ui:define name="example">
         <h:form id="colorEntryForm">
-            <ace:panel>
-                 <h:panelGrid style="text-align: center;" width="100%">
-                     <h:panelGroup>
-                         <h:outputLabel for="selColorInline" value="Selected Color: "/>
-                         <h:outputText id="selColorInline" value="#{colorEntryBean.selectedColor}"
-                                           style="font-weight: bold;"/>
-                     </h:panelGroup>
-                 </h:panelGrid>
-            </ace:panel>
             <ace:panel id="colorInputPanel" header="ColorEntry" styleClass="required-styling-demo">
                 <h:panelGrid id="inputGrid" columns="1" width="100%" >
                     <ace:colorEntry id="colorInput"
@@ -49,7 +40,16 @@
                 </h:panelGrid>
 
             </ace:panel>
-
+            <ace:panel>
+                <h:panelGrid style="text-align: center; background-color: ##{colorEntryBean.selectedColor};"
+                             width="100%" >
+                    <h:panelGroup style="background-color: #f2eaea;">
+                        <h:outputLabel for="selColorInline" value="Selected Color: "/>
+                        <h:outputText id="selColorInline" value="#{colorEntryBean.selectedColor}"
+                                      style="font-weight: bold;"/>
+                    </h:panelGroup>
+                </h:panelGrid>
+            </ace:panel>
         </h:form>
 
     </ui:define>
