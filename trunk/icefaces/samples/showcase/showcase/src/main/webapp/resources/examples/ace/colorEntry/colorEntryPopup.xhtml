@@ -31,7 +31,7 @@
             <ace:panel id="colorInputPanel" header="ColorEntry Popup With Ajax Submit" styleClass="required-styling-demo">
                     <ace:colorEntry id="colorInput" value="#{colorEntryPopupBean.selectedColor}"
                               renderAsPopup="true"
-                              label="Select a Color:"
+                              label="Select a Color: "
                               labelPosition="left">
                         <ace:ajax execute="@this" render="@all"/>
                     </ace:colorEntry>
@@ -39,9 +39,9 @@
             <ace:panel>
                   <h:panelGrid style="text-align: center; background-color: ##{colorEntryPopupBean.selectedColor};" width="100%">
                       <h:panelGroup style="background-color: #f2eaea;">
-                          <h:outputLabel for="selColorInline" value="Selected Color: "/>
+                          <h:outputLabel for="selColorInline" value="Selected Color: " style="padding-left: 6px"/>
                           <h:outputText id="selColorInline" value="#{colorEntryPopupBean.selectedColor}"
-                                            style="font-weight: bold;"/>
+                                            style="font-weight: bold; padding-right: 6px;"/>
                       </h:panelGroup>
                   </h:panelGrid>
              </ace:panel>

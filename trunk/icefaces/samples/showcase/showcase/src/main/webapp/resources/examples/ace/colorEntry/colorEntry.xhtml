@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~ Copyright 2004-2017 ICEsoft Technologies Canada Corp.
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the
@@ -44,9 +44,9 @@
                 <h:panelGrid style="text-align: center; background-color: ##{colorEntryBean.selectedColor};"
                              width="100%" >
                     <h:panelGroup style="background-color: #f2eaea;">
-                        <h:outputLabel for="selColorInline" value="Selected Color: "/>
+                        <h:outputLabel for="selColorInline" value="Selected Color: " style="padding-left: 6px;"/>
                         <h:outputText id="selColorInline" value="#{colorEntryBean.selectedColor}"
-                                      style="font-weight: bold;"/>
+                                      style="font-weight: bold; padding-right: 6px;"/>
                     </h:panelGroup>
                 </h:panelGrid>
             </ace:panel>

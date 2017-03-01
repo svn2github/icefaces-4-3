@@ -53,7 +53,8 @@
             </ace:panel>
         <h:form>
             <ace:panel id="colorInputPanel" header="ColorEntry - Customizable" styleClass="required-styling-demo">
-                <h:panelGrid id="inputGrid" columns="1" width="100%" >
+                <h:panelGrid id="inputGrid" columns="2" width="100%" >
+                	<h:outputLabel value="Select a Color:" for="colorInput" />
                     <ace:colorEntry id="colorInput" value="#{colorEntryCustomBean.value}"
                                colorFormat="#{colorEntryCustomBean.colorFormat}"
                                customParts="#{colorEntryCustomBean.parts}"
@@ -69,22 +70,13 @@
             <ace:panel>
                     <h:panelGrid style="text-align: center; background-color:##{colorEntryCustomBean.value};" width="100%">
                         <h:panelGroup style="background-color: #f2eaea;">
-                            <h:outputLabel for="selColorCustom" value="Selected Color: "/>
-                            <h:outputText id="selColorCustom" value="#{colorEntryCustomBean.value}"
-                                              style="font-weight: bold;"/>
-                        </h:panelGroup>
+                     		<h:outputLabel for="selColorCustom" value="Selected Color: " style="padding-left: 6px;"/>
+                     		<h:outputText id="selColorCustom" value="#{colorEntryCustomBean.value}"
+                                       style="font-weight: bold; padding-right: 6px;"/>  
+            		</h:panelGroup>
                     </h:panelGrid>
             </ace:panel>
         </h:form>
-        <ace:panel>
-             <h:panelGrid style="text-align: center;" width="100%">
-                 <h:panelGroup>
-                     <h:outputLabel for="selColorCustom" value="Selected Color: "/>
-                     <h:outputText id="selColorCustom" value="#{colorEntryCustomBean.value}"
-                                       style="font-weight: bold;"/>
-                 </h:panelGroup>
-             </h:panelGrid>
-        </ace:panel>
     </ui:define>
 </ui:composition>
 

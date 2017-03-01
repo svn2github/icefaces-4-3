@@ -55,7 +55,9 @@
                                       customParts="#{colorEntryLocaleBean.full}"
                                       customLayout="#{colorEntryLocaleBean.fullLayout}"
                                       showNoneButton="true"
-                                      locale="#{colorEntryLocaleBean.localeString}">
+                                      locale="#{colorEntryLocaleBean.localeString}"
+                                      label="Select a Color:"
+                                      labelPosition="left" >
                               <ace:ajax execute="@this" render="@all"/>
                           </ace:colorEntry>
                 </h:panelGrid>
@@ -64,8 +66,8 @@
         <ace:panel>
              <h:panelGrid style="text-align: center; background-color: ##{colorEntryLocaleBean.color};" width="100%">
                  <h:panelGroup style="background-color: #f2eaea;">
-                     <h:outputLabel for="localeValue" value="Selected Color: "/>
-                     <h:outputText id="localeValue" value="#{colorEntryLocaleBean.color}"/>
+                     <h:outputLabel for="localeValue" value="Selected Color: " style="padding-left: 6px;"/>
+                     <h:outputText id="localeValue" value="#{colorEntryLocaleBean.color}" style="padding-right: 6px"/>
                  </h:panelGroup>
              </h:panelGrid>
         </ace:panel>
