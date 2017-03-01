@@ -268,7 +268,7 @@ ice.ace.ColorEntryInit = function( cfg) {
             if (buttonImageOnly) {
                 trigger = ice.ace.jq('<img/>',{
                     src: buttonImage,
-                    'class': buttonImageOnlyinputClass,
+                    'class': buttonImageOnlyinputClass
                 });
                 ice.ace.jq(positionId).on('click', trigger, function(){
                     initButtonAndShow();
