@@ -59,6 +59,7 @@
                        <f:selectItem itemLabel="right" itemValue="right"/>
                        <f:selectItem itemLabel="top" itemValue="top"/>
                        <f:selectItem itemLabel="bottom" itemValue="bottom"/>
+                       <f:ajax execute="@this" render="@all"/>
                    </h:selectOneMenu>
                </h:panelGrid>
            </ace:panel>
@@ -71,7 +72,7 @@
                                effect="#{colorEntryOptionsBean.effect}"
                                effectDuration="#{colorEntryOptionsBean.duration}"
                                showNoneButton="#{colorEntryOptionsBean.showNoneButton}"
-                               label="Select a Color:" labelPosition="left">
+                               label="Select a Color:" labelPosition="#{colorEntryOptionsBean.labelPosition}">
                         <ace:ajax execute="@this" render="@all"/>
                     </ace:colorEntry>
                     <ace:message id="message1" for="colorInputOptions" />

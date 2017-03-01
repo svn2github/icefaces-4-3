@@ -341,10 +341,11 @@ public class ColorEntryRenderer extends InputRenderer {
         writer.writeAttribute("data-hashcode", script.hashCode(), null);
         writer.endElement("span");
         if (!popup) {
-            createHiddenField(writer, clientId + "_hidden2");
+            createHiddenField(writer, clientId + "_hidden2", valueToRender);
+
         }
         if (preferredFormat.startsWith("HSL")){
-            createHiddenField(writer, clientId+"_hiddenHex") ;
+            createHiddenField(writer, clientId+"_hiddenHex", null) ;
         }
         writer.endElement(HTML.SPAN_ELEM);
 
@@ -422,10 +423,13 @@ public class ColorEntryRenderer extends InputRenderer {
         return scriptB.toString();
     }
 
-    private void createHiddenField(ResponseWriter writer, String id) throws IOException {
+    private void createHiddenField(ResponseWriter writer, String id, String value) throws IOException {
         writer.startElement("input", null);
         writer.writeAttribute("type", "hidden", null);
         writer.writeAttribute("id", id, null);
+        if (value!=null){
+            writer.writeAttribute("value", value, null);
+        }
         writer.writeAttribute("name", id, null);
         writer.endElement("input");
     }

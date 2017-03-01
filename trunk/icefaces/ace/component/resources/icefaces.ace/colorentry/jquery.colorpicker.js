@@ -2188,7 +2188,7 @@
 			autoOpen:			false,		// Open dialog automatically upon creation
 			buttonClass:		null,		// If set, the button will get this/these classname(s).
 			buttonColorize:		false,
-			buttonImage:		'images/ui-colorpicker.png',
+			buttonImage:		'',
 			buttonImageOnly:	false,
 			buttonText:			null,		// Text on the button and/or title of button image.
 			closeOnEscape:		true,		// Close the dialog when the escape key is pressed.

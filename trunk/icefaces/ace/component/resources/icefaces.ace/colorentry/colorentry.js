@@ -2,7 +2,6 @@ if (!window['ice']) window.ice = {};
 if (!window.ice['ace']) window.ice.ace = {};
 
 ice.ace.ColorEntry = function(id, cfg) { 
-  //  console.log(" CREATE!! widget for id="+id); 
     var behavior, altFieldVal; 
     this.id = id;
     this.cfg = cfg; 
@@ -14,16 +13,27 @@ ice.ace.ColorEntry = function(id, cfg) { 
     if (this.options.buttonText){
         this.options.buttonImage='';
     }
-    if (this.options.color) { 
+    if (this.options.color && !this.options.inline) { 
         this.jq.value = this.options.color; 
     } 
     //create or update colrEntry 
     this.jq.colorpicker(this.cfg); 
     ice.ace.ColorEntry.instances[id] = this;
-    ice.ace.setResetValue(this.id, cfg.color);  
+    ice.ace.setResetValue(this.id, this.options.color);  
+    var initialColor = ice.ace.ColorEntry.initialColor[id] ||null;
+    if ( this.options.inline && initialColor !=null){  //workaround for inline to set preview of previous color
+        var PREVIOUS_COLOR_VAL_INLINE = ".ui-colorpicker-preview-initial";
+        var initElem = ice.ace.jq(this.jqElId).find(PREVIOUS_COLOR_VAL_INLINE);
+        if (initElem){
+            initElem.css("backgroundColor", initialColor) ;
+        }else {
+            initElem.css("backgroundColor", transparent);
+        }
+    }
 };
  
 ice.ace.ColorEntry.instances = {}; // keep track of initialized instances
+ice.ace.ColorEntry.initialColor = {}; //keep track of initial or previous color
 
 ice.ace.ColorEntry.prototype.configureLocale = function() {
     var localeSettings = ice.ace.locales[this.cfg.options.locale];
@@ -34,17 +44,9 @@ ice.ace.ColorEntry.prototype.configureLocale = function() {
     }
 };
 
-ice.ace.ColorEntry.prototype.setColor = function(color) {
-    this.jq.colorpicker('setColor', color);
-};
-
 ice.ace.ColorEntry.prototype.showPopup = function(){
     this.jq.colorpicker(this.cfg);
     this.jq.colorpicker('open');
-};
-
-ice.ace.ColorEntry.prototype.getColor= function() {
-    return this.jq.colorpicker('getColor');
 };
 
 ice.ace.ColorEntry.prototype.enable = function() {
@@ -67,8 +69,9 @@ ice.ace.ColorEntryInit = function( cfg) {
         var options = cfg.options;
         var INPUT_STYLE_CLASS = "ui-inputfield ui-widget ui-state-default ui-corner-all ui-colorpicker-input";
         var INPUT_EMPTY_STYLE_CLASS = "ui-inputfield ui-widget ui-state-default ui-corner-all";
-        var BUTTON_STYLE_CLASS = "ui-button ui-widget ui-state-default ui-corner-all ";
+        var BUTTON_STYLE_CLASS = "ui-button ui-widget ui-state-default ui-corner-all ui-colorpicker-buttonColorize ";
         var BUTTON_TEXT_STYLE_CLASS = "ui-button-text-only";
+        var PREVIOUS_COLOR_VAL_INLINE = ".ui-colorpicker-preview-initial";
         var id = options.id;
         var behaviors = cfg.behaviors || null;
         var positionId = ice.ace.escapeClientId(id);
@@ -94,7 +97,7 @@ ice.ace.ColorEntryInit = function( cfg) {
         var buttonImageOnly = options.buttonImageOnly || false;
         var myposition={
             of: positionId
-        }
+        } ;
         if (buttonImageOnly){
             options.position=myposition;
         }
@@ -143,8 +146,9 @@ ice.ace.ColorEntryInit = function( cfg) {
         } ;
         function setColorBar(color) {
             var newColor = color.formatted;
-            if (allowEmpty && !color.formatted) {
+            if (allowEmpty && !color.formatted   ) {
                 input.attr('class', INPUT_EMPTY_STYLE_CLASS);
+                input.value = '';
                 return;
             } else if (colorFormat.indexOf("HEX") > -1) {
                 newColor = "#" + newColor;
@@ -163,8 +167,9 @@ ice.ace.ColorEntryInit = function( cfg) {
                     if (!buttonElem){
                         buttonElem = ice.ace.jq(buttonSelector);
                     }
-                    if (buttonElem){
+                    if (buttonElem && isButtonTextColorize){
                         buttonElem.css('border-color', newColor) + " !important";
+                        buttonElem.attr('class', BUTTON_STYLE_CLASS);
                     }
                 }
             }
@@ -175,7 +180,7 @@ ice.ace.ColorEntryInit = function( cfg) {
         };
 
         var okFn = function(event, color){ 
-            if (!color.formatted || color.formatted=="false"){
+            if ( color.formatted=="false"){
                 return;
             }
             ice.ace.setResetValue(this.id, color.formatted);  
@@ -191,8 +196,9 @@ ice.ace.ColorEntryInit = function( cfg) {
             }
         } ;
         var selectFn = function(event, color){
-            if (!color.formatted || color.formatted=="false"){
+            if (color.formatted=="false"){
                // console.log(" The current widget does not support the color format of "+colorFormat);
+              //  setColorBar(null); //could be none button
                 return;
             }
             var colorFormatted = color.formatted;
@@ -200,8 +206,13 @@ ice.ace.ColorEntryInit = function( cfg) {
                 setColorBar(color);
                 return;
             }
+            var prevElem = ice.ace.jq(positionId).find(PREVIOUS_COLOR_VAL_INLINE);
+          //  var initElem = ice.ace.jq(positionId + 'span'+PREVIOUS_COLOR_VAL_INLINE) ;
+            if (prevElem) {
+                var initialColor =  prevElem.css('backgroundColor');
+                ice.ace.ColorEntry.initialColor[id]  = initialColor;
+            }
             ice.ace.setResetValue(this.id, color.formatted);  
-            hidden.value = colorFormatted;
             ice.ace.jq(ice.ace.escapeClientId(id) + "_hidden").val(colorFormatted);
             ice.ace.jq(ice.ace.escapeClientId(id) + "_hidden2").val(colorFormatted);
             if (behaviors && behaviors.change) {
@@ -249,14 +260,16 @@ ice.ace.ColorEntryInit = function( cfg) {
             if (trigger) trigger.remove();
             return create();
         }
-
 		// if instance was previously initialized, create right away and return
 		if (ice.ace.ColorEntry.instances[id]) {
             var widget = ice.ace.ColorEntry.instances[id];
-             if (widget){
-                 widget.destroy();
-             }
+            if (widget){
+                widget.destroy();
+            }
             create();
+            if (options.color && buttonText && isButtonTextColorize){
+                setColorBar(options.color);
+            }
 			return;
 		}
         if (buttonImageOnly){
@@ -306,20 +319,16 @@ ice.ace.ColorEntryInit = function( cfg) {
     });
 };
 
-ice.ace.ColorEntry.clear = function(id, inFieldLabel, inFieldLabelStyleClass) {
+ice.ace.ColorEntry.clear = function(id) {
 	var instance = ice.ace.instanceNoLazyInit(id);
 	if (instance) instance.setColor(null);
 	var input = ice.ace.jq(ice.ace.escapeClientId(id + "_input"));
-	if (inFieldLabel) {
-		input.attr({name: id + "_label"});
-		input.val(inFieldLabel);
-		input.addClass(inFieldLabelStyleClass);
-	} else {
-		input.val('');
-	}
+    var hidden = ice.ace.jq(ice.ace.escapeClientId(id+"_hidden2"));
+    if (hidden)hidden.val('');
+    if (input)input.val('');
 };
 
-ice.ace.ColorEntry.reset = function(id, inFieldLabel, inFieldLabelStyleClass) {
+ice.ace.ColorEntry.reset = function(id, color) {
 	var instance = ice.ace.instanceNoLazyInit(id);
 	if (instance) {
 		var value = ice.ace.resetValues[id];

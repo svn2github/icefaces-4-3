@@ -50,16 +50,17 @@ public class ColorEntrySwatchesBean implements Serializable
      private List<ColorEntryLayout> swatchLayout = new ArrayList<ColorEntryLayout>();
      private List<ColorEntryLayout> swatchLayoutLong = new ArrayList<ColorEntryLayout>();
      private ColorFormat colorFormat = ColorFormat.RGB;
+     private ColorFormat hexcolorFormat = ColorFormat.HEX3;
 
-    public ColorFormat getColorFormatName() {
+     public ColorFormat getColorFormatName() {
         return colorFormatName;
     }
 
-    public void setColorFormatName(ColorFormat colorFormatName) {
+     public void setColorFormatName(ColorFormat colorFormatName) {
         this.colorFormatName = colorFormatName;
     }
 
-    private ColorFormat colorFormatName = ColorFormat.NAME;
+     private ColorFormat colorFormatName = ColorFormat.NAME;
      private String title;
      private List<String> colorList ;
 
@@ -89,14 +90,23 @@ public class ColorEntrySwatchesBean implements Serializable
 
      }
 
-    private void resetColorList() {
-        colorList = new ArrayList<String>();
-        for (int i=0; i < 4; i++){
-            colorList.add("");
-        }
-    }
+     public void changeSwatch(ValueChangeEvent event){
+         String newSwatch = String.valueOf(event.getNewValue());
+         if (newSwatch.equals("pantone")){
+            swatchWidth=280;
+         } else  {
+             swatchWidth=80;
+         }
+     }
 
-    public boolean isHaveValues() {
+     private void resetColorList() {
+         colorList = new ArrayList<String>();
+         for (int i=0; i < 4; i++){
+            colorList.add("");
+         }
+     }
+
+     public boolean isHaveValues() {
          return (colorList.get(1).length()>0 || colorList.get(2).length()>0 || colorList.get(3).length()>0  || colorList.get(0).length()>0 );
      }
 
@@ -224,10 +234,7 @@ public class ColorEntrySwatchesBean implements Serializable
     }
 
     public int getSwatchWidth() {
-        if (this.swatchName.equals("pantone")){
-            return 200;
-        }
-        return 84;
+        return this.swatchWidth;
     }
 
     public void setSwatchWidth(int swatchWidth) {
@@ -253,4 +260,11 @@ public class ColorEntrySwatchesBean implements Serializable
            this.colorList = colorList;
        }
 
+    public ColorFormat getHexcolorFormat() {
+        return hexcolorFormat;
+    }
+
+    public void setHexcolorFormat(ColorFormat hexcolorFormat) {
+        this.hexcolorFormat = hexcolorFormat;
+    }
 }
