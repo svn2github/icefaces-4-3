@@ -67,16 +67,10 @@ public class Resizable extends ResizableBase {
         UIOutput out = new Setup(target, resizable);
         target.setInView(false);
         out.setTransient(true);
-        List<UIComponent> children = target.getChildren();
-        //render the setup script as child of the target component only if it has already children, we can assume they all will be rendered
-        if (children.isEmpty()) {
-            UIComponent parent = target.getParent();
-            List<UIComponent> siblings = parent.getChildren();
-            int index = siblings.indexOf(target);
-            siblings.add(index + 1, out);
-        } else {
-            children.add(0, out);
-        }
+        UIComponent parent = target.getParent();
+        List<UIComponent> siblings = parent.getChildren();
+        int index = siblings.indexOf(target);
+        siblings.add(index + 1, out);
         target.setInView(true);
     }
 
