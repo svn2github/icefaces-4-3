@@ -147,4 +147,7 @@ public class ScheduleMeta extends UIDataMeta {
 
 	@Field(defaultValue="-1")
 	private Integer currentDay;
+
+	@Field
+	private java.util.List defaultList;
 }

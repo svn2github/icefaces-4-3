@@ -30,6 +30,7 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -96,7 +97,12 @@ public class Schedule extends ScheduleBase implements Serializable {
 	protected void resetDataModel() {
 		setDataModel(null);
 		Object value = getValue();
-		if (value instanceof LazyScheduleEventList) {
+		if (value == null) {
+			if (getDefaultList() == null) {
+				setDefaultList(new ArrayList<ScheduleEvent>());
+			}
+			setValue(getDefaultList());
+		} else if (value instanceof LazyScheduleEventList) {
 			LazyScheduleEventList lazyScheduleEventList = (LazyScheduleEventList) value;
 			Date [] lazyDateRange = getLazyDateRange();
 			TimeZone timeZone = calculateTimeZone();
@@ -236,7 +242,13 @@ public class Schedule extends ScheduleBase implements Serializable {
 		}
 
 		Object value = getValue();
-		if (value instanceof List) {
+		if (value == null) {
+			if (getDefaultList() == null) {
+				setDefaultList(new ArrayList<ScheduleEvent>());
+			}
+			getDefaultList().add(scheduleEvent);
+			setValue(getDefaultList());
+		} else if (value instanceof List) {
 			((List) value).add(scheduleEvent);
 		} else if (Object[].class.isAssignableFrom(value.getClass())) {
 			ScheduleEvent[] oldArray = (ScheduleEvent[]) value;
@@ -262,7 +274,13 @@ public class Schedule extends ScheduleBase implements Serializable {
 		}
 
 		Object value = getValue();
-		if (value instanceof List) {
+		if (value == null) {
+			if (getDefaultList() == null) {
+				setDefaultList(new ArrayList<ScheduleEvent>());
+			}
+			getDefaultList().set(index, scheduleEvent);
+			setValue(getDefaultList());
+		} else if (value instanceof List) {
 			((List) value).set(index, scheduleEvent);
 		} else if (Object[].class.isAssignableFrom(value.getClass())) {
 			((ScheduleEvent[]) value)[index] = scheduleEvent;

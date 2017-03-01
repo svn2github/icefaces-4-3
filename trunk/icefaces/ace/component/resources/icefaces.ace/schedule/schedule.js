@@ -26,6 +26,10 @@ ice.ace.Schedule = function(id, cfg) {
 	this.events = cfg.events;
 	var self = this;
 
+    if (!ice.ace.instance(this.id)) {
+        ice.onElementUpdate(this.id, function() { self.unload(); });
+    }
+
 	// order events according to their server-side index
 	this.eventsMap = {};
 	var i;
@@ -2095,3 +2099,8 @@ ice.ace.Schedule.prototype.escapeHtml = function(str) {
 	div.appendChild(document.createTextNode(str));
 	return div.innerHTML;
 }
+
+ice.ace.Schedule.prototype.unload = function() {
+	this.jqRoot.off();
+	ice.ace.jq(window).off('resize', ice.ace.Schedule.windowResizeListeners[this.id]);
+};

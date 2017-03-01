@@ -182,6 +182,14 @@
 	width: 100%;
 	height: 100%;
 }
+.ice-ace-schedule .schedule-view-month .schedule-grid .schedule-days .day {
+	height: 100%;
+}
+.ice-ace-schedule .schedule-view-month .schedule-grid .schedule-days .schedule-state {
+	border: 1px solid transparent;
+	min-height: 100px;
+	height: inherit;
+}
 .ice-ace-schedule .schedule-selected {
 	text-decoration: underline;
 }
@@ -213,8 +221,8 @@
 .ice-ace-schedule .schedule-time-allday .schedule-state {
 	border: 0;
 }
-.ice-ace-schedule .schedule-event-allday {
-	position: relative;
+.ice-ace-schedule .schedule-view-week .schedule-event-allday,
+.ice-ace-schedule .schedule-view-day .schedule-event-allday {
 	overflow: hidden;
 	height: 100%;
 	width: 100%;

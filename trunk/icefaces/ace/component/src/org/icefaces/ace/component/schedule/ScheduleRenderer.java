@@ -18,6 +18,7 @@ package org.icefaces.ace.component.schedule;
 
 import org.icefaces.ace.model.schedule.ScheduleEvent;
 import org.icefaces.ace.renderkit.CoreRenderer;
+import org.icefaces.ace.util.ComponentUtils;
 import org.icefaces.ace.util.JSONBuilder;
 
 import javax.faces.application.FacesMessage;
@@ -217,6 +218,7 @@ public class ScheduleRenderer extends CoreRenderer {
 
 		writer.startElement("div", null);
 		writer.writeAttribute("id", clientId, null);
+		ComponentUtils.enableOnElementUpdateNotify(writer, clientId);
 		writer.writeAttribute("class", "ice-ace-schedule", null);
 		writer.writeAttribute("tabindex", "0", null);
 
