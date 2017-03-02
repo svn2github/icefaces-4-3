@@ -540,7 +540,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
     }
 
     private boolean shouldApplyChange(Collection<String> ids, String id, Document document) {
-        if (ids.contains("@all")) {
+        if (ids.contains("@all") || ids.contains("javax.faces.ViewRoot") || (ids.isEmpty() && EnvUtils.isMyFaces()) ) {
             return true;
         } else if (ids.contains(id)) {
             return true;
