@@ -206,12 +206,11 @@ ice.ace.Schedule = function(id, cfg) {
 			var dow = parseInt(self.extractDayOfWeek(node.get(0)));
 			self.jqRoot.find('.schedule-dow-header.schedule-dow-' + dow).addClass('schedule-selected');
 
-			var currentDate = new Date();alert('* ' + dow + ' ' + self.cfg.currentYear + ' ' + self.cfg.currentMonth + ' ' + self.cfg.currentDay);
+			var currentDate = new Date();
 			currentDate.setFullYear(self.cfg.currentYear);
 			currentDate.setMonth(self.cfg.currentMonth);
 			currentDate.setDate(self.cfg.currentDay + dow);
 			var date = currentDate.getFullYear() + '-' + self.addLeadingZero(currentDate.getMonth() + 1) + '-' + self.addLeadingZero(currentDate.getDate());
-			alert('** ' + date);
 			document.getElementById(self.id + '_selectedDate').setAttribute('value', date);
 		});
 	}
