@@ -57,10 +57,10 @@
 
            <ace:panel>
               <h:panelGrid style="text-align: center; background-color: ##{colorEntrySwatchesBean.color};" width="100%">
-                  <h:panelGroup style="background-color: #f2eaea;">
-                      <h:outputLabel for="swatchCol" value="Selected Color: " style="padding-left: 6px;"/>
-                      <h:outputText id="swatchCol" value="#{colorEntrySwatchesBean.color}" style="padding-right: 6px;"/>
-                  </h:panelGroup>
+					<h:panelGroup class="ui-widget ui-widget-content" style="opacity:0.7; padding-left: 6px; padding-right: 6px; border:none;">  
+						<h:outputLabel for="selColor2" value="Selected Color: " />
+						<h:outputText id="selColor2" value="#{colorEntryBean.selectedColor}" style="font-weight: bold;"/>
+                    </h:panelGroup>
               </h:panelGrid>
            </ace:panel>
      </ace:tabPane>
@@ -83,10 +83,10 @@
                 </ace:panel>
             <ace:panel>
                   <h:panelGrid style="text-align: center; background-color: #{colorEntrySwatchesBean.fromPredefined};" width="100%">
-                      <h:panelGroup style="background-color: #f2eaea;">
-                          <h:outputLabel for="predefVal" value="Selected Color: " style="padding-left: 6px;"/>
-                          <h:outputText id="predefVal" value="#{colorEntrySwatchesBean.fromPredefined}" style="padding-right: 6px;"/>
-                      </h:panelGroup>
+					<h:panelGroup class="ui-widget ui-widget-content" style="opacity:0.7; padding-left: 6px; padding-right: 6px; border:none;">  
+						<h:outputLabel for="selColorInline" value="Selected Color: " />
+						<h:outputText id="selColorInline" value="#{colorEntryBean.selectedColor}" style="font-weight: bold;"/>
+                    </h:panelGroup>
                   </h:panelGrid>
             </ace:panel>
        </ace:tabPane>
@@ -132,10 +132,10 @@
 
             <ace:panel id="outputPanelDyn">
                  <h:panelGrid style="text-align: center; background-color: ##{colorEntrySwatchesBean.dynamic};" width="100%">
-                      <h:panelGroup style="background-color: #f2eaea;">
-                          <h:outputLabel for="dynValue" value="Selected Color: " style="padding-left: 6px;"/>
-                          <h:outputText id="dynValue" value="#{colorEntrySwatchesBean.dynamic}" style="padding-right: 6px;"/>
-                      </h:panelGroup>
+					<h:panelGroup class="ui-widget ui-widget-content" style="opacity:0.7; padding-left: 6px; padding-right: 6px; border:none;">  
+						<h:outputLabel for="dynValue" value="Selected Color: " />
+						<h:outputText id="dynValue" value="#{colorEntryBean.selectedColor}" style="font-weight: bold;"/>
+                    </h:panelGroup>
                  </h:panelGrid>
             </ace:panel>
          </ace:tabPane>

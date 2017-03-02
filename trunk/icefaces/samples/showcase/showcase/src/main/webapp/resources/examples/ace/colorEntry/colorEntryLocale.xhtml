@@ -49,7 +49,7 @@
         <h:form>
             <ace:panel id="colorInputPanel" header="ColorEntry - Customizable"
                        styleClass="required-styling-demo">
-                <h:panelGrid id="inputGrid" columns="1" width="100%" style="background-color: #f2eaea;">
+                <h:panelGrid id="inputGrid" columns="1" width="100%" >
                           <ace:colorEntry id="swatchNameID" value="#{colorEntryLocaleBean.color}"
                                       renderAsPopup="true"
                                       customParts="#{colorEntryLocaleBean.full}"
@@ -65,10 +65,10 @@
         </h:form>
         <ace:panel>
              <h:panelGrid style="text-align: center; background-color: ##{colorEntryLocaleBean.color};" width="100%">
-                 <h:panelGroup style="background-color: #f2eaea;">
-                     <h:outputLabel for="localeValue" value="Selected Color: " style="padding-left: 6px;"/>
-                     <h:outputText id="localeValue" value="#{colorEntryLocaleBean.color}" style="padding-right: 6px"/>
-                 </h:panelGroup>
+				<h:panelGroup class="ui-widget ui-widget-content" style="opacity:0.7; padding-left: 6px; padding-right: 6px; border:none;">  
+					<h:outputLabel for="selColorInline" value="Selected Color: " />
+					<h:outputText id="selColorInline" value="#{colorEntryBean.selectedColor}" style="font-weight: bold;"/>
+				</h:panelGroup>
              </h:panelGrid>
         </ace:panel>
     </ui:define>

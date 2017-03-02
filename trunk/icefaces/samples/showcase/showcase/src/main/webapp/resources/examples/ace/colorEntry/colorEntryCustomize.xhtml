@@ -68,13 +68,12 @@
                 </h:panelGrid>
             </ace:panel>
             <ace:panel>
-                    <h:panelGrid style="text-align: center; background-color:##{colorEntryCustomBean.value};" width="100%">
-                        <h:panelGroup style="background-color: #f2eaea;">
-                     		<h:outputLabel for="selColorCustom" value="Selected Color: " style="padding-left: 6px;"/>
-                     		<h:outputText id="selColorCustom" value="#{colorEntryCustomBean.value}"
-                                       style="font-weight: bold; padding-right: 6px;"/>  
-            		</h:panelGroup>
-                    </h:panelGrid>
+				<h:panelGrid style="text-align: center; background-color:##{colorEntryCustomBean.value};" width="100%">
+					<h:panelGroup class="ui-widget ui-widget-content" style="opacity:0.7; padding-left: 6px; padding-right: 6px; border:none;">  
+						<h:outputLabel for="selColorInline" value="Selected Color: " />
+						<h:outputText id="selColorInline" value="#{colorEntryBean.selectedColor}" style="font-weight: bold;"/>
+					</h:panelGroup>
+				</h:panelGrid>
             </ace:panel>
         </h:form>
     </ui:define>
