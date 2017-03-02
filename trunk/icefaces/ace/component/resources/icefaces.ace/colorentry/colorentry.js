@@ -20,10 +20,14 @@ ice.ace.ColorEntry = function(id, cfg) { 
     this.jq.colorpicker(this.cfg); 
     ice.ace.ColorEntry.instances[id] = this;
     ice.ace.setResetValue(this.id, this.options.color);  
+    var elemId = this.jqElId;
+    if (this.options.inline){
+        elemId=this.jqId;
+    }
     var initialColor = ice.ace.ColorEntry.initialColor[id] ||null;
-    if ( this.options.inline && initialColor !=null){  //workaround for inline to set preview of previous color
+    if (initialColor !=null){  //workaround for inline to set preview of previous color
         var PREVIOUS_COLOR_VAL_INLINE = ".ui-colorpicker-preview-initial";
-        var initElem = ice.ace.jq(this.jqElId).find(PREVIOUS_COLOR_VAL_INLINE);
+        var initElem = ice.ace.jq(elemId).find(PREVIOUS_COLOR_VAL_INLINE);
         if (initElem){
             initElem.css("backgroundColor", initialColor) ;
         }else {
@@ -202,15 +206,18 @@ ice.ace.ColorEntryInit = function( cfg) {
                 return;
             }
             var colorFormatted = color.formatted;
-            if (!inline){  //set
-                setColorBar(color);
-                return;
+            var elId = inputSelector;
+            if (inline){
+                elId=positionId;
             }
-            var prevElem = ice.ace.jq(positionId).find(PREVIOUS_COLOR_VAL_INLINE);
-          //  var initElem = ice.ace.jq(positionId + 'span'+PREVIOUS_COLOR_VAL_INLINE) ;
+            var prevElem = ice.ace.jq(elId).find(PREVIOUS_COLOR_VAL_INLINE);
             if (prevElem) {
                 var initialColor =  prevElem.css('backgroundColor');
                 ice.ace.ColorEntry.initialColor[id]  = initialColor;
+            }
+            if (!inline){  //set
+                setColorBar(color);
+                return;
             }
             ice.ace.setResetValue(this.id, color.formatted);  
             ice.ace.jq(ice.ace.escapeClientId(id) + "_hidden").val(colorFormatted);
@@ -234,10 +241,11 @@ ice.ace.ColorEntryInit = function( cfg) {
             return widget;
         };
         var initAndShow = function(){
-            create();
+            console.log(" initAndShow") ;
             if (trigger){
                   trigger.remove();
             }
+            create();
             if (ice.ace.instance(id)){
                 ice.ace.instance(id).jq[ice.ace.instance(id).colorpickerFn]("open");
             } else {
