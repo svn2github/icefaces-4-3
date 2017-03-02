@@ -109,8 +109,8 @@ public class AjaxBehaviors implements Serializable {
      * for subsequent calls to getBehaviorForEvent.</p>
      *
      * @param ctx the FaceletContext
-     * @param ajaxBehavior the AjaxBehavior instance
-     * @param eventName the name of the event that the behavior is associated
+     * @param handler the AjaxBehaviorHandler instance
+     * @param eventName the name of the event that te behavior is associated
      *     with.
      *
      * @since 2.0
