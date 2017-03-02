@@ -589,6 +589,10 @@ body, table {
 	display:none;
 }
 
+#examplePanel_header {
+	padding: 0.3em .5em 0 0.5em;
+}
+
 .row-state-table input[type="text"] {
 	width:90%;
 }
