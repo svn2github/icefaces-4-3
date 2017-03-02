@@ -137,7 +137,7 @@ ice.ace.Schedule = function(id, cfg) {
 		});
 	}
 	if (self.cfg.isEventAddition) {
-		this.jqRoot.delegate('.day, .schedule-cell', 'dblclick', function(event) {
+		this.jqRoot.delegate('.schedule-day, .schedule-cell', 'dblclick', function(event) {
 			event.stopPropagation();
 			var date, time;
 			var node = event['target'];
@@ -1180,7 +1180,7 @@ ice.ace.Schedule.prototype.renderWeekEvents = function() {
 				width: (width - multiplicityAdjustment) + 'px', 
 				height: (endPosition.top - position.top + height) + 'px'}).appendTo(eventsContainer);
 			var highlightClass = listing % 2 == 1 ? ' ui-state-highlight' : '';
-			ice.ace.jq('<div class="schedule-list-event schedule-event-' + event.index + highlightClass + '"><span class="schedule-list-event-day">'+this.getMonthNameShort(eventStartDate.getMonth())+' '+event.startDate.substring(8)+'</span><span class="schedule-list-event-name">'+this.escapeHtml(event.title)+'</span><span class="schedule-list-event-location">'+this.escapeHtml(event.location)+'</span></div>').appendTo(sidebarEventsContainer);
+			ice.ace.jq('<div class="schedule-list-event schedule-event-' + event.index + highlightClass + '"><span class="schedule-list-event-day">'+this.getDayOfTheWeekName(dow)+', '+this.getMonthNameShort(eventStartDate.getMonth())+' '+event.startDate.substring(8)+'</span><span class="schedule-list-event-name">'+this.escapeHtml(event.title)+'</span><span class="schedule-list-event-location">'+this.escapeHtml(event.location)+'</span></div>').appendTo(sidebarEventsContainer);
 			this.markUsedTimeSlots(this.weekTimeSlots[dow], startingTimeSlot, endingTimeSlot);
 			listing++;
 			if (spansMultipleDays) {
