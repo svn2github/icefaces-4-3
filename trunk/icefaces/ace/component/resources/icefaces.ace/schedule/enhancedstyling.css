@@ -11,8 +11,8 @@
 }
 .ice-ace-schedule .schedule-styling-enhanced .schedule-days .ui-widget-content .schedule-event {
 	background-image: none;
-	background-color: #ccf;
-	border-left: 2px solid #669;
+	background-color: #ccccff;
+	border-left: 2px solid #666699;
 	border-top: none;
 	border-right: none;
 	border-bottom: none;
@@ -23,10 +23,232 @@
 }
 .ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event {
 	background-image: none;
-	background-color: #ccf;
-	border-left: 3px solid #669;
+	background-color: #ccccff;
+	border-left: 3px solid #666699;
 	border-top: none;
 	border-right: none;
 	border-bottom: none;
 	padding: 2px 2px 2px 3px;
+}
+
+/*
+ *  Predefined color classes:
+ *  schedule-blue, schedule-red, schedule-green, schedule-yellow
+ *  schedule-orange, schedule-turquoise, schedule-magenta, schedule-violet
+ */
+
+/*
+ *  Predefined color classes for month events
+ */
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .ui-widget-content .schedule-event.schedule-blue {
+	background-color: #ccccff;
+	border-color: #666699;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .ui-widget-content .schedule-event.schedule-red {
+	background-color: #ffcccc;
+	border-color: #996666;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .ui-widget-content .schedule-event.schedule-green {
+	background-color: #ccffcc;
+	border-color: #669966;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .ui-widget-content .schedule-event.schedule-yellow {
+	background-color: #ffffcc;
+	border-color: #999966;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .ui-widget-content .schedule-event.schedule-orange {
+	background-color: #ffcc66;
+	border-color: #ff9900;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .ui-widget-content .schedule-event.schedule-turquoise {
+	background-color: #99ccff;
+	border-color: #0099ff;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .ui-widget-content .schedule-event.schedule-magenta {
+	background-color: #ff99cc;
+	border-color: #ff0099;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .ui-widget-content .schedule-event.schedule-violet {
+	background-color: #cc99ff;
+	border-color: #9900ff;
+}
+
+/*
+ *  default event color, including shades for overlapping events in week and day views
+ */
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event {
+	background-color: #ccccff;
+	border-color: #666699;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-overlapping-1 {
+	background-color: #bcbcef;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-overlapping-2 {
+	background-color: #acacdf;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-overlapping-3 {
+	background-color: #9c9ccf;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-overlapping-4 {
+	background-color: #8c8cbf;
+}
+
+/*
+ *  schedule-blue, including shades for overlapping events in week and day views
+ */
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-blue {
+	background-color: #ccccff;
+	border-color: #666699;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-blue.schedule-overlapping-1 {
+	background-color: #bcbcef;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-blue.schedule-overlapping-2 {
+	background-color: #acacdf;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-blue.schedule-overlapping-3 {
+	background-color: #9c9ccf;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-blue.schedule-overlapping-4 {
+	background-color: #8c8cbf;
+}
+
+/*
+ *  schedule-red, including shades for overlapping events in week and day views
+ */
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-red {
+	background-color: #ffcccc;
+	border-color: #996666;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-red.schedule-overlapping-1 {
+	background-color: #efbfbf;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-red.schedule-overlapping-2 {
+	background-color: #dfafaf;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-red.schedule-overlapping-3 {
+	background-color: #cf9f9f;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-red.schedule-overlapping-4 {
+	background-color: #bf8f8f;
+}
+
+/*
+ *  schedule-green, including shades for overlapping events in week and day views
+ */
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-green {
+	background-color: #ccffcc;
+	border-color: #669966;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-green.schedule-overlapping-1 {
+	background-color: #bcefbc;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-green.schedule-overlapping-2 {
+	background-color: #acdfac;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-green.schedule-overlapping-3 {
+	background-color: #9ccf9c;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-green.schedule-overlapping-4 {
+	background-color: #8cbf8c;
+}
+
+/*
+ *  schedule-yellow, including shades for overlapping events in week and day views
+ */
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-yellow {
+	background-color: #ffffcc;
+	border-color: #999966;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-yellow.schedule-overlapping-1 {
+	background-color: #efefbc;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-yellow.schedule-overlapping-2 {
+	background-color: #dfdfac;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-yellow.schedule-overlapping-3 {
+	background-color: #cfcf9c;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-yellow.schedule-overlapping-4 {
+	background-color: #bfbf8c;
+}
+
+/*
+ *  schedule-orange, including shades for overlapping events in week and day views
+ */
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-orange {
+	background-color: #ffcc66;
+	border-color: #ff9900;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-orange.schedule-overlapping-1 {
+	background-color: #efbc56;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-orange.schedule-overlapping-2 {
+	background-color: #dfac46;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-orange.schedule-overlapping-3 {
+	background-color: #cf9c36;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-orange.schedule-overlapping-4 {
+	background-color: #bf8c26;
+}
+
+/*
+ *  schedule-turquoise, including shades for overlapping events in week and day views
+ */
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-turquoise {
+	background-color: #99ccff;
+	border-color: #0099ff;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-turquoise.schedule-overlapping-1 {
+	background-color: #89bcef;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-turquoise.schedule-overlapping-2 {
+	background-color: #79acdf;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-turquoise.schedule-overlapping-3 {
+	background-color: #699ccf;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-turquoise.schedule-overlapping-4 {
+	background-color: #598cbf;
+}
+
+/*
+ *  schedule-magenta, including shades for overlapping events in week and day views
+ */
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-magenta {
+	background-color: #ff99cc;
+	border-color: #ff0099;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-magenta.schedule-overlapping-1 {
+	background-color: #ef89bc;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-magenta.schedule-overlapping-2 {
+	background-color: #df79ac;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-magenta.schedule-overlapping-3 {
+	background-color: #cf699c;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-magenta.schedule-overlapping-4 {
+	background-color: #bf598c;
+}
+
+/*
+ *  schedule-violet, including shades for overlapping events in week and day views
+ */
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-violet {
+	background-color: #cc99ff;
+	border-color: #9900ff;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-violet.schedule-overlapping-1 {
+	background-color: #bc89ef;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-violet.schedule-overlapping-2 {
+	background-color: #ac79df;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-violet.schedule-overlapping-3 {
+	background-color: #9c69cf;
+}
+.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.schedule-violet.schedule-overlapping-4 {
+	background-color: #8c59bf;
 }

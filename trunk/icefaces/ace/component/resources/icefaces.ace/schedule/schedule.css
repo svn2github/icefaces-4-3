@@ -51,6 +51,11 @@
 	position: relative;
 	overflow: auto;
 }
+@-moz-document url-prefix() {
+	.ice-ace-schedule .schedule-grid .schedule-days {
+		height: auto;
+	}
+}
 .ice-ace-schedule .schedule-view-month .schedule-grid .schedule-dow .schedule-dow-header {
 	width: 14.2857%;
 	padding: 14px 0;
