@@ -197,6 +197,24 @@ ice.ace.Schedule = function(id, cfg) {
 			}
 		});
 	}
+	if (this.cfg.viewMode == 'week') { // allow day selection on day headers
+		this.jqRoot.delegate('.schedule-dow-header', 'click', function(event) {
+			event.stopPropagation();
+			var node = ice.ace.jq(event['target']);
+			// add selected styling
+			self.jqRoot.find('.schedule-selected').removeClass('schedule-selected');
+			var dow = parseInt(self.extractDayOfWeek(node.get(0)));
+			self.jqRoot.find('.schedule-dow-header.schedule-dow-' + dow).addClass('schedule-selected');
+
+			var currentDate = new Date();alert('* ' + dow + ' ' + self.cfg.currentYear + ' ' + self.cfg.currentMonth + ' ' + self.cfg.currentDay);
+			currentDate.setFullYear(self.cfg.currentYear);
+			currentDate.setMonth(self.cfg.currentMonth);
+			currentDate.setDate(self.cfg.currentDay + dow);
+			var date = currentDate.getFullYear() + '-' + self.addLeadingZero(currentDate.getMonth() + 1) + '-' + self.addLeadingZero(currentDate.getDate());
+			alert('** ' + date);
+			document.getElementById(self.id + '_selectedDate').setAttribute('value', date);
+		});
+	}
 	this.jqRoot.delegate('.schedule-list-title', 'click', function(event) {
 		self.expandEventList();
 	});
@@ -274,7 +292,7 @@ ice.ace.Schedule.prototype.extractDayOfWeek = function(node) {
 	var i;
 	for (i = 0; i < classes.length; i++) {
 		var styleClass = classes[i];
-		if (styleClass.indexOf('schedule-dow-') == 0) {
+		if (styleClass.indexOf('schedule-dow-') == 0 && styleClass != 'schedule-dow-header') {
 			result = styleClass.substring(13);
 			break;
 		}
@@ -1179,6 +1197,7 @@ ice.ace.Schedule.prototype.renderWeekEvents = function() {
 						var isLastDay = eventStartDate.getFullYear() == eventEndDate.getFullYear() 
 								&& eventStartDate.getMonth() == eventEndDate.getMonth()
 								&& eventStartDate.getDate() == eventEndDate.getDate();
+						if (isLastDay && event.endTime == '00:00') break; // ends previous day at midnight
 						var endHour = isLastDay ? event.endTime.substring(0,2) : '24';
 						var endMinutes = isLastDay ? parseInt(event.endTime.substring(3,5)) : '00';
 						var endingTimeSlot = this.determinePreviousTimeCell(endHour, endMinutes);
@@ -1222,6 +1241,7 @@ ice.ace.Schedule.prototype.renderWeekEvents = function() {
 					var isLastDay = date.getFullYear() == eventEndDate.getFullYear() 
 							&& date.getMonth() == eventEndDate.getMonth()
 							&& date.getDate() == eventEndDate.getDate();
+					if (isLastDay && event.endTime == '00:00') break; // ends previous day at midnight
 					var endHour = isLastDay ? event.endTime.substring(0,2) : '24';
 					var endMinutes = isLastDay ? parseInt(event.endTime.substring(3,5)) : '00';
 					var endingTimeSlot = this.determinePreviousTimeCell(endHour, endMinutes);
@@ -1466,6 +1486,7 @@ ice.ace.Schedule.prototype.renderDayEvents = function() {
 		// events that don't start on this day but end on this day
 		} else if (eventEndDate.getFullYear() == currentYear 
 			&& eventEndDate.getMonth() == currentMonth && eventEndDate.getDate() == currentDay) {
+			if (event.endTime == '00:00') continue; // ends previous day at midnight
 			var hour = '00';
 			var minutes = '00';
 			var startingTimeSlot = hour + minutes;
