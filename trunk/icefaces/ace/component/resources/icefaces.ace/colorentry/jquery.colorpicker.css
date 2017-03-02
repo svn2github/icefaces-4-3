@@ -22,8 +22,10 @@
 
 .ui-colorpicker-buttonset .ui-button {
 	margin:					.5em 0 .5em 0;
-	font-size:	0.8em; /* added to original */
 	cursor:					pointer;
+}
+.ui-button-text {
+    font-size:	inherit !important; /* added to original */
 }
 
 .ui-colorpicker-buttonpane {
@@ -42,6 +44,7 @@
 	padding:				.2em .6em .3em .6em;
 	width:					auto;
 	overflow:				visible;
+    font-size:              .9em; /* added to original */
 }
 
 .ui-colorpicker-buttonpane button.ui-colorpicker-current {
