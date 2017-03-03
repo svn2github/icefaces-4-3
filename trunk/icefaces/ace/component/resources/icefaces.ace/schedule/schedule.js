@@ -942,8 +942,10 @@ ice.ace.Schedule.prototype.renderMonthEvents = function(data) {
 		}
 	}
 	// fix to make height:100%; work on Edge and IE
-	var table = this.jqRoot.find('.schedule-grid > table');
-	table.css('height', table.outerHeight() + 'px');
+	if (ice.ace.browser.isIE() || navigator.userAgent.indexOf('Edge\/') != -1) {alert('x');
+		var table = this.jqRoot.find('.schedule-grid > table');
+		table.css('height', table.outerHeight() + 'px');
+	}
 
 	this.expandEventList();
 };
@@ -1802,6 +1804,8 @@ ice.ace.Schedule.prototype.addNavigationListeners = function() {
 		document.getElementById(self.id + '_currentYear').setAttribute('value', currentYear);
 		document.getElementById(self.id + '_currentMonth').setAttribute('value', currentMonth);
 		document.getElementById(self.id + '_currentDay').setAttribute('value', currentDay);
+		// save scroll position
+		window[self.id + '_lastScrollTop'] = self.jqRoot.find('.schedule-days').get(0).scrollTop;
 		if (!self.cfg.isLazy) {
 			self.render();
 		}
@@ -1905,6 +1909,8 @@ ice.ace.Schedule.prototype.addNavigationListeners = function() {
 		document.getElementById(self.id + '_currentYear').setAttribute('value', currentYear);
 		document.getElementById(self.id + '_currentMonth').setAttribute('value', currentMonth);
 		document.getElementById(self.id + '_currentDay').setAttribute('value', currentDay);
+		// save scroll position
+		window[self.id + '_lastScrollTop'] = self.jqRoot.find('.schedule-days').get(0).scrollTop;
 		if (!self.cfg.isLazy) {
 			self.render();
 		}
