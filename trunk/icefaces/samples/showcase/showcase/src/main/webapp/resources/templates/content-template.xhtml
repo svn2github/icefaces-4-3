@@ -92,7 +92,7 @@
                             <c:forEach items="#{userMenuState.selectedDemo.sources}"
                                        var="exSource">
                                 <ace:tabPane label="#{exSource.name}">
-                                    <div style="background-color:#fff;">
+                                    <div style="background-color:#fff;width:660px;overflow:auto;">
                                         <h:outputText escape="false"
                                                       value="#{sourceCodeLoaderConnection[exSource.path]}"/>
                                     </div>
