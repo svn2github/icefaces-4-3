@@ -98,6 +98,8 @@ public class RadioButtonRenderer extends InputRenderer {
 
         // Button Element
         encodeButtonElementStart(writer, clientId);
+        String accesskey = radioButton.getAccesskey();
+        if (accesskey != null) writer.writeAttribute("accesskey", accesskey, null);
         /* not same */
 		if (labelAttributes.get("label") != null
 			&& !"inField".equals(labelAttributes.get("labelPosition"))) {
