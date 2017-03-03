@@ -210,7 +210,8 @@
 .ice-ace-schedule .schedule-sidebar .schedule-details-sidebar-content > span > span > span {
 	display: block;
 }
-.ice-ace-schedule .schedule-days .schedule-day {
+.ice-ace-schedule .schedule-days .schedule-day,
+.ice-ace-schedule .schedule-dow-header {
    -moz-user-select: none;
    -khtml-user-select: none;
    -webkit-user-select: none;

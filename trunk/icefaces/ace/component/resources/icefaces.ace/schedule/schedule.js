@@ -152,6 +152,40 @@ ice.ace.Schedule = function(id, cfg) {
 			else
 				self.displayEventDetailsPopup(markup, eventData);
 		});
+		if (self.cfg.viewMode == 'week') {
+			this.jqRoot.delegate('.schedule-dow-header', 'dblclick', function(event) {
+				event.stopPropagation();
+				var node = ice.ace.jq(event['target']);
+				var dow = parseInt(self.extractDayOfWeek(node.get(0)));
+
+				var currentDate = new Date();
+				currentDate.setFullYear(self.cfg.currentYear);
+				currentDate.setMonth(self.cfg.currentMonth);
+				currentDate.setDate(self.cfg.currentDay + dow);
+				var date = currentDate.getFullYear() + '-' + self.addLeadingZero(currentDate.getMonth() + 1) + '-' + self.addLeadingZero(currentDate.getDate());
+
+				var eventData = {startDate: date, startTime: '', endDate: date, endTime: '', title: '', location: '', notes: '', index: ''};
+				var markup = self.getEventDetailsMarkup(eventData, true, false, false);
+				if (self.cfg.eventDetails == 'sidebar')
+					self.displayEventDetailsSidebar(markup, eventData);
+				else
+					self.displayEventDetailsPopup(markup, eventData);
+			});
+		}
+		if (self.cfg.viewMode == 'day') {
+			this.jqRoot.delegate('.schedule-dow-header', 'dblclick', function(event) {
+				event.stopPropagation();
+
+				var date = self.cfg.currentYear + '-' + self.addLeadingZero(self.cfg.currentMonth + 1) + '-' + self.addLeadingZero(self.cfg.currentDay);
+
+				var eventData = {startDate: date, startTime: '', endDate: date, endTime: '', title: '', location: '', notes: '', index: ''};
+				var markup = self.getEventDetailsMarkup(eventData, true, false, false);
+				if (self.cfg.eventDetails == 'sidebar')
+					self.displayEventDetailsSidebar(markup, eventData);
+				else
+					self.displayEventDetailsPopup(markup, eventData);
+			});
+		}
 	}
 	this.jqRoot.delegate('.schedule-state', 'mouseenter mouseover', function(event) {
 		event.stopPropagation();
