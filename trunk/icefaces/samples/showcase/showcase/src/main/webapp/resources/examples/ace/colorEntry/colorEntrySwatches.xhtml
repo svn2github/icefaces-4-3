@@ -130,7 +130,7 @@
                  </h:panelGrid>
             </h:panelGroup>
 
-            <ace:panel id="outputPanelDyn">
+            <ace:panel id="outputPanelDyn" rendered="#{colorEntrySwatchesBean.haveValues}" >
                  <h:panelGrid style="text-align: center; background-color: ##{colorEntrySwatchesBean.dynamic};" width="100%">
 					<h:panelGroup class="ui-widget ui-widget-content" style="opacity:0.7; padding-left: 6px; padding-right: 6px; border:none;">  
 						<h:outputLabel for="dynValue" value="Selected Color: " />
