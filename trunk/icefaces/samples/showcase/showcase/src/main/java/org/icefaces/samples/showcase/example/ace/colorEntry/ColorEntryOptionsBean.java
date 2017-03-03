@@ -35,6 +35,7 @@ public class ColorEntryOptionsBean implements Serializable
     private ColorFormat colorFormat = ColorFormat.RGB;
     private String value;
     private String labelPosition="left";
+    private String renderedValue;
 
     public String getLabelPosition() {
         return labelPosition;
@@ -53,8 +54,6 @@ public class ColorEntryOptionsBean implements Serializable
         this.colorFormats.add(ColorFormat.HEX3);
         this.colorFormats.add(ColorFormat.RGB);
         this.colorFormats.add(ColorFormat.RGBPERCENT);
-        this.colorFormats.add(ColorFormat.HSLA);
-        this.colorFormats.add(ColorFormat.HSLAPERCENT) ;
         this.colorFormats.add(ColorFormat.NAME);
     }
     public boolean isInline() {
@@ -115,4 +114,14 @@ public class ColorEntryOptionsBean implements Serializable
           this.colorFormat = colorFormat;
       }
 
+    public String getRenderedValue() {
+        if (this.getColorFormat().toString().startsWith("HEX")){
+            return "#"+this.value;
+        }
+        else return this.value;
+    }
+
+    public void setRenderedValue(String renderedValue) {
+        this.renderedValue = renderedValue;
+    }
 }
