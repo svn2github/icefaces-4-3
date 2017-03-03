@@ -22,6 +22,7 @@ import org.icefaces.samples.showcase.dataGenerators.DefaultDistributionEventGene
 
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.model.SelectItem;
 
 import java.io.Serializable;
@@ -39,9 +40,26 @@ public class ScheduleCustomStylingBean implements Serializable {
 	public String getBeanName() { return BEAN_NAME; }
     
     private List<ScheduleEvent> events;
+    private List<ScheduleEvent> overlappingEvents;
+    private List<ScheduleEvent> conferenceEvents;
 
 	public ScheduleCustomStylingBean() {
 		events = (new DefaultDistributionEventGenerator()).getEvents();
+		overlappingEvents = new ArrayList<ScheduleEvent>();
+		conferenceEvents = new ArrayList<ScheduleEvent>();
+
+		int size = events.size();
+		for (int i = 0; i < size; i++) {
+			ScheduleEvent event = events.get(i);
+			String title = event.getTitle().toLowerCase();
+			if (title.contains("overlapping")) {
+				event.setStyleClass(overlappingClass);
+				overlappingEvents.add(event);
+			} else if (title.contains("conference")) {
+				event.setStyleClass(conferenceClass);
+				conferenceEvents.add(event);
+			}
+		}
 	}
 
 	public List<ScheduleEvent> getEvents() { return events; }
@@ -54,4 +72,28 @@ public class ScheduleCustomStylingBean implements Serializable {
 	private boolean enhancedStyling = true;
 	public boolean isEnhancedStyling() { return enhancedStyling; }
 	public void setEnhancedStyling(boolean enhancedStyling) { this.enhancedStyling = enhancedStyling; }
+
+	private String overlappingClass = "schedule-magenta";
+	public String getOverlappingClass() { return overlappingClass; }
+	public void setOverlappingClass(String overlappingClass) { this.overlappingClass = overlappingClass; }
+
+	private String conferenceClass = "schedule-turquoise";
+	public String getConferenceClass() { return conferenceClass; }
+	public void setConferenceClass(String conferenceClass) { this.conferenceClass = conferenceClass; }
+
+	public void changeOverlappingClass(AjaxBehaviorEvent ajaxBehaviorEvent) {
+		int size = overlappingEvents.size();
+		for (int i = 0; i < size; i++) {
+			ScheduleEvent event = overlappingEvents.get(i);
+			event.setStyleClass(overlappingClass);
+		}
+	}
+
+	public void changeConferenceClass(AjaxBehaviorEvent ajaxBehaviorEvent) {
+		int size = conferenceEvents.size();
+		for (int i = 0; i < size; i++) {
+			ScheduleEvent event = conferenceEvents.get(i);
+			event.setStyleClass(conferenceClass);
+		}
+	}
 }

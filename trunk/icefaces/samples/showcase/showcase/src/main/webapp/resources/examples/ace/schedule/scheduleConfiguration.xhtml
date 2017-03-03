@@ -34,34 +34,6 @@
 				background-image: none;
 				background-color: #efefff;
 			}
-
-			/* custom styling for meeting events, month view */
-			.ice-ace-schedule .schedule-styling-enhanced .schedule-days .ui-widget-content .schedule-event.meeting {
-				background-color: #ffc;
-				border-color: #cc6;
-			}
-
-			/* custom styling for meeting events, week and day views */
-			.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.meeting {
-				background-color: #ffc;
-				border-color: #cc6;
-			}
-
-			/* custom styling for public events, month view */			
-			.ice-ace-schedule .schedule-styling-enhanced .schedule-days .ui-widget-content .schedule-event.public {
-				background-color: #cfc;
-				border-color: #696;
-			}
-
-			/* custom styling for public events, week and day views */
-			.ice-ace-schedule .schedule-styling-enhanced.schedule-view-week .schedule-days .ui-widget-content .schedule-event.public, .ice-ace-schedule .schedule-styling-enhanced.schedule-view-day .schedule-days .ui-widget-content .schedule-event.public {
-				background-color: #cfc;
-				border-left: 3px solid #696;
-				border-top: none;
-				border-right: none;
-				border-bottom: none;
-				padding: 2px 2px 2px 3px;
-			}
 		</style>
         <h:form id="form">
 			<ace:panel header="Configuration">
@@ -125,7 +97,7 @@
 				</div>
 			</ace:panel>
             <ace:dialog id="dialog" binding="#{dialog}"
-                               header="A sample dialog overview example"
+                               header="Schedule"
                                closable="true"
                                modal="false"
                                draggable="true"

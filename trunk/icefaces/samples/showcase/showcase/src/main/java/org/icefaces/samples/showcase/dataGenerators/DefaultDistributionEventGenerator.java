@@ -152,10 +152,10 @@ public class DefaultDistributionEventGenerator implements Serializable {
 		hour = 0;
 		minute = 0;
 		duration = (randomDays.nextInt(3) + 1) * 1440; // 1-3 days
-		events.add(generateEvent(year, month, day, hour, minute, duration, true, "Public Event 1", "Some public location", "Notes about public event...", "public"));
+		events.add(generateEvent(year, month, day, hour, minute, duration, true, "Public Event 1", "Some public location", "Notes about public event...", "schedule-green"));
 		day = multipleDayEventsDays.get(1);
 		duration = (randomDays.nextInt(3) + 1) * 1440; // 1-3 days
-		events.add(generateEvent(year, month, day, hour, minute, duration, true, "Public Event 2", "Some public location", "Notes about public event...", "public"));
+		events.add(generateEvent(year, month, day, hour, minute, duration, true, "Public Event 2", "Some public location", "Notes about public event...", "schedule-green"));
 
 		// add very long event
 		day = multipleDayEventsDays.get(2);
@@ -242,19 +242,19 @@ public class DefaultDistributionEventGenerator implements Serializable {
 		hour = randomHours.nextInt(4) + 8;
 		minute = 0;
 		duration = 90;
-		events.add(generateEvent(year, month, day, hour, minute, duration, false, "Meeting 1", "Some meeting room", "Notes about meeting...", "meeting"));
+		events.add(generateEvent(year, month, day, hour, minute, duration, false, "Meeting 1", "Some meeting room", "Notes about meeting...", "schedule-yellow"));
 		day = regularEventsDays.get(9);
 		hour = randomHours.nextInt(4) + 8;
 		minute = 30;
-		events.add(generateEvent(year, month, day, hour, minute, duration, false, "Meeting 2", "Some meeting room", "Notes about meeting...", "meeting"));
+		events.add(generateEvent(year, month, day, hour, minute, duration, false, "Meeting 2", "Some meeting room", "Notes about meeting...", "schedule-yellow"));
 		day = regularEventsDays.get(10);
 		hour = randomHours.nextInt(4) + 8;
 		minute = 0;
-		events.add(generateEvent(year, month, day, hour, minute, duration, false, "Meeting 3", "Some meeting room", "Notes about meeting...", "meeting"));
+		events.add(generateEvent(year, month, day, hour, minute, duration, false, "Meeting 3", "Some meeting room", "Notes about meeting...", "schedule-yellow"));
 		day = regularEventsDays.get(11);
 		hour = randomHours.nextInt(4) + 8;
 		minute = 30;
-		events.add(generateEvent(year, month, day, hour, minute, duration, false, "Meeting 4", "Some meeting room", "Notes about meeting...", "meeting"));
+		events.add(generateEvent(year, month, day, hour, minute, duration, false, "Meeting 4", "Some meeting room", "Notes about meeting...", "schedule-yellow"));
 
 		// conferences (2 hours)
 		day = regularEventsDays.get(12);
@@ -281,6 +281,13 @@ public class DefaultDistributionEventGenerator implements Serializable {
 		minute = 0;
 		duration = 180;
 		events.add(generateEvent(year, month, day, hour, minute, duration, false, "Long Event 1", "Some location", "Notes about event...", ""));
+
+		// important event
+		day = regularEventsDays.get(17);
+		hour = randomHours.nextInt(4) + 10;
+		minute = 0;
+		duration = 120;
+		events.add(generateEvent(year, month, day, hour, minute, duration, false, "Important Event", "Some location", "Important notes...", "schedule-red"));
 
 		// now add more events of every type again but happening in the afternoon
 
@@ -311,11 +318,11 @@ public class DefaultDistributionEventGenerator implements Serializable {
 		hour = randomHours.nextInt(4) + 17;
 		minute = 0;
 		duration = 90;
-		events.add(generateEvent(year, month, day, hour, minute, duration, false, "Meeting 5", "Some meeting room", "Notes about meeting...", "meeting"));
+		events.add(generateEvent(year, month, day, hour, minute, duration, false, "Meeting 5", "Some meeting room", "Notes about meeting...", "schedule-yellow"));
 		day = regularEventsDays.get(13);
 		hour = randomHours.nextInt(4) + 17;
 		minute = 30;
-		events.add(generateEvent(year, month, day, hour, minute, duration, false, "Meeting 6", "Some meeting room", "Notes about meeting...", "meeting"));
+		events.add(generateEvent(year, month, day, hour, minute, duration, false, "Meeting 6", "Some meeting room", "Notes about meeting...", "schedule-yellow"));
 
 		// conferences (2 hours)
 		day = regularEventsDays.get(0);

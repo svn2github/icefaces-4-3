@@ -29,60 +29,57 @@
 		<style type="text/css">
 			/* Custom style classes */
 
-			/* custom highlight colour on the sidebar */
-			.ice-ace-schedule .schedule-list-event.ui-state-highlight {
-				background-image: none;
-				background-color: #efefff;
+			/* custom styling class for month view */
+			.ice-ace-schedule .schedule-styling-enhanced .schedule-days .ui-widget-content .schedule-event.myClass {
+				background-color: #fff;
+				border: 1px solid #f00;
+				color: #f00;
 			}
 
-			/* custom styling for meeting events, month view */
-			.ice-ace-schedule .schedule-styling-enhanced .schedule-days .ui-widget-content .schedule-event.meeting {
-				background-color: #ffc;
-				border-color: #cc6;
-			}
-
-			/* custom styling for meeting events, week and day views */
-			.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.meeting {
-				background-color: #ffc;
-				border-color: #cc6;
-			}
-
-			/* custom styling for public events, month view */			
-			.ice-ace-schedule .schedule-styling-enhanced .schedule-days .ui-widget-content .schedule-event.public {
-				background-color: #cfc;
-				border-color: #696;
-			}
-
-			/* custom styling for public events, week and day views */
-			.ice-ace-schedule .schedule-styling-enhanced.schedule-view-week .schedule-days .ui-widget-content .schedule-event.public, .ice-ace-schedule .schedule-styling-enhanced.schedule-view-day .schedule-days .ui-widget-content .schedule-event.public {
-				background-color: #cfc;
-				border-left: 3px solid #696;
-				border-top: none;
-				border-right: none;
-				border-bottom: none;
-				padding: 2px 2px 2px 3px;
+			/* custom styling class for week and day views */
+			.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.myClass {
+				background-color: #fff;
+				border: 1px solid #f00;
+				color: #f00;
 			}
 		</style>
         <h:form id="form">
 			<ace:panel header="Configuration">
-				<h:panelGrid width="100%" columns="2" cellpadding="6" cellspacing="6">
+				<h:panelGrid width="100%" columns="1" cellpadding="6" cellspacing="6">
+						<ace:checkboxButton id="enhancedStyling" value="#{scheduleCustomStylingBean.enhancedStyling}"
+							label="Apply Enhanced Styling? " labelPosition="left">
+							<ace:ajax render="@all"/>
+						</ace:checkboxButton>
 						<ace:radioButtons id="viewMode" header="Select view mode" value="#{scheduleCustomStylingBean.viewMode}" labelPosition="top">
 							<ace:ajax render="@all" />
 							<f:selectItem itemValue="month" itemLabel="Month" />
 							<f:selectItem itemValue="week" itemLabel="Week" />
 							<f:selectItem itemValue="day" itemLabel="Day" />
 						</ace:radioButtons>
-						<ace:checkboxButton id="enhancedStyling" value="#{scheduleCustomStylingBean.enhancedStyling}"
-							label="Apply Enhanced Styling? " labelPosition="left">
-							<ace:ajax render="@all"/>
-						</ace:checkboxButton>
+						<ace:radioButtons id="overlappingClass" header="Select class for overlapping events" value="#{scheduleCustomStylingBean.overlappingClass}" labelPosition="top">
+							<ace:ajax render="@all" listener="#{scheduleCustomStylingBean.changeOverlappingClass}" />
+							<f:selectItem itemValue="schedule-orange" itemLabel="schedule-orange" />
+							<f:selectItem itemValue="schedule-turquoise" itemLabel="schedule-turquoise" />
+							<f:selectItem itemValue="schedule-magenta" itemLabel="schedule-magenta" />
+							<f:selectItem itemValue="schedule-violet" itemLabel="schedule-violet" />
+							<f:selectItem itemValue="myClass" itemLabel="myClass" />
+						</ace:radioButtons>
+						<ace:radioButtons id="conferenceClass" header="Select class for conference events" value="#{scheduleCustomStylingBean.conferenceClass}" labelPosition="top">
+							<ace:ajax render="@all" listener="#{scheduleCustomStylingBean.changeConferenceClass}" />
+							<f:selectItem itemValue="schedule-orange" itemLabel="schedule-orange" />
+							<f:selectItem itemValue="schedule-turquoise" itemLabel="schedule-turquoise" />
+							<f:selectItem itemValue="schedule-magenta" itemLabel="schedule-magenta" />
+							<f:selectItem itemValue="schedule-violet" itemLabel="schedule-violet" />
+							<f:selectItem itemValue="myClass" itemLabel="myClass" />
+						</ace:radioButtons>
 				</h:panelGrid>
 			</ace:panel>
 			<ace:schedule 	id="schedule"
 							value="#{scheduleCustomStylingBean.events}"
 							showEventDetails="disabled"
 							showTooltip="true"
-							scrollable="false"
+							scrollable="true"
+							scrollHeight="400"
 							sideBar="hidden"
 							enhancedStyling="#{scheduleCustomStylingBean.enhancedStyling}"
 							addEvents="false"
