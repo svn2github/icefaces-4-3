@@ -97,7 +97,12 @@ var startBlockingUI;
                     return false;
                 }
             }
-            c = c.arguments.callee.caller;
+            try {
+                c = c.arguments.callee.caller;
+            } catch (ex) {
+                //bail out since the call stack cannot be traversed anymore
+                break;
+            }
         }
 
         return false;
