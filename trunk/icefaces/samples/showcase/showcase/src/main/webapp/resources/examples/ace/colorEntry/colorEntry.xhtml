@@ -33,9 +33,9 @@
                                     title="#{colorEntryBean.title}"
                                     value="#{colorEntryBean.selectedColor}">
                     </ace:colorEntry>
-                    <h:commandButton id="submitColor" value="Submit Color">
-                        <f:ajax execute="@this colorInput" render="@all"/>
-                    </h:commandButton>
+                    <ace:pushButton id="submitColor" value="Submit Color">
+                        <ace:ajax execute="@this colorInput" render="@all"/>
+                    </ace:pushButton>
 
                 </h:panelGrid>
 

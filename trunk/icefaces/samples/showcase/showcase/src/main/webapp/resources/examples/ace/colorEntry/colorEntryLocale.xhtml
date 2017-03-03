@@ -30,7 +30,7 @@
             <ace:panel id="inpOptionsPan" header="Options">
                 <h:panelGrid id="inputOptions" columns="2">
                     <h:outputLabel for="selLocale" value="Select Locale "/>
-                    <h:selectOneMenu id="selLocale" value="#{colorEntryLocaleBean.localeString}">
+                    <ace:simpleSelectOneMenu id="selLocale" value="#{colorEntryLocaleBean.localeString}">
                          <f:selectItem itemLabel="nl" itemValue="nl"/>
                          <f:selectItem itemLabel="en" itemValue="en"/>
                          <f:selectItem itemLabel="de" itemValue="de"/>
@@ -40,8 +40,8 @@
                          <f:selectItem itemLabel="pt-br" itemValue="pt-br"/>
                          <f:selectItem itemLabel="ru" itemValue="ru"/>
                          <f:selectItem itemLabel="sr" itemValue="sr"/>
-                         <f:ajax execute="@this" render="@all"/>
-                    </h:selectOneMenu>
+                         <ace:ajax execute="@this" render="@all"/>
+                    </ace:simpleSelectOneMenu>
                 </h:panelGrid>
             </ace:panel>
         </h:form>

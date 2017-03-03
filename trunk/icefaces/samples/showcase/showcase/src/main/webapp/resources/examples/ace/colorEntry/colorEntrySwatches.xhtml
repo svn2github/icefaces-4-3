@@ -28,33 +28,31 @@
     <ui:define name="example">
         <h:form id="colorentryswatchForm">
           <ace:tabSet id="colorEntryTabSet" clientSide="false">
-            <ace:tabPane id="preexisting" label="Included Swatches">
-                 <h:panelGrid columns="1">
-                   <h:outputLabel id="selSwatchLabl" for="selSwatchName"
-                                  value="Choose From Predefined Swatches:"/>
-                   <h:selectOneMenu id="selSwatchName"
+            <ace:tabPane id="preexisting" label="Predefined Swatches">
+                  <h:panelGrid columns="2">  
+				   <h:outputLabel for="SelSwatchName" value="Select a predefined swatch:" /> 	
+                   <ace:simpleSelectOneMenu id="selSwatchName"
                                     valueChangeListener="#{colorEntrySwatchesBean.changeSwatch}"
-                                    value="#{colorEntrySwatchesBean.swatchName}">
+                                    value="#{colorEntrySwatchesBean.swatchName}" >
                        <f:selectItem itemLabel="html" itemValue="html"  />
                        <f:selectItem itemLabel="Pantone" itemValue="pantone"  />
                        <f:selectItem itemLabel="Crayola" itemValue="crayola"/>
                        <f:selectItem itemLabel="ral-classic" itemValue="ral-classic"/>
-                       <f:ajax execute="@this" render="@all"/>
-                   </h:selectOneMenu>
+                       <ace:ajax execute="@this" render="@all"/>
+                   </ace:simpleSelectOneMenu>
+				<h:outputLabel for="swatchNameID" value="Select a color from swatch '#{colorEntrySwatchesBean.swatchName}':" /> 	
                 <ace:colorEntry id="swatchNameID" value="#{colorEntrySwatchesBean.color}"
                              renderAsPopup="true"
                              colorFormat="#{colorEntrySwatchesBean.hexcolorFormat}"
                              title="#{colorEntrySwatchesBean.swatchName} Swatch"
-                             label="Choose from Swatch #{colorEntrySwatchesBean.swatchName}:"
-                             labelPosition="left"
                              swatchesName="#{colorEntrySwatchesBean.swatchName}"
                              swatchesWidth="#{colorEntrySwatchesBean.swatchWidth}"
                              customParts="#{colorEntrySwatchesBean.swatchParts}"
                              customLayout="#{colorEntrySwatchesBean.swatchLayoutLong}">
                        <ace:ajax execute="@this" render="@all"/>
                    </ace:colorEntry>
-               </h:panelGrid>
-
+             </h:panelGrid> 
+             
            <ace:panel>
               <h:panelGrid style="text-align: center; background-color: ##{colorEntrySwatchesBean.color};" width="100%">
 					<h:panelGroup class="ui-widget ui-widget-content" style="opacity:0.7; padding-left: 6px; padding-right: 6px; border:none;">  
@@ -64,7 +62,7 @@
               </h:panelGrid>
            </ace:panel>
      </ace:tabPane>
-            <ace:tabPane id="defnebacking" label="Predefine A Swatch">
+            <ace:tabPane id="defnebacking" label="Bean-defined Swatch">
 
               <ace:panel header="Predefine A Swatch using Backing Bean">
                     <ace:colorEntry id="swatchesId" value="#{colorEntrySwatchesBean.fromPredefined}"
@@ -98,16 +96,16 @@
                                    title="Choose A Color for A Swatch"
                                    swatchesName="html"
                                    renderAsPopup="true"
-                                   label="Choose Color #{status.index}:"
+                                   label="Choose Color #{status.index+1}:"
                                    labelPosition="left"
                                    colorFormat="#{colorEntrySwatchesBean.colorFormat}"
                                    customParts="#{colorEntrySwatchesBean.parts}"
                                    customLayout="#{colorEntrySwatchesBean.layout}">
                                 </ace:colorEntry>
                              </c:forEach>
-                            <h:commandButton value="Create Swatch" actionListener="#{colorEntrySwatchesBean.updateSwatch}">
-                               <f:ajax execute="@form" render="@all"/>
-                            </h:commandButton>
+                            <ace:pushButton value="Create Swatch" actionListener="#{colorEntrySwatchesBean.updateSwatch}">
+                               <ace:ajax execute="@form" render="@all"/>
+                            </ace:pushButton>
                         </h:panelGrid>
                     </ace:panel>
                    <h:panelGroup id="pgrp2" rendered="#{colorEntrySwatchesBean.haveValues}">
@@ -123,10 +121,10 @@
                                     customLayout="#{colorEntrySwatchesBean.swatchLayout}">
                          <ace:ajax execute="@this" render="colorentryswatchForm:pgrp2 colorentryswatchForm:outputPanelDyn"/>
                        </ace:colorEntry>
-                      <h:commandButton value="Reset"
+                      <ace:pushButton value="Reset"
                                  actionListener="#{colorEntrySwatchesBean.reset}">
-                        <f:ajax execute="@this" render="@all"/>
-                      </h:commandButton>
+                        <ace:ajax execute="@this" render="@all"/>
+                      </ace:pushButton>
                  </h:panelGrid>
             </h:panelGroup>
 

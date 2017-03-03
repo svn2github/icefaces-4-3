@@ -30,37 +30,37 @@
             <ace:panel id="inpOptionsPan" header="Options">
                <h:panelGrid id="inputOptions" columns="2">
                    <h:outputLabel for="colorFormat" value="Color Value Format: "/>
-                   <h:selectOneMenu id="colorFormat" value="#{colorEntryOptionsBean.colorFormat}">
+                   <ace:simpleSelectOneMenu id="colorFormat" value="#{colorEntryOptionsBean.colorFormat}">
                          <f:selectItems value="#{colorEntryOptionsBean.colorFormats}"/>
-                         <f:ajax execute="@this" render="@all"/>
-                   </h:selectOneMenu>
+                         <ace:ajax execute="@this" render="@all"/>
+                   </ace:simpleSelectOneMenu>
                    <h:outputLabel for="showNoneButton" value="Show &#39;None&#39; Button: "/>
-                   <h:selectBooleanCheckbox id="showNoneButton"  value="#{colorEntryOptionsBean.showNoneButton}">
-                       <f:ajax execute="@this" render="@all"/>
-                   </h:selectBooleanCheckbox>
+                   <ace:checkboxButton id="showNoneButton"  value="#{colorEntryOptionsBean.showNoneButton}">
+                       <ace:ajax execute="@this" render="@all"/>
+                   </ace:checkboxButton>
                    <h:outputLabel for="effectType" value="Effect: "/>
-                   <h:selectOneMenu id="effectType" value="#{colorEntryOptionsBean.effect}">
+                   <ace:simpleSelectOneMenu id="effectType" value="#{colorEntryOptionsBean.effect}">
                         <f:selectItem itemLabel="fadeIn" itemValue="fadeIn"/>
                         <f:selectItem itemLabel="slideDown" itemValue="slideDown"/>
                         <f:selectItem itemLabel="show" itemValue="show"/>
-                        <f:ajax execute="@this" render="@all"/>
-                    </h:selectOneMenu>
+                        <ace:ajax execute="@this" render="@all"/>
+                    </ace:simpleSelectOneMenu>
                     <h:outputLabel id="durationId" for="duration" value="Effect Duration: "/>
-                    <h:selectOneMenu id="duration" value="#{colorEntryOptionsBean.duration}">
+                    <ace:simpleSelectOneMenu id="duration" value="#{colorEntryOptionsBean.duration}">
                         <f:selectItem itemLabel="slow" itemValue="slow"/>
                         <f:selectItem itemLabel="fast" itemValue="fast"/>
                         <f:selectItem itemLabel="normal" itemValue="normal"/>
-                        <f:ajax execute="@this" render="@all"/>
-                    </h:selectOneMenu>
+                        <ace:ajax execute="@this" render="@all"/>
+                    </ace:simpleSelectOneMenu>
                    <h:outputLabel id="labelPositionId" for="labelPosition" value="Label Position:"/>
-                   <h:selectOneMenu id="labelPosition" value="#{colorEntryOptionsBean.labelPosition}">
+                   <ace:simpleSelectOneMenu id="labelPosition" value="#{colorEntryOptionsBean.labelPosition}">
                        <f:selectItem itemLabel="none" itemValue="none"/>
                        <f:selectItem itemLabel="left" itemValue="left"/>
                        <f:selectItem itemLabel="right" itemValue="right"/>
                        <f:selectItem itemLabel="top" itemValue="top"/>
                        <f:selectItem itemLabel="bottom" itemValue="bottom"/>
-                       <f:ajax execute="@this" render="@all"/>
-                   </h:selectOneMenu>
+                       <ace:ajax execute="@this" render="@all"/>
+                   </ace:simpleSelectOneMenu>
                </h:panelGrid>
            </ace:panel>
 
