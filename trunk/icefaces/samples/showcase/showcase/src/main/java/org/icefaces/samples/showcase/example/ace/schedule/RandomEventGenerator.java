@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icefaces.samples.showcase.dataGenerators;
+package org.icefaces.samples.showcase.example.ace.schedule;
 
 import org.icefaces.ace.model.schedule.ScheduleEvent;
 
@@ -86,7 +86,7 @@ public class RandomEventGenerator implements Serializable{
 			event.setTitle("Meeting " + i);
 			event.setLocation("Some meeting room");
 			event.setNotes("Meeting notes...");
-			event.setStyleClass("meeting");
+			event.setStyleClass("schedule-yellow");
 			list.add(event);
 		}
 		eventsNumber = randomEvents.nextInt(3) + 3; // from 3 to 5 events
@@ -99,7 +99,7 @@ public class RandomEventGenerator implements Serializable{
 			event.setTitle("Public Event " + i);
 			event.setLocation("Some public location");
 			event.setNotes("Public event notes...");
-			event.setStyleClass("public");
+			event.setStyleClass("schedule-green");
 			event.setAllDay(true);
 			list.add(event);
 		}

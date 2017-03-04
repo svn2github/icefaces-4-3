@@ -796,15 +796,30 @@ public class CentralDataList {
 		toReturn.add(new CategoryGroup(msgs("menu.ace.group.schedule.title"),
 				new ComponentGroup("ace:schedule", "Schedule", "schedule.html",
 						new Demo(msgs("overview"), msgs("example.ace.schedule.description"),
-								 "schedule", "schedule.xhtml", "ScheduleBean.java"),
+							new DemoSource[] { 
+								new DemoSource(DemoSource.Type.XHTML, "schedule.xhtml", "schedule"), 
+								new DemoSource(DemoSource.Type.JAVA, "ScheduleBean.java", "schedule"),
+								new DemoSource(DemoSource.Type.JAVA, "DefaultDistributionEventGenerator.java", "schedule") }),
 						new Demo(msgs("menu.ace.schedule.subMenu.event"), msgs("example.ace.schedule.event.description"),
-								 "schedule", "scheduleEventEditing.xhtml", "ScheduleEventEditingBean.java"),
+							new DemoSource[] { 
+								new DemoSource(DemoSource.Type.XHTML, "scheduleEventEditing.xhtml", "schedule"), 
+								new DemoSource(DemoSource.Type.JAVA, "ScheduleEventEditingBean.java", "schedule"),
+								new DemoSource(DemoSource.Type.JAVA, "DefaultDistributionEventGenerator.java", "schedule") }),
 						new Demo(msgs("menu.ace.schedule.subMenu.lazy"), msgs("example.ace.schedule.lazy.description"),
-								 "schedule", "scheduleLazyLoading.xhtml", "ScheduleLazyLoadingBean.java"),
+							new DemoSource[] { 
+								new DemoSource(DemoSource.Type.XHTML, "scheduleLazyLoading.xhtml", "schedule"), 
+								new DemoSource(DemoSource.Type.JAVA, "ScheduleLazyLoadingBean.java", "schedule"),
+								new DemoSource(DemoSource.Type.JAVA, "RandomEventGenerator.java", "schedule") }),
 						new Demo(msgs("menu.ace.schedule.subMenu.config"), msgs("example.ace.schedule.config.description"),
-								 "schedule", "scheduleConfiguration.xhtml", "ScheduleConfigurationBean.java"),
+							new DemoSource[] { 
+								new DemoSource(DemoSource.Type.XHTML, "scheduleConfiguration.xhtml", "schedule"), 
+								new DemoSource(DemoSource.Type.JAVA, "ScheduleConfigurationBean.java", "schedule"),
+								new DemoSource(DemoSource.Type.JAVA, "DefaultDistributionEventGenerator.java", "schedule") }),
 						new Demo(msgs("menu.ace.schedule.subMenu.styling"), msgs("example.ace.schedule.styling.description"),
-								 "schedule", "scheduleCustomStyling.xhtml", "ScheduleCustomStylingBean.java"))
+							new DemoSource[] { 
+								new DemoSource(DemoSource.Type.XHTML, "scheduleCustomStyling.xhtml", "schedule"), 
+								new DemoSource(DemoSource.Type.JAVA, "ScheduleCustomStylingBean.java", "schedule"),
+								new DemoSource(DemoSource.Type.JAVA, "DefaultDistributionEventGenerator.java", "schedule") }))
 		));
 	
 		toReturn.add(new CategoryGroup(msgs("menu.ace.group.validator.title"),

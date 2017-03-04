@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icefaces.samples.showcase.dataGenerators;
+package org.icefaces.samples.showcase.example.ace.schedule;
 
 import org.icefaces.ace.model.schedule.ScheduleEvent;
 

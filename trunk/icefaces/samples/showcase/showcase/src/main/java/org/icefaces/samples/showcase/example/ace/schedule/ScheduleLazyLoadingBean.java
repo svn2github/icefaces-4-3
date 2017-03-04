@@ -18,7 +18,6 @@ package org.icefaces.samples.showcase.example.ace.schedule;
 
 import org.icefaces.ace.model.schedule.ScheduleEvent;
 import org.icefaces.ace.model.schedule.LazyScheduleEventList;
-import org.icefaces.samples.showcase.dataGenerators.RandomEventGenerator;
 
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;

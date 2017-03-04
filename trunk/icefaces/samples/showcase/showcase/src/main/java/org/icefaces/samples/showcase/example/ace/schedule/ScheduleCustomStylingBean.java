@@ -18,7 +18,6 @@ package org.icefaces.samples.showcase.example.ace.schedule;
 
 import org.icefaces.ace.model.schedule.ScheduleEvent;
 import org.icefaces.ace.model.schedule.LazyScheduleEventList;
-import org.icefaces.samples.showcase.dataGenerators.DefaultDistributionEventGenerator;
 
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
@@ -77,7 +76,7 @@ public class ScheduleCustomStylingBean implements Serializable {
 	public String getOverlappingClass() { return overlappingClass; }
 	public void setOverlappingClass(String overlappingClass) { this.overlappingClass = overlappingClass; }
 
-	private String conferenceClass = "schedule-turquoise";
+	private String conferenceClass = "schedule-orange";
 	public String getConferenceClass() { return conferenceClass; }
 	public void setConferenceClass(String conferenceClass) { this.conferenceClass = conferenceClass; }
 

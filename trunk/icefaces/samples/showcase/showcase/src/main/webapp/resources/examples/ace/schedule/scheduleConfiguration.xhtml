@@ -37,60 +37,62 @@
 		</style>
         <h:form id="form">
 			<ace:panel header="Configuration">
-				<h:panelGrid width="100%" columns="2" cellpadding="6" cellspacing="6">
+				<h:panelGrid width="100%" columns="1" cellpadding="6" cellspacing="6">
 						<ace:radioButtons id="viewMode" header="View Mode" value="#{scheduleConfigurationBean.viewMode}" labelPosition="top">
 							<ace:ajax render="@all" />
 							<f:selectItem itemValue="month" itemLabel="Month" />
 							<f:selectItem itemValue="week" itemLabel="Week" />
 							<f:selectItem itemValue="day" itemLabel="Day" />
 						</ace:radioButtons>
-						<ace:selectMenu id="timeZone" value="#{scheduleConfigurationBean.timeZone}" 
-										label="Time Zone: " labelPosition="top">
+				</h:panelGrid>
+				<h:panelGrid columns="2" cellpadding="6" cellspacing="6">
+						<h:outputLabel for="timeZone" value="Time Zone: "/>
+						<ace:selectMenu id="timeZone" value="#{scheduleConfigurationBean.timeZone}">
 							<ace:ajax render="@all"/>
 							<f:selectItems value="#{scheduleConfigurationBean.timeZoneList}" />
 						</ace:selectMenu>
-						<ace:checkboxButton id="scrollable" value="#{scheduleConfigurationBean.scrollable}"
-											label="Scrolling (Week and Day views): " labelPosition="left">
-							<ace:ajax render="@all"/>
-						</ace:checkboxButton>
-						<ace:selectMenu id="sideBar" value="#{scheduleConfigurationBean.sideBar}"
-										label="Side Bar: " labelPosition="top">
+						<h:outputLabel for="sideBar" value="Side Bar: "/>
+						<ace:selectMenu id="sideBar" value="#{scheduleConfigurationBean.sideBar}">
 							<ace:ajax render="@all"/>
 							<f:selectItem itemValue="right" itemLabel="Right" />
 							<f:selectItem itemValue="left" itemLabel="Left" />
 							<f:selectItem itemValue="hidden" itemLabel="Hidden" />
 						</ace:selectMenu>
-						<ace:textEntry 	id="scrollHeight" value="#{scheduleConfigurationBean.scrollHeight}"
-										label="Scroll Height: " labelPosition="left">
-							<ace:ajax render="@all"/>
-						</ace:textEntry>
-						<ace:selectMenu id="eventDetails" value="#{scheduleConfigurationBean.eventDetails}"
-										label="Event Details: " labelPosition="top">
+						<h:outputLabel for="eventDetails" value="Event Details: "/>
+						<ace:selectMenu id="eventDetails" value="#{scheduleConfigurationBean.eventDetails}">
 							<ace:ajax render="@all"/>
 							<f:selectItem itemValue="popup" itemLabel="Pop-up" />
 							<f:selectItem itemValue="sidebar" itemLabel="Side Bar" />
 							<f:selectItem itemValue="disabled" itemLabel="Disabled" />
 						</ace:selectMenu>
-						<ace:checkboxButton id="enhancedStyling" value="#{scheduleConfigurationBean.enhancedStyling}"
-							label="Enhanced Styling: " labelPosition="left">
-							<ace:ajax render="@all"/>
-						</ace:checkboxButton>
-						<ace:checkboxButton id="twelveHourClock" value="#{scheduleConfigurationBean.twelveHourClock}"
-							label="Twelve-Hour Clock " labelPosition="left">
-							<ace:ajax render="@all"/>
-						</ace:checkboxButton>
-						<ace:checkboxButton id="tooltip" value="#{scheduleConfigurationBean.tooltip}"
-							label="Tooltip " labelPosition="left">
-							<ace:ajax render="@all"/>
-						</ace:checkboxButton>
-						<ace:selectMenu id="defaultDuration" value="#{scheduleConfigurationBean.defaultDuration}"
-										label="Default Duration: " labelPosition="top">
+						<h:outputLabel for="defaultDuration" value="Default Duration: "/>
+						<ace:selectMenu id="defaultDuration" value="#{scheduleConfigurationBean.defaultDuration}">
 							<ace:ajax render="@all"/>
 							<f:selectItem itemValue="30" itemLabel="30 minutes" />
 							<f:selectItem itemValue="60" itemLabel="60 minutes" />
 							<f:selectItem itemValue="90" itemLabel="90 minutes" />
 							<f:selectItem itemValue="120" itemLabel="2 hours" />
 						</ace:selectMenu>
+						<h:outputLabel for="twelveHourClock" value="Twelve-Hour Clock: "/>
+						<ace:checkboxButton id="twelveHourClock" value="#{scheduleConfigurationBean.twelveHourClock}">
+							<ace:ajax render="@all"/>
+						</ace:checkboxButton>
+						<h:outputLabel for="enhancedStyling" value="Enhanced Styling: "/>
+						<ace:checkboxButton id="enhancedStyling" value="#{scheduleConfigurationBean.enhancedStyling}">
+							<ace:ajax render="@all"/>
+						</ace:checkboxButton>
+						<h:outputLabel for="tooltip" value="Tooltip: "/>
+						<ace:checkboxButton id="tooltip" value="#{scheduleConfigurationBean.tooltip}">
+							<ace:ajax render="@all"/>
+						</ace:checkboxButton>
+						<h:outputLabel for="scrollable" value="Scrolling (Week and Day views): "/>
+						<ace:checkboxButton id="scrollable" value="#{scheduleConfigurationBean.scrollable}">
+							<ace:ajax render="@all"/>
+						</ace:checkboxButton>
+						<h:outputLabel for="scrollHeight" value="Scroll Height: "/>
+						<ace:textEntry 	id="scrollHeight" value="#{scheduleConfigurationBean.scrollHeight}">
+							<ace:ajax render="@all"/>
+						</ace:textEntry>
 				</h:panelGrid>
 				<div style="text-align:center;">
 					<ace:pushButton id="generateSchedule" value="Generate Schedule" onclick="ice.ace.instance('#{dialog.clientId}').show();" />
