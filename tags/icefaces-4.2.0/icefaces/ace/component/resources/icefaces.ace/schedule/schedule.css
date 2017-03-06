@@ -1,0 +1,237 @@
+.ice-ace-schedule * {
+	margin: 0;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	font-size: small;
+}
+.ice-ace-schedule {
+	width: 100%;
+}
+.ice-ace-schedule .schedule-title {
+	padding: 14px;
+	text-align: center;
+	font-weight: bold;
+}
+.ice-ace-schedule .schedule-title .schedule-button-previous {
+	float: left;
+	text-align: left;
+}
+.ice-ace-schedule .schedule-title .schedule-button-next {
+	float: right;
+	text-align: right;
+}
+.ice-ace-schedule .schedule-title .schedule-button-previous,
+.ice-ace-schedule .schedule-title .schedule-button-next {
+	width: 30px;
+	cursor: pointer;
+	-webkit-user-select: none; /* Chrome/Safari */
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+ */
+}
+.ice-ace-schedule .schedule-title .schedule-button-previous:hover,
+.ice-ace-schedule .schedule-title .schedule-button-next:hover {
+	opacity: 0.5;
+}
+.ice-ace-schedule .schedule-grid {
+	width: 75%;
+	display: inline-block;
+}
+.ice-ace-schedule .schedule-grid > table,
+.ice-ace-schedule .schedule-grid > div > table {
+	border-collapse: collapse;
+	width: 100%;
+}
+.ice-ace-schedule .schedule-grid .schedule-dow {
+	width: 100%;
+}
+.ice-ace-schedule .schedule-grid .schedule-days {
+	width: 100%;
+	height: 100%;
+	position: relative;
+	overflow: auto;
+}
+@-moz-document url-prefix() {
+	.ice-ace-schedule .schedule-grid .schedule-days {
+		height: auto;
+	}
+}
+.ice-ace-schedule .schedule-view-month .schedule-grid .schedule-dow .schedule-dow-header {
+	width: 14.2857%;
+	padding: 14px 0;
+	text-align: center;
+}
+.ice-ace-schedule .schedule-view-month .schedule-grid .schedule-days .schedule-day {
+	width: 14.2857%;
+	min-height: 100px;
+	text-align: right;
+}
+.ice-ace-schedule .schedule-view-month .schedule-grid .schedule-days .schedule-day.schedule-adjacent-month .schedule-day-number {
+	opacity: 0.3;
+}
+.ice-ace-schedule .schedule-view-month .schedule-event {
+	overflow: hidden;
+	width: 100%;
+	text-align: left;
+}
+.ice-ace-schedule .schedule-view-month .schedule-event > span {
+	display: inline-block;
+	width: 200%;
+}
+.ice-ace-schedule .schedule-view-week .schedule-grid .schedule-dow .schedule-dow-header {
+	width: 12.5%;
+	padding: 14px 0;
+	text-align: center;
+}
+.ice-ace-schedule .schedule-view-week .schedule-grid .schedule-cell {
+	width: 12.5%;
+	height: 30px;
+}
+.ice-ace-schedule .schedule-view-week.schedule-config-scrollable .schedule-grid .schedule-dow .schedule-dow-header,
+.ice-ace-schedule .schedule-view-week.schedule-config-scrollable .schedule-grid .schedule-cell {
+	width: 12.25%;
+}
+.ice-ace-schedule .schedule-view-week .schedule-event {
+	position: absolute;
+	z-index: 10;
+	overflow:hidden;
+}
+.ice-ace-schedule .schedule-view-day .schedule-grid .schedule-dow .schedule-dow-header {
+	padding: 14px 0;
+	text-align: center;
+}
+.ice-ace-schedule .schedule-view-day .schedule-grid .schedule-cell-time {
+	width: 12.5%;
+}
+.ice-ace-schedule .schedule-view-day .schedule-grid .schedule-cell {
+	height: 30px;
+}
+.ice-ace-schedule .schedule-view-day .schedule-event {
+	position: absolute;
+	z-index: 10;
+	overflow:hidden;
+}
+.ice-ace-schedule .schedule-list-title,
+.ice-ace-schedule .schedule-details-sidebar-title {
+	padding: 14px 0;
+	text-align: center;
+	letter-spacing: 1px;
+}
+.ice-ace-schedule .schedule-list-content .schedule-list-event {
+	padding: 14px;
+}
+.ice-ace-schedule .schedule-list-content .schedule-list-event.ui-state-highlight {
+	border: 0;
+}
+.ice-ace-schedule .schedule-list-content .schedule-list-event span {
+	display: block;
+}
+.ice-ace-schedule .schedule-list-content .schedule-list-event-name {
+	font-weight: bold;
+}
+.ice-ace-schedule .schedule-list-content {
+	overflow: auto;
+}
+.ice-ace-schedule .schedule-sidebar .schedule-details-sidebar-content {
+	overflow: auto;
+}
+.ice-ace-schedule .schedule-content {
+	position:relative;
+}
+.ice-ace-schedule .schedule-content .schedule-sidebar {
+	position:absolute;
+	top:0;
+	width: 25%;
+	height:100%;
+}
+.ice-ace-schedule .schedule-config-sidebar-right .schedule-content .schedule-sidebar {
+	right:0;
+}
+.ice-ace-schedule .schedule-config-sidebar-left .schedule-grid {
+	margin-left: 25%;
+}
+.ice-ace-schedule .schedule-config-sidebar-hidden .schedule-content .schedule-sidebar {
+	display: none;
+}
+.ice-ace-schedule .schedule-config-sidebar-hidden .schedule-grid {
+	width: 100%;
+}
+.ice-ace-schedule .schedule-details-sidebar-title,
+.ice-ace-schedule .schedule-details-sidebar-content {
+	display: none;
+}
+.ice-ace-schedule .schedule-config-details-sidebar .schedule-details-sidebar-title,
+.ice-ace-schedule .schedule-config-details-sidebar .schedule-details-sidebar-content {
+	display: block;
+}
+.ice-ace-schedule .schedule-list-title,
+.ice-ace-schedule .schedule-details-sidebar-title {
+	font-weight: bold;
+}
+.ice-ace-schedule .schedule-grid td {
+	vertical-align: top;
+	padding: 0;
+}
+.ice-ace-schedule .schedule-details-tooltip .ui-dialog-titlebar {
+	display: none;
+}
+.ice-ace-schedule .schedule-details-popup,
+.ice-ace-schedule .schedule-details-tooltip {
+	font-size: small;
+}
+.ice-ace-schedule .schedule-details-popup-content button {
+	float: right;
+	margin-left: 5px;
+}
+.ice-ace-schedule .schedule-state {
+	border: 1px solid transparent;
+	width: 100%;
+	height: 100%;
+}
+.ice-ace-schedule .schedule-view-month .schedule-grid .schedule-days tr,
+.ice-ace-schedule .schedule-view-month .schedule-grid .schedule-days .schedule-day {
+	height: 100%;
+}
+.ice-ace-schedule .schedule-view-month .schedule-grid .schedule-days .schedule-state {
+	border: 1px solid transparent;
+	min-height: 100px;
+	height: inherit;
+}
+.ice-ace-schedule .schedule-selected {
+	text-decoration: underline;
+}
+.ice-ace-schedule .schedule-sidebar .schedule-details-sidebar-content {
+	padding: 10px;
+}
+.ice-ace-schedule .schedule-sidebar .schedule-details-sidebar-content > span {
+	display: block;
+	margin-top: 5px;
+}
+.ice-ace-schedule .schedule-sidebar .schedule-details-sidebar-content > span > span > span {
+	display: block;
+}
+.ice-ace-schedule .schedule-days .schedule-day,
+.ice-ace-schedule .schedule-dow-header {
+   -moz-user-select: none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
+}
+.ice-ace-schedule .schedule-event-bold {
+	font-weight: bold;
+}
+.ice-ace-schedule .schedule-time-allday {
+	position: relative;
+	overflow: hidden;
+	padding: 0;
+}
+.ice-ace-schedule .schedule-time-allday .schedule-state {
+	border: 0;
+}
+.ice-ace-schedule .schedule-view-week .schedule-event-allday,
+.ice-ace-schedule .schedule-view-day .schedule-event-allday {
+	overflow: hidden;
+	height: 100%;
+	width: 100%;
+}

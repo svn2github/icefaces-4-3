@@ -1,0 +1,71 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:ace="http://www.icefaces.org/icefaces/components"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/resources/templates/content-template.xhtml">
+    <ui:param name="title" value="#{msgs['example.ace.list.multi.title']}"/>
+    <ui:param name="description" value="#{msgs['example.ace.list.multi.description']}"/>
+
+    <ui:param value="#{listMultiBean}" name="backing" />
+
+    <ui:define name="example">
+
+        <h:form id="form">
+            <h:panelGroup id="panelGroup" style="padding: 0.5em;" layout="block">
+                <style type="text/css">
+                    .inlineList {
+                        float:left;
+                        font-size: 80% !important;
+                        width:33%;
+                        vertical-align: top;
+                    }
+                </style>
+                <ace:listControl id="listControl">
+                    <f:facet name="header">
+                        Multi List Header
+                    </f:facet>
+                </ace:listControl>
+                <ace:list id="firstList" value="#{backing.stringList}"
+                          styleClass="inlineList"
+                          height="170px"
+                          selectionMode="multiple"
+                          controlsEnabled="true"
+                          dragging="false" />
+
+                <ace:list id="secondList" value="#{backing.fstDestStringList}"
+                          styleClass="inlineList"
+                          height="170px"
+                          selectionMode="multiple"
+                          controlsEnabled="true"
+                          dragging="false" />
+
+                <ace:list id="thirdList" value="#{backing.sndDestStringList}"
+                          styleClass="inlineList"
+                          height="170px"
+                          selectionMode="multiple"
+                          controlsEnabled="true"
+                          dragging="false" />
+
+                <div style="clear:left;"></div>
+            </h:panelGroup>
+        </h:form>
+    </ui:define>
+</ui:composition>

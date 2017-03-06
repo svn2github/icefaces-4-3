@@ -1,0 +1,137 @@
+<!--
+  ~ Copyright 2004-2015 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+-->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:ace="http://www.icefaces.org/icefaces/components"
+                xmlns:icecore="http://www.icefaces.org/icefaces/core"
+                xmlns:emporium="http://xmlns.jcp.org/jsf/composite/components">
+    <icecore:defaultAction actionListener="#{auctionController.postAuction}" key="Enter"/>
+    
+    <!-- ICE-10894 - When client-side validators work properly with tabSet we will want to use them here -->
+    <ace:panel closable="false" collapsed="false" toggleable="false"
+               header="New Auction Item to Add (maximum #{auctionController.maxPostedAuctions})" headerAlign="center"
+               rendered="#{postBean.postedCount lt auctionController.maxPostedAuctions}">
+        <ace:ajax execute="@this" render="@form">
+	    <h:panelGrid columns="3" cellpadding="4" cellspacing="4" styleClass="postTable">
+            <h:outputText id="detailsLabel" value="Item Details" style="font-weight: bold;"/>
+            <h:outputText value=""/><h:outputText value=""/>
+            
+	        <h:outputLabel for="itemNIn" value="Item Name:"/>
+	        <ace:textEntry id="itemNIn" value="#{postBean.toAdd.name}"
+	                       maxlength="20"
+	                       autocapitalize="true" autocorrect="true"
+	                       placeholder="Enter item name"
+	                       required="true" requiredIndicator="*"
+	                       validator="UniqueItemNameValidator">
+	            <f:validateLength minimum="3" maximum="20"/>
+	        </ace:textEntry>
+	        <ace:message for="itemNIn"/>
+	        
+	        <h:outputLabel for="itemIIn" value="Item Image:"/>
+            <h:commandLink id="itemIIn" actionListener="#{auctionController.openItemImageDialog}" immediate="true"
+                           disabled="#{!auctionImage.validParentDir}" onclick="ice.ace.instance('ip:imagePopup').show();">
+		        <h:graphicImage library="#{auctionImage.imageLibrary}" name="#{postBean.toAdd.imageName}#{auctionImage.extension}"
+		                        styleClass="itemImageS" title="Click to change image from #{postBean.toAdd.imageName}#{auctionImage.extension}"/>
+            </h:commandLink>
+	        <ace:message for="itemIIn"/>
+	        
+	        <h:outputLabel for="descIn" value="Item Description:"/>
+	        <ace:textAreaEntry id="descIn" value="#{postBean.toAdd.description}"
+	                           rows="2" maxlength="500"
+	                           resizable="true">
+               <f:validateLength minimum="0" maximum="500"/>
+	        </ace:textAreaEntry>
+	        <ace:message for="descIn"/>
+	        
+	        <h:outputLabel for="conditionIn" value="Item Condition:"/>
+	        <ace:simpleSelectOneMenu id="conditionIn" value="#{postBean.toAdd.condition}">
+	            <f:selectItem itemValue="" itemLabel="#{listData.defaultSelectLabel}" noSelectionOption="true"/>
+	            <f:selectItems value="#{postBean.toAdd.conditions}" var="condition"
+	                           itemValue="#{condition}" itemLabel="#{condition.value}"/>
+	        </ace:simpleSelectOneMenu>
+	        <ace:message for="conditionIn"/>
+	        
+	        <h:outputLabel for="priceIn" value="Starting Price ($):"/>
+	        <ace:textEntry id="priceIn" value="#{postBean.toAdd.price}"
+	                       required="true" requiredIndicator="*"
+	                       maxlength="8">
+                <f:validateDoubleRange minimum="0.1" maximum="1000"/>
+                <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+	        </ace:textEntry>
+	        <ace:message for="priceIn"/>
+	        
+	        <h:outputLabel for="expiryIn" value="Expiry Date:"/>
+	        <ace:dateTimeEntry id="expiryIn" value="#{postBean.expiryDate}"
+	                           navigator="false" renderAsPopup="true" readOnlyInputText="true"
+	                           popupIcon="resources/images/calendar.png"
+	                           required="true" requiredIndicator="*"
+	                           mindate="#{auctionController.minExpiryDate}" maxdate="#{auctionController.maxExpiryDate}"
+	                           showOn="both"
+ 	                           pattern="MM/dd/yyyy h:mm a"/>
+	        <ace:message for="expiryIn"/>
+	        
+            <h:outputText id="addDetailsLabel" value="Additional Details" style="font-weight: bold;"/>
+            <h:outputText value=""/><h:outputText value=""/>
+            
+            <h:outputLabel for="sellerName" value="Your Seller Name:"/>
+	        <ace:textEntry id="sellerName" value="#{postBean.toAdd.sellerName}"
+                           autocapitalize="on" autocomplete="on" maxlength="15"
+                           placeholder="Enter your name">
+                <f:validateLength minimum="3" maximum="15"/>
+            </ace:textEntry>
+	        <ace:message for="sellerName"/>
+	        
+	        <h:outputLabel for="sellerLoc" value="Your Seller Location:"/>
+            <ace:simpleSelectOneMenu id="sellerLoc" value="#{postBean.toAdd.sellerLocation}">
+                <f:selectItem itemValue="" itemLabel="#{listData.defaultSelectLabel}" noSelectionOption="true"/>
+                <f:selectItems value="#{listData.locations}"/>
+            </ace:simpleSelectOneMenu>
+	        <ace:message for="sellerLoc"/>
+	        
+	        <h:outputLabel for="shippingIn" value="Shipping Cost ($):"/>
+	        <ace:textEntry id="shippingIn" value="#{postBean.toAdd.shippingCost}"
+	                       required="true" requiredIndicator="*"
+	                       maxlength="5">
+               <f:validateDoubleRange minimum="1.0" maximum="20.0"/>
+               <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+	        </ace:textEntry>
+	        <ace:message for="shippingIn"/>
+
+            <h:outputLabel for="deliveryIn" value="Estimated Delivery:"/>
+            <ace:simpleSelectOneMenu id="deliveryIn" value="#{postBean.toAdd.estimatedDelivery}">
+                <f:selectItem itemValue="" itemLabel="#{listData.defaultSelectLabel}" noSelectionOption="true"/>
+                <f:selectItems value="#{postBean.toAdd.deliveries}" var="delivery"
+                               itemValue="#{delivery}" itemLabel="#{delivery.value}"/>
+            </ace:simpleSelectOneMenu>
+	        <ace:message for="deliveryIn"/>
+	    </h:panelGrid>
+	    </ace:ajax>
+	    
+	    <f:facet name="footer">
+	        <h:panelGrid columns="2">
+		        <ace:pushButton id="submitBttn" value="Submit" actionListener="#{auctionController.postAuction}"/>
+		        <ace:pushButton id="cancelBttn" value="Cancel" actionListener="#{tabController.auctionListTab}" immediate="true"/>
+	        </h:panelGrid>
+	    </f:facet>
+    </ace:panel>
+    
+    <h3>
+        <h:outputText value="No further items can be added as your maximum #{auctionController.maxPostedAuctions} posted auction limit has been reached. Thank you for your contributions."
+                      rendered="#{postBean.postedCount ge auctionController.maxPostedAuctions}"/>
+    </h3>
+</ui:composition>

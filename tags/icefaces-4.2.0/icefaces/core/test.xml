@@ -1,0 +1,764 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head id="j_idt4">
+        <title>ICEfaces Mobile Showcase</title>
+        <script src="/showcase/javax.faces.resource/util/blockui.js.jsf?ln=icefaces.ace&amp;v=4_2_0_160920"
+                type="text/javascript"></script>
+        <style type="text/css">
+            .fa-fetch-contact:before {
+                content: "\0040";
+                border: 1px solid;
+                border-left: 2px solid;
+            }
+
+            a:link, a:visited {
+                text-decoration: underline;
+            }
+
+            .showLink {
+                color: #262DDB;
+                text-decoration: underline !important;
+            }
+
+            h3 {
+                margin-left: 10px;
+            }
+
+            .mobi-vm-menu ul > li {
+                font-size: 14px !important;
+            }
+
+            .mobi-list > .mobi-list-item {
+                font-size: 12px !important;
+            }
+
+            body {
+                font-size: 12px;
+            }
+
+            .imageView {
+                max-width: 100%;
+            }
+        </style>
+        <script src="/showcase/javax.faces.resource/jsf.js.jsf?ln=javax.faces&amp;stage=Development&amp;v=4_2_0_160920"
+                type="text/javascript"></script>
+        <link href='/showcase/resources/images/favicon.ico' rel='icon' type='image/x-icon'/>
+        <link href='/showcase/resources/images/favicon.ico' rel='shortcut icon' type='image/x-icon'/>
+        <script type="text/javascript">document.documentElement.className = document.documentElement.className + ' ui-mobile desktop';
+        if (window.addEventListener) window.addEventListener('load', function () {
+            document.body.className = 'ui-body-c';
+        });</script>
+        <link href="/showcase/javax.faces.resource/coalesced.css.jsf?ln=ice.core&amp;dgst=vbgd4e" rel="stylesheet"
+              type="text/css"/>
+        <script src="/showcase/javax.faces.resource/coalesced.js.jsf?ln=ice.core&amp;dgst=xe4dyo"
+                type="text/javascript"></script>
+    </head>
+    <body id="javax.faces.ViewBody">
+        <div class="mobi-vm" data-clientside="false" data-title="Mobile Showcase" id="j_idt14">
+            <div class="mobi-vm-header mobi-vm-bar" id="j_idt14_header">
+                <h1 id="j_idt14_title"></h1>
+                <a class="mobi-vm-back" data-backbutton-label="mobi-view" id="j_idt14_back"
+                   onclick="ice.mobi.viewManager.goBack(event);" style="display:none">
+                    <i class="fa fa-chevron-left"></i>
+                    <span class="mobi-vm-back-text"></span>
+                </a>
+            </div>
+            <div class="mobi-vm-view mobi-vm-menu" data-title="Mobile Showcase" data-view="mobiViewManagerMenu"
+                 id="j_idt14_menu">
+                <div class="mobi-vm-view-content">
+                    <ul>
+                        <li class="mobi-vm-menu-divider mobi-vm-bar">Overview</li>
+                        <li>
+                            <a onclick="ice.mobi.viewManager.showView('splash', event);">Mobile Components</a>
+                        </li>
+                        <li class="mobi-vm-menu-divider mobi-vm-bar">Status</li>
+                        <li>
+                            <a onclick="ice.mobi.viewManager.showView('onlinestatus', event);"><i
+                                    class="mobi-vm-menu-icon fa fa-signal"></i>Online Status
+                            </a>
+                        </li>
+                        <li class="mobi-vm-menu-divider mobi-vm-bar">Layout Components</li>
+                        <li>
+                            <a onclick="ice.mobi.viewManager.showView('dataview', event);"><i
+                                    class="mobi-vm-menu-icon fa fa-table"></i>Data View
+                            </a>
+                        </li>
+                        <li>
+                            <a onclick="ice.mobi.viewManager.showView('fieldset', event);"><i
+                                    class="mobi-vm-menu-icon fa fa-minus"></i>Fieldset
+                            </a>
+                        </li>
+                        <li>
+                            <a onclick="ice.mobi.viewManager.showView('outputlist', event);"><i
+                                    class="mobi-vm-menu-icon fa fa-align-justify"></i>Output List
+                            </a>
+                        </li>
+                        <li>
+                            <a onclick="ice.mobi.viewManager.showView('pagepanel', event);"><i
+                                    class="mobi-vm-menu-icon fa fa-mobile-phone"></i>Page Panel
+                            </a>
+                        </li>
+                        <li>
+                            <a onclick="ice.mobi.viewManager.showView('viewmanager', event);"><i
+                                    class="mobi-vm-menu-icon fa fa-th-list"></i>View Manager
+                            </a>
+                        </li>
+                        <li>
+                            <a onclick="ice.mobi.viewManager.showView('viewsize', event);"><i
+                                    class="mobi-vm-menu-icon fa fa-mobile-phone"></i>Small View / Large View
+                            </a>
+                        </li>
+                        <li class="mobi-vm-menu-divider mobi-vm-bar">Input Components</li>
+                        <li>
+                            <a onclick="ice.mobi.viewManager.showView('dateandtime', event);"><i
+                                    class="mobi-vm-menu-icon fa fa-clock-o"></i>Date and Time
+                            </a>
+                        </li>
+                        <li>
+                            <a onclick="ice.mobi.viewManager.showView('flipswitch', event);"><i
+                                    class="mobi-vm-menu-icon fa fa-power-off"></i>Flip Switch
+                            </a>
+                        </li>
+                        <li>
+                            <a onclick="ice.mobi.viewManager.showView('geolocation', event);"><i
+                                    class="mobi-vm-menu-icon fa fa-location-arrow"></i>Geolocation
+                            </a>
+                        </li>
+                        <li class="mobi-vm-menu-divider mobi-vm-bar">Native Components</li>
+                        <li>
+                            <a onclick="ice.mobi.viewManager.showView('camcorder', event);"><i
+                                    class="mobi-vm-menu-icon fa fa-film"></i>Camcorder
+                            </a>
+                        </li>
+                        <li>
+                            <a onclick="ice.mobi.viewManager.showView('camera', event);"><i
+                                    class="mobi-vm-menu-icon fa fa-camera"></i>Camera
+                            </a>
+                        </li>
+                        <li>
+                            <a onclick="ice.mobi.viewManager.showView('cloudPush', event);"><i
+                                    class="mobi-vm-menu-icon fa fa-cloud-download"></i>Cloud Push
+                            </a>
+                        </li>
+                        <li>
+                            <a onclick="ice.mobi.viewManager.showView('fetchcontact', event);"><i
+                                    class="mobi-vm-menu-icon fa fa-fetch-contact"></i>Fetch Contact
+                            </a>
+                        </li>
+                        <li>
+                            <a onclick="ice.mobi.viewManager.showView('geotrack', event);"><i
+                                    class="mobi-vm-menu-icon fa fa-location-arrow"></i>Geotrack
+                            </a>
+                        </li>
+                        <li>
+                            <a onclick="ice.mobi.viewManager.showView('microphone', event);"><i
+                                    class="mobi-vm-menu-icon fa fa-microphone"></i>Microphone
+                            </a>
+                        </li>
+                        <li>
+                            <a onclick="ice.mobi.viewManager.showView('scan', event);"><i
+                                    class="mobi-vm-menu-icon fa fa-qrcode"></i>Scan
+                            </a>
+                        </li>
+                        <li>
+                            <a onclick="ice.mobi.viewManager.showView('sms', event);"><i
+                                    class="mobi-vm-menu-icon fa fa-comment"></i>Sms
+                            </a>
+                        </li>
+                        <li class="mobi-vm-menu-divider mobi-vm-bar">Desktop Showcase</li>
+                        <li>
+                            <a onclick="ice.mobi.viewManager.showView('acecomps', event);">Desktop Showcase</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mobi-vm-view" data-title="Mobile Components" data-view="splash" id="splash">
+                <div class="mobi-vm-view-content null" id="splash_content">
+                    <div id="splash_inner">
+                        <fieldset class="mobi-fieldset ui-field-contain ui-widget mobi-fieldset-inset" id="j_idt15">
+                            <div class="mobi-fieldset-row ui-widget-content ui-widget-header ui-panel ui-panel-title"
+                                 id="j_idt16">
+                                <h3>ICEfaces Mobile Components Showcase</h3>
+                                <div style="clear:both;"></div>
+                                <div></div>
+                            </div>
+                        </fieldset>
+                        <fieldset class="mobi-fieldset ui-field-contain ui-widget mobi-fieldset-inset" id="j_idt18">
+                            <div class="mobi-fieldset-row ui-widget-content" id="j_idt19">
+                                <p>ICEfaces Mobile (MOBI) components provide mobile-specific component functionality
+                                    including:
+                                    <br/>
+                                    <br/>
+                                    <ul>
+                                        <li>
+                                            <strong>Layout and Navigation</strong>
+                                            controls that simplify mobile UI layouts, and give you a variety of ways to
+                                            present and navigate content. Adaptive page layouts automatically adjust to
+                                            different classes of devices, from desktops and tablets, to smartphones, so
+                                            you can design pages that are automatically optimized for different form
+                                            factors.
+                                        </li>
+                                        <li>
+                                            <strong>Dynamic Input and Selection</strong>
+                                            controls that interactively collect data from the user, including button,
+                                            date/time spinner, flip-switch, and geolocation, to name a few. HTML5 input
+                                            types are leveraged where supported, with JavaScript controls substituted on
+                                            platforms where they are not.
+                                        </li>
+                                    </ul>
+                                </p>
+                                <div style="clear:both;"></div>
+                                <div></div>
+                            </div>
+                        </fieldset>
+                        <fieldset class="mobi-fieldset ui-field-contain ui-widget mobi-fieldset-inset" id="j_idt24">
+                            <div class="mobi-fieldset-row ui-widget-content" id="j_idt25">
+                                <p>The MOBI components provide powerful mobile-specific functionality that when combined
+                                    with the ACE and ICECORE components provide a comprehensive JSF component solution
+                                    for desktop and mobile web-applications.
+                                </p>
+                                <br/>
+                                <p>See the <a class="ui-link showLink" href="./showcase.jsf">Desktop Showcase</a> for
+                                    more information.
+                                </p>
+                                <div style="clear:both;"></div>
+                                <div></div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="mobi-vm-nav-bar"></div>
+            </div>
+            <div class="mobi-vm-view" data-title="Online Status" data-view="onlinestatus" id="onlinestatus">
+                <div class="mobi-vm-view-content null" id="onlinestatus_content">
+                    <div id="onlinestatus_inner"></div>
+                </div>
+                <div class="mobi-vm-nav-bar">
+                    <a onclick="ice.mobi.viewManager.showView('onlinestatus', event);" style="width: 50.0%"><i
+                            class="fa fa-signal"></i>Online Status
+                    </a>
+                    <a onclick="ice.mobi.viewManager.showView('onlinestatusdocs', event);" style="width: 50.0%"><i
+                            class="fa fa-book"></i>onlineStatusDocs
+                    </a>
+                </div>
+            </div>
+            <div class="mobi-vm-view" data-title="onlineStatusDocs" data-view="onlinestatusdocs" id="onlinestatusdocs">
+                <div class="mobi-vm-view-content null" id="onlinestatusdocs_content">
+                    <div id="onlinestatusdocs_inner"></div>
+                </div>
+                <div class="mobi-vm-nav-bar">
+                    <a onclick="ice.mobi.viewManager.showView('onlinestatus', event);" style="width: 50.0%"><i
+                            class="fa fa-signal"></i>Online Status
+                    </a>
+                    <a onclick="ice.mobi.viewManager.showView('onlinestatusdocs', event);" style="width: 50.0%"><i
+                            class="fa fa-book"></i>onlineStatusDocs
+                    </a>
+                </div>
+            </div>
+            <div class="mobi-vm-view" data-title="Data View" data-view="dataview" id="dataview">
+                <div class="mobi-vm-view-content null" id="dataview_content">
+                    <div id="dataview_inner"></div>
+                </div>
+                <div class="mobi-vm-nav-bar">
+                    <a onclick="ice.mobi.viewManager.showView('dataview', event);" style="width: 50.0%"><i
+                            class="fa fa-table"></i>Data View
+                    </a>
+                    <a onclick="ice.mobi.viewManager.showView('dataviewDocs', event);" style="width: 50.0%"><i
+                            class="fa fa-book"></i>dataviewDocs
+                    </a>
+                </div>
+            </div>
+            <div class="mobi-vm-view" data-title="dataviewDocs" data-view="dataviewDocs" id="dataviewDocs">
+                <div class="mobi-vm-view-content null" id="dataviewDocs_content">
+                    <div id="dataviewDocs_inner"></div>
+                </div>
+                <div class="mobi-vm-nav-bar">
+                    <a onclick="ice.mobi.viewManager.showView('dataview', event);" style="width: 50.0%"><i
+                            class="fa fa-table"></i>Data View
+                    </a>
+                    <a onclick="ice.mobi.viewManager.showView('dataviewDocs', event);" style="width: 50.0%"><i
+                            class="fa fa-book"></i>dataviewDocs
+                    </a>
+                </div>
+            </div>
+            <div class="mobi-vm-view" data-title="Fieldset" data-view="fieldset" id="fieldset">
+                <div class="mobi-vm-view-content null" id="fieldset_content">
+                    <div id="fieldset_inner"></div>
+                </div>
+                <div class="mobi-vm-nav-bar">
+                    <a onclick="ice.mobi.viewManager.showView('fieldset', event);" style="width: 50.0%"><i
+                            class="fa fa-minus"></i>Fieldset
+                    </a>
+                    <a onclick="ice.mobi.viewManager.showView('fieldsetDocs', event);" style="width: 50.0%"><i
+                            class="fa fa-book"></i>Docs
+                    </a>
+                </div>
+            </div>
+            <div class="mobi-vm-view" data-title="Docs" data-view="fieldsetDocs" id="fieldsetDocs">
+                <div class="mobi-vm-view-content null" id="fieldsetDocs_content">
+                    <div id="fieldsetDocs_inner"></div>
+                </div>
+                <div class="mobi-vm-nav-bar">
+                    <a onclick="ice.mobi.viewManager.showView('fieldset', event);" style="width: 50.0%"><i
+                            class="fa fa-minus"></i>Fieldset
+                    </a>
+                    <a onclick="ice.mobi.viewManager.showView('fieldsetDocs', event);" style="width: 50.0%"><i
+                            class="fa fa-book"></i>Docs
+                    </a>
+                </div>
+            </div>
+            <div class="mobi-vm-view" data-title="Output List" data-view="outputlist" id="outputlist">
+                <div class="mobi-vm-view-content null" id="outputlist_content">
+                    <div id="outputlist_inner"></div>
+                </div>
+                <div class="mobi-vm-nav-bar">
+                    <a onclick="ice.mobi.viewManager.showView('outputlist', event);" style="width: 50.0%"><i
+                            class="fa fa-align-justify"></i>Output List
+                    </a>
+                    <a onclick="ice.mobi.viewManager.showView('outputlistDocs', event);" style="width: 50.0%"><i
+                            class="fa fa-book"></i>Docs
+                    </a>
+                </div>
+            </div>
+            <div class="mobi-vm-view" data-title="Docs" data-view="outputlistDocs" id="outputlistDocs">
+                <div class="mobi-vm-view-content null" id="outputlistDocs_content">
+                    <div id="outputlistDocs_inner"></div>
+                </div>
+                <div class="mobi-vm-nav-bar">
+                    <a onclick="ice.mobi.viewManager.showView('outputlist', event);" style="width: 50.0%"><i
+                            class="fa fa-align-justify"></i>Output List
+                    </a>
+                    <a onclick="ice.mobi.viewManager.showView('outputlistDocs', event);" style="width: 50.0%"><i
+                            class="fa fa-book"></i>Docs
+                    </a>
+                </div>
+            </div>
+            <div class="mobi-vm-view" data-title="Page Panel" data-view="pagepanel" id="pagepanel">
+                <div class="mobi-vm-view-content null" id="pagepanel_content">
+                    <div id="pagepanel_inner"></div>
+                </div>
+                <div class="mobi-vm-nav-bar">
+                    <a onclick="ice.mobi.viewManager.showView('pagepanel', event);" style="width: 50.0%"><i
+                            class="fa fa-mobile-phone"></i>Page Panel
+                    </a>
+                    <a onclick="ice.mobi.viewManager.showView('pagepanelDocs', event);" style="width: 50.0%"><i
+                            class="fa fa-book"></i>Docs
+                    </a>
+                </div>
+            </div>
+            <div class="mobi-vm-view" data-title="Docs" data-view="pagepanelDocs" id="pagepanelDocs">
+                <div class="mobi-vm-view-content null" id="pagepanelDocs_content">
+                    <div id="pagepanelDocs_inner"></div>
+                </div>
+                <div class="mobi-vm-nav-bar">
+                    <a onclick="ice.mobi.viewManager.showView('pagepanel', event);" style="width: 50.0%"><i
+                            class="fa fa-mobile-phone"></i>Page Panel
+                    </a>
+                    <a onclick="ice.mobi.viewManager.showView('pagepanelDocs', event);" style="width: 50.0%"><i
+                            class="fa fa-book"></i>Docs
+                    </a>
+                </div>
+            </div>
+            <div class="mobi-vm-view" data-title="View Manager" data-view="viewmanager" id="viewmanager">
+                <div class="mobi-vm-view-content null" id="viewmanager_content">
+                    <div id="viewmanager_inner"></div>
+                </div>
+                <div class="mobi-vm-nav-bar">
+                    <a onclick="ice.mobi.viewManager.showView('viewmanager', event);" style="width: 50.0%"><i
+                            class="fa fa-th-list"></i>View Manager
+                    </a>
+                    <a onclick="ice.mobi.viewManager.showView('viewmanagerDocs', event);" style="width: 50.0%"><i
+                            class="fa fa-book"></i>Docs
+                    </a>
+                </div>
+            </div>
+            <div class="mobi-vm-view" data-title="Docs" data-view="viewmanagerDocs" id="viewmanagerDocs">
+                <div class="mobi-vm-view-content null" id="viewmanagerDocs_content">
+                    <div id="viewmanagerDocs_inner"></div>
+                </div>
+                <div class="mobi-vm-nav-bar">
+                    <a onclick="ice.mobi.viewManager.showView('viewmanager', event);" style="width: 50.0%"><i
+                            class="fa fa-th-list"></i>View Manager
+                    </a>
+                    <a onclick="ice.mobi.viewManager.showView('viewmanagerDocs', event);" style="width: 50.0%"><i
+                            class="fa fa-book"></i>Docs
+                    </a>
+                </div>
+            </div>
+            <div class="mobi-vm-view" data-title="Small View / Large View" data-view="viewsize" id="viewsize">
+                <div class="mobi-vm-view-content null" id="viewsize_content">
+                    <div id="viewsize_inner"></div>
+                </div>
+                <div class="mobi-vm-nav-bar">
+                    <a onclick="ice.mobi.viewManager.showView('viewsize', event);" style="width: 50.0%"><i
+                            class="fa fa-mobile-phone"></i>Small View / Large View
+                    </a>
+                    <a onclick="ice.mobi.viewManager.showView('viewsizeDocs', event);" style="width: 50.0%"><i
+                            class="fa fa-book"></i>Docs
+                    </a>
+                </div>
+            </div>
+            <div class="mobi-vm-view" data-title="Docs" data-view="viewsizeDocs" id="viewsizeDocs">
+                <div class="mobi-vm-view-content null" id="viewsizeDocs_content">
+                    <div id="viewsizeDocs_inner"></div>
+                </div>
+                <div class="mobi-vm-nav-bar">
+                    <a onclick="ice.mobi.viewManager.showView('viewsize', event);" style="width: 50.0%"><i
+                            class="fa fa-mobile-phone"></i>Small View / Large View
+                    </a>
+                    <a onclick="ice.mobi.viewManager.showView('viewsizeDocs', event);" style="width: 50.0%"><i
+                            class="fa fa-book"></i>Docs
+                    </a>
+                </div>
+            </div>
+            <div class="mobi-vm-view" data-title="Date and Time" data-view="dateandtime" id="dateandtime">
+                <div class="mobi-vm-view-content null" id="dateandtime_content">
+                    <div id="dateandtime_inner"></div>
+                </div>
+                <div class="mobi-vm-nav-bar">
+                    <a onclick="ice.mobi.viewManager.showView('dateandtime', event);" style="width: 50.0%"><i
+                            class="fa fa-clock-o"></i>Date and Time
+                    </a>
+                    <a onclick="ice.mobi.viewManager.showView('dateandtimeDocs', event);" style="width: 50.0%"><i
+                            class="fa fa-book"></i>Docs
+                    </a>
+                </div>
+            </div>
+            <div class="mobi-vm-view" data-title="Docs" data-view="dateandtimeDocs" id="dateandtimeDocs">
+                <div class="mobi-vm-view-content null" id="dateandtimeDocs_content">
+                    <div id="dateandtimeDocs_inner"></div>
+                </div>
+                <div class="mobi-vm-nav-bar">
+                    <a onclick="ice.mobi.viewManager.showView('dateandtime', event);" style="width: 50.0%"><i
+                            class="fa fa-clock-o"></i>Date and Time
+                    </a>
+                    <a onclick="ice.mobi.viewManager.showView('dateandtimeDocs', event);" style="width: 50.0%"><i
+                            class="fa fa-book"></i>Docs
+                    </a>
+                </div>
+            </div>
+            <div class="mobi-vm-view" data-title="Flip Switch" data-view="flipswitch" id="flipswitch">
+                <div class="mobi-vm-view-content null" id="flipswitch_content">
+                    <div id="flipswitch_inner"></div>
+                </div>
+                <div class="mobi-vm-nav-bar">
+                    <a onclick="ice.mobi.viewManager.showView('flipswitch', event);" style="width: 50.0%"><i
+                            class="fa fa-power-off"></i>Flip Switch
+                    </a>
+                    <a onclick="ice.mobi.viewManager.showView('flipswitchDocs', event);" style="width: 50.0%"><i
+                            class="fa fa-book"></i>Docs
+                    </a>
+                </div>
+            </div>
+            <div class="mobi-vm-view" data-title="Docs" data-view="flipswitchDocs" id="flipswitchDocs">
+                <div class="mobi-vm-view-content null" id="flipswitchDocs_content">
+                    <div id="flipswitchDocs_inner"></div>
+                </div>
+                <div class="mobi-vm-nav-bar">
+                    <a onclick="ice.mobi.viewManager.showView('flipswitch', event);" style="width: 50.0%"><i
+                            class="fa fa-power-off"></i>Flip Switch
+                    </a>
+                    <a onclick="ice.mobi.viewManager.showView('flipswitchDocs', event);" style="width: 50.0%"><i
+                            class="fa fa-book"></i>Docs
+                    </a>
+                </div>
+            </div>
+            <div class="mobi-vm-view" data-title="Geolocation" data-view="geolocation" id="geolocation">
+                <div class="mobi-vm-view-content null" id="geolocation_content">
+                    <div id="geolocation_inner"></div>
+                </div>
+                <div class="mobi-vm-nav-bar">
+                    <a onclick="ice.mobi.viewManager.showView('geolocation', event);" style="width: 50.0%"><i
+                            class="fa fa-location-arrow"></i>Geolocation
+                    </a>
+                    <a onclick="ice.mobi.viewManager.showView('geolocationDocs', event);" style="width: 50.0%"><i
+                            class="fa fa-book"></i>Docs
+                    </a>
+                </div>
+            </div>
+            <div class="mobi-vm-view" data-title="Docs" data-view="geolocationDocs" id="geolocationDocs">
+                <div class="mobi-vm-view-content null" id="geolocationDocs_content">
+                    <div id="geolocationDocs_inner"></div>
+                </div>
+                <div class="mobi-vm-nav-bar">
+                    <a onclick="ice.mobi.viewManager.showView('geolocation', event);" style="width: 50.0%"><i
+                            class="fa fa-location-arrow"></i>Geolocation
+                    </a>
+                    <a onclick="ice.mobi.viewManager.showView('geolocationDocs', event);" style="width: 50.0%"><i
+                            class="fa fa-book"></i>Docs
+                    </a>
+                </div>
+            </div>
+            <div class="mobi-vm-view" data-title="Camcorder" data-view="camcorder" id="camcorder">
+                <div class="mobi-vm-view-content null" id="camcorder_content">
+                    <div id="camcorder_inner"></div>
+                </div>
+                <div class="mobi-vm-nav-bar">
+                    <a onclick="ice.mobi.viewManager.showView('camcorder', event);" style="width: 50.0%"><i
+                            class="fa fa-film"></i>Camcorder
+                    </a>
+                    <a onclick="ice.mobi.viewManager.showView('camcorderDocs', event);" style="width: 50.0%"><i
+                            class="fa fa-book"></i>Docs
+                    </a>
+                </div>
+            </div>
+            <div class="mobi-vm-view" data-title="Docs" data-view="camcorderDocs" id="camcorderDocs">
+                <div class="mobi-vm-view-content null" id="camcorderDocs_content">
+                    <div id="camcorderDocs_inner"></div>
+                </div>
+                <div class="mobi-vm-nav-bar">
+                    <a onclick="ice.mobi.viewManager.showView('camcorder', event);" style="width: 50.0%"><i
+                            class="fa fa-film"></i>Camcorder
+                    </a>
+                    <a onclick="ice.mobi.viewManager.showView('camcorderDocs', event);" style="width: 50.0%"><i
+                            class="fa fa-book"></i>Docs
+                    </a>
+                </div>
+            </div>
+            <div class="mobi-vm-view" data-title="Camera" data-view="camera" id="camera">
+                <div class="mobi-vm-view-content null" id="camera_content">
+                    <div id="camera_inner"></div>
+                </div>
+                <div class="mobi-vm-nav-bar">
+                    <a onclick="ice.mobi.viewManager.showView('camera', event);" style="width: 50.0%"><i
+                            class="fa fa-camera"></i>Camera
+                    </a>
+                    <a onclick="ice.mobi.viewManager.showView('cameraDocs', event);" style="width: 50.0%"><i
+                            class="fa fa-book"></i>Docs
+                    </a>
+                </div>
+            </div>
+            <div class="mobi-vm-view" data-title="Docs" data-view="cameraDocs" id="cameraDocs">
+                <div class="mobi-vm-view-content null" id="cameraDocs_content">
+                    <div id="cameraDocs_inner"></div>
+                </div>
+                <div class="mobi-vm-nav-bar">
+                    <a onclick="ice.mobi.viewManager.showView('camera', event);" style="width: 50.0%"><i
+                            class="fa fa-camera"></i>Camera
+                    </a>
+                    <a onclick="ice.mobi.viewManager.showView('cameraDocs', event);" style="width: 50.0%"><i
+                            class="fa fa-book"></i>Docs
+                    </a>
+                </div>
+            </div>
+            <div class="mobi-vm-view" data-title="Cloud Push" data-view="cloudPush" id="cloudPush">
+                <div class="mobi-vm-view-content null" id="cloudPush_content">
+                    <div id="cloudPush_inner"></div>
+                </div>
+                <div class="mobi-vm-nav-bar">
+                    <a onclick="ice.mobi.viewManager.showView('cloudPush', event);" style="width: 50.0%"><i
+                            class="fa fa-cloud-download"></i>Cloud Push
+                    </a>
+                    <a onclick="ice.mobi.viewManager.showView('cloudPushDocs', event);" style="width: 50.0%"><i
+                            class="fa fa-book"></i>Docs
+                    </a>
+                </div>
+            </div>
+            <div class="mobi-vm-view" data-title="Docs" data-view="cloudPushDocs" id="cloudPushDocs">
+                <div class="mobi-vm-view-content null" id="cloudPushDocs_content">
+                    <div id="cloudPushDocs_inner"></div>
+                </div>
+                <div class="mobi-vm-nav-bar">
+                    <a onclick="ice.mobi.viewManager.showView('cloudPush', event);" style="width: 50.0%"><i
+                            class="fa fa-cloud-download"></i>Cloud Push
+                    </a>
+                    <a onclick="ice.mobi.viewManager.showView('cloudPushDocs', event);" style="width: 50.0%"><i
+                            class="fa fa-book"></i>Docs
+                    </a>
+                </div>
+            </div>
+            <div class="mobi-vm-view" data-title="Fetch Contact" data-view="fetchcontact" id="fetchcontact">
+                <div class="mobi-vm-view-content null" id="fetchcontact_content">
+                    <div id="fetchcontact_inner"></div>
+                </div>
+                <div class="mobi-vm-nav-bar">
+                    <a onclick="ice.mobi.viewManager.showView('fetchcontact', event);" style="width: 50.0%"><i
+                            class="fa fa-fetch-contact"></i>Fetch Contact
+                    </a>
+                    <a onclick="ice.mobi.viewManager.showView('fetchcontactDocs', event);" style="width: 50.0%"><i
+                            class="fa fa-book"></i>Docs
+                    </a>
+                </div>
+            </div>
+            <div class="mobi-vm-view" data-title="Docs" data-view="fetchcontactDocs" id="fetchcontactDocs">
+                <div class="mobi-vm-view-content null" id="fetchcontactDocs_content">
+                    <div id="fetchcontactDocs_inner"></div>
+                </div>
+                <div class="mobi-vm-nav-bar">
+                    <a onclick="ice.mobi.viewManager.showView('fetchcontact', event);" style="width: 50.0%"><i
+                            class="fa fa-fetch-contact"></i>Fetch Contact
+                    </a>
+                    <a onclick="ice.mobi.viewManager.showView('fetchcontactDocs', event);" style="width: 50.0%"><i
+                            class="fa fa-book"></i>Docs
+                    </a>
+                </div>
+            </div>
+            <div class="mobi-vm-view" data-title="Geotrack" data-view="geotrack" id="geotrack">
+                <div class="mobi-vm-view-content null" id="geotrack_content">
+                    <div id="geotrack_inner"></div>
+                </div>
+                <div class="mobi-vm-nav-bar">
+                    <a onclick="ice.mobi.viewManager.showView('geotrack', event);" style="width: 50.0%"><i
+                            class="fa fa-location-arrow"></i>Geotrack
+                    </a>
+                    <a onclick="ice.mobi.viewManager.showView('geotrackDocs', event);" style="width: 50.0%"><i
+                            class="fa fa-book"></i>Docs
+                    </a>
+                </div>
+            </div>
+            <div class="mobi-vm-view" data-title="Docs" data-view="geotrackDocs" id="geotrackDocs">
+                <div class="mobi-vm-view-content null" id="geotrackDocs_content">
+                    <div id="geotrackDocs_inner"></div>
+                </div>
+                <div class="mobi-vm-nav-bar">
+                    <a onclick="ice.mobi.viewManager.showView('geotrack', event);" style="width: 50.0%"><i
+                            class="fa fa-location-arrow"></i>Geotrack
+                    </a>
+                    <a onclick="ice.mobi.viewManager.showView('geotrackDocs', event);" style="width: 50.0%"><i
+                            class="fa fa-book"></i>Docs
+                    </a>
+                </div>
+            </div>
+            <div class="mobi-vm-view" data-title="Microphone" data-view="microphone" id="microphone">
+                <div class="mobi-vm-view-content null" id="microphone_content">
+                    <div id="microphone_inner"></div>
+                </div>
+                <div class="mobi-vm-nav-bar">
+                    <a onclick="ice.mobi.viewManager.showView('microphone', event);" style="width: 50.0%"><i
+                            class="fa fa-microphone"></i>Microphone
+                    </a>
+                    <a onclick="ice.mobi.viewManager.showView('microphoneDocs', event);" style="width: 50.0%"><i
+                            class="fa fa-book"></i>Docs
+                    </a>
+                </div>
+            </div>
+            <div class="mobi-vm-view" data-title="Docs" data-view="microphoneDocs" id="microphoneDocs">
+                <div class="mobi-vm-view-content null" id="microphoneDocs_content">
+                    <div id="microphoneDocs_inner"></div>
+                </div>
+                <div class="mobi-vm-nav-bar">
+                    <a onclick="ice.mobi.viewManager.showView('microphone', event);" style="width: 50.0%"><i
+                            class="fa fa-microphone"></i>Microphone
+                    </a>
+                    <a onclick="ice.mobi.viewManager.showView('microphoneDocs', event);" style="width: 50.0%"><i
+                            class="fa fa-book"></i>Docs
+                    </a>
+                </div>
+            </div>
+            <div class="mobi-vm-view" data-title="Scan" data-view="scan" id="scan">
+                <div class="mobi-vm-view-content null" id="scan_content">
+                    <div id="scan_inner"></div>
+                </div>
+                <div class="mobi-vm-nav-bar">
+                    <a onclick="ice.mobi.viewManager.showView('scan', event);" style="width: 50.0%"><i
+                            class="fa fa-qrcode"></i>Scan
+                    </a>
+                    <a onclick="ice.mobi.viewManager.showView('scanDocs', event);" style="width: 50.0%"><i
+                            class="fa fa-book"></i>Docs
+                    </a>
+                </div>
+            </div>
+            <div class="mobi-vm-view" data-title="Docs" data-view="scanDocs" id="scanDocs">
+                <div class="mobi-vm-view-content null" id="scanDocs_content">
+                    <div id="scanDocs_inner"></div>
+                </div>
+                <div class="mobi-vm-nav-bar">
+                    <a onclick="ice.mobi.viewManager.showView('scan', event);" style="width: 50.0%"><i
+                            class="fa fa-qrcode"></i>Scan
+                    </a>
+                    <a onclick="ice.mobi.viewManager.showView('scanDocs', event);" style="width: 50.0%"><i
+                            class="fa fa-book"></i>Docs
+                    </a>
+                </div>
+            </div>
+            <div class="mobi-vm-view" data-title="Sms" data-view="sms" id="sms">
+                <div class="mobi-vm-view-content null" id="sms_content">
+                    <div id="sms_inner"></div>
+                </div>
+                <div class="mobi-vm-nav-bar">
+                    <a onclick="ice.mobi.viewManager.showView('sms', event);" style="width: 50.0%"><i
+                            class="fa fa-comment"></i>Sms
+                    </a>
+                    <a onclick="ice.mobi.viewManager.showView('smsDocs', event);" style="width: 50.0%"><i
+                            class="fa fa-book"></i>Docs
+                    </a>
+                </div>
+            </div>
+            <div class="mobi-vm-view" data-title="Docs" data-view="smsDocs" id="smsDocs">
+                <div class="mobi-vm-view-content null" id="smsDocs_content">
+                    <div id="smsDocs_inner"></div>
+                </div>
+                <div class="mobi-vm-nav-bar">
+                    <a onclick="ice.mobi.viewManager.showView('sms', event);" style="width: 50.0%"><i
+                            class="fa fa-comment"></i>Sms
+                    </a>
+                    <a onclick="ice.mobi.viewManager.showView('smsDocs', event);" style="width: 50.0%"><i
+                            class="fa fa-book"></i>Docs
+                    </a>
+                </div>
+            </div>
+            <div class="mobi-vm-view" data-title="Desktop Showcase" data-view="acecomps" id="acecomps">
+                <div class="mobi-vm-view-content null" id="acecomps_content">
+                    <div id="acecomps_inner"></div>
+                </div>
+                <div class="mobi-vm-nav-bar">
+                    <a onclick="ice.mobi.viewManager.showView('acecomps', event);" style="width: 100.0%">Desktop
+                        Showcase
+                    </a>
+                </div>
+            </div>
+            <div class="mobi-vm-image-cache" id="mobiImageCache"></div>
+            <span class="mobi-hidden" id="j_idt14_controller">
+                <form action="/showcase/showcase-mobile.jsf" enctype="application/x-www-form-urlencoded"
+                      id="j_idt14_form" method="post" name="j_idt14_form">
+                    <input name="j_idt14_form" type="hidden" value="j_idt14_form"/>
+                    <input autocomplete="off" name="ice.view" type="hidden" value="1it9yzi7u:hhv"/>
+                    <input autocomplete="off" id="mobi_vm_selected" name="j_idt14_selected" type="hidden"
+                           value="splash"/>
+                </form>
+                <style type="text/css">.mobi-vm-bar {
+                }</style>
+                <script>ice.mobi.viewManager.setState('horizontal', 'j_idt14_form', ['splash']);</script>
+            </span>
+        </div>
+        <form action="/showcase/showcase-mobile.jsf" id="v1it9yzi7u-hhv-retrieve-update" method="post"
+              name="v1it9yzi7u-hhv-retrieve-update">
+            <input name="v1it9yzi7u-hhv-retrieve-update" type="hidden" value="v1it9yzi7u-hhv-retrieve-update"/>
+            <input autocomplete="off" name="ice.window" type="hidden" value="2itbfc7mc"/>
+            <input autocomplete="off" name="ice.view" type="hidden" value="1it9yzi7u:hhv"/>
+        </form>
+        <form action="/showcase/showcase-mobile.jsf" id="v1it9yzi7u-hhv-single-submit" method="post"
+              name="v1it9yzi7u-hhv-single-submit">
+            <input name="v1it9yzi7u-hhv-single-submit" type="hidden" value="v1it9yzi7u-hhv-single-submit"/>
+            <input autocomplete="off" name="ice.window" type="hidden" value="2itbfc7mc"/>
+            <input autocomplete="off" name="ice.view" type="hidden" value="1it9yzi7u:hhv"/>
+        </form>
+        <span id="v1it9yzi7u_hhv_icefaces_config">
+            <script>ice.setupBridge('v1it9yzi7u_hhv_icefaces_config', '1it9yzi7u:hhv', '2itbfc7mc', {
+                reloadOnUpdateFailure: false,
+                deltaSubmit: false,
+                focusManaged: true,
+                disableDefaultErrorPopups: false,
+                standardFormSerialization: false,
+                sendDisposeWindow: false,
+                blockUIOnSubmit: false,
+                clientSideElementUpdateDetermination: false,
+                parameterPrefix: ''
+            });</script>
+        </span>
+        <span id="dynamic-code"></span>
+        <span id="v1it9yzi7u-hhv_icepush">
+            <script type="text/javascript">ice.unsetupPush('1it9yzi7u:hhv');
+            ice.push.configuration.contextPath = "/showcase";
+            ice.push.configuration.blockingConnectionURI = "/showcase/javax.faces.resource/listen.icepush.xml.jsf";
+            ice.push.configuration.createPushIdURI = "/showcase/javax.faces.resource/create-push-id.icepush.txt.jsf";
+            ice.push.configuration.notifyURI = "/showcase/javax.faces.resource/notify.icepush.txt.jsf";
+            ice.push.configuration.addGroupMemberURI = "/showcase/javax.faces.resource/add-group-member.icepush.txt.jsf";
+            ice.push.configuration.removeGroupMemberURI = "/showcase/javax.faces.resource/remove-group-member.icepush.txt.jsf";
+            ice.push.configuration.addNotifyBackURIURI = "/showcase/javax.faces.resource/add-notify-back-uri.icepush.txt.jsf";
+            ice.push.configuration.hasNotifyBackURIURI = "/showcase/javax.faces.resource/has-notify-back-uri.icepush.txt.jsf";
+            ice.push.configuration.removeNotifyBackURIURI = "/showcase/javax.faces.resource/remove-notify-back-uri.icepush.txt.jsf";
+            ice.push.configuration.parameterPrefix = "";</script>
+        </span>
+        <div id="javax_faces_developmentstage_messages"></div>
+    </body>
+</html>

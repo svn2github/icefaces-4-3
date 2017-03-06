@@ -1,0 +1,59 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:ace="http://www.icefaces.org/icefaces/components"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/resources/templates/content-template.xhtml">
+    <ui:param name="title" value="#{msgs['example.ace.gMapServices.title']}"/>
+    <ui:param name="description" value="#{msgs['example.ace.gMapServices.description']}"/>
+
+    <ui:define name="example">
+    <ace:gMap id="gMapDirections"  style="width: 675px; height: 500px" latitude="0" longitude="0" zoomLevel="3">
+        <ace:gMapServices name="Directions" points="${gMapServicesBean.points}" options="travelMode:'${gMapServicesBean.travelMode}',${gMapServicesBean.options}" div="directionsOut"/>
+    </ace:gMap>
+	<br/>
+    <h:form id="inputForm">
+        <h:outputLabel for="optionsIn" value="Options:"/>
+        <h:inputText  id="optionsIn" value="${gMapServicesBean.options}"/>
+        <ace:simpleSelectOneMenu id="travelModeSelector" value="${gMapServicesBean.travelMode}">
+            <ace:ajax event="valueChange" render="@all"/>
+            <f:selectItem itemValue="DRIVING" itemLabel="Driving"/>
+            <f:selectItem itemValue="WALKING" itemLabel="Walking"/>
+            <f:selectItem itemValue="BICYCLING" itemLabel="Bicycling"/>
+            <f:selectItem itemValue="TRANSIT" itemLabel="Transit"/>
+        </ace:simpleSelectOneMenu>
+        <br/>
+        <h:outputLabel for="pointsIn" value="Points:"/>
+        <h:inputText  size="75" id="pointsIn" value="${gMapServicesBean.points}"/>
+		<br/>
+		<h:commandButton value="Submit" type="submit"/>
+    </h:form>
+    <p>
+        Points are seperated by :, and can either be a plain text address, or (lat,long). Transit requests will only work for two point entries.
+        <br/>Options for directions can be found at <a href="https://developers.google.com/maps/documentation/javascript/reference#DirectionsRequest"> the google maps API.</a>
+		<br/>A good test of options is using 'optimizeWaypoints:true' and setting several waypoints in a non-logical order; going from London to Moscow to Paris to Berlin is a good example.
+		If optimize waypoint is true, the map should automatically reorder the waypoints(NOT the start/end points) to give the shortest possible route.
+    </p>
+	<p>Relevant section of the Google Maps API: <a style="color:blue;" href="https://developers.google.com/maps/documentation/javascript/reference#DirectionsRequest" target="_blank">Directions</a></p>
+	<div id="directionsOut">
+	</div>
+	
+</ui:define>
+</ui:composition>

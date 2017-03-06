@@ -1,0 +1,115 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ace="http://www.icefaces.org/icefaces/components"
+                xmlns:icecore="http://www.icefaces.org/icefaces/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/resources/templates/content-template.xhtml">
+
+    <ui:define name="example">
+        <icecore:config messagePersistence="false"/>
+        <h:form id="messageDemoForm">
+            <ace:panel header="Some important ace:growlMessages attributes">
+                <h:panelGrid columns="4" width="100%" columnClasses="growl-attr-col,growl-attr-col,growl-attr-col,growl-attr-col">
+                    <h:outputText value="header"/>
+                    <ace:textEntry value="#{growlMessagesBean.header}">
+                        <ace:ajax render="demoform2:allMsgsGrowl"/>
+                    </ace:textEntry>
+
+                    <h:outputText value="autoHide"/>
+                    <ace:simpleSelectOneMenu id="hideSelector" value="#{growlMessagesBean.autoHide}">
+                        <f:selectItem itemValue="false" itemLabel="false"/>
+                        <f:selectItem itemValue="info" itemLabel="info"/>
+                        <f:selectItem itemValue="warn" itemLabel="warn"/>
+                        <f:selectItem itemValue="error" itemLabel="error"/>
+                        <f:selectItem itemValue="fatal" itemLabel="fatal"/>
+                        <f:selectItem itemValue="true" itemLabel="true"/>
+                        <ace:ajax render="demoform2:allMsgsGrowl"/>
+                    </ace:simpleSelectOneMenu>
+
+                    <h:outputText value="closeAll"/>
+                    <ace:checkboxButton id="closeAllBox" value="#{growlMessagesBean.closeAll}">
+                        <ace:ajax render="demoform2:allMsgsGrowl"/>
+                    </ace:checkboxButton>
+
+                    <h:outputText value="maxVisibleMessages"/>
+                    <ace:simpleSelectOneMenu id="maxMessages" value="#{growlMessagesBean.maxVisibleMessages}">
+                        <f:selectItem itemValue="0" itemLabel="0"/>
+                        <f:selectItem itemValue="1" itemLabel="1"/>
+                        <f:selectItem itemValue="2" itemLabel="2"/>
+                        <f:selectItem itemValue="3" itemLabel="3"/>
+                        <ace:ajax render="demoform2:allMsgsGrowl"/>
+                    </ace:simpleSelectOneMenu>
+
+                    <h:outputText value="position"/>
+                    <ace:simpleSelectOneMenu id="messagePosition" value="#{growlMessagesBean.position}">
+                        <f:selectItem itemValue="top-left" itemLabel="top-left"/>
+                        <f:selectItem itemValue="top-right" itemLabel="top-right"/>
+                        <f:selectItem itemValue="bottom-left" itemLabel="bottom-left"/>
+                        <f:selectItem itemValue="bottom-right" itemLabel="bottom-right"/>
+                        <ace:ajax render="demoform2:allMsgsGrowl"/>
+                    </ace:simpleSelectOneMenu>
+
+                    <h:outputText value=""/>
+                    <h:outputText value=""/>
+                </h:panelGrid>
+            </ace:panel>
+        </h:form>
+        <h:form id="demoform2">
+            <ace:panel id="personalInfoInputPanel" header="Choose the types of messages to show">
+                <h:panelGrid id="inputGrid" columns="2" width="100%" styleClass="textEntryInputTable">
+					
+					<h:panelGroup>
+						<ace:checkboxButton id="infoBox" value="#{growlMessagesBean.info}">
+                            <ace:ajax execute="@this"/>
+                        </ace:checkboxButton>
+						<h:outputText value=" Info" />
+					</h:panelGroup>
+					<h:panelGroup>
+						<ace:checkboxButton id="warnBox" value="#{growlMessagesBean.warn}">
+                            <ace:ajax execute="@this"/>
+                        </ace:checkboxButton>
+						<h:outputText value=" Warn" />
+					</h:panelGroup>
+					<h:panelGroup>
+						<ace:checkboxButton id="errorBox" value="#{growlMessagesBean.error}">
+                            <ace:ajax execute="@this"/>
+                        </ace:checkboxButton>
+						<h:outputText value=" Error" />
+					</h:panelGroup>
+					<h:panelGroup>
+						<ace:checkboxButton id="fatalBox" value="#{growlMessagesBean.fatal}">
+                            <ace:ajax execute="@this"/>
+                        </ace:checkboxButton>
+						<h:outputText value=" Fatal" />
+					</h:panelGroup>
+					
+                </h:panelGrid>
+				<ace:pushButton id="messageButton" value="Show Messages"
+                                actionListener="#{growlMessagesBean.listener}" />
+            </ace:panel>
+
+            <ace:growlMessages  id="allMsgsGrowl" autoHide="#{growlMessagesBean.autoHide}"
+                                for="@inView"
+                               closeAll="#{growlMessagesBean.closeAll}"
+                               maxVisibleMessages="#{growlMessagesBean.maxVisibleMessages}"
+                               position="#{growlMessagesBean.position}" header="#{growlMessagesBean.header}"/>
+        </h:form>
+    </ui:define>
+</ui:composition>

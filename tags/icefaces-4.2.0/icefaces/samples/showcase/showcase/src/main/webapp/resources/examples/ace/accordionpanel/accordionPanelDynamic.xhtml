@@ -1,0 +1,77 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+    xmlns:ace="http://www.icefaces.org/icefaces/components"
+    xmlns:icecore="http://www.icefaces.org/icefaces/core"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    template="/resources/templates/content-template.xhtml">
+    <ui:param name="title" value="#{msgs['example.ace.accordionpanel.dynamic.title']}"/>
+    <ui:param name="description" value="#{msgs['example.ace.accordionpanel.dynamic.description']}"/>
+
+    <ui:define name="example">
+        <h:form id="form">
+                
+                    <ace:accordion id="accordion" paneChangeListener="#{accordionPanelDynamicBean.onPaneChange}">
+					<ace:ajax execute="@this" render="feedbackHolder" />
+                        <ace:accordionPane title="Electronic Devices" id="electronicDevices">
+                            <ace:panel id="electronics">
+                                <h:panelGrid columns="#{accordionPanelDynamicBean.imagesOfElectronicDevicesSize}" width="100%">
+                                    <c:forEach items="#{accordionPanelDynamicBean.imagesOfElectronicDevices}" var="deviceImage">
+                                        <h:graphicImage value="#{deviceImage.path}" alt="#{deviceImage.description}"/>
+                                    </c:forEach>
+                                </h:panelGrid>
+                            </ace:panel>
+                           <br/><br/>
+                           <br/><br/>
+                       </ace:accordionPane>
+
+                       <ace:accordionPane title="Cars" id="cars">
+                           <ace:panel id="vehicles">
+                               <h:panelGrid columns="#{accordionPanelDynamicBean.imagesOfCarsSize}" width="100%">
+                                    <c:forEach items="#{accordionPanelDynamicBean.imagesOfCars}" var="carImage">
+                                        <h:graphicImage value="#{carImage.path}" alt="#{carImage.description}"/>
+                                    </c:forEach>
+                                </h:panelGrid>
+                           </ace:panel>
+
+                       </ace:accordionPane>
+                    
+                        <ace:accordionPane title="Food" id="food">
+                            <ace:panel id="edibles">
+                                <h:panelGrid columns="#{accordionPanelDynamicBean.imagesOfFoodSize}" width="100%">
+                                    <c:forEach items="#{accordionPanelDynamicBean.imagesOfFood}" var="foodImage">
+                                        <h:graphicImage value="#{foodImage.path}" alt="#{foodImage.description}"/>
+                                    </c:forEach>
+                                </h:panelGrid>
+                            </ace:panel>
+                           <br/><br/>
+                           <br/><br/>
+                       </ace:accordionPane>
+	</ace:accordion>
+            
+                <br/>
+
+                <h:panelGrid id="feedbackHolder" styleClass="centeredPanelGrid">
+                    <h:outputText id="activePane" value="#{accordionPanelDynamicBean.tabChangeDescriptor}" style="font-weight: bold;"/>
+                </h:panelGrid>
+                
+        </h:form>
+    </ui:define>
+</ui:composition>

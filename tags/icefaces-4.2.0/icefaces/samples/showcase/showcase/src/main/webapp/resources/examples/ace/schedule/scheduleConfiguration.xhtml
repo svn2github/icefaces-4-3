@@ -1,0 +1,127 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+    xmlns:ace="http://www.icefaces.org/icefaces/components"
+    xmlns:icecore="http://www.icefaces.org/icefaces/core"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    template="/resources/templates/content-template.xhtml">
+    <ui:param name="title" value="#{msgs['example.ace.accordionpanel.title']}"/>
+    <ui:param name="description" value="#{msgs['example.ace.accordionpanel.description']}"/>
+
+    <ui:define name="example">
+		<style type="text/css">
+			/* Custom style classes */
+
+			/* custom highlight colour on the sidebar */
+			.ice-ace-schedule .schedule-list-event.ui-state-highlight {
+				background-image: none;
+				background-color: #efefff;
+			}
+		</style>
+        <h:form id="form">
+			<ace:panel header="Configuration">
+				<h:panelGrid width="100%" columns="1" cellpadding="6" cellspacing="6">
+						<ace:radioButtons id="viewMode" header="View Mode" value="#{scheduleConfigurationBean.viewMode}" labelPosition="top">
+							<ace:ajax render="@all" />
+							<f:selectItem itemValue="month" itemLabel="Month" />
+							<f:selectItem itemValue="week" itemLabel="Week" />
+							<f:selectItem itemValue="day" itemLabel="Day" />
+						</ace:radioButtons>
+				</h:panelGrid>
+				<h:panelGrid columns="2" cellpadding="6" cellspacing="6">
+						<h:outputLabel for="timeZone" value="Time Zone: "/>
+						<ace:selectMenu id="timeZone" value="#{scheduleConfigurationBean.timeZone}">
+							<ace:ajax render="@all"/>
+							<f:selectItems value="#{scheduleConfigurationBean.timeZoneList}" />
+						</ace:selectMenu>
+						<h:outputLabel for="sideBar" value="Side Bar: "/>
+						<ace:selectMenu id="sideBar" value="#{scheduleConfigurationBean.sideBar}">
+							<ace:ajax render="@all"/>
+							<f:selectItem itemValue="right" itemLabel="Right" />
+							<f:selectItem itemValue="left" itemLabel="Left" />
+							<f:selectItem itemValue="hidden" itemLabel="Hidden" />
+						</ace:selectMenu>
+						<h:outputLabel for="eventDetails" value="Event Details: "/>
+						<ace:selectMenu id="eventDetails" value="#{scheduleConfigurationBean.eventDetails}">
+							<ace:ajax render="@all"/>
+							<f:selectItem itemValue="popup" itemLabel="Pop-up" />
+							<f:selectItem itemValue="sidebar" itemLabel="Side Bar" />
+							<f:selectItem itemValue="disabled" itemLabel="Disabled" />
+						</ace:selectMenu>
+						<h:outputLabel for="defaultDuration" value="Default Duration: "/>
+						<ace:selectMenu id="defaultDuration" value="#{scheduleConfigurationBean.defaultDuration}">
+							<ace:ajax render="@all"/>
+							<f:selectItem itemValue="30" itemLabel="30 minutes" />
+							<f:selectItem itemValue="60" itemLabel="60 minutes" />
+							<f:selectItem itemValue="90" itemLabel="90 minutes" />
+							<f:selectItem itemValue="120" itemLabel="2 hours" />
+						</ace:selectMenu>
+						<h:outputLabel for="twelveHourClock" value="Twelve-Hour Clock: "/>
+						<ace:checkboxButton id="twelveHourClock" value="#{scheduleConfigurationBean.twelveHourClock}">
+							<ace:ajax render="@all"/>
+						</ace:checkboxButton>
+						<h:outputLabel for="enhancedStyling" value="Enhanced Styling: "/>
+						<ace:checkboxButton id="enhancedStyling" value="#{scheduleConfigurationBean.enhancedStyling}">
+							<ace:ajax render="@all"/>
+						</ace:checkboxButton>
+						<h:outputLabel for="tooltip" value="Tooltip: "/>
+						<ace:checkboxButton id="tooltip" value="#{scheduleConfigurationBean.tooltip}">
+							<ace:ajax render="@all"/>
+						</ace:checkboxButton>
+						<h:outputLabel for="scrollable" value="Scrolling (Week and Day views): "/>
+						<ace:checkboxButton id="scrollable" value="#{scheduleConfigurationBean.scrollable}">
+							<ace:ajax render="@all"/>
+						</ace:checkboxButton>
+						<h:outputLabel for="scrollHeight" value="Scroll Height: "/>
+						<ace:textEntry 	id="scrollHeight" value="#{scheduleConfigurationBean.scrollHeight}">
+							<ace:ajax render="@all"/>
+						</ace:textEntry>
+				</h:panelGrid>
+				<div style="text-align:center;">
+					<ace:pushButton id="generateSchedule" value="Generate Schedule" onclick="ice.ace.instance('#{dialog.clientId}').show();" />
+				</div>
+			</ace:panel>
+            <ace:dialog id="dialog" binding="#{dialog}"
+                               header="Schedule"
+                               closable="true"
+                               modal="false"
+                               draggable="true"
+                               resizable="true"
+                               showEffect="fade"
+                               hideEffect="fade"
+                               width="1200" height="600">
+                
+				<ace:schedule 	id="schedule"
+								value="#{scheduleConfigurationBean.events}"
+								showEventDetails="#{scheduleConfigurationBean.eventDetails}"
+								scrollable="#{scheduleConfigurationBean.scrollable}"
+								scrollHeight="#{scheduleConfigurationBean.scrollHeight}"
+								sideBar="#{scheduleConfigurationBean.sideBar}"
+								timeZone="#{scheduleConfigurationBean.timeZone}"
+								viewMode="#{scheduleConfigurationBean.viewMode}"
+								enhancedStyling="#{scheduleConfigurationBean.enhancedStyling}"
+								twelveHourClock="#{scheduleConfigurationBean.twelveHourClock}"
+								showTooltip="#{scheduleConfigurationBean.tooltip}"
+								defaultDuration="#{scheduleConfigurationBean.defaultDuration}"
+ />
+            </ace:dialog>
+        </h:form>
+    </ui:define>
+</ui:composition>

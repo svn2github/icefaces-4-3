@@ -1,0 +1,52 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+    xmlns:ace="http://www.icefaces.org/icefaces/components"
+    xmlns:icecore="http://www.icefaces.org/icefaces/core"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    template="/resources/templates/content-template.xhtml">
+    <ui:param name="title" value="#{msgs['example.ace.panel.listener.title']}"/>
+    <ui:param name="description" value="#{msgs['example.ace.panel.listener.description']}"/>
+
+    <ui:define name="example">
+        <h:form id="form">
+            <h2><h:outputText id="status" value="Listener Status: #{panelListener.statusMessage}"/></h2>
+        
+            <ace:panel id="panel" binding="#{panelListenerComponent}"
+					   header="ICEfaces Header With Listeners"
+                       closable="true"
+                       toggleable="true">
+                <ace:ajax event="close" listener="#{panelListener.close}" render="form2 status" />
+                <ace:ajax event="toggle" listener="#{panelListener.toggle}" render="status"/>
+                                
+                <p>ICEfaces is an open-source Rich Internet Application (RIA) development framework based on the JavaServer Faces (JSF) 2 standard. Like its predecessor, ICEfaces 1.8, ICEfaces 2+ extends JSF to simplify development and enhance the standard JSF feature set - simultaneously improving developer efficiency and expanding the spectrum of RIA capabilities that can be included in any JSF-based web application.</p>
+                <p>Adhering closely to the standard JSF 2 extension points allows ICEfaces to work transparently with the stock JSF framework, simplifying integration and fostering 3rd party compatibility with other JSF 2-compliant libraries.</p>
+            </ace:panel>
+		</h:form>
+        <h:form id="form2">
+            <ace:pushButton value="ShowPanel" id="pb1"
+                    rendered="#{panelListener.reOpenButton}"
+                    actionListener="#{panelListener.buttonNotVisible}">
+                <ace:ajax onComplete="var myPanel = ice.ace.instance('#{panelListenerComponent.clientId}'); if (myPanel.isClosed()){ myPanel.show(); }  return true;" execute="@this" render="@form"/>
+            </ace:pushButton>
+        </h:form>
+
+    </ui:define>
+</ui:composition>

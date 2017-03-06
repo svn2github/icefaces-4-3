@@ -1,0 +1,92 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+    xmlns:ace="http://www.icefaces.org/icefaces/components"
+    xmlns:icecore="http://www.icefaces.org/icefaces/core"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    template="/resources/templates/content-template.xhtml">
+    <ui:param name="title" value="#{msgs['example.ace.accordionpanel.title']}"/>
+    <ui:param name="description" value="#{msgs['example.ace.accordionpanel.description']}"/>
+
+    <ui:define name="example">
+		<style type="text/css">
+			/* Custom style classes */
+
+			/* custom styling class for month view */
+			.ice-ace-schedule .schedule-styling-enhanced .schedule-days .ui-widget-content .schedule-event.myClass {
+				background-color: #fff;
+				border: 1px solid #f00;
+				color: #f00;
+			}
+
+			/* custom styling class for week and day views */
+			.ice-ace-schedule .schedule-styling-enhanced .schedule-days .schedule-event-container .schedule-event.myClass {
+				background-color: #fff;
+				border: 1px solid #f00;
+				color: #f00;
+			}
+		</style>
+        <h:form id="form">
+			<ace:panel header="Configuration">
+				<h:panelGrid width="100%" columns="1" cellpadding="6" cellspacing="6">
+						<ace:checkboxButton id="enhancedStyling" value="#{scheduleCustomStylingBean.enhancedStyling}"
+							label="Apply Enhanced Styling? " labelPosition="left">
+							<ace:ajax render="@all"/>
+						</ace:checkboxButton>
+						<ace:radioButtons id="viewMode" header="Select view mode" value="#{scheduleCustomStylingBean.viewMode}" labelPosition="top">
+							<ace:ajax render="@all" />
+							<f:selectItem itemValue="month" itemLabel="Month" />
+							<f:selectItem itemValue="week" itemLabel="Week" />
+							<f:selectItem itemValue="day" itemLabel="Day" />
+						</ace:radioButtons>
+						<ace:radioButtons id="overlappingClass" header="Select class for overlapping events" value="#{scheduleCustomStylingBean.overlappingClass}" labelPosition="top">
+							<ace:ajax render="@all" listener="#{scheduleCustomStylingBean.changeOverlappingClass}" />
+							<f:selectItem itemValue="schedule-orange" itemLabel="schedule-orange" />
+							<f:selectItem itemValue="schedule-turquoise" itemLabel="schedule-turquoise" />
+							<f:selectItem itemValue="schedule-magenta" itemLabel="schedule-magenta" />
+							<f:selectItem itemValue="schedule-violet" itemLabel="schedule-violet" />
+							<f:selectItem itemValue="myClass" itemLabel="myClass" />
+						</ace:radioButtons>
+						<ace:radioButtons id="conferenceClass" header="Select class for conference events" value="#{scheduleCustomStylingBean.conferenceClass}" labelPosition="top">
+							<ace:ajax render="@all" listener="#{scheduleCustomStylingBean.changeConferenceClass}" />
+							<f:selectItem itemValue="schedule-orange" itemLabel="schedule-orange" />
+							<f:selectItem itemValue="schedule-turquoise" itemLabel="schedule-turquoise" />
+							<f:selectItem itemValue="schedule-magenta" itemLabel="schedule-magenta" />
+							<f:selectItem itemValue="schedule-violet" itemLabel="schedule-violet" />
+							<f:selectItem itemValue="myClass" itemLabel="myClass" />
+						</ace:radioButtons>
+				</h:panelGrid>
+			</ace:panel>
+			<ace:schedule 	id="schedule"
+							value="#{scheduleCustomStylingBean.events}"
+							showEventDetails="disabled"
+							showTooltip="true"
+							scrollable="true"
+							scrollHeight="400"
+							sideBar="hidden"
+							enhancedStyling="#{scheduleCustomStylingBean.enhancedStyling}"
+							addEvents="false"
+							editEvents="false"
+							deleteEvents="false"
+							timeZone="UTC"
+							viewMode="#{scheduleCustomStylingBean.viewMode}" />
+        </h:form>
+    </ui:define>
+</ui:composition>

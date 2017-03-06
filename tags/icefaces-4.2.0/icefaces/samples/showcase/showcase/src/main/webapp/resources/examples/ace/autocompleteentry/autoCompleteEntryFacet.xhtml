@@ -1,0 +1,66 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ace="http://www.icefaces.org/icefaces/components"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/resources/templates/content-template.xhtml">
+    <ui:param name="title" value="#{msgs['example.ace.autocompleteentry.facet.title']}"/>
+    <ui:param name="description" value="#{msgs['example.ace.autocompleteentry.facet.description']}"/>
+
+    <ui:define name="example">
+        
+        <h:form id="inputForm">
+            <h:panelGrid columns="1" width="100%">
+                <ace:autoCompleteEntry id="autoCompleteFacet"
+                                       value="#{autoCompleteEntryFacetBean.selectedText}"
+                                       rows="10" width="300"
+                                       filterMatchMode="startsWith"
+                                       listVar="city"
+                                       listValue="#{autoCompleteEntryFacetBean.cities}"
+                                       filterBy="#{city.name}"
+                                       label="Cities of the World:"
+                                       labelPosition="left">
+                     <f:facet name="row">
+                        <h:panelGrid columns="3" width="100%" columnClasses="col10,col50,col25">
+                            <h:graphicImage value="#{autoCompleteEntryFacetBean.house.path}" alt="House"/>
+                            <h:outputText value="#{city.name}" />
+                            <h:outputText value="#{city.country}" />
+                        </h:panelGrid>
+                     </f:facet>
+                    <ace:ajax event="valueChange" render="@all"/>
+                    <ace:ajax event="blur" render="@all"/>
+                </ace:autoCompleteEntry>
+            </h:panelGrid>
+        </h:form>
+        
+        <h:panelGrid columns="2">
+            <h:outputLabel for="cityOut" value="City:"/>
+            <h:outputText id="cityOut" value="#{autoCompleteEntryFacetBean.selectedCity.name} #{autoCompleteEntryFacetBean.selectedCity.country}"/>
+            
+            <h:outputLabel for="latOut" value="Latitude:"/>
+            <h:outputText id="latOut" value="#{autoCompleteEntryFacetBean.selectedCity.latitude}"/>
+                          
+            <h:outputLabel for="longOut" value="Longitude:"/>
+            <h:outputText id="longOut" value="#{autoCompleteEntryFacetBean.selectedCity.longitude}"/>
+                          
+            <h:outputLabel for="altOut" value="Altitude:"/>
+            <h:outputText id="altOut" value="#{autoCompleteEntryFacetBean.selectedCity.altitude}"/>
+		</h:panelGrid>
+    </ui:define>
+</ui:composition>

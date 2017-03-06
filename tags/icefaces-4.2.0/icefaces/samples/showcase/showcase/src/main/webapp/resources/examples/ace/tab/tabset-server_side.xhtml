@@ -1,0 +1,58 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html" 
+    xmlns:f="http://xmlns.jcp.org/jsf/core" 
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" 
+    xmlns:ace="http://www.icefaces.org/icefaces/components" 
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets" 
+    template="/resources/templates/content-template.xhtml">
+    <ui:param name="title" value="#{msgs['example.ace.tabSet.serverSide.title']}"/>
+    <ui:param name="description" value="#{msgs['example.ace.tabSet.serverSide.description']}"/>
+
+    <ui:define name="example">
+        <h:form id="form">
+            <ace:tabSet id="serverTabSet" clientSide="false" style="clear:both;">
+                <ace:tabPane id="pane1">
+                    <f:facet name="label">My First Server Tab</f:facet>
+                    <h:outputText id="pane1Body" value="First Tab Body" />
+                    <h:outputText value="#{tabServerSide.slowDownTab}"
+                                  rendered="#{not tabServerSide.fastTabs}" />
+                </ace:tabPane>
+                <ace:tabPane id="pane2">
+                    <f:facet name="label">My Second Server Tab</f:facet>
+                    <h:outputText id="pane2Body" value="Second Body" />
+                    <h:outputText value="#{tabServerSide.slowDownTab}"
+                                  rendered="#{not tabServerSide.fastTabs}" />
+                </ace:tabPane>
+                <ace:tabPane id="pane3">
+                    <f:facet name="label">My Third Server Tab</f:facet>
+                    <h:outputText id="pane3Body" value="Third Body" />
+                    <h:outputText value="#{tabServerSide.slowDownTab}"
+                                  rendered="#{not tabServerSide.fastTabs}" />
+                </ace:tabPane>
+            </ace:tabSet>
+            </h:form>
+            <h:form id="form2">
+                <h:panelGrid columns="3" style="border-spacing: 10px;">
+                    <h:selectBooleanCheckbox id="fastTabs" value="#{tabServerSide.fastTabs}"/>
+                    <h:outputText value="Use Fast Loading Tabs"/>
+                    <h:commandButton id="set" value="Set" type="submit"/>
+                </h:panelGrid>
+            </h:form>
+    </ui:define>
+</ui:composition>

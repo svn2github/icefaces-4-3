@@ -1,0 +1,56 @@
+<!--
+  ~ Copyright 2004-2017 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+    xmlns:ace="http://www.icefaces.org/icefaces/components"
+    xmlns:icecore="http://www.icefaces.org/icefaces/core"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    template="/resources/templates/content-template.xhtml">
+    <ui:param name="title" value="#{msgs['example.ace.colorEntry.title']}"/>
+    <ui:param name="description" value="#{msgs['example.ace.colorEntry.description']}"/>
+
+    <ui:define name="example">
+        <h:form id="colorEntryForm">
+            <ace:panel id="colorInputPanel" header="ColorEntry" styleClass="required-styling-demo">
+                <h:panelGrid id="inputGrid" columns="1" width="100%" >
+                    <ace:colorEntry id="colorInput"
+                                    title="#{colorEntryBean.title}"
+                                    value="#{colorEntryBean.selectedColor}">
+                    </ace:colorEntry>
+                    <ace:pushButton id="submitColor" value="Submit Color">
+                        <ace:ajax execute="@this colorInput" render="@all"/>
+                    </ace:pushButton>
+
+                </h:panelGrid>
+
+            </ace:panel>
+            <ace:panel>
+                <h:panelGrid style="text-align: center; background-color: ##{colorEntryBean.selectedColor};"
+                             width="100%" >
+					<h:panelGroup class="ui-widget ui-widget-content" style="opacity:0.7; padding-left: 6px; padding-right: 6px; border:none;">  
+							<h:outputLabel for="selColorInline" value="Selected Color: " />
+							<h:outputText id="selColorInline" value="#{colorEntryBean.selectedColor}" style="font-weight: bold;"/>
+                    </h:panelGroup>
+                </h:panelGrid>
+            </ace:panel>
+        </h:form>
+
+    </ui:define>
+</ui:composition>
+
