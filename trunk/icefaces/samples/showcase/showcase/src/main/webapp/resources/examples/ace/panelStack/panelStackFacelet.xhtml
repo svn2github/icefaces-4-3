@@ -107,7 +107,8 @@
 				 	</ace:buttonGroup>				 	
 				 	<h:outputLabel for="textAreaEntry" value="Additional comments: "/>
 				 	<ace:textAreaEntry id="textAreaEntry" value="#{panelStackFacelet.note2}" />
-					<h:commandButton id="submitReservation" type="submit" value="Submit" />					
+					<h:commandButton id="submitReservation" type="submit" value="Submit" />	
+					<h:outputText value=""/> <!-- just to make child count a multiple of 2 -->  				
 				 </h:panelGrid>		
 				</ace:panel>								
 			</ace:stackPane>		
