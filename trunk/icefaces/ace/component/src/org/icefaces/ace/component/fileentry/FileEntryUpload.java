@@ -164,6 +164,37 @@ public class FileEntryUpload implements PhaseListener {
                         (PushResourceSetup) progressListenerResourcePusher,
                         buffer, new CommonsFileUploadFile(iter.next()));
                 }
+
+                // Add non-multipart parameters (those found on the form's action URL).
+                // For example, in a portlet environment:
+                // ice.view=vtggqoq1:0
+                // _jsfBridgeAjax=true
+                // ice.fileEntry.multipart=true
+                // ice.window=isizq7jutb
+                // _facesViewIdResource=/WEB-INF/views/portletViewMode.xhtml
+                Map<String,String[]> urlParameterMap = request.getParameterMap();
+                for (Map.Entry<String, String[]> mapEntry : urlParameterMap.entrySet()) {
+
+                    String parameterName = mapEntry.getKey();
+
+                    if (!parameterListMap.containsKey(parameterName)) {
+
+                        Object parameterValues = mapEntry.getValue();
+                        List<String> parameterValueList = null;
+                        if (parameterValues != null) {
+
+                            // Note: parameterValues will be a String (rather than the expected String[]) if the request
+                            // is an instance of ProxyHttpServletRequest.
+                            if (parameterValues instanceof String) {
+                                parameterValueList = new ArrayList<String>();
+                                parameterValueList.add((String) parameterValues);
+                            } else {
+                                parameterValueList = Arrays.asList((String[]) parameterValues);
+                            }
+                        }
+                        parameterListMap.put(parameterName, parameterValueList);
+                    }
+                }
             }
             catch(Exception e) {
                 FacesMessage fm = FileEntryStatuses.PROBLEM_READING_MULTIPART.
