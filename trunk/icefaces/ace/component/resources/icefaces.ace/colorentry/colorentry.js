@@ -25,7 +25,7 @@ ice.ace.ColorEntry = function(id, cfg) { 
         elemId=this.jqId;
     }
     var initialColor = ice.ace.ColorEntry.initialColor[id] ||null;
-    if (initialColor !=null){  //workaround for inline to set preview of previous color
+    if (this.options.inline && initialColor !=null){  //workaround for inline to set preview of previous color
         var PREVIOUS_COLOR_VAL_INLINE = ".ui-colorpicker-preview-initial";
         var initElem = ice.ace.jq(elemId).find(PREVIOUS_COLOR_VAL_INLINE);
         if (initElem){
@@ -184,7 +184,13 @@ ice.ace.ColorEntryInit = function( cfg) {
         };
 
         var okFn = function(event, color){ 
+         //   console.log(" ok function....");
             if ( color.formatted=="false"){
+                return;
+            }
+            //only set reset and submit if value has changed!
+            var prevVal = ice.ace.resetValues[this.id] || "";
+            if (prevVal == color.formatted ){
                 return;
             }
             ice.ace.setResetValue(this.id, color.formatted);  
@@ -200,9 +206,8 @@ ice.ace.ColorEntryInit = function( cfg) {
             }
         } ;
         var selectFn = function(event, color){
+         //   console.log(" select fn....");
             if (color.formatted=="false"){
-               // console.log(" The current widget does not support the color format of "+colorFormat);
-              //  setColorBar(null); //could be none button
                 return;
             }
             var colorFormatted = color.formatted;
@@ -219,6 +224,7 @@ ice.ace.ColorEntryInit = function( cfg) {
                 setColorBar(color);
                 return;
             }
+      //      console.log(" selectFn.....past return for !inline...");
             ice.ace.setResetValue(this.id, color.formatted);  
             ice.ace.jq(ice.ace.escapeClientId(id) + "_hidden").val(colorFormatted);
             ice.ace.jq(ice.ace.escapeClientId(id) + "_hidden2").val(colorFormatted);
@@ -241,7 +247,6 @@ ice.ace.ColorEntryInit = function( cfg) {
             return widget;
         };
         var initAndShow = function(){
-            console.log(" initAndShow") ;
             if (trigger){
                   trigger.remove();
             }
