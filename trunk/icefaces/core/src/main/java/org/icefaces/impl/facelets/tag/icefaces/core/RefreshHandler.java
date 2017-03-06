@@ -32,8 +32,8 @@ import java.io.IOException;
 import java.util.Map;
 
 public class RefreshHandler extends TagHandler {
-    private String INTERVAL = RefreshHandler.class + ".interval";
-    private String DURATION = RefreshHandler.class + ".duration";
+    private static String INTERVAL = RefreshHandler.class + ".interval";
+    private static String DURATION = RefreshHandler.class + ".duration";
 
     public RefreshHandler(TagConfig config) {
         super(config);
@@ -50,7 +50,9 @@ public class RefreshHandler extends TagHandler {
                 viewMap.put(DURATION, getDuration(ctx));
                 UIOutput refreshSetup = new RefreshSetupOutput();
                 refreshSetup.setId("refreshSetup");
+                parent.setInView(false);
                 parent.getChildren().add(refreshSetup);
+                parent.setInView(true);
                 attrs.put(RefreshHandler.class.getName(), true);
             }
         }
@@ -81,7 +83,7 @@ public class RefreshHandler extends TagHandler {
     }
 
 
-    private class RefreshSetupOutput extends UIOutput {
+    public static class RefreshSetupOutput extends UIOutput {
         private Long interval;
         private Long duration;
 
