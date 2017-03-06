@@ -32,6 +32,8 @@ import java.io.IOException;
 import java.util.Map;
 
 public class RefreshHandler extends TagHandler {
+    private String INTERVAL = RefreshHandler.class + ".interval";
+    private String DURATION = RefreshHandler.class + ".duration";
 
     public RefreshHandler(TagConfig config) {
         super(config);
@@ -43,12 +45,12 @@ public class RefreshHandler extends TagHandler {
             FacesContext context = FacesContext.getCurrentInstance();
             Map attrs = context.getAttributes();
             if (!attrs.containsKey(RefreshHandler.class.getName())) {
-                UIOutput refreshSetup = new RefreshSetupOutput(getInterval(ctx), getDuration(ctx), disabled);
-                refreshSetup.setTransient(true);
+                Map<String, Object> viewMap = context.getViewRoot().getViewMap();
+                viewMap.put(INTERVAL, getInterval(ctx));
+                viewMap.put(DURATION, getDuration(ctx));
+                UIOutput refreshSetup = new RefreshSetupOutput();
                 refreshSetup.setId("refreshSetup");
-                parent.setInView(false);
                 parent.getChildren().add(refreshSetup);
-                parent.setInView(true);
                 attrs.put(RefreshHandler.class.getName(), true);
             }
         }
@@ -80,17 +82,13 @@ public class RefreshHandler extends TagHandler {
 
 
     private class RefreshSetupOutput extends UIOutput {
-        //this component is transient so can use member fields
-        //rather than state saving
-        private long interval;
-        private long duration;
-        private boolean disabled;
+        private Long interval;
+        private Long duration;
 
-        public RefreshSetupOutput(long interval, long duration,
-                boolean disabled)  {
-            this.interval = interval;
-            this.duration = duration;
-            this.disabled = disabled;
+        public RefreshSetupOutput()  {
+            Map<String, Object> viewMap = FacesContext.getCurrentInstance().getViewRoot().getViewMap();
+            this.interval = (Long) viewMap.get(INTERVAL);
+            this.duration = (Long) viewMap.get(DURATION);
         }
 
         public void encodeBegin(FacesContext context) throws IOException {
