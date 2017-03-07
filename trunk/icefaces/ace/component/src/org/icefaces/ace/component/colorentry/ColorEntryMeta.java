@@ -39,9 +39,11 @@ import java.util.List;
         disinheritProperties = {"onclick","onblur", "onchange", "ondblclick", "onselect", "onmouseup", "onmousedown","onfocus", "onkeydown",
                                  "onkeypress", "onkeyup", "onmousemove", "onmouseover", "onmouseout"},
         componentFamily = "org.icefaces.ace.ColorEntry",
-        tlddoc = "ColorEntry is a widget that creates a string for input component " +
-                "that can display some string information which corresponds to a color" +
-                " It also has custom styling for invalid state and required status." +
+        tlddoc = "ColorEntry is a widget that allows a user to enter or choose a color which can be saved as a" +
+                " String. Two default configurations show an inline and popup version, but it is configurable for a more custom look." +
+                " Themeroller styling and required & custom styling with " +
+                " labelling are also included. There are various formats this color string " +
+                "may be saved as, including but not limited to HEX, RGB or by NAME." +
                 "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/ColorPIcker\">ColorEntry Wiki Documentation</a>."
 )
 
