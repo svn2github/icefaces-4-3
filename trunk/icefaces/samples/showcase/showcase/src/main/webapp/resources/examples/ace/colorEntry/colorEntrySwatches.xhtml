@@ -29,8 +29,8 @@
         <h:form id="colorentryswatchForm">
           <ace:tabSet id="colorEntryTabSet" clientSide="false">
             <ace:tabPane id="preexisting" label="Predefined Swatches">
-                  <h:panelGrid columns="2">  
-				   <h:outputLabel for="SelSwatchName" value="Select a predefined swatch:" /> 	
+                  <h:panelGrid columns="2">
+				   <h:outputLabel for="SelSwatchName" value="Select a predefined swatch:" />
                    <ace:simpleSelectOneMenu id="selSwatchName"
                                     valueChangeListener="#{colorEntrySwatchesBean.changeSwatch}"
                                     value="#{colorEntrySwatchesBean.swatchName}" >
@@ -40,7 +40,7 @@
                        <f:selectItem itemLabel="ral-classic" itemValue="ral-classic"/>
                        <ace:ajax execute="@this" render="@all"/>
                    </ace:simpleSelectOneMenu>
-				<h:outputLabel for="swatchNameID" value="Select a color from swatch '#{colorEntrySwatchesBean.swatchName}':" /> 	
+				<h:outputLabel for="swatchNameID" value="Select a color from swatch '#{colorEntrySwatchesBean.swatchName}':" />
                 <ace:colorEntry id="swatchNameID" value="#{colorEntrySwatchesBean.color}"
                              renderAsPopup="true"
                              colorFormat="#{colorEntrySwatchesBean.hexcolorFormat}"
@@ -51,13 +51,13 @@
                              customLayout="#{colorEntrySwatchesBean.swatchLayoutLong}">
                        <ace:ajax execute="@this" render="@all"/>
                    </ace:colorEntry>
-             </h:panelGrid> 
-             
+               </h:panelGrid>
+
            <ace:panel>
               <h:panelGrid style="text-align: center; background-color: ##{colorEntrySwatchesBean.color};" width="100%">
 					<h:panelGroup class="ui-widget ui-widget-content" style="opacity:0.7; padding-left: 6px; padding-right: 6px; border:none;">  
 						<h:outputLabel for="selColor2" value="Selected Color: " />
-						<h:outputText id="selColor2" value="#{colorEntryBean.selectedColor}" style="font-weight: bold;"/>
+						<h:outputText id="selColor2" value="#{colorEntrySwatchesBean.color}" style="font-weight: bold;"/>
                     </h:panelGroup>
               </h:panelGrid>
            </ace:panel>
@@ -83,13 +83,14 @@
                   <h:panelGrid style="text-align: center; background-color: #{colorEntrySwatchesBean.fromPredefined};" width="100%">
 					<h:panelGroup class="ui-widget ui-widget-content" style="opacity:0.7; padding-left: 6px; padding-right: 6px; border:none;">  
 						<h:outputLabel for="selColorInline" value="Selected Color: " />
-						<h:outputText id="selColorInline" value="#{colorEntryBean.selectedColor}" style="font-weight: bold;"/>
+						<h:outputText id="selColorInline" value="#{colorEntrySwatchesBean.fromPredefined}" style="font-weight: bold;"/>
                     </h:panelGroup>
                   </h:panelGrid>
             </ace:panel>
        </ace:tabPane>
             <ace:tabPane id="dynamic" label="Create Swatch Dynamically">
-                    <ace:panel header="Choose Four Colours to Create a Swatch" rendered="#{not colorEntrySwatchesBean.haveValues}">
+                <h:panelGroup id="innerPanel">
+                    <ace:panel id="selectPanel" header="Choose Four Colours to Create a Swatch" rendered="#{not colorEntrySwatchesBean.haveValues}">
                         <h:panelGrid columns="1">
                             <c:forEach items="#{colorEntrySwatchesBean.colorList}" var="entry" varStatus="status" >
                                 <ace:colorEntry id="ce_#{status.index}" value="#{entry}"
@@ -103,9 +104,9 @@
                                    customLayout="#{colorEntrySwatchesBean.layout}">
                                 </ace:colorEntry>
                              </c:forEach>
-                            <ace:pushButton value="Create Swatch" actionListener="#{colorEntrySwatchesBean.updateSwatch}">
-                               <ace:ajax execute="@form" render="@all"/>
-                            </ace:pushButton>
+                            <h:commandButton value="Create Swatch" actionListener="#{colorEntrySwatchesBean.updateSwatch}">
+                               <f:ajax execute="@form" render="colorentryswatchForm:innerPanel"/>
+                            </h:commandButton>
                         </h:panelGrid>
                     </ace:panel>
                    <h:panelGroup id="pgrp2" rendered="#{colorEntrySwatchesBean.haveValues}">
@@ -119,11 +120,11 @@
                                     swatches="#{colorEntrySwatchesBean.swatchEntries}"
                                     customParts="#{colorEntrySwatchesBean.swatchParts}"
                                     customLayout="#{colorEntrySwatchesBean.swatchLayout}">
-                         <ace:ajax execute="@this" render="colorentryswatchForm:pgrp2 colorentryswatchForm:outputPanelDyn"/>
+                         <ace:ajax execute="@this" render="colorentryswatchForm:innerPanel"/>
                        </ace:colorEntry>
-                      <ace:pushButton value="Reset"
+                      <ace:pushButton value="Reset" id="resetButton"
                                  actionListener="#{colorEntrySwatchesBean.reset}">
-                        <ace:ajax execute="@this" render="@all"/>
+                        <ace:ajax execute="@this" render="colorentryswatchForm:innerPanel "/>
                       </ace:pushButton>
                  </h:panelGrid>
             </h:panelGroup>
@@ -132,10 +133,11 @@
                  <h:panelGrid style="text-align: center; background-color: ##{colorEntrySwatchesBean.dynamic};" width="100%">
 					<h:panelGroup class="ui-widget ui-widget-content" style="opacity:0.7; padding-left: 6px; padding-right: 6px; border:none;">  
 						<h:outputLabel for="dynValue" value="Selected Color: " />
-						<h:outputText id="dynValue" value="#{colorEntryBean.selectedColor}" style="font-weight: bold;"/>
+						<h:outputText id="dynValue" value="#{colorEntrySwatchesBean.dynamic}" style="font-weight: bold;"/>
                     </h:panelGroup>
                  </h:panelGrid>
             </ace:panel>
+           </h:panelGroup>
          </ace:tabPane>
         </ace:tabSet>
         </h:form>

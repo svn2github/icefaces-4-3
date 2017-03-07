@@ -184,13 +184,12 @@ ice.ace.ColorEntryInit = function( cfg) {
         };
 
         var okFn = function(event, color){ 
-         //   console.log(" ok function....");
             if ( color.formatted=="false"){
                 return;
             }
             //only set reset and submit if value has changed!
-            var prevVal = ice.ace.resetValues[this.id] || "";
-            if (prevVal == color.formatted ){
+            var preval = ice.ace.resetValues[this.id] || "";
+            if (preval == color.formatted ){
                 return;
             }
             ice.ace.setResetValue(this.id, color.formatted);  
@@ -206,8 +205,14 @@ ice.ace.ColorEntryInit = function( cfg) {
             }
         } ;
         var selectFn = function(event, color){
-         //   console.log(" select fn....");
             if (color.formatted=="false"){
+                return;
+            }
+            if (!inline && color.formatted==""){
+                return;
+            }
+            var preval = ice.ace.resetValues[this.id] || "";
+            if (preval == color.formatted ){
                 return;
             }
             var colorFormatted = color.formatted;
@@ -224,7 +229,6 @@ ice.ace.ColorEntryInit = function( cfg) {
                 setColorBar(color);
                 return;
             }
-      //      console.log(" selectFn.....past return for !inline...");
             ice.ace.setResetValue(this.id, color.formatted);  
             ice.ace.jq(ice.ace.escapeClientId(id) + "_hidden").val(colorFormatted);
             ice.ace.jq(ice.ace.escapeClientId(id) + "_hidden2").val(colorFormatted);
