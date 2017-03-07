@@ -221,12 +221,12 @@
         </subant>
         <move file="${bundle.dir.bin}/core/build/javadocs" tofile="${bundle.dir.bin}/docs/core/api"/>
 
-        <subant target="build.src.javadoc">
+        <subant target="javadoc">
             <fileset dir="${bundle.dir.bin}/ace/component" includes="build.xml"/>
         </subant>
         <move file="${bundle.dir.bin}/ace/component/build/doc/javadoc" tofile="${bundle.dir.bin}/docs/ace/api"/>
 
-        <subant target="build.src.javadoc">
+        <subant target="javadoc">
             <fileset dir="${bundle.dir.bin}/mobi/component" includes="build.xml"/>
         </subant>
         <move file="${bundle.dir.bin}/mobi/component/build/doc/javadoc" tofile="${bundle.dir.bin}/docs/mobi/api"/>
