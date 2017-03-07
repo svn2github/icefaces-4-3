@@ -94,9 +94,10 @@ public class PushButtonRenderer extends CoreRenderer {
 		if (style != null)
 			writer.writeAttribute(HTML.STYLE_ATTR, style, null);
 
-        if (disabled)
+        if (disabled) {
             writer.writeAttribute(HTML.CLASS_ATTR, "ui-button ui-widget ui-state-disabled ui-corner-all", null);
-        else {
+            writer.writeAttribute(HTML.DISABLED_ATTR, "disabled", null);
+        } else {
             writer.writeAttribute(HTML.CLASS_ATTR, "ui-button ui-widget ui-state-default ui-corner-all", null);
             encodeScript(facesContext, writer, pushButton, clientId, HTML.ONFOCUS_ATTR);
         }
@@ -104,19 +105,32 @@ public class PushButtonRenderer extends CoreRenderer {
         if (tabindex != null)
             writer.writeAttribute(HTML.TABINDEX_ATTR, tabindex, null);
 
-        renderPassThruAttributes(facesContext, pushButton, PASSTHROUGH_ATTRIBUTES);
+		if (disabled) {
+			renderPassThruAttributes(facesContext, pushButton, new String[] {"alt", "dir", "lang", "title"});
+		} else {
+			renderPassThruAttributes(facesContext, pushButton, PASSTHROUGH_ATTRIBUTES);
+		}
 
         // yet another span
         writer.startElement(HTML.SPAN_ELEM, null);
 
         writeButtonValue(writer, pushButton);
 
-        writer.startElement(HTML.SCRIPT_ELEM, null);
-        writer.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);
-        //assign ID here so that focus manager can focus the button but ID assigning will not interfere with the DOM updates
-        writer.writeText("document.getElementById('" + clientId + "').getElementsByTagName('button')[0].id = '" + clientId + "_button';", null);
-        writer.writeText(getScript(facesContext, writer, pushButton, clientId), null);
-        writer.endElement(HTML.SCRIPT_ELEM);
+		writer.startElement(HTML.SCRIPT_ELEM, null);
+		writer.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);
+		if (!disabled) {
+			//assign ID here so that focus manager can focus the button but ID assigning will not interfere with the DOM updates
+			writer.writeText("document.getElementById('" + clientId + "').getElementsByTagName('button')[0].id = '" + clientId + "_button';", null);
+			writer.writeText(getScript(facesContext, writer, pushButton, clientId), null);
+		} else {
+			// remove passthrough attributes added with the <f:passThroughAttribute /> tag
+			writer.writeText("ice.ace.jq(document.getElementById('" + clientId + "')).attr('onclick', '')"
+				+ ".attr('ondblclick','').attr('onkeydown','').attr('onkeypress','').attr('onkeyup','')"
+				+ ".attr('onmousedown','').attr('onmousemove','').attr('onmouseout','').attr('onmouseover','')"
+				+ ".attr('onmouseup','').attr('onblur','').attr('onfocus','').attr('onchange','')"
+				+ ".attr('onselect','');", null);
+		}
+		writer.endElement(HTML.SCRIPT_ELEM);
     }
 	
 	public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException {
