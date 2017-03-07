@@ -106,6 +106,7 @@ public class CheckboxButtonRenderer extends InputRenderer {
         String buttonId = clientId + "_button";
         writer.writeAttribute(HTML.ID_ATTR, buttonId, null);
         writer.writeAttribute(HTML.NAME_ATTR, buttonId, null);
+		if (checkbox.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
 		String selectedClass = "";
 		Object value = checkbox.getValue();
 		if (value != null) selectedClass = (((Boolean) value) ? "ice-checkboxbutton-checked" : "ice-checkboxbutton-unchecked");
@@ -120,7 +121,13 @@ public class CheckboxButtonRenderer extends InputRenderer {
         encodeButtonStyle(writer, checkbox);
         encodeScript(writer, EventType.FOCUS);
 
-        renderPassThruAttributes(facesContext, checkbox, PASSTHROUGH_ATTRIBUTES);
+		if (checkbox.isDisabled()) {
+			renderPassThruAttributes(facesContext, checkbox, new String[] {
+				"alt", "dir", "lang", "title", "type"
+			});
+		} else {
+			renderPassThruAttributes(facesContext, checkbox, PASSTHROUGH_ATTRIBUTES);
+		}
 
         if (checkbox.getLabel() != null && "inField".equalsIgnoreCase(checkbox.getLabelPosition())) {
             writer.startElement(HTML.SPAN_ELEM, null);
@@ -208,7 +215,17 @@ public class CheckboxButtonRenderer extends InputRenderer {
 
         jb.endMap().endArray().endFunction();
 
-		return jb.toString();
+		String removeRootPassTroughAttributes = "";
+		if (checkbox.isDisabled()) {
+			// remove passthrough attributes added with the <f:passThroughAttribute /> tag
+			removeRootPassTroughAttributes = "ice.ace.jq(document.getElementById('" + clientId + "')).attr('onclick', '')"
+				+ ".attr('ondblclick','').attr('onkeydown','').attr('onkeypress','').attr('onkeyup','')"
+				+ ".attr('onmousedown','').attr('onmousemove','').attr('onmouseout','').attr('onmouseover','')"
+				+ ".attr('onmouseup','').attr('onblur','').attr('onfocus','').attr('onchange','')"
+				+ ".attr('onselect','');";
+		}
+
+		return jb.toString() + removeRootPassTroughAttributes;
 	}
 
 	private String getGroupId(FacesContext facesContext, CheckboxButton checkbox) {

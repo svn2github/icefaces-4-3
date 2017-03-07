@@ -97,7 +97,13 @@ public class LinkButtonRenderer extends CoreRenderer {
 			writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
 		}
 
-        renderPassThruAttributes(facesContext, linkButton, PASSTHROUGH_ATTRIBUTES);
+		if (disabled) {
+			renderPassThruAttributes(facesContext, linkButton, new String[] {
+				"charset", "coords", "dir", "rel", "rev", "shape", "title"
+			});
+		} else {
+			renderPassThruAttributes(facesContext, linkButton, PASSTHROUGH_ATTRIBUTES);
+		}
 
         if (!disabled) {
             encodeScript(facesContext, writer, HTML.ONFOCUS_ATTR,
@@ -116,6 +122,14 @@ public class LinkButtonRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);
         //assign ID here so that focus manager can focus the link but ID assigning will not interfere with the DOM updates
         writer.writeText("document.getElementById('" + clientId + "').getElementsByTagName('a')[0].id = '" + clientId + "_link';", null);
+		if (disabled) {
+			// remove passthrough attributes added with the <f:passThroughAttribute /> tag
+			writer.writeText("ice.ace.jq(document.getElementById('" + clientId + "')).attr('onclick', '')"
+				+ ".attr('ondblclick','').attr('onkeydown','').attr('onkeypress','').attr('onkeyup','')"
+				+ ".attr('onmousedown','').attr('onmousemove','').attr('onmouseout','').attr('onmouseover','')"
+				+ ".attr('onmouseup','').attr('onblur','').attr('onfocus','').attr('onchange','')"
+				+ ".attr('onselect','');", null);
+		}
         writer.endElement(HTML.SCRIPT_ELEM);
 
         writer.endElement(HTML.SPAN_ELEM);
