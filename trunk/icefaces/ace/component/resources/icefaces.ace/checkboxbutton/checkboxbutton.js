@@ -39,10 +39,12 @@ ice.ace.checkboxbutton = function(clientId, options) {
     var self = this,
         event = ice.ace.util.getEvent();
 
-    // Event Binding
-    ice.ace.jq(this.jqId)
-            .on("mouseenter", function() { self.addStateCSSClasses('hover'); })
-            .on("mouseleave", function() { self.removeStateCSSClasses('hover') ; });
+	if (!options.disabled) {
+		// Event Binding
+		ice.ace.jq(this.jqId)
+				.on("mouseenter", function() { self.addStateCSSClasses('hover'); })
+				.on("mouseleave", function() { self.removeStateCSSClasses('hover') ; });
+	}
 
     if (!options.disabled)
         ice.ace.jq(this.jqId).on("click", function () {
@@ -60,7 +62,7 @@ ice.ace.checkboxbutton = function(clientId, options) {
     if (options.ariaEnabled)
         ice.ace.jq(this.jqId).on("keypress", function(e) { self.onAriaKeypress(e); });
 
-    if (event && event.type == "mouseover")
+    if (!options.disabled && event && event.type == "mouseover")
         this.addStateCSSClasses('hover');
 
     var unload = function() {

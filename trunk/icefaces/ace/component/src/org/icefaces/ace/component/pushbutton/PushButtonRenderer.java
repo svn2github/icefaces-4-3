@@ -118,9 +118,9 @@ public class PushButtonRenderer extends CoreRenderer {
 
 		writer.startElement(HTML.SCRIPT_ELEM, null);
 		writer.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);
+		//assign ID here so that focus manager can focus the button but ID assigning will not interfere with the DOM updates
+		writer.writeText("document.getElementById('" + clientId + "').getElementsByTagName('button')[0].id = '" + clientId + "_button';", null);
 		if (!disabled) {
-			//assign ID here so that focus manager can focus the button but ID assigning will not interfere with the DOM updates
-			writer.writeText("document.getElementById('" + clientId + "').getElementsByTagName('button')[0].id = '" + clientId + "_button';", null);
 			writer.writeText(getScript(facesContext, writer, pushButton, clientId), null);
 		} else {
 			// remove passthrough attributes added with the <f:passThroughAttribute /> tag

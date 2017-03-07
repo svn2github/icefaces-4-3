@@ -100,6 +100,7 @@ public class RadioButtonRenderer extends InputRenderer {
         encodeButtonElementStart(writer, clientId);
         String accesskey = radioButton.getAccesskey();
         if (accesskey != null) writer.writeAttribute("accesskey", accesskey, null);
+		if (disabled) writer.writeAttribute("disabled", "disabled", null);
         /* not same */
 		if (labelAttributes.get("label") != null
 			&& !"inField".equals(labelAttributes.get("labelPosition"))) {
@@ -120,7 +121,13 @@ public class RadioButtonRenderer extends InputRenderer {
 
         encodeScript(writer, EventType.FOCUS);
 
-        renderPassThruAttributes(facesContext, radioButton, PASSTHROUGH_ATTRIBUTES);
+		if (disabled) {
+			renderPassThruAttributes(facesContext, radioButton, new String[] {
+				"alt", "dir", "lang", "title", "type"
+			});
+		} else {
+			renderPassThruAttributes(facesContext, radioButton, PASSTHROUGH_ATTRIBUTES);
+		}
  
 		writer.startElement(HTML.SPAN_ELEM, null);
 		encodeIconStyle(writer, (Boolean)value);
@@ -142,6 +149,15 @@ public class RadioButtonRenderer extends InputRenderer {
         writer.endElement(HTML.DIV_ELEM);
         JavaScriptRunner.runScript(facesContext, "ice.ace.radiobutton.register('"+clientId+"','"+getGroupId(facesContext, radioButton)+"');");
         JavaScriptRunner.runScript(facesContext, "ice.ace.registerLazyComponent('" + clientId + "');");
+		if (disabled) {
+			// remove passthrough attributes added with the <f:passThroughAttribute /> tag
+			JavaScriptRunner.runScript(facesContext, 
+				"ice.ace.jq(document.getElementById('" + clientId + "')).attr('onclick', '')"
+				+ ".attr('ondblclick','').attr('onkeydown','').attr('onkeypress','').attr('onkeyup','')"
+				+ ".attr('onmousedown','').attr('onmousemove','').attr('onmouseout','').attr('onmouseover','')"
+				+ ".attr('onmouseup','').attr('onblur','').attr('onfocus','').attr('onchange','')"
+				+ ".attr('onselect','');");
+		}
     }
 
     private String getGroupId(FacesContext facesContext, RadioButton radioButton) {
