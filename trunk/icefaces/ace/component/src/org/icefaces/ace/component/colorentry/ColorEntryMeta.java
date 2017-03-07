@@ -44,7 +44,7 @@ import java.util.List;
                 " Themeroller styling and required & custom styling with " +
                 " labelling are also included. There are various formats this color string " +
                 "may be saved as, including but not limited to HEX, RGB or by NAME." +
-                "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/ColorPIcker\">ColorEntry Wiki Documentation</a>."
+                "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/ColorEntry\">ColorEntry Wiki Documentation</a>."
 )
 
 @ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
