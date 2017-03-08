@@ -29,11 +29,6 @@
         <h:form id="inputOptionsForm">
             <ace:panel id="inpOptionsPan" header="Options">
                 <h:panelGrid id="inputOptions" columns="2">
-                    <h:outputLabel for="colorFormat" value="Choose Color Format: "/>
-                    <ace:simpleSelectOneMenu id="colorFormat" value="#{colorEntryCustomBean.colorFormat}">
-                          <f:selectItems value="#{colorEntryCustomBean.colorFormats}"/>
-                          <ace:ajax execute="@this" render="@all"/>
-                      </ace:simpleSelectOneMenu>
                     <h:outputLabel for="alternateLayout" value="Choose Custom Layout: "/>
                     <ace:simpleSelectOneMenu id="alternateLayout" value="#{colorEntryCustomBean.customLayout}">
                         <f:selectItem itemLabel="Hex and RGB Slider" itemValue="layout1"/>

@@ -44,7 +44,7 @@ public class ColorEntryCustomBean implements Serializable
     private List<ColorEntryLayout> layout1 = new ArrayList<ColorEntryLayout>();
     private List<ColorEntryLayout> fullLayout = new ArrayList<ColorEntryLayout>();
     private List<ColorEntryLayout> layout = new ArrayList<ColorEntryLayout>();
-    private ColorFormat colorFormat;
+    private ColorFormat colorFormat = ColorFormat.HEX;
     private String title;
 
     public String getTitle() {
