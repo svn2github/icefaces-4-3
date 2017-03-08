@@ -41,7 +41,7 @@ import java.util.Date;
         rendererType = "org.icefaces.ScheduleRenderer",
         extendsClass = "javax.faces.component.UIData",
         componentFamily = "org.icefaces.ace.Schedule",
-        tlddoc = "A calendar with month, week, and day views that displays events and information about them. The dates must be stored internally in UTC time. They are converted to the time zone specified by the 'timeZone' attribute to display to the user. The class org.icefaces.ace.component.schedule.ScheduleUtils contains utility functions to help with conversion."
+        tlddoc = "A calendar with month, week, and day views that displays events and information about them. There are multiple ways to configure the component for a more custom user experience including scrolling, side bar location, event details display mode, tooltip, twelve-hour clock, default duration, enhanced styling and others. The component uses instances of org.icefaces.ace.model.schedule.ScheduleEvent to represent events. The dates must be stored internally in UTC time. They are converted to the time zone specified by the 'timeZone' attribute to display to the user. The class org.icefaces.ace.component.schedule.ScheduleUtils contains utility functions to help with conversion."
 )
 @ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
