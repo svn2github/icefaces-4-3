@@ -942,7 +942,7 @@ ice.ace.Schedule.prototype.renderMonthEvents = function(data) {
 		}
 	}
 	// fix to make height:100%; work on Edge and IE
-	if (ice.ace.browser.isIE() || navigator.userAgent.indexOf('Edge\/') != -1) {
+	if (/Trident.*rv[ :]*11\./.test(navigator.userAgent) || navigator.userAgent.indexOf('Edge\/') != -1) {
 		var table = this.jqRoot.find('.schedule-grid > table');
 		table.css('height', table.outerHeight() + 'px');
 	}
@@ -1339,7 +1339,7 @@ ice.ace.Schedule.prototype.renderWeekEvents = function() {
 		if (window[this.id + '_lastScrollTop']) {
 			this.jqRoot.find('.schedule-days').animate({scrollTop: window[this.id + '_lastScrollTop']}, 1);
 		}
-		delete window[this.id + '_lastScrollTop'];
+		window[this.id + '_lastScrollTop'] = 0;
 	}
 };
 
@@ -1594,7 +1594,7 @@ ice.ace.Schedule.prototype.renderDayEvents = function() {
 		if (window[this.id + '_lastScrollTop']) {
 			this.jqRoot.find('.schedule-days').animate({scrollTop: window[this.id + '_lastScrollTop']}, 1);
 		}
-		delete window[this.id + '_lastScrollTop'];
+		window[this.id + '_lastScrollTop'] = 0;
 	}
 };
 
