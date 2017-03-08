@@ -51,7 +51,7 @@ public class RefreshHandler extends TagHandler {
                 UIOutput refreshSetup = new RefreshSetupOutput();
                 refreshSetup.setId("refreshSetup");
                 parent.setInView(false);
-                parent.getChildren().add(refreshSetup);
+                parent.getChildren().add(0, refreshSetup);
                 parent.setInView(true);
                 attrs.put(RefreshHandler.class.getName(), true);
             }
