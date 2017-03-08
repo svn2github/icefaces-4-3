@@ -942,7 +942,7 @@ ice.ace.Schedule.prototype.renderMonthEvents = function(data) {
 		}
 	}
 	// fix to make height:100%; work on Edge and IE
-	if (ice.ace.browser.isIE() || navigator.userAgent.indexOf('Edge\/') != -1) {alert('x');
+	if (ice.ace.browser.isIE() || navigator.userAgent.indexOf('Edge\/') != -1) {
 		var table = this.jqRoot.find('.schedule-grid > table');
 		table.css('height', table.outerHeight() + 'px');
 	}
