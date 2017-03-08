@@ -580,7 +580,10 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                     Object rawValue = parameters.get(id);
                     if (rawValue != null) {
                         if (rawValue instanceof String[]) {
-                            value = ((String[]) rawValue)[0];
+                            String[] rawValues = (String[]) rawValue;
+                            if (rawValues.length > 0) {
+                                value = rawValues[0];
+                            }
                         }
                     }
                     //empty string is implied (default) when 'value' attribute is missing
