@@ -335,8 +335,6 @@ public class ColorEntryRenderer extends InputRenderer {
         writer.write(script);
 
         writer.endElement("script");
-        writer.endElement("span");
-        writer.startElement("span", null);
         writer.writeAttribute("style", "display:none;", null);
         writer.writeAttribute("data-hashcode", script.hashCode(), null);
         writer.endElement("span");
