@@ -425,11 +425,22 @@
                     <!--<url>https://oss.sonatype.org/content/repositories/snapshots/</url>-->
                 <!--</snapshotRepository>-->
 
+
+				<!-- Uncomment this repo to publish to the public Sonatype staging repo -->
+                <!--
                 <repository>
                     <id>sonatype-nexus-staging</id>
                     <name>Nexus Release Repository</name>
                     <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-                </repository>
+                </repository> -->
+
+				<!-- Uncomment this repo to publish to the public ICEsoft maven releases repo -->
+                <repository>
+                    <id>icefaces-releases-repository</id>
+                    <name>ICEfaces Releases Repository</name>
+                    <url>svn:http://dev.icesoft.com/svn/ossrepo/maven2/releases/</url>
+                </repository> 
+                
 
             </distributionManagement>
         </profile>
