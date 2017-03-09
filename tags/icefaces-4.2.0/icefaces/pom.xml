@@ -425,11 +425,19 @@
                     <!--<url>https://oss.sonatype.org/content/repositories/snapshots/</url>-->
                 <!--</snapshotRepository>-->
 
+                <!--
                 <repository>
                     <id>sonatype-nexus-staging</id>
                     <name>Nexus Release Repository</name>
                     <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-                </repository>
+                </repository> -->
+
+                <repository>
+                    <id>icefaces-releases-repository</id>
+                    <name>ICEfaces Releases Repository</name>
+                    <url>http://anonsvn.icefaces.org/repo/maven2/releases</url>
+                </repository> 
+                
 
             </distributionManagement>
         </profile>
