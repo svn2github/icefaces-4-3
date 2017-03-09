@@ -435,7 +435,7 @@
                 <repository>
                     <id>icefaces-releases-repository</id>
                     <name>ICEfaces Releases Repository</name>
-                    <url>http://anonsvn.icefaces.org/repo/maven2/releases</url>
+                    <url>svn:http://dev.icesoft.com/svn/ossrepo/maven2/releases</url>
                 </repository> 
                 
 
