@@ -335,9 +335,13 @@ public class ColorEntryRenderer extends InputRenderer {
         writer.write(script);
 
         writer.endElement("script");
+        writer.endElement("span");
+
+        writer.startElement("span", component);
         writer.writeAttribute("style", "display:none;", null);
         writer.writeAttribute("data-hashcode", script.hashCode(), null);
         writer.endElement("span");
+
         if (!popup) {
             createHiddenField(writer, clientId + "_hidden2", valueToRender);
 
