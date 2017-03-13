@@ -31,12 +31,9 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.AbortProcessingException;
-import javax.faces.event.PreRenderViewEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
-import javax.faces.render.ResponseStateManager;
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -50,13 +47,11 @@ public class FileEntryFormSubmit implements SystemEventListener {
     private static final String ENCODED_URL_NAME = "ice.fileEntry.encodedURL";
     static final String FILE_ENTRY_MULTIPART_MARKER = "ice.fileEntry.multipart";
     static final String FILE_ENTRY_AJAX_RESPONSE_MARKER = "ice.fileEntry.ajaxResponse";
-    private static final String AJAX_FORCED_VIEWS =
-            ICEFacesContextFactory.AJAX_FORCED_VIEWS;
+    private static final String AJAX_FORCED_VIEWS = ICEFacesContextFactory.AJAX_FORCED_VIEWS;
     private boolean partialStateSaving;
 
     public FileEntryFormSubmit() {
-        partialStateSaving = EnvUtils.isPartialStateSaving(
-                FacesContext.getCurrentInstance());
+        partialStateSaving = EnvUtils.isPartialStateSaving(FacesContext.getCurrentInstance());
     }
 
     public void processEvent(SystemEvent event) throws AbortProcessingException {
@@ -83,7 +78,6 @@ public class FileEntryFormSubmit implements SystemEventListener {
         forceAjaxOnView(context);
         form.getAttributes().put(FormSubmit.DISABLE_CAPTURE_SUBMIT, "true");
         form.setInView(false);
-        context.getApplication().subscribeToEvent(PreRenderViewEvent.class, new ReEnableCaptureSubmit(form.getId()));
 
         UIOutput urlOutput = new UIOutput() {
             public void encodeBegin(FacesContext context) throws IOException {
@@ -206,26 +200,5 @@ public class FileEntryFormSubmit implements SystemEventListener {
         ExternalContext externalContext = facesContext.getExternalContext();
         Map sessionMap = externalContext.getSessionMap();
         sessionMap.put(AJAX_FORCED_VIEWS, AJAX_FORCED_VIEWS);
-    }
-
-    private static class ReEnableCaptureSubmit implements SystemEventListener {
-        private final String id;
-
-        public ReEnableCaptureSubmit(String id) {
-            this.id = id;
-        }
-
-        public void processEvent(SystemEvent event) throws AbortProcessingException {
-            final FacesContext ctx = FacesContext.getCurrentInstance();
-            UIComponent f = ctx.getViewRoot().findComponent(id);
-            if (f != null) {
-                f.getAttributes().remove(FormSubmit.DISABLE_CAPTURE_SUBMIT);
-                ctx.getApplication().unsubscribeFromEvent(PreRenderViewEvent.class, this);
-            }
-        }
-
-        public boolean isListenerForSource(Object source) {
-			return source instanceof UIForm && findFileEntry((UIForm) source) != null;
-        }
     }
 }
