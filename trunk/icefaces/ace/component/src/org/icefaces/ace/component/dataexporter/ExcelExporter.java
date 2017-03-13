@@ -38,6 +38,8 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFRichTextString;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -54,10 +56,18 @@ import java.io.ByteArrayOutputStream;
 
 public class ExcelExporter extends Exporter {
 
+	private boolean isXSSF = false;
+
     @Override
 	public String export(FacesContext facesContext, DataExporter component, DataTable table) throws IOException {
 		setUp(component, table);
-    	Workbook wb = new HSSFWorkbook();
+		isXSSF = "xlsx".equalsIgnoreCase(component.getType());
+    	Workbook wb;
+		if (isXSSF) {
+			wb = new XSSFWorkbook();
+		} else {
+			wb = new HSSFWorkbook();
+		}
     	Sheet sheet = wb.createSheet();
     	List<UIColumn> columns = getColumnsToExport(table, excludeColumns);
     	int numberOfColumns = columns.size();
@@ -159,8 +169,12 @@ public class ExcelExporter extends Exporter {
 		wb.write(baos);
 		
 		byte[] bytes = baos.toByteArray();
-		
-		return registerResource(bytes, filename + ".xls", "application/vnd.ms-excel");
+
+		if (isXSSF) {
+			return registerResource(bytes, filename + ".xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+		} else {
+			return registerResource(bytes, filename + ".xls", "application/vnd.ms-excel");
+		}
 	}
 	
 	protected int exportChildRows(FacesContext context, TreeDataModel rootModel, RowStateMap rowStateMap,
@@ -247,7 +261,11 @@ public class ExcelExporter extends Exporter {
 					}
 				}
 				Cell cell = rowHeader.createCell(i);
-				cell.setCellValue(new HSSFRichTextString(value));
+				if (isXSSF) {
+					cell.setCellValue(new XSSFRichTextString(value));
+				} else {
+					cell.setCellValue(new HSSFRichTextString(value));
+				}
 			}
         }
     }
@@ -256,7 +274,11 @@ public class ExcelExporter extends Exporter {
         Cell cell = rowHeader.createCell(index);
         String value = component == null ? "" : exportValue(FacesContext.getCurrentInstance(), component);
 
-        cell.setCellValue(new HSSFRichTextString(value));
+		if (isXSSF) {
+			cell.setCellValue(new XSSFRichTextString(value));
+		} else {
+			cell.setCellValue(new HSSFRichTextString(value));
+		}
     }
     
     protected void addColumnValue(Row rowHeader, List<UIComponent> components, int index) {
@@ -270,8 +292,12 @@ public class ExcelExporter extends Exporter {
                 if (value != null)
                 	builder.append(value);
             }
-		}  
-        
-        cell.setCellValue(new HSSFRichTextString(builder.toString()));
+		}
+
+		if (isXSSF) {
+			cell.setCellValue(new XSSFRichTextString(builder.toString()));
+		} else {
+			cell.setCellValue(new HSSFRichTextString(builder.toString()));
+		}
     }
 }
