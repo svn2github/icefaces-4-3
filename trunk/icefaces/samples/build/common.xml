@@ -90,7 +90,7 @@
         <exclude name="*.jar" unless="myfaces"/>
     </patternset>
 
-    <patternset id="lib.distribute.ace" includes="commons-collections.jar itext-2.1.7.jar poi-3.7.jar ${lib.distribute.ace.includes}">
+    <patternset id="lib.distribute.ace" includes="commons-collections.jar itext-2.1.7.jar poi-3.9.jar ${lib.distribute.ace.includes}">
         <exclude name="*.jar"                   unless="ace"/>
     </patternset>
 
