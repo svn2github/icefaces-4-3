@@ -29,11 +29,11 @@ package org.icefaces.ace.component.listexporter;
 
 public class ExporterFactory {
 	public static Exporter getExporterForType(String type) {
-		/*if      (type.equalsIgnoreCase("xls")) return new ExcelExporter();
+		if      (type.equalsIgnoreCase("xls")) return new ExcelExporter();
+		else if (type.equalsIgnoreCase("xlsx")) return new ExcelExporter();
 		else if (type.equalsIgnoreCase("pdf")) return new PDFExporter();
 		else if (type.equalsIgnoreCase("csv")) return new CSVExporter();
 		else if (type.equalsIgnoreCase("xml")) return new XMLExporter();
-		else return new CSVExporter();*/
-		return new CSVExporter();
+		else return new CSVExporter();
 	}
 }

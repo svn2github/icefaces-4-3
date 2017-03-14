@@ -63,7 +63,7 @@ public class ListExporterMeta extends UIComponentBaseMeta {
 	@Property(required=Required.yes, tlddoc="Define the id of the ace:list component whose data will be exported.")
 	private String target;
 	
-	@Property(tlddoc="Define the format of file export. Available formats: \"xls\",\"pdf\",\"csv\", \"xml\".", defaultValue="csv")
+	@Property(tlddoc="Define the format of file export. Available formats: \"xls\", \"xlsx\", \"pdf\", \"csv\", and \"xml\".", defaultValue="csv")
 	private String type;
 	
 	@Property(required=Required.yes, tlddoc="Define the filename of the generated file, defaults to the target id.")

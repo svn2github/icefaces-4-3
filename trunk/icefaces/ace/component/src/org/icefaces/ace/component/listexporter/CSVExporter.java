@@ -95,6 +95,7 @@ public class CSVExporter extends Exporter {
 
 	protected void addSelectItemValue(StringBuilder builder, SelectItem item) throws IOException {
 		String value = item == null ? "" : item.getLabel();
+		value = value == null ? "" : value.trim();
 		builder.append("\"" + value + "\"");
 	}
 	
