@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.el.MethodExpression;
 import javax.faces.component.UIColumn;
@@ -42,6 +43,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.icefaces.ace.component.list.ACEList;
+import org.icefaces.ace.component.listexportervalue.ListExporterValue;
 
 /*
 import com.lowagie.text.Document;
@@ -116,13 +118,23 @@ public class PDFExporter extends Exporter {
 	        
 			Constructor pdfPTableConstructor = pdfPTableClass.getConstructor(new Class[] { int.class });
 			Method add = documentClass.getMethod("add", elementClass);
-			
-			//boolean noSelectedRows = selectedRowsOnly && (list.getStateMap().getSelected().size() == 0);
+
 			boolean noSelectedRows = false;
+			if (selectedItemsOnly) {
+				Collection<Object> selections = list.isSelectItemModel() ? (Collection)list.getValue() : list.getSelections();
+				if (selections == null || selections.size() == 0) {
+					noSelectedRows = true;
+				}
+			}
 
 			if (!noSelectedRows) {
 				//PdfPTable pdfTable = exportPDFTable(table, pageOnly,excludeColumns, encodingType, includeHeaders, includeFooters, selectedRowsOnly);
-				Object pdfTable = pdfPTableConstructor.newInstance(new Object[] { new Integer(1) });
+				Object pdfTable;
+				if (listExporterValues.size() == 0) {
+					pdfTable = pdfPTableConstructor.newInstance(new Object[] { new Integer(1) });
+				} else {
+					pdfTable = pdfPTableConstructor.newInstance(new Object[] { new Integer(listExporterValues.size()) });
+				}
 				exportPDFTable(facesContext, pdfTable, list, encodingType, includeHeaders, includeFooters, selectedItemsOnly);
 				//document.add(pdfTable);
 				add.invoke(document, new Object[] { pdfTable });
@@ -169,9 +181,6 @@ public class PDFExporter extends Exporter {
 			pdfFont = "Times";
 		}
 		Object font = fontFactoryClass.getMethod("getFont", new Class[] { String.class, String.class }).invoke(null, new Object[] { pdfFont, encoding });
-    	//Font headerFont = FontFactory.getFont(FontFactory.TIMES, encoding, Font.DEFAULTSIZE, Font.BOLD);
-		
-		Object headerFont = fontFactoryClass.getMethod("getFont", new Class[] { String.class, String.class, float.class, int.class }).invoke(null, new Object[] { pdfFont, encoding, new Integer(12), new Integer(1) });
 		
 		int rowCount = list.getRowCount();
     	int first = 0;
@@ -180,13 +189,38 @@ public class PDFExporter extends Exporter {
 			//addFacetColumns(pdfTable, columns, headerFont, ColumnType.HEADER);
 		}
 
+		if (listExporterValues.size() > 0) {
+			//Font headerFont = FontFactory.getFont(FontFactory.TIMES, encoding, Font.DEFAULTSIZE, Font.BOLD);			
+			Object headerFont = fontFactoryClass.getMethod("getFont", new Class[] { String.class, String.class, float.class, int.class }).invoke(null, new Object[] { pdfFont, encoding, new Integer(12), new Integer(1) });
+
+			int listExporterValuesSize = listExporterValues.size();
+			for (int i = 0; i < listExporterValuesSize; i++) {
+				addColumnName(pdfTable, listExporterValues.get(i), headerFont);
+			}
+		}
+
+		final Collection<Object> selections = list.isSelectItemModel() ? (Collection)list.getValue() : list.getSelections();
     	for (int i = first; i < rowCount; i++) {
     		list.setRowIndex(i);
 			boolean exportRow = true;
+			Object rowData = list.getRowData();
+
+			if (selectedItemsOnly && !selections.contains(rowData)) exportRow = false;
 
 			if (exportRow) {
 				//addColumnValue(pdfTable, columns.get(j).getChildren(), j, font);
-				addSelectItemValue(pdfTable, (SelectItem) list.getRowData(), font);
+				if (rowData instanceof SelectItem) {
+					addSelectItemValue(pdfTable, (SelectItem) rowData, font);
+				} else {
+					if (listExporterValues.size() == 0) {
+						addItemValue(pdfTable, list.getChildren(), font);
+					} else {
+						int listExporterValuesSize = listExporterValues.size();
+						for (int j = 0; j < listExporterValuesSize; j++) {
+							addItemValue(pdfTable, listExporterValues.get(j), font);
+						}
+					}
+				}
 			}
 		}
 
@@ -236,7 +270,7 @@ public class PDFExporter extends Exporter {
 		addCellMethod.invoke(pdfTable, new Object[] { paragraph });
 	}
 
-    protected void addColumnValue(Object pdfTable, UIComponent component, Object font)
+    protected void addItemValue(Object pdfTable, UIComponent component, Object font)
 		throws IllegalAccessException, InvocationTargetException, InstantiationException {
     	String value = component == null ? "" : exportValue(FacesContext.getCurrentInstance(), component);
             
@@ -244,8 +278,32 @@ public class PDFExporter extends Exporter {
 		Object paragraph = paragraphConstructor.newInstance(new Object[] { value, font });
 		addCellMethod.invoke(pdfTable, new Object[] { paragraph });
     }
+
+	protected void addItemValue(Object pdfTable, ListExporterValue listExporterValue, Object font)
+		throws IllegalAccessException, InvocationTargetException, InstantiationException {
+        Object value = listExporterValue.getValue();
+		value = value != null ? value.toString() : "";
+
+		if (listExporterValue.isRendered()) {            
+			//pdfTable.addCell(new Paragraph(value, font));
+			Object paragraph = paragraphConstructor.newInstance(new Object[] { value, font });
+			addCellMethod.invoke(pdfTable, new Object[] { paragraph });
+		}
+	}
+
+	protected void addColumnName(Object pdfTable, ListExporterValue listExporterValue, Object font)
+		throws IllegalAccessException, InvocationTargetException, InstantiationException {
+        String name = listExporterValue.getName();
+		name = name != null ? name : "";
+
+		if (listExporterValue.isRendered()) {            
+			//pdfTable.addCell(new Paragraph(value, font));
+			Object paragraph = paragraphConstructor.newInstance(new Object[] { name, font });
+			addCellMethod.invoke(pdfTable, new Object[] { paragraph });
+		}
+	}
     
-    protected void addColumnValue(Object pdfTable, List<UIComponent> components, int index, Object font)
+    protected void addItemValue(Object pdfTable, List<UIComponent> components, Object font)
 		throws IllegalAccessException, InvocationTargetException, InstantiationException {
         StringBuilder builder = new StringBuilder();
         

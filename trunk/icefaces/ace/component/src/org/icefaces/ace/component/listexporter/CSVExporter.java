@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.el.MethodExpression;
 import javax.faces.component.UIComponent;
@@ -39,6 +40,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.icefaces.ace.component.list.ACEList;
+import org.icefaces.ace.component.listexportervalue.ListExporterValue;
 
 public class CSVExporter extends Exporter {
 	
@@ -50,18 +52,41 @@ public class CSVExporter extends Exporter {
     	if (includeHeaders) {
 			// addFacetColumns(builder, columns, ColumnType.HEADER);
 		}
+
+		if (listExporterValues.size() > 0) {
+			int listExporterValuesSize = listExporterValues.size();
+			for (int i = 0; i < listExporterValuesSize; i++) {
+				addColumnName(builder, listExporterValues.get(i));
+				if (i < (listExporterValuesSize - 1)) builder.append(", ");
+			}
+			builder.append("\n");
+		}
     	
 		int rowCount = list.getRowCount();
     	int first = 0;
 
+		final Collection<Object> selections = list.isSelectItemModel() ? (Collection)list.getValue() : list.getSelections();
     	for (int i = first; i < rowCount; i++) {
     		list.setRowIndex(i);
 			boolean exportRow = true;
+			Object rowData = list.getRowData();
 
-			//if (selectedRowsOnly && !rowState.isSelected()) exportRow = false;
+			if (selectedItemsOnly && !selections.contains(rowData)) exportRow = false;
 
 			if (exportRow) {
-				addSelectItemValue(builder, (SelectItem) list.getRowData());
+				if (rowData instanceof SelectItem) {
+					addSelectItemValue(builder, (SelectItem) rowData);
+				} else {
+					if (listExporterValues.size() == 0) {
+						addItemValue(builder, list.getChildren());
+					} else {
+						int listExporterValuesSize = listExporterValues.size();
+						for (int j = 0; j < listExporterValuesSize; j++) {
+							addItemValue(builder, listExporterValues.get(j));
+							if (j < (listExporterValuesSize - 1)) builder.append(", ");
+						}
+					}
+				}
 				builder.append("\n");
 			}
 		}
@@ -102,6 +127,28 @@ public class CSVExporter extends Exporter {
 	protected void addItemValue(StringBuilder builder, UIComponent component) throws IOException {
 		String value = component == null ? "" : exportValue(FacesContext.getCurrentInstance(), component);
 		builder.append("\"" + value + "\"");
+	}
+
+	protected void addItemValue(StringBuilder builder, ListExporterValue listExporterValue) throws IOException {
+		StringBuilder builder1 = new StringBuilder();
+
+		if (listExporterValue.isRendered()) {
+			builder1.append("\"" + listExporterValue.getValue() + "\"");
+		}
+
+		builder.append(builder1.toString());
+	}
+
+	protected void addColumnName(StringBuilder builder, ListExporterValue listExporterValue) throws IOException {
+		StringBuilder builder1 = new StringBuilder();
+		String name = listExporterValue.getName();
+		name = name != null ? name : "";
+
+		if (listExporterValue.isRendered()) {
+			builder1.append("\"" + name + "\"");
+		}
+
+		builder.append(builder1.toString());
 	}
 	
 	protected void addItemValue(StringBuilder builder, List<UIComponent> components) throws IOException {

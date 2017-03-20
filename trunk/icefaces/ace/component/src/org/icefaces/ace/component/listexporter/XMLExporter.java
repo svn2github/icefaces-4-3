@@ -34,6 +34,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
+import java.util.Collection;
 
 import javax.el.MethodExpression;
 import javax.faces.component.UIColumn;
@@ -44,6 +45,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.icefaces.ace.component.list.ACEList;
+import org.icefaces.ace.component.listexportervalue.ListExporterValue;
 import org.icefaces.ace.util.XMLChar;
 
 public class XMLExporter extends Exporter {
@@ -70,16 +72,33 @@ public class XMLExporter extends Exporter {
 		int rowCount = list.getRowCount();
     	int first = 0;
 
+		final Collection<Object> selections = list.isSelectItemModel() ? (Collection)list.getValue() : list.getSelections();
     	for (int i = first; i < rowCount; i++) {
     		list.setRowIndex(i);
 			boolean exportRow = true;
+			Object rowData = list.getRowData();
 
-			//if (selectedRowsOnly && !rowState.isSelected()) exportRow = false;
+			if (selectedItemsOnly && !selections.contains(rowData)) exportRow = false;
 
 			if (exportRow) {
-				builder.append("\t<" + var + ">");
-				addSelectItemValue(builder, (SelectItem) list.getRowData());
-				builder.append("</" + var + ">\n");
+				if (rowData instanceof SelectItem) {
+					builder.append("\t<" + var + ">");
+					addSelectItemValue(builder, (SelectItem) rowData);
+					builder.append("</" + var + ">\n");
+				} else {
+					if (listExporterValues.size() == 0) {
+						builder.append("\t<" + var + ">");
+						addItemValue(builder, list.getChildren());
+						builder.append("</" + var + ">\n");
+					} else {
+						builder.append("\t<" + var + ">");
+						int listExporterValuesSize = listExporterValues.size();
+						for (int j = 0; j < listExporterValuesSize; j++) {
+							addItemValue(builder, listExporterValues.get(j));
+						}
+						builder.append("\n\t</" + var + ">\n");
+					}
+				}
 			}
 		}
     	
@@ -97,17 +116,43 @@ public class XMLExporter extends Exporter {
 		value = value == null ? "" : value.trim();
 		builder.append(value);
 	}
-	
-	protected void addColumnValues(StringBuilder builder, List<UIColumn> columns, List<String> headers) throws IOException {
-		for (int i = 0; i < columns.size(); i++) {
-            addColumnValue(builder, columns.get(i).getChildren(), headers.get(i));
+
+	protected void addItemValue(StringBuilder builder, UIComponent component) throws IOException {
+		StringBuilder builder1 = new StringBuilder();
+		//String tag = header.toLowerCase();
+		//builder.append("\t\t<" + tag + ">");
+
+		if (component.isRendered()) {
+			String value = exportValue(FacesContext.getCurrentInstance(), component);
+
+			builder1.append(value);
 		}
+
+		builder.append(builder1.toString());
+		
+		//builder.append("</" + tag + ">\n");
 	}
 
-	protected void addColumnValue(StringBuilder builder, List<UIComponent> components, String header) throws IOException {
+	protected void addItemValue(StringBuilder builder, ListExporterValue listExporterValue) throws IOException {
 		StringBuilder builder1 = new StringBuilder();
-		String tag = header.toLowerCase();
-		builder.append("\t\t<" + tag + ">");
+		String name = listExporterValue.getName();
+		String tag = name == null? "" : name.toLowerCase();
+		tag = sanitizeXMLTagName(tag);
+		builder.append("\n\t\t<" + tag + ">");
+
+		if (listExporterValue.isRendered()) {
+			builder1.append(listExporterValue.getValue());
+		}
+
+		builder.append(builder1.toString());
+		
+		builder.append("</" + tag + ">");
+	}
+
+	protected void addItemValue(StringBuilder builder, List<UIComponent> components) throws IOException {
+		StringBuilder builder1 = new StringBuilder();
+		//String tag = header.toLowerCase();
+		//builder.append("\t\t<" + tag + ">");
 
 		for (UIComponent component : components) {
 			if (component.isRendered()) {
@@ -119,17 +164,8 @@ public class XMLExporter extends Exporter {
 
 		builder.append(builder1.toString());
 		
-		builder.append("</" + tag + ">\n");
-	}
-	
-	protected void addColumnValue(StringBuilder builder, String footer, String header) throws IOException {
-		String tag = header.toLowerCase();
-		builder.append("\t\t<" + tag + ">");
-
-		builder.append(footer.toLowerCase());
-		
-		builder.append("</" + tag + ">\n");
-	}
+		//builder.append("</" + tag + ">\n");
+	}	
 	
 	protected String sanitizeXMLTagName(String tag) {
 		StringBuilder sb = new StringBuilder();

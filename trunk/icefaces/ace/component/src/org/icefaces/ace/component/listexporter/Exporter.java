@@ -50,6 +50,7 @@ import org.icefaces.ace.component.list.ACEList;
 import org.icefaces.ace.component.column.Column;
 import org.icefaces.ace.component.columngroup.ColumnGroup;
 import org.icefaces.ace.component.row.Row;
+import org.icefaces.ace.component.listexportervalue.ListExporterValue;
 import org.icefaces.ace.component.expansiontoggler.ExpansionToggler;
 import org.icefaces.ace.component.excludefromexport.ExcludeFromExport;
 import org.icefaces.ace.component.celleditor.CellEditor;
@@ -72,6 +73,7 @@ public abstract class Exporter {
 	protected boolean includeFooters;
 	protected boolean selectedItemsOnly;
 	protected String pdfFont;
+	protected List<ListExporterValue> listExporterValues;
 	
 	public void setUp(ListExporter component, ACEList list) {
 		filename = component.getFileName();
@@ -86,6 +88,14 @@ public abstract class Exporter {
 		includeFooters = component.isIncludeFooters();
 		selectedItemsOnly = component.isSelectedItemsOnly();
 		pdfFont = component.getPdfFont();
+
+		List<UIComponent> children = list.getChildren();
+		listExporterValues = new ArrayList<ListExporterValue>();
+		int childrenSize = children.size();
+		for (int j = 0; j < childrenSize; j++) {
+			UIComponent child = children.get(j);
+			if (child instanceof ListExporterValue) listExporterValues.add((ListExporterValue) child);
+		}
 	}
 
     public abstract String export(FacesContext facesContext, ListExporter component, ACEList list) throws IOException;
