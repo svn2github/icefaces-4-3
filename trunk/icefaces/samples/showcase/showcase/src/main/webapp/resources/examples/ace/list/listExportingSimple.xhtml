@@ -1,0 +1,74 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:ace="http://www.icefaces.org/icefaces/components"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/resources/templates/content-template.xhtml">
+    <ui:param name="title" value="#{msgs['example.ace.list.selectionAjax.title']}"/>
+    <ui:param name="description" value="#{msgs['example.ace.list.selectionAjax.description']}"/>
+
+    <ui:param value="#{listExportingSimpleBean}" name="backing" />
+
+    <ui:define name="example">
+        <h:form id="form">
+            <ace:panel header="Exporter Customization">
+                <h:panelGrid columns="2" cellspacing="6" cellpadding="6">
+                    <h:outputLabel for="multiIn" value="Export Selected Items Only:"/>
+                    <h:selectBooleanCheckbox id="multiIn" value="#{backing.selectedItemsOnly}">
+                        <f:ajax event="click" render="@form"/>
+                    </h:selectBooleanCheckbox>
+                </h:panelGrid>
+            </ace:panel>
+            
+            <ace:panel header="List Selection">
+                <h:panelGrid id="panelGrid" columns="2" style="margin-left:auto; margin-right:auto;">
+                    <ace:list id="list" value="#{backing.stringList}"
+                              selections="#{backing.selections}"
+                              selectionMode="multiple"
+                              dragging="false">
+                        <ace:ajax event="select" />
+                        <ace:ajax event="deselect" />
+                    </ace:list>
+                </h:panelGrid>
+            </ace:panel>
+
+            <ace:panel>
+                <h:panelGrid columns="2" styleClass="centeredPanelGrid">
+                        <h:outputLabel for="typeIn" value="Export As:"/>
+                        <h:selectOneRadio id="typeIn" value="#{backing.type}" required="true">
+                            <f:ajax disabled="false"/>
+                            <f:selectItem itemValue="csv" itemLabel="CSV"/>
+                            <f:selectItem itemValue="pdf" itemLabel="PDF"/>
+                            <f:selectItem itemValue="xls" itemLabel="XLS"/>
+                            <f:selectItem itemValue="xml" itemLabel="XML"/>
+                        </h:selectOneRadio>
+                </h:panelGrid>
+                <h:panelGrid styleClass="centeredPanelGrid">
+					<ace:listExporter	id="listExporter"
+										label="Export File"
+										type="#{backing.type}"
+										target="list"
+										fileName="cars"
+										selectedItemsOnly="#{backing.selectedItemsOnly}"/>
+                </h:panelGrid>
+            </ace:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>
