@@ -73,6 +73,7 @@ public abstract class Exporter {
 	protected boolean includeFooters;
 	protected boolean selectedItemsOnly;
 	protected String pdfFont;
+	protected String textToExport;
 	protected List<ListExporterValue> listExporterValues;
 	
 	public void setUp(ListExporter component, ACEList list) {
@@ -88,6 +89,7 @@ public abstract class Exporter {
 		includeFooters = component.isIncludeFooters();
 		selectedItemsOnly = component.isSelectedItemsOnly();
 		pdfFont = component.getPdfFont();
+		textToExport = component.getTextToExport();
 
 		List<UIComponent> children = list.getChildren();
 		listExporterValues = new ArrayList<ListExporterValue>();

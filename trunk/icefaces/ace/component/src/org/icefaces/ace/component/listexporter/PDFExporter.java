@@ -262,7 +262,13 @@ public class PDFExporter extends Exporter {
 
 	protected void addSelectItemValue(Object pdfTable, SelectItem item, Object font)
 		throws IllegalAccessException, InvocationTargetException, InstantiationException {
-		String value = item == null ? "" : item.getLabel();
+		String value;
+		if (item == null) value = "";
+		else {
+			if ("value".equalsIgnoreCase(textToExport)) value = (String) item.getValue();
+			else if ("both".equalsIgnoreCase(textToExport)) value = item.getLabel() + "(" + item.getValue() + ")";
+			else value = item.getLabel();
+		}
 		value = value == null ? "" : value.trim();
             
         //pdfTable.addCell(new Paragraph(value, font));

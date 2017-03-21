@@ -75,14 +75,6 @@ public class ListExporterMeta extends UIComponentBaseMeta {
 	@Property(required=Required.no, tlddoc="Define the text that will appear on the button to trigger the export. Default value is 'Export'. This attribute applies only if the component has no children.")
 	private String label;
 
-/*
-	@Property(required=Required.no, tlddoc="Enable to export only the current page instead of the whole data set.", defaultValue="false")
-	private boolean pageOnly;
-	
-	@Property(required=Required.no, tlddoc="Define a comma separated list of column indexes (zero-relative) to be excluded from export. Only Column components, without a rendered ExcludeFromExport child, count towards this indexing scheme.")
-	private String excludeColumns;
-*/
-	
 	@Property(required=Required.no, tlddoc="Defines a public void method to invoke before the PDF or XLS document is generated, allowing developers to manipulate the document. It must take a single argument of type Object. The object will be of type com.lowagie.text.Document (iText library) for PDF documents and of type org.apache.poi.ss.usermodel.Workbook (Apache POI library) for XLS documents.", expression = Expression.METHOD_EXPRESSION, methodExpressionArgument="Object")
 	private MethodExpression preProcessor;
 	
@@ -101,14 +93,6 @@ public class ListExporterMeta extends UIComponentBaseMeta {
 	@Property(required=Required.no, tlddoc="Enable to export only the currently selected list items instead of the whole data set.", defaultValue="false")
 	private boolean selectedItemsOnly;
 
-/*
-	@Property(required=Required.no, tlddoc="Specify whether the columns should be exported according to the order established by the user in the client. When false, the column order defined in the markup will be used.", defaultValue="true")
-	private boolean userColumnOrder;
-	
-	@Property(required=Required.no, tlddoc="When using row expansion in the table, specify whether the child rows should be exported only if the parent row has been expanded by the user.", defaultValue="false")
-	private boolean expandedOnly;
-*/
-
     @Property(required=Required.no, tlddoc = "Custom CSS style class(es) to use for this component. These style classes can be defined in your page or in a theme CSS file.")
     private String styleClass;  
 
@@ -120,4 +104,7 @@ public class ListExporterMeta extends UIComponentBaseMeta {
 
 	@Property(tlddoc = "The absolute path in the host system (e.g. C:\\Windows\\Fonts\\arial.ttf) to a font file to be used in the PDF exporting instead of the default font. If specifying a custom 'encoding' value, it has to be supported by this custom font. Note that the default font does not support unicode characters, so a custom font has to be set in order to support these characters.")
 	String pdfFont;
+
+	@Property(tlddoc = "When the model is based on SelectItem's, specify if the exported text should be the label, the actual value or both (the label with the actual value in parentheses).", defaultValue="label")
+	String textToExport;
 }

@@ -172,7 +172,13 @@ public class ExcelExporter extends Exporter {
 
 	protected void addSelectItemValue(Row rowHeader, SelectItem item, int index) throws IOException {
         Cell cell = rowHeader.createCell(index);
-		String value = item == null ? "" : item.getLabel();
+		String value;
+		if (item == null) value = "";
+		else {
+			if ("value".equalsIgnoreCase(textToExport)) value = (String) item.getValue();
+			else if ("both".equalsIgnoreCase(textToExport)) value = item.getLabel() + "(" + item.getValue() + ")";
+			else value = item.getLabel();
+		}
 		value = value == null ? "" : value.trim();
 
 		if (isXSSF) {

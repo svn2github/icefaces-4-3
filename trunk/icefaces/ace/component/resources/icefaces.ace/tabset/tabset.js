@@ -864,7 +864,7 @@ ice.ace.tabset = {
 	},
 
 	resizeTables: function(root) {
-		var tables = ice.ace.jq(root).find('.yui-content .ui-datatable');
+		var tables = ice.ace.jq(root).find('.ui-datatable');
 		tables.each(function(){
 			var id = this.id;
 			if (id) {

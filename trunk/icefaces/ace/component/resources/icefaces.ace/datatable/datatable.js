@@ -1856,7 +1856,7 @@ ice.ace.DataTable.prototype.setupResizableColumns = function () {
 
     resizers.draggable({
         axis:'x',
-        drag:function (event, ui) {
+        drag:function (event, ui) {document.title = '* ' + ui.position.left;
             var column = ui.helper.closest('th'),
                 newWidth = ui.position.left + ui.helper.outerWidth();
 

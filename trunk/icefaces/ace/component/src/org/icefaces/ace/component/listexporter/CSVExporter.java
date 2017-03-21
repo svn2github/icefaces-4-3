@@ -119,7 +119,13 @@ public class CSVExporter extends Exporter {
 */
 
 	protected void addSelectItemValue(StringBuilder builder, SelectItem item) throws IOException {
-		String value = item == null ? "" : item.getLabel();
+		String value;
+		if (item == null) value = "";
+		else {
+			if ("value".equalsIgnoreCase(textToExport)) value = (String) item.getValue();
+			else if ("both".equalsIgnoreCase(textToExport)) value = item.getLabel() + "(" + item.getValue() + ")";
+			else value = item.getLabel();
+		}
 		value = value == null ? "" : value.trim();
 		builder.append("\"" + value + "\"");
 	}
