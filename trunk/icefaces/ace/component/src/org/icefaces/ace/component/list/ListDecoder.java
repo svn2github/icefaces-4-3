@@ -39,56 +39,53 @@ public class ListDecoder {
 
     public ListDecoder processSelections(String raw) throws JSONException {
         if (raw == null || raw.length() == 0) return this;
-
         final boolean selectItems = list.isSelectItemModel();
         final JSONArray array = new JSONArray(raw);
         final Collection<Object> selections = selectItems ? (Collection)list.getValue() : list.getSelections();
         final Collection<Object> newSelections = new ArrayList<Object>();
-
         for (int i = 0; i < array.length(); i++) {
             final int index = array.getInt(i);
-            list.setRowIndex(index);
-
-            if (selectItems)
-                newSelections.add(((SelectItem)list.getRowData()).getValue());
-            else
-                newSelections.add(list.getRowData());
+            //only perform if the item is contained in the list ICE-11229
+            if (index < list.getRowCount()){
+                list.setRowIndex(index);
+                if (selectItems)
+                    newSelections.add(((SelectItem)list.getRowData()).getValue());
+                else {
+                    newSelections.add(list.getRowData());
+                }
+            }
         }
-
         list.queueEvent(new ListSelectEvent(list, new HashSet<Object>(newSelections)));
-
         selections.addAll(newSelections);
-
         list.setRowIndex(-1);
-
         return this;
     }
 
     public ListDecoder processDeselections(String raw) throws JSONException {
         if (raw == null || raw.length() == 0) return this;
-
         final JSONArray array = new JSONArray(raw);
         final boolean selectItems = list.isSelectItemModel();
         final Collection<Object> selections = selectItems ? (Collection)list.getValue() : list.getSelections();
 
         for (int i = 0; i < array.length(); i++) {
             int index = array.getInt(i);
-            list.setRowIndex(index);
-
-            if (selectItems)
-                selections.remove(((SelectItem)list.getRowData()).getValue());
-            else
-                selections.remove(list.getRowData());
+            if (index < list.getRowCount()) {
+                list.setRowIndex(index);
+                //only perform if item is contained in the list ICE-11229
+                if (selectItems) {
+                    selections.remove(((SelectItem) list.getRowData()).getValue());
+                }
+                else {
+                    selections.remove(list.getRowData());
+                }
+            }
         }
-
         list.setRowIndex(-1);
-
         return this;
     }
 
     public ListDecoder processReorderings(String raw) throws JSONException {
         if (list.isSelectItemModel() || raw == null || raw.length() == 0) return this;
-
         JSONArray array = new JSONArray(raw);
         Object value = list.getValue();
         List collection = null;
