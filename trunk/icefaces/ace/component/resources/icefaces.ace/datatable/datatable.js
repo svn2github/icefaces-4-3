@@ -2319,8 +2319,16 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
 };
 
 ice.ace.DataTable.prototype.resizePaginator = function () {
-	var width = this.element.find('table').outerWidth();
-	this.element.find('.ui-paginator').css('width', width-6);
+	var table = this.element.find('table');
+	var paginator = this.element.find('.ui-paginator');
+	var tableWidth = table.outerWidth();
+	var paginatorWidth = paginator.find('> span').outerWidth();
+	if (tableWidth > paginatorWidth) {
+		paginator.css('width', tableWidth - 6);
+	} else {
+		table.css('width', paginatorWidth);
+		paginator.css('width', paginatorWidth - 6);
+	}
 };
 
 ice.ace.DataTable.prototype.initializePinningState = function() {

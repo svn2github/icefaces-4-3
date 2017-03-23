@@ -17,6 +17,11 @@
 .ui-paginator {
     display:block;
     margin:6px 0;
+	white-space:nowrap;
+}
+
+.ui-paginator > span {
+	white-space:nowrap;
 }
 
 .ui-paginator-page,

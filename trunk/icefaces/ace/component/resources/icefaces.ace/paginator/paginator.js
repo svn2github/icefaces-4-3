@@ -191,7 +191,7 @@ ice.ace.DataTable.Paginator = function(table) {
                     getTemplateControlMarkup(keywords[i], containerTop)
                 );
             }
-            containerTop.html(t);
+            containerTop.html('<span>' + t + '</span>');
 
 			// bottom
 			t = template;
@@ -202,7 +202,7 @@ ice.ace.DataTable.Paginator = function(table) {
                     getTemplateControlMarkup(keywords[i], containerBottom)
                 );
             }
-            containerBottom.html(t);
+            containerBottom.html('<span>' + t + '</span>');
         }
 
         encodePaginatorTemplate();
@@ -286,8 +286,8 @@ ice.ace.DataTable.Paginator = function(table) {
             }
         }
 
-        container.children().filter(':not(.ui-paginator-current, .ui-paginator-rpp-options)').each(addHoverEvents);
-        container.children().filter(':not(.ui-paginator-current)').each(addClickEvents);
+        container.find('> span').children().filter(':not(.ui-paginator-current, .ui-paginator-rpp-options)').each(addHoverEvents);
+        container.find('> span').children().filter(':not(.ui-paginator-current)').each(addClickEvents);
     }
 
     function initDisabledStyling() {
