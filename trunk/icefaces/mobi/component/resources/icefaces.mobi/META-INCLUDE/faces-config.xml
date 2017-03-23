@@ -21,7 +21,7 @@
     <name>ICEfacesMobi</name>
     <ordering>
         <after>
-            <name>ICEfacesCore</name>
+            <name>ICEfacesAce</name>
         </after>
     </ordering>
     <application>
