@@ -406,6 +406,7 @@ public class DataTableRenderer extends CoreRenderer {
         final boolean pnlExp = table.getPanelExpansion() != null;
         final boolean clkHdrSrt = table.isClickableHeaderSorting();
         final boolean resize = table.isResizableColumns();
+        final boolean allowTableResizing = table.isAllowTableResizing();
         final boolean reorder = table.isReorderableColumns();
         final boolean snglSrt = table.isSingleSort();
         final boolean disable = table.isDisabled();
@@ -440,6 +441,7 @@ public class DataTableRenderer extends CoreRenderer {
         if (allColClicks) json.entry("allColClicks", true);
         if (ajaxSelect) json.entry("instantSelect", true);
         if (resize) json.entry("resizableColumns", true);
+        if (allowTableResizing) json.entry("allowTableResizing", true);
         if (reorder) json.entry("reorderableColumns", true);
         if (snglSrt) json.entry("singleSort", true);
         if (disable) json.entry("disable", true);

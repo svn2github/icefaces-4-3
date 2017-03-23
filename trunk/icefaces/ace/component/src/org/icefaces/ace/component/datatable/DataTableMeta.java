@@ -416,6 +416,14 @@ public class DataTableMeta extends UIDataMeta {
             "the column headers.")
     private boolean resizableColumns;
 
+    @Property(tlddoc = "When 'resizableColumns' is enabled, allow the table to also increase or decrease in width " +
+			"proportionally to the column being resized. In the normal mode, when resizing a column, tables maintain " +
+			"their original widths, and a specific column is made wider by making other columns narrower. HTML has a " +
+			"limitation that prevents table columns to be narrower than their contents. This mode " +
+			"is mainly oriented to tables that have too many columns that they can't fit in the viewport width, " +
+			"resulting impossible to make a column wider in the normal mode due to this HTML limitation.")
+    private boolean allowTableResizing;
+
     @Property(tlddoc = "Enable reordering of the table columns via header " +
             "dragging.")
     private boolean reorderableColumns;

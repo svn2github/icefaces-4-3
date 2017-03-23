@@ -1854,26 +1854,70 @@ ice.ace.DataTable.prototype.setupResizableColumns = function () {
         var columns = ice.ace.jq(this.jqId + ' > div > table > thead > tr > th');
         var _self = this;
 
-    resizers.draggable({
-        axis:'x',
-        drag:function (event, ui) {document.title = '* ' + ui.position.left;
-            var column = ui.helper.closest('th'),
-                newWidth = ui.position.left + ui.helper.outerWidth();
+	if (this.cfg.allowTableResizing) {
+		resizers.draggable({
+			axis:'x',
+			grid:[1,1],
+			start:function (event, ui) {
+				var column = ui.helper.closest('th');
+				_self.previousColumnPosition = ui.position.left;
+				_self.shortestColumnWidth = column.outerWidth();
+			},
+			drag:function (event, ui) {
+				var column = ui.helper.closest('th'),
+					newWidth = ui.position.left + ui.helper.outerWidth();
+				var deltaWidth = ui.position.left - _self.previousColumnPosition;
+				_self.previousColumnPosition = ui.position.left;
+				var table = _self.element.find(' > div > table');
 
-            column.css('width', newWidth);
-        },
-        stop:function (event, ui) {
-            ui.helper.css('left', '');
+				var tableWidth = table.width();
+				if (deltaWidth > 0) {
+					table.css('width', tableWidth + deltaWidth);
+				}
+				column.css('width', newWidth);
+				if (column.outerWidth() < _self.shortestColumnWidth) {
+					_self.shortestColumnWidth = column.outerWidth();
+				}
+				if (newWidth > _self.shortestColumnWidth) {
+					table.css('width', tableWidth + deltaWidth);
+				} else {
+					column.css('width', _self.shortestColumnWidth);
+				}
+			},
+			stop:function (event, ui) {
+				ui.helper.css('left', '');
 
-            var columnWidths = [];
+				var columnWidths = [];
 
-            columns.each(function (i, item) {
-                var columnHeader = ice.ace.jq(item);
-                columnWidths.push(columnHeader.css('width'));
-            });
-            ice.ace.jq.cookie(_self.columnWidthsCookie, columnWidths.join(','));
-        }
-    });
+				columns.each(function (i, item) {
+					var columnHeader = ice.ace.jq(item);
+					columnWidths.push(columnHeader.css('width'));
+				});
+				ice.ace.jq.cookie(_self.columnWidthsCookie, columnWidths.join(','));
+			}
+		});
+	} else {
+		resizers.draggable({
+			axis:'x',
+			drag:function (event, ui) {
+				var column = ui.helper.closest('th'),
+					newWidth = ui.position.left + ui.helper.outerWidth();
+
+				column.css('width', newWidth);
+			},
+			stop:function (event, ui) {
+				ui.helper.css('left', '');
+
+				var columnWidths = [];
+
+				columns.each(function (i, item) {
+					var columnHeader = ice.ace.jq(item);
+					columnWidths.push(columnHeader.css('width'));
+				});
+				ice.ace.jq.cookie(_self.columnWidthsCookie, columnWidths.join(','));
+			}
+		});
+	}
 
     //restore widths on postback
     var widths = ice.ace.jq.cookie(this.columnWidthsCookie);
