@@ -19,9 +19,9 @@ public class ProductUtil implements Serializable {
 			productInfoString = new StringBuilder("Powered by ")
 				.append(ProductInfo.PRODUCT)
 				.append(" ").append(ProductInfo.PRIMARY).append(".")
-				.append(ProductInfo.SECONDARY).append(".")
-				.append(ProductInfo.TERTIARY).append(" (revision ")
-				.append(ProductInfo.REVISION).append(")").toString();
+				.append(ProductInfo.SECONDARY).append(".").append(ProductInfo.TERTIARY).toString();
+				/*.append(ProductInfo.TERTIARY).append(" (revision ")
+				.append(ProductInfo.REVISION).append(")").toString();*/
 		}
 		return productInfoString;
 	}
