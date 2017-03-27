@@ -31,14 +31,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.el.MethodExpression;
-import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIData;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
@@ -135,7 +131,7 @@ public class PDFExporter extends Exporter {
 				} else {
 					pdfTable = pdfPTableConstructor.newInstance(new Object[] { new Integer(listExporterValues.size()) });
 				}
-				exportPDFTable(facesContext, pdfTable, list, encodingType, includeHeaders, includeFooters, selectedItemsOnly);
+				exportPDFTable(facesContext, pdfTable, list, encodingType, includeHeaders, selectedItemsOnly);
 				//document.add(pdfTable);
 				add.invoke(document, new Object[] { pdfTable });
 			} else {
@@ -167,7 +163,7 @@ public class PDFExporter extends Exporter {
 		}
 	}
 	
-	protected void exportPDFTable(FacesContext facesContext, Object pdfTable, ACEList list, String encoding, boolean includeHeaders, boolean includeFooters, boolean selectedItemsOnly) 
+	protected void exportPDFTable(FacesContext facesContext, Object pdfTable, ACEList list, String encoding, boolean includeHeaders, boolean selectedItemsOnly) 
 		throws IOException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
     	//PdfPTable pdfTable = new PdfPTable(numberOfColumns);
     	//Font font = FontFactory.getFont(FontFactory.TIMES, encoding);
@@ -186,16 +182,14 @@ public class PDFExporter extends Exporter {
     	int first = 0;
     	
 		if (includeHeaders) {
-			//addFacetColumns(pdfTable, columns, headerFont, ColumnType.HEADER);
-		}
+			if (listExporterValues.size() > 0) {
+				//Font headerFont = FontFactory.getFont(FontFactory.TIMES, encoding, Font.DEFAULTSIZE, Font.BOLD);			
+				Object headerFont = fontFactoryClass.getMethod("getFont", new Class[] { String.class, String.class, float.class, int.class }).invoke(null, new Object[] { pdfFont, encoding, new Integer(12), new Integer(1) });
 
-		if (listExporterValues.size() > 0) {
-			//Font headerFont = FontFactory.getFont(FontFactory.TIMES, encoding, Font.DEFAULTSIZE, Font.BOLD);			
-			Object headerFont = fontFactoryClass.getMethod("getFont", new Class[] { String.class, String.class, float.class, int.class }).invoke(null, new Object[] { pdfFont, encoding, new Integer(12), new Integer(1) });
-
-			int listExporterValuesSize = listExporterValues.size();
-			for (int i = 0; i < listExporterValuesSize; i++) {
-				addColumnName(pdfTable, listExporterValues.get(i), headerFont);
+				int listExporterValuesSize = listExporterValues.size();
+				for (int i = 0; i < listExporterValuesSize; i++) {
+					addColumnName(pdfTable, listExporterValues.get(i), headerFont);
+				}
 			}
 		}
 
@@ -223,42 +217,9 @@ public class PDFExporter extends Exporter {
 				}
 			}
 		}
-
-        if (includeFooters) {
-			//addFacetColumns(pdfTable, columns, headerFont, ColumnType.FOOTER);
-        }
     	
     	list.setRowIndex(-1);
 	}
-
-/*
-	protected void addFacetColumns(Object pdfTable, List<UIColumn> columns, Object font, ColumnType columnType) 
-		throws IllegalAccessException, InvocationTargetException, InstantiationException {
-        for (int i = 0; i < columns.size(); i++) {
-            UIColumn uiColumn = (UIColumn) columns.get(i);
-			UIComponent facet = uiColumn.getFacet(columnType.facet());
-
-            if (facet != null) {
-				addColumnValue(pdfTable, facet, font);
-			} else {
-				String value = "";
-				if (uiColumn instanceof Column) {
-					Column column = (Column) uiColumn;
-					if (columnType == ColumnType.HEADER) {
-						String headerText = column.getHeaderText();
-						value = headerText != null ? headerText : "";
-					} else if (columnType == ColumnType.FOOTER) {
-						String footerText = column.getFooterText();
-						value = footerText != null ? footerText : "";
-					}
-				}
-				//pdfTable.addCell(new Paragraph(value, font));
-				Object paragraph = paragraphConstructor.newInstance(new Object[] { value, font });
-				addCellMethod.invoke(pdfTable, new Object[] { paragraph });
-			}
-        }
-	}
-*/
 
 	protected void addSelectItemValue(Object pdfTable, SelectItem item, Object font)
 		throws IllegalAccessException, InvocationTargetException, InstantiationException {

@@ -29,13 +29,9 @@ package org.icefaces.ace.component.listexporter;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.el.MethodExpression;
-import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
@@ -78,14 +74,12 @@ public class ExcelExporter extends Exporter {
     	int sheetRowIndex = 0;
 
         if (includeHeaders) {
-			//addFacetColumns(sheet, columns, ColumnType.HEADER, 0);
-		}
-
-		if (listExporterValues.size() > 0) {
-			int listExporterValuesSize = listExporterValues.size();
-			Row row = sheet.createRow(sheetRowIndex++);
-			for (int i = 0; i < listExporterValuesSize; i++) {
-				addColumnName(row, listExporterValues.get(i), i);
+			if (listExporterValues.size() > 0) {
+				int listExporterValuesSize = listExporterValues.size();
+				Row row = sheet.createRow(sheetRowIndex++);
+				for (int i = 0; i < listExporterValuesSize; i++) {
+					addColumnName(row, listExporterValues.get(i), i);
+				}
 			}
 		}
 
@@ -114,10 +108,6 @@ public class ExcelExporter extends Exporter {
 				}
 			}
 		}
-
-    	if (includeFooters) {
-			//addFacetColumns(sheet, columns, ColumnType.FOOTER, sheetRowIndex++);
-		}
     	
     	list.setRowIndex(-1);
     	
@@ -136,39 +126,6 @@ public class ExcelExporter extends Exporter {
 			return registerResource(bytes, filename + ".xls", "application/vnd.ms-excel");
 		}
 	}
-
-/*
-	protected void addFacetColumns(Sheet sheet, List<UIColumn> columns, ColumnType columnType, int rowIndex) {
-        Row rowHeader = sheet.createRow(rowIndex);
-
-        for (int i = 0; i < columns.size(); i++) {
-            UIColumn uiColumn = (UIColumn) columns.get(i);
-			UIComponent facet = uiColumn.getFacet(columnType.facet());
-			
-            if (facet != null) {
-				addColumnValue(rowHeader, facet, i);
-			} else {
-				String value = "";
-				if (uiColumn instanceof Column) {
-					Column column = (Column) uiColumn;
-					if (columnType == ColumnType.HEADER) {
-						String headerText = column.getHeaderText();
-						value = headerText != null ? headerText : "";
-					} else if (columnType == ColumnType.FOOTER) {
-						String footerText = column.getFooterText();
-						value = footerText != null ? footerText : "";
-					}
-				}
-				Cell cell = rowHeader.createCell(i);
-				if (isXSSF) {
-					cell.setCellValue(new XSSFRichTextString(value));
-				} else {
-					cell.setCellValue(new HSSFRichTextString(value));
-				}
-			}
-        }
-    }
-*/
 
 	protected void addSelectItemValue(Row rowHeader, SelectItem item, int index) throws IOException {
         Cell cell = rowHeader.createCell(index);

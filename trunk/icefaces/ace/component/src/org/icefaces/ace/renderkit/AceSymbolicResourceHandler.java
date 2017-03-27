@@ -76,6 +76,7 @@ public class AceSymbolicResourceHandler extends ResourceHandlerWrapper {
                                 resourceName.equals("linkbutton/linkbutton.js") ||
                                 resourceName.equals("list/list.js") ||
                                 resourceName.equals("listcontrol/listcontrol.js") ||
+                                resourceName.equals("listexporter/listexporter.js") ||
                                 resourceName.equals("maskedentry/maskedentry.js") ||
                                 resourceName.equals("messages/messages.js") ||
                                 resourceName.equals("notificationpanel/notificationpanel.js") ||

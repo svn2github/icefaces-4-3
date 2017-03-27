@@ -28,19 +28,10 @@
 package org.icefaces.ace.component.listexporter;
 
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Iterator;
 import java.util.Collection;
 
-import javax.el.MethodExpression;
-import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIData;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
@@ -120,58 +111,51 @@ public class XMLExporter extends Exporter {
 			else value = item.getLabel();
 		}
 		value = value == null ? "" : value.trim();
-		builder.append(value);
+
+		builder.append(encloseInCDATASection(value));
 	}
 
 	protected void addItemValue(StringBuilder builder, UIComponent component) throws IOException {
-		StringBuilder builder1 = new StringBuilder();
-		//String tag = header.toLowerCase();
-		//builder.append("\t\t<" + tag + ">");
+		StringBuilder localBuilder = new StringBuilder();
 
 		if (component.isRendered()) {
 			String value = exportValue(FacesContext.getCurrentInstance(), component);
 
-			builder1.append(value);
+			localBuilder.append(value);
 		}
 
-		builder.append(builder1.toString());
-		
-		//builder.append("</" + tag + ">\n");
+		builder.append(encloseInCDATASection(localBuilder.toString()));
 	}
 
 	protected void addItemValue(StringBuilder builder, ListExporterValue listExporterValue) throws IOException {
-		StringBuilder builder1 = new StringBuilder();
+		StringBuilder localBuilder = new StringBuilder();
 		String name = listExporterValue.getName();
 		String tag = name == null? "" : name.toLowerCase();
 		tag = sanitizeXMLTagName(tag);
 		builder.append("\n\t\t<" + tag + ">");
 
 		if (listExporterValue.isRendered()) {
-			builder1.append(listExporterValue.getValue());
+			localBuilder.append(listExporterValue.getValue());
 		}
 
-		builder.append(builder1.toString());
+		builder.append(encloseInCDATASection(localBuilder.toString()));
 		
 		builder.append("</" + tag + ">");
 	}
 
 	protected void addItemValue(StringBuilder builder, List<UIComponent> components) throws IOException {
-		StringBuilder builder1 = new StringBuilder();
-		//String tag = header.toLowerCase();
-		//builder.append("\t\t<" + tag + ">");
+		StringBuilder localBuilder = new StringBuilder();
 
 		for (UIComponent component : components) {
 			if (component.isRendered()) {
 				String value = exportValue(FacesContext.getCurrentInstance(), component);
 
-				builder1.append(value);
+				localBuilder.append(value);
 			}
 		}
 
-		builder.append(builder1.toString());
-		
-		//builder.append("</" + tag + ">\n");
-	}	
+		builder.append(encloseInCDATASection(localBuilder.toString()));
+	}
 	
 	protected String sanitizeXMLTagName(String tag) {
 		StringBuilder sb = new StringBuilder();
@@ -188,5 +172,13 @@ public class XMLExporter extends Exporter {
 		else if (!XMLChar.isNameStart(sanitized.codePointAt(0))) // case where tag has invalid start character
 			return ("_" + sanitized);
 		else return sanitized;
+	}
+
+	protected String encloseInCDATASection(String string) {
+		if (string.indexOf("<") > -1 || string.indexOf(">") > -1) {
+			return "<![CDATA[" + string + "]]>";
+		} else {
+			return string;
+		}
 	}
 }

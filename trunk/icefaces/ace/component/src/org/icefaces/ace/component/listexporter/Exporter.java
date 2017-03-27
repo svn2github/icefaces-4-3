@@ -29,32 +29,22 @@ package org.icefaces.ace.component.listexporter;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.regex.Pattern;
 
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.component.EditableValueHolder;
-import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIData;
 import javax.faces.component.ValueHolder;
 import javax.faces.component.html.HtmlCommandLink;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 
 import org.icefaces.ace.component.list.ACEList;
-import org.icefaces.ace.component.column.Column;
-import org.icefaces.ace.component.columngroup.ColumnGroup;
-import org.icefaces.ace.component.row.Row;
 import org.icefaces.ace.component.listexportervalue.ListExporterValue;
-import org.icefaces.ace.component.expansiontoggler.ExpansionToggler;
 import org.icefaces.ace.component.excludefromexport.ExcludeFromExport;
-import org.icefaces.ace.component.celleditor.CellEditor;
-import org.icefaces.ace.component.panelexpansion.PanelExpansion;
 
 import org.icefaces.application.ResourceRegistry;
 
@@ -70,7 +60,6 @@ public abstract class Exporter {
 	protected MethodExpression preProcessor;
 	protected MethodExpression postProcessor;
 	protected boolean includeHeaders;
-	protected boolean includeFooters;
 	protected boolean selectedItemsOnly;
 	protected String pdfFont;
 	protected String textToExport;
@@ -86,7 +75,6 @@ public abstract class Exporter {
 		preProcessor = component.getPreProcessor();
 		postProcessor = component.getPostProcessor();
 		includeHeaders = component.isIncludeHeaders();
-		includeFooters = component.isIncludeFooters();
 		selectedItemsOnly = component.isSelectedItemsOnly();
 		pdfFont = component.getPdfFont();
 		textToExport = component.getTextToExport();

@@ -50,9 +50,6 @@ import org.icefaces.resources.ICEResourceLibrary;
 )
 @ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
-	@ICEResourceDependency(name = "util/ace-core.js"),
-	@ICEResourceDependency(name = "jquery/jquery.js"),
-	@ICEResourceDependency(name = "util/ace-jquery-ui.js"),
 	@ICEResourceDependency(name = "listexporter/listexporter.js")
 })
 @ClientBehaviorHolder(events = {
@@ -84,11 +81,8 @@ public class ListExporterMeta extends UIComponentBaseMeta {
 	@Property(required=Required.no, tlddoc="Define a character encoding to use. Valid values will depend on the host system and format in use. For plain text formats (CSV and XML), the encoding has to be supported by the JVM running the server. Typically, these values include UTF-8, UTF-16, US-ASCII, ISO-8859-1, Windows-1252, among others. For the PDF format, this attribute is only applicable if a custom font is also specified via the 'pdfFont' attribute, and the encoding has to be supported by such font. For the XLS format, this attributr is not applicable; Unicode is used by default.", defaultValue="UTF-8")
 	private String encoding;
 
-	@Property(required=Required.no, tlddoc="Disable whether column headers should be included at the top of the file. This is not applicable when attribute 'type' is set to 'xml'.", defaultValue="true")
+	@Property(required=Required.no, tlddoc="When using ace:listValueExporter components, determine whether the names should be included at the top of the file. This is not applicable when the attribute 'type' is set to 'xml'.", defaultValue="true")
 	private boolean includeHeaders;
-
-	@Property(required=Required.no, tlddoc="Disable whether column footers should be included at the bottom of the file. This is not applicable when attribute 'type' is set to 'xml'.", defaultValue="true")
-	private boolean includeFooters;
 	
 	@Property(required=Required.no, tlddoc="Enable to export only the currently selected list items instead of the whole data set.", defaultValue="false")
 	private boolean selectedItemsOnly;

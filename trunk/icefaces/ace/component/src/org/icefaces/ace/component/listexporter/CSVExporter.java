@@ -28,14 +28,10 @@
 package org.icefaces.ace.component.listexporter;
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.el.MethodExpression;
 import javax.faces.component.UIComponent;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
@@ -50,16 +46,14 @@ public class CSVExporter extends Exporter {
 		StringBuilder builder = new StringBuilder();
     	
     	if (includeHeaders) {
-			// addFacetColumns(builder, columns, ColumnType.HEADER);
-		}
-
-		if (listExporterValues.size() > 0) {
-			int listExporterValuesSize = listExporterValues.size();
-			for (int i = 0; i < listExporterValuesSize; i++) {
-				addColumnName(builder, listExporterValues.get(i));
-				if (i < (listExporterValuesSize - 1)) builder.append(", ");
+			if (listExporterValues.size() > 0) {
+				int listExporterValuesSize = listExporterValues.size();
+				for (int i = 0; i < listExporterValuesSize; i++) {
+					addColumnName(builder, listExporterValues.get(i));
+					if (i < (listExporterValuesSize - 1)) builder.append(", ");
+				}
+				builder.append("\n");
 			}
-			builder.append("\n");
 		}
     	
 		int rowCount = list.getRowCount();
@@ -90,10 +84,6 @@ public class CSVExporter extends Exporter {
 				builder.append("\n");
 			}
 		}
-
-    	if (includeFooters) {
-			//addFacetColumns(builder, columns, ColumnType.FOOTER);
-		}
     	
     	list.setRowIndex(-1);
 
@@ -108,15 +98,6 @@ public class CSVExporter extends Exporter {
 		
 		return registerResource(bytes, filename + ".csv", "text/csv; charset=" + encodingType);
 	}
-
-/*
-	protected void addItemValues(StringBuilder builder, List<UIColumn> columns) throws IOException {
-		for (Iterator<UIColumn> iterator = columns.iterator(); iterator.hasNext();) {
-            addColumnValue(builder, iterator.next().getChildren());
-            if (iterator.hasNext()) { builder.append(","); }
-		}
-	}
-*/
 
 	protected void addSelectItemValue(StringBuilder builder, SelectItem item) throws IOException {
 		String value;
@@ -166,31 +147,4 @@ public class CSVExporter extends Exporter {
             }
 		builder.append("\"" + localBuilder.toString() + "\"");
 	}
-
-/*
-	protected void addFacetColumns(StringBuilder builder, List<UIColumn> columns, ColumnType columnType) throws IOException {
-		for (Iterator<UIColumn> iterator = columns.iterator(); iterator.hasNext();) {
-			UIColumn uiColumn = iterator.next();
-			UIComponent facet = uiColumn.getFacet(columnType.facet());
-			if (facet != null) {
-				addColumnValue(builder, facet);
-			} else {
-				String value = "";
-				if (uiColumn instanceof Column) {
-					Column column = (Column) uiColumn;
-					if (columnType == ColumnType.HEADER) {
-						String headerText = column.getHeaderText();
-						value = headerText != null ? headerText : "";
-					} else if (columnType == ColumnType.FOOTER) {
-						String footerText = column.getFooterText();
-						value = footerText != null ? footerText : "";
-					}
-				}
-				builder.append("\"" + value + "\"");
-			}
-            if (iterator.hasNext()) { builder.append(","); }
-		}
-		builder.append("\n");
-    }
-*/
 }
