@@ -230,9 +230,9 @@ ice.ace.List.prototype.dragToHandler = function(event, ui) {
         if (index != this.startIndex) {
             // Alter selection state
             if (this.cfg.selection) {
-                this.deselectAll();
+                this.deselectAll(undefined, undefined, true);
                 this.deselectConnectedLists();
-                this.addSelectedItem(item, idIndex);
+                this.addSelectedItem(item, idIndex, true);
             }
 
             // Update ID indexes of all previous items
@@ -572,7 +572,7 @@ ice.ace.List.prototype.removeSelectedItem = function(item) {
     }
 };
 
-ice.ace.List.prototype.deselectAll = function(except, done) {
+ice.ace.List.prototype.deselectAll = function(except, done, skipSubmit) {
     var self = this,
         reorderings = this.read('reorderings'),
         selections = this.read('selections'),
@@ -599,7 +599,7 @@ ice.ace.List.prototype.deselectAll = function(except, done) {
     this.write('selections', selections);
     this.write('deselections', deselections);
 
-    if (this.behaviors && this.behaviors.deselect && !isNaN(deselections.length) && deselections.length > 0) {
+    if (!skipSubmit && this.behaviors && this.behaviors.deselect && !isNaN(deselections.length) && deselections.length > 0) {
         var s = this;
         this.behaviors.deselect.oncomplete = function() {
             s.clearState();
