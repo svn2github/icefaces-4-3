@@ -563,9 +563,14 @@ public class DataTableRenderer extends CoreRenderer {
         writer.startElement(HTML.TD_ELEM, null);
         writer.writeAttribute(HTML.COLSPAN_ATTR, columns.size(), null);
 
-        String emptyMessage;
-        if ((emptyMessage = table.getEmptyMessage()) != null)
-            writer.write(emptyMessage);
+		UIComponent emptyMessageFacet;
+		if ((emptyMessageFacet = table.getEmptyMessageFacet()) != null)
+			emptyMessageFacet.encodeAll(FacesContext.getCurrentInstance());
+		else {
+			String emptyMessage;
+			if ((emptyMessage = table.getEmptyMessage()) != null)
+				writer.write(emptyMessage);
+		}
 
         writer.endElement(HTML.TD_ELEM);
         writer.endElement(HTML.TR_ELEM);

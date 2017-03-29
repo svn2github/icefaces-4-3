@@ -25,6 +25,7 @@ import org.icefaces.resources.ICEResourceDependencies;
 import org.icefaces.resources.ICEResourceDependency;
 import org.icefaces.resources.ICEResourceLibrary;
 
+import javax.faces.component.UIComponent;
 import javax.el.MethodExpression;
 import java.util.List;
 
@@ -169,8 +170,14 @@ public class DataTableMeta extends UIDataMeta {
                     "set of available rows.")
     private int rows;
 
-    @Property(tlddoc = "Define a string to render when there are no records to display.")
+    @Property(tlddoc = "Define a string to render when there are no records to display. The 'emptyMessage' facet takes precedence over this attribute.")
     private String emptyMessage;
+
+    @Facets
+    class FacetsMeta {
+        @Facet(tlddoc = "An optional facet that is rendered in place of data rows when the dataTable view contains no rows.")
+        UIComponent emptyMessage;
+    }
     
     @Property(tlddoc = "Disables sorting for multiple columns at once. Sorting " +
             "is enabled by the use of sortBy on ace:column components.",
