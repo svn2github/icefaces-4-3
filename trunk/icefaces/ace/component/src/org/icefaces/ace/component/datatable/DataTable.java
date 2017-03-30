@@ -1726,8 +1726,9 @@ public class DataTable extends DataTableBase implements Serializable {
         if (EnvUtils.isMyFaces()) {
             setDataModel(null);
             // Get / Regenerate cached data model.
+			getDataModel();
         }
-        getDataModel();
+
         if (isLazy()) loadLazyData();
 
         PanelExpansion panelExpansion = getPanelExpansion();
@@ -1738,7 +1739,7 @@ public class DataTable extends DataTableBase implements Serializable {
         RowStateMap stateMap = null;
 
         if (visitRows) {
-			if (model.getRowCount() == 0) {
+			if (model == null || model.getRowCount() == 0) {
 				resetValue();
 				getDataModel();
 			}
