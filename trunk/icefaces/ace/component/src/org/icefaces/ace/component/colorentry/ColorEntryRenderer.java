@@ -70,7 +70,6 @@ public class ColorEntryRenderer extends InputRenderer {
          decodeBehaviors(facesContext, component);
      }
 
-
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ColorEntry picker = (ColorEntry) component;
@@ -378,7 +377,7 @@ public class ColorEntryRenderer extends InputRenderer {
                               UIComponent component, FacesContext context) throws IOException{
         //idea is to write this before the element div so that Domdiff only updates when necessary
         writer.startElement(HTML.DIV_ELEM, component);
-        writer.writeAttribute(HTML.ID_ATTR, component.getClientId(context), null);
+        writer.writeAttribute(HTML.ID_ATTR, component.getClientId(context) + "_swatch", null);
         writer.startElement(HTML.SCRIPT_ELEM, component);
         writer.writeAttribute("type", "text/javascript", null);
         StringBuilder scriptA = new StringBuilder("ice.ace.jq.colorpicker.swatchesNames['");
