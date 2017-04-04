@@ -54,11 +54,14 @@ import org.icefaces.resources.ICEResourceLibrary;
 }, defaultEvent="dateSelect")
 public class DateTimeEntryMeta extends UIInputMeta {
 
-    @Property(tlddoc = "Set a minimum selectable date. Date string or java.util.Date object. Default is no limit.")
+    @Property(tlddoc = "Set a minimum selectable date. Date string or java.util.Date object. Default is no limit. This attribute is ignored if 'selectableDateRanges' is specified.")
     private Object mindate;
 
-    @Property(tlddoc = "Set a maximum selectable date. Date string or java.util.Date object. Default is no limit.")
+    @Property(tlddoc = "Set a maximum selectable date. Date string or java.util.Date object. Default is no limit. This attribute is ignored if 'selectableDateRanges' is specified.")
     private Object maxdate;
+
+    @Property(tlddoc = "Specifies a number of ranges of selectable dates. The value can be a number of date strings separated by commas, a List of Date objects or an Array of Date objects. These dates are taken in pairs to delimit a range; the first date in the pair is the start date, and the second date in the pair is the end date of that range. These dates are inclusive. If the first date of the pair is null, the empty string, or an invalid date, then the range will be considered to be from any date in the past up to its end date. Likewise, if the second date of the pair is null, an empty string, or an invalid date, then the range will be considered to be from its start date to any date in the future thereafter. If the dates are specified as strings, they are parsed according to the 'pattern' attribute of this component. Dates are taken literally, as they appear in the calendar, without regard for time zones. This attribute takes precedence over the 'mindate', 'maxdate', 'minDateTime', and 'maxDateTime' attributes. This attribute is only used to specify date ranges, not date-time ranges.")
+    private Object selectableDateRanges;
 
     @Property(defaultValue = "1", tlddoc = "Enables multiple page rendering.")
     private int pages;
@@ -206,10 +209,10 @@ public class DateTimeEntryMeta extends UIInputMeta {
     @Property(defaultValue = "false", tlddoc = "The Today (or Now) button can be set to navigate the popup to the current month without selecting date/time, or select the date/time as well.")
     private boolean todayNowButtonsAlsoSelect;
 
-    @Property(tlddoc = "Set a minimum selectable date and time. Must be java.util.Date object. Default is no limit.")
+    @Property(tlddoc = "Set a minimum selectable date and time. Must be java.util.Date object. Default is no limit. This attribute is ignored if 'selectableDateRanges' is specified.")
     private Object minDateTime;
 
-    @Property(tlddoc = "Set a maximum selectable date and time. Must be java.util.Date object. Default is no limit.")
+    @Property(tlddoc = "Set a maximum selectable date and time. Must be java.util.Date object. Default is no limit. This attribute is ignored if 'selectableDateRanges' is specified.")
     private Object maxDateTime;
 
 	@Property(tlddoc = "Access key that, when pressed, transfers focus to this component.")

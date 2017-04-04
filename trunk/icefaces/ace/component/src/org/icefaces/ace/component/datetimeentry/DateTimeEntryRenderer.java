@@ -37,6 +37,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -292,28 +293,81 @@ public class DateTimeEntryRenderer extends InputRenderer {
 
         if(dateTimeEntry.getPages() != 1)
             json.entry("numberOfMonths", dateTimeEntry.getPages());
-        //minDateTime takes precedence for setting minDate, minHour and minMinute
-        //likewise maxDateTime takes precendence for setting maxDate, maxHour and maxMinute
-        Object minDate = dateTimeEntry.getMindate();
-        Object maxDate = dateTimeEntry.getMaxdate();
-        if (dateTimeEntry.getMinDateTime() !=null ){
-            if (dateTimeEntry.getMinDateTime() instanceof Date){
-                minDate = dateTimeEntry.getMinDateTime();
-            }else  {
-                throw new FacesException("Attribute minDateTime must be type java.util.Date");
-            }
-        }
-         if (dateTimeEntry.getMaxDateTime() !=null ){
-            if (dateTimeEntry.getMaxDateTime() instanceof Date){
-                maxDate = dateTimeEntry.getMaxDateTime();
-            }else  {
-                throw new FacesException("Attribute maxDateTime must be type java.util.Date");
-            }
-        }
-        json.entryNonNullValue("minDate", DateTimeEntryUtils.getDateAsString(dateTimeEntry, minDate))
-            .entryNonNullValue("maxDate", DateTimeEntryUtils.getDateAsString(dateTimeEntry, maxDate))
-            .entryNonNullValue("showButtonPanel", dateTimeEntry.isShowButtonPanel())
-            .entryNonNullValue("yearRange", dateTimeEntry.getYearRange());
+
+		Object selectableDateRanges = dateTimeEntry.getSelectableDateRanges();
+		if (selectableDateRanges == null) {
+			//minDateTime takes precedence for setting minDate, minHour and minMinute
+			//likewise maxDateTime takes precendence for setting maxDate, maxHour and maxMinute
+			Object minDate = dateTimeEntry.getMindate();
+			Object maxDate = dateTimeEntry.getMaxdate();
+			if (dateTimeEntry.getMinDateTime() !=null ){
+				if (dateTimeEntry.getMinDateTime() instanceof Date){
+					minDate = dateTimeEntry.getMinDateTime();
+				}else  {
+					throw new FacesException("Attribute minDateTime must be type java.util.Date");
+				}
+			}
+			 if (dateTimeEntry.getMaxDateTime() !=null ){
+				if (dateTimeEntry.getMaxDateTime() instanceof Date){
+					maxDate = dateTimeEntry.getMaxDateTime();
+				}else  {
+					throw new FacesException("Attribute maxDateTime must be type java.util.Date");
+				}
+			}
+			json.entryNonNullValue("minDate", DateTimeEntryUtils.getDateAsString(dateTimeEntry, minDate))
+				.entryNonNullValue("maxDate", DateTimeEntryUtils.getDateAsString(dateTimeEntry, maxDate));
+		} else {
+			json.entry("minDate", "")
+				.entry("maxDate", "")
+				.beginArray("selectableDateRanges");
+			if (selectableDateRanges instanceof String) {
+				SimpleDateFormat format = new SimpleDateFormat(dateTimeEntry.getPattern(), locale);
+				format.setTimeZone(TimeZone.getTimeZone("UTC"));
+				format.setLenient(dateTimeEntry.isLenientParsing());
+				String[] dates = ((String) selectableDateRanges).split(",");
+				for (int i = 0; i < dates.length; i++) {
+					try {
+						String dateString = dates[i];
+						dateString = dateString != null ? dateString.trim() : "";
+						Date convertedDate = format.parse(dateString);
+						json.item(convertedDate.getTime());
+					} catch (ParseException e) {
+						json.item("");
+					}
+				}
+				// add end date for last range, if missing
+				if (dates.length % 2 == 1) {
+					json.item("");
+				}
+			} else if (selectableDateRanges instanceof List) {
+				List<Date> dates = (List<Date>) selectableDateRanges;
+				int size = dates.size();
+				for (int i = 0; i < size; i++) {
+					Date date = dates.get(i);
+					json.item(date.getTime());
+				}
+				// add end date for last range, if missing
+				if (size % 2 == 1) {
+					json.item("");
+				}
+			} else if (Object[].class.isAssignableFrom(selectableDateRanges.getClass())) {
+				Date[] dates = (Date[]) selectableDateRanges;
+				for (int i = 0; i < dates.length; i++) {
+					Date date = dates[i];
+					json.item(date.getTime());
+				}
+				// add end date for last range, if missing
+				if (dates.length % 2 == 1) {
+					json.item("");
+				}
+			} else {
+				throw new FacesException("Attribute selectableDateRanges must be either a comma-separated string containing dates according to the pattern attribute, a List of java.util.Date objects or an array of java.util.Date objects.");
+			}
+			json.endArray();
+		}
+
+		json.entryNonNullValue("showButtonPanel", dateTimeEntry.isShowButtonPanel())
+			.entryNonNullValue("yearRange", dateTimeEntry.getYearRange());
 
         if(dateTimeEntry.isShowWeek())
             json.entry("showWeek", true);
@@ -348,7 +402,7 @@ public class DateTimeEntryRenderer extends InputRenderer {
         int minHour = dateTimeEntry.getMinHour();
         int minMinute = dateTimeEntry.getMinMinute();
         int minSecond = dateTimeEntry.getMinSecond();
-        if (dateTimeEntry.getMinDateTime() !=null ){
+        if (dateTimeEntry.getMinDateTime() != null && selectableDateRanges == null){
             if (dateTimeEntry.getMinDateTime() instanceof java.util.Date){
                 Calendar calendar  = Calendar.getInstance();
                 calendar.setTime((Date)dateTimeEntry.getMinDateTime());
@@ -362,7 +416,7 @@ public class DateTimeEntryRenderer extends InputRenderer {
         int maxHour = dateTimeEntry.getMaxHour();
         int maxMinute= dateTimeEntry.getMaxMinute();
         int maxSecond = dateTimeEntry.getMaxSecond();
-        if (dateTimeEntry.getMaxDateTime() !=null){
+        if (dateTimeEntry.getMaxDateTime() != null && selectableDateRanges == null){
             if (dateTimeEntry.getMaxDateTime() instanceof java.util.Date){
                 Calendar calendar  = Calendar.getInstance();
                 Date date =  (Date)dateTimeEntry.getMaxDateTime();

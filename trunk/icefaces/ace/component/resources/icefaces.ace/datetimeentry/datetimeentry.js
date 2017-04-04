@@ -50,6 +50,30 @@ ice.ace.Calendar = function(id, cfg) {
         this.configureTimePicker();
     }
 
+	if (this.cfg.selectableDateRanges) {
+		var _self = this;
+		this.cfg.beforeShowDay = function(date) {
+			var millis = date.getTime();
+			var ranges = _self.cfg.selectableDateRanges;
+			var rangesLength = ranges.length;
+			var timezoneOffsetMillis = date.getTimezoneOffset() * 60000;
+			var i;
+			for (i = 0; i < rangesLength; i = i + 2) {
+				if ((ranges[i] && ranges[i+1]) 
+					&& (millis >= (ranges[i] + timezoneOffsetMillis) && millis <= (ranges[i+1] + timezoneOffsetMillis))) {
+					return [true, ''];
+				}
+				if ((ranges[i] && !ranges[i+1]) && millis >= (ranges[i] + timezoneOffsetMillis)) {
+					return [true, ''];
+				}
+				if ((!ranges[i] && ranges[i+1]) && millis <= (ranges[i+1] + timezoneOffsetMillis)) {
+					return [true, ''];
+				}
+			}
+			return [false, ''];
+		}
+	}
+
     //Initialize calendar
     if(!this.cfg.disabled) {
         if(hasTimePicker) {
