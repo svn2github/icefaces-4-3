@@ -127,10 +127,13 @@ public class Repeat extends UIData {
     }
 
     public void broadcast(FacesEvent event) throws AbortProcessingException {
-        int actualNoRows = getDataModel().getRowCount();
-        populateVar(getVar(), getVarStatus(), getValidatedFirst(actualNoRows), getValidatedLast(actualNoRows), getRowIndex());
+        final int actualNoRows = getDataModel().getRowCount();
+        final Map<String, Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
+        final String var = getVar();
+        final String varStatus = getVarStatus();
+        populateVar(requestMap, var, varStatus, getValidatedFirst(actualNoRows), getValidatedLast(actualNoRows), getRowIndex());
         super.broadcast(event);
-        unpopulateVar();
+        unpopulateVar(requestMap, var, varStatus);
     }
 
     private int getValidatedFirst(int actualNoRows) {
@@ -147,8 +150,7 @@ public class Repeat extends UIData {
         return first + rows - 1;
     }
 
-    private void populateVar(String var, String varStatus, int first, int last, int index) {
-        final Map<String, Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
+    private void populateVar(Map<String, Object> requestMap, String var, String varStatus, int first, int last, int index) {
         final DataModel model = getDataModel();
         final Object item = model.getRowData();
         requestMap.put(var, item);
@@ -157,12 +159,24 @@ public class Repeat extends UIData {
         }
     }
 
-    private void unpopulateVar() {
-        final String var = getVar();
-        final String varStatus = getVarStatus();
-        final Map<String, Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
+    private void unpopulateVar(Map<String, Object> requestMap, String var, String varStatus) {
         requestMap.remove(var);
         requestMap.remove(varStatus);
+    }
+
+    public Runnable capturePreviousIndexAndVar(final Map<String, Object> requestMap, final String var, final String varStatus, final int first, final int last) {
+        final DataModel model = getDataModel();
+        final Object previousItem = model.getRowData();
+        final int previousIndex = getRowIndex();
+        return new Runnable() {
+            public void run() {
+                requestMap.put(var, previousItem);
+                setRowIndex(previousIndex);
+                if (varStatus != null) {
+                    requestMap.put(varStatus, new VarStatus(first, last, previousIndex));
+                }
+            }
+        };
     }
 
     private void iterateOverChildren(Runnable runnable) {
@@ -171,19 +185,25 @@ public class Repeat extends UIData {
         final int actualNoRows = getDataModel().getRowCount();
         final int first = getValidatedFirst(actualNoRows);
         final int last = getValidatedLast(actualNoRows);
+        final Map<String, Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
 
         int index = first < actualNoRows ? first : 0;
+
+        //save previous index and var in case this method was re-entered
+        Runnable restorer = capturePreviousIndexAndVar(requestMap, var, varStatus, first, last);
 
         while (index <= last) {
             setRowIndex(index);
             restoreState();
-            populateVar(var, varStatus, first, last, index);
+            populateVar(requestMap, var, varStatus, first, last, index);
             runnable.run();
             saveState();
             resetClientIDs(this);
             index++;
         }
-        unpopulateVar();
+
+        //restore previous index and var in case this method was re-entered
+        restorer.run();
     }
 
     private void resetClientIDs(UIComponent component) {
