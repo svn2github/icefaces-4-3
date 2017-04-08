@@ -88,6 +88,7 @@ public class AceSymbolicResourceHandler extends ResourceHandlerWrapper {
                                 resourceName.equals("resizable/resizable.js") ||
                                 resourceName.equals("richtextentry/richtextentry.js") ||
                                 resourceName.equals("schedule/schedule.js") ||
+                                resourceName.equals("scheduleexporter/scheduleexporter.js") ||
                                 resourceName.equals("selectmenu/selectmenu.js") ||
                                 resourceName.equals("simpleselectonemenu/simpleselectonemenu.js") ||
                                 resourceName.equals("sliderentry/slider.js") ||

@@ -347,6 +347,7 @@
 			<file name="${resources}/icefaces.ace/resizable/resizable.js" />
 			<file name="${resources}/icefaces.ace/richtextentry/richtextentry.js" />
 			<file name="${resources}/icefaces.ace/schedule/schedule.js" />
+			<file name="${resources}/icefaces.ace/scheduleexporter/scheduleexporter.js" />
 			<file name="${resources}/icefaces.ace/selectmenu/selectmenu.js" />
 			<file name="${resources}/icefaces.ace/simpleselectonemenu/simpleselectonemenu.js" />
 			<file name="${resources}/icefaces.ace/sliderentry/slider.js" />
