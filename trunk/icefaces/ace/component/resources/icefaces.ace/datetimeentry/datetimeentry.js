@@ -35,7 +35,7 @@ ice.ace.Calendar = function(id, cfg) {
     }
 
     //Select listener
-    this.bindDateSelectListener();
+    this.bindDateSelectListener(id);
 
     //Form field to use in inline mode
     if(!this.cfg.popup) {
@@ -127,7 +127,7 @@ ice.ace.Calendar.prototype.configureLocale = function() {
     }
 };
 
-ice.ace.Calendar.prototype.bindDateSelectListener = function() {
+ice.ace.Calendar.prototype.bindDateSelectListener = function(id) {
     var _self = this;
 
     if(this.cfg.behaviors) {
@@ -150,7 +150,7 @@ ice.ace.Calendar.prototype.bindDateSelectListener = function() {
                         }, 350);
                     }
                 };
-                dateSelectBehavior.source = inputID;
+                dateSelectBehavior.source = id;
                 ice.ace.ab.call(_self, dateSelectBehavior);
             }
         };
