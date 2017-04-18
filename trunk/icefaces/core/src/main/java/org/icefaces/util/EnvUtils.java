@@ -701,7 +701,11 @@ public class EnvUtils {
     public static boolean isICEfacesView(FacesContext facesContext) {
         //Check to see if the view is configured to use ICEfaces (default is to enable ICEfaces).
         UIViewRoot viewRoot = facesContext.getViewRoot();
-        Map viewMap = viewRoot.getViewMap();
+        Map viewMap = viewRoot.getViewMap(!facesContext.isPostback());
+
+        if (viewMap == null) {
+            return false;
+        }
 
         Object icefacesRender = viewMap.get(ICEFACES_RENDER);
         if (null == icefacesRender) {
