@@ -21,14 +21,15 @@
                 xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
                 xmlns:icecore="http://www.icefaces.org/icefaces/core"
                 xmlns:emporium="http://xmlns.jcp.org/jsf/composite/components">
-    <h:panelGrid id="#{auctionController.submitParentWrapperId}"
+    <!-- We position the defaultAction this way so we can easily grab the parent container and add an error message if needed -->
+    <!-- Note we don't use 'Escape' here to cancel the bid because it would interfere with our dialogs (like View History) -->
+    <icecore:defaultAction actionListener="#{auctionController.toggleFilter}" key="Enter"/>
+
+    <h:panelGrid id="submitParentWrapperId"
                  columns="6"
                  style="width: auto;" styleClass="center"
                  rendered="#{bidBean.checkRenderBidPanel}">
-        <!-- We position the defaultAction this way so we can easily grab the parent container and add an error message if needed -->
-        <!-- Note we don't use 'Escape' here to cancel the bid because it would interfere with our dialogs (like View History) -->
-        <icecore:defaultAction actionListener="#{auctionController.submitBid}" key="Enter"/>
-        
+
         <h:panelGroup>
 	        <mobi:largeView>
 	            <h:outputLabel for="bidIn" value="Bid on '#{bidBean.bidItem.name}':"/>
@@ -72,7 +73,7 @@
     
 	<h:panelGroup layout="block" styleClass="messagePadding">
 		<ace:message for="bidIn" />
-		<ace:message for="#{auctionController.submitParentWrapperId}" />
+		<ace:message for="submitParentWrapperId" />
 	</h:panelGroup>
 	
     <h:outputText value="Select a row to begin bidding." rendered="#{!bidBean.renderBidPanel}"/>
