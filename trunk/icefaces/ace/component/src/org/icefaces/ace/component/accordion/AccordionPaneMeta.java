@@ -26,8 +26,9 @@ import org.icefaces.resources.ICEResourceDependencies;
         componentClass  = "org.icefaces.ace.component.accordion.AccordionPane",
         generatedClass  = "org.icefaces.ace.component.accordion.AccordionPaneBase",
         extendsClass    = "javax.faces.component.UIComponentBase",
+        rendererClass   = "org.icefaces.ace.component.accordion.AccordionPaneRenderer",
         componentType   = "org.icefaces.ace.component.AccordionPane",
-        rendererType    = "",
+        rendererType    = "org.icefaces.ace.component.AccordionPaneRenderer",
 		componentFamily = "org.icefaces.ace.component",
 		tlddoc = "The AccordionPane is a component used by accordion as a container to display contents." +
                  "<p>For more information, see the " +

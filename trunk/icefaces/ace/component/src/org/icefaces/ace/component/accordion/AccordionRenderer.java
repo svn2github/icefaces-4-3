@@ -70,29 +70,26 @@ public class AccordionRenderer extends CoreRenderer {
         }
 	}
 
-	@Override
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-		Accordion acco = (Accordion) component;
+    @Override
+    public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        Accordion accordionPanel = (Accordion) component;
+        String clientId = accordionPanel.getClientId(context);
 
-		encodeMarkup(context, acco);
-	}
-	
-	protected void encodeMarkup(FacesContext context, Accordion accordionPanel) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
-		String clientId = accordionPanel.getClientId(context);
-		
-		writer.startElement("div", accordionPanel);
-		writer.writeAttribute("id", clientId, null);
-		String style = accordionPanel.getStyle();
-		if(style != null) writer.writeAttribute("style", style, null);
-		String styleClass = accordionPanel.getStyleClass();
-		if(styleClass != null) writer.writeAttribute("class", styleClass, null);
+        writer.startElement("div", accordionPanel);
+        writer.writeAttribute("id", clientId, null);
+        String style = accordionPanel.getStyle();
+        if(style != null) writer.writeAttribute("style", style, null);
+        String styleClass = accordionPanel.getStyleClass();
+        if(styleClass != null) writer.writeAttribute("class", styleClass, null);
 
         writer.startElement("div", null);
+    }
 
-		encodeTabs(context, accordionPanel);
-  
+    @Override
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+		Accordion accordionPanel = (Accordion) component;
         writer.endElement("div");
 
         encodeStateHolder(context, accordionPanel);
@@ -175,49 +172,43 @@ public class AccordionRenderer extends CoreRenderer {
 		for(int i=0; i < acco.getChildCount(); i++) {
 			UIComponent kid = acco.getChildren().get(i);
 			
-			if(kid.isRendered() && kid instanceof AccordionPane) {
-				AccordionPane tab = (AccordionPane) kid;
-                String clientId = kid.getClientId(context);
-				
-				//title
-				writer.startElement("h3", null);
-                writer.writeAttribute("id", clientId + "_header", null);
-				String accesskey = tab.getAccesskey();
-				if (accesskey != null) writer.writeAttribute("accesskey", accesskey, null);
-				writer.startElement("a", null);
-				writer.writeAttribute("href", "#", null);
-				if(tab.getTitle() != null) {
-					writer.write(tab.getTitle());
-					titles+=tab.getTitle();
-				}
-				writer.endElement("a");
-				writer.endElement("h3");
-				//content
-				writer.startElement("div", null);
-                writer.writeAttribute("id", clientId, null);
-                writer.startElement("div", null);
-                writer.writeAttribute("id", clientId + "_content", null);
-                //help resizable component calculate properly its maximum bounds
-                writer.writeAttribute("style", "height: 100%;", null);
+			if(kid instanceof AccordionPane) {
+			    if (kid.isRendered()) {
+                    AccordionPane tab = (AccordionPane) kid;
+                    String clientId = kid.getClientId(context);
 
-                tab.encodeAll(context);
+                    //title
+                    writer.startElement("h3", null);
+                    writer.writeAttribute("id", clientId + "_header", null);
+                    String accesskey = tab.getAccesskey();
+                    if (accesskey != null) writer.writeAttribute("accesskey", accesskey, null);
+                    writer.startElement("a", null);
+                    writer.writeAttribute("href", "#", null);
+                    if (tab.getTitle() != null) {
+                        writer.write(tab.getTitle());
+                        titles += tab.getTitle();
+                    }
+                    writer.endElement("a");
+                    writer.endElement("h3");
+                    //content
+                    writer.startElement("div", null);
+                    writer.writeAttribute("id", clientId, null);
+                    writer.startElement("div", null);
+                    writer.writeAttribute("id", clientId + "_content", null);
+                    //help resizable component calculate properly its maximum bounds
+                    writer.writeAttribute("style", "height: 100%;", null);
 
-                writer.endElement("div");
-				writer.endElement("div");
-			}
+                    tab.encodeAll(context);
+
+                    writer.endElement("div");
+                    writer.endElement("div");
+                }
+			} else {
+			    kid.encodeAll(context);
+            }
 			if (!titles.isEmpty()){
 				acco.setTabTitles(titles);
 			}
 		}
-	}
-
-    @Override
-	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-		//Do nothing
-	}
-
-    @Override
-	public boolean getRendersChildren() {
-		return true;
 	}
 }
