@@ -28,6 +28,7 @@
 package org.icefaces.ace.component.scheduleexporter;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Collection;
 import java.util.Date;
@@ -72,6 +73,7 @@ public class ExcelExporter extends Exporter {
 		int rowCount = schedule.getRowCount();
     	int first = 0;
     	int sheetRowIndex = 0;
+		ArrayList<ScheduleEvent> eventsToExport = new ArrayList<ScheduleEvent>();
 
         if (includeHeaders) {
 			Row row = sheet.createRow(sheetRowIndex++);
@@ -82,13 +84,25 @@ public class ExcelExporter extends Exporter {
     		schedule.setRowIndex(i);
 			Object rowData = schedule.getRowData();
 
-			Row row = sheet.createRow(sheetRowIndex++);
 			if (rowData instanceof ScheduleEvent) {
-				addScheduleEventData(row, (ScheduleEvent) rowData);
+				if (exportAllEvents) {
+					eventsToExport.add((ScheduleEvent) rowData);
+				} else {
+					ScheduleEvent event = (ScheduleEvent) rowData;
+					if (isWithinRange(event)) eventsToExport.add(event);
+				}
 			}
 		}
     	
     	schedule.setRowIndex(-1);
+
+		sortEvents(eventsToExport);
+
+		int size = eventsToExport.size();
+		for (int i = 0; i < size; i++) {
+			Row row = sheet.createRow(sheetRowIndex++);
+			addScheduleEventData(row, eventsToExport.get(i));
+		}
     	
     	if (postProcessor != null) {
     		postProcessor.invoke(facesContext.getELContext(), new Object[]{wb});
@@ -106,97 +120,68 @@ public class ExcelExporter extends Exporter {
 		}
 	}
 
-	protected void addScheduleEventData(Row rowHeader, ScheduleEvent event) throws IOException {
+	protected void addScheduleEventData(Row row, ScheduleEvent event) throws IOException {
 		if (event == null) return;
 		else {
-			String value;
-			value = event.getTitle();
-			value = value == null ? "" : value.trim();
-			Cell cell = rowHeader.createCell(0);
-			if (isXSSF) {
-				cell.setCellValue(new XSSFRichTextString(value));
-			} else {
-				cell.setCellValue(new HSSFRichTextString(value));
-			}
-
-			Date startDate = event.getStartDate();
-			value = startDate != null ? startDate.toString() : "";
-			cell = rowHeader.createCell(1);
-			if (isXSSF) {
-				cell.setCellValue(new XSSFRichTextString(value));
-			} else {
-				cell.setCellValue(new HSSFRichTextString(value));
-			}
-
-			Date endDate = event.getEndDate();
-			value = endDate != null ? endDate.toString() : "";
-			cell = rowHeader.createCell(2);
-			if (isXSSF) {
-				cell.setCellValue(new XSSFRichTextString(value));
-			} else {
-				cell.setCellValue(new HSSFRichTextString(value));
-			}
-
-			value = event.getLocation();
-			value = value == null ? "" : value.trim();
-			cell = rowHeader.createCell(3);
-			if (isXSSF) {
-				cell.setCellValue(new XSSFRichTextString(value));
-			} else {
-				cell.setCellValue(new HSSFRichTextString(value));
-			}
-
-			value = event.getNotes();
-			value = value == null ? "" : value.trim();
-			cell = rowHeader.createCell(4);
-			if (isXSSF) {
-				cell.setCellValue(new XSSFRichTextString(value));
-			} else {
-				cell.setCellValue(new HSSFRichTextString(value));
+			int numFields = fields.size();
+			for (int i = 0; i < numFields; i++) {
+				Field field = fields.get(i);
+				String value = null;
+				if (Field.ID == field) {
+					value = event.getId();
+				} else if (Field.TITLE == field) {
+					value = event.getTitle();
+				} else if (Field.STARTDATE == field) {
+					Date startDate = event.getStartDate();
+					value = startDate != null ? formatDate(startDate) : "";;
+				} else if (Field.ENDDATE == field) {
+					Date endDate = event.getEndDate();
+					value = endDate != null ? formatDate(endDate) : "";
+				} else if (Field.LOCATION == field) {
+					value = event.getLocation();
+				} else if (Field.STYLECLASS == field) {
+					value = event.getStyleClass();
+				} else if (Field.NOTES == field) {
+					value = event.getNotes();
+				}
+				value = value == null ? "" : value.trim();
+				Cell cell = row.createCell(i);
+				if (isXSSF) {
+					cell.setCellValue(new XSSFRichTextString(value));
+				} else {
+					cell.setCellValue(new HSSFRichTextString(value));
+				}
 			}
 		}
 	}
 
-	protected void addHeaders(Row rowHeader) throws IOException {
-		String value;
-		value = "Title";
-		Cell cell = rowHeader.createCell(0);
-		if (isXSSF) {
-			cell.setCellValue(new XSSFRichTextString(value));
-		} else {
-			cell.setCellValue(new HSSFRichTextString(value));
-		}
+	protected void addHeaders(Row row) throws IOException {
 
-		value = "Start Date";
-		cell = rowHeader.createCell(1);
-		if (isXSSF) {
-			cell.setCellValue(new XSSFRichTextString(value));
-		} else {
-			cell.setCellValue(new HSSFRichTextString(value));
-		}
-
-		value = "End Date";
-		cell = rowHeader.createCell(2);
-		if (isXSSF) {
-			cell.setCellValue(new XSSFRichTextString(value));
-		} else {
-			cell.setCellValue(new HSSFRichTextString(value));
-		}
-
-		value = "Location";
-		cell = rowHeader.createCell(3);
-		if (isXSSF) {
-			cell.setCellValue(new XSSFRichTextString(value));
-		} else {
-			cell.setCellValue(new HSSFRichTextString(value));
-		}
-
-		value = "Notes";
-		cell = rowHeader.createCell(4);
-		if (isXSSF) {
-			cell.setCellValue(new XSSFRichTextString(value));
-		} else {
-			cell.setCellValue(new HSSFRichTextString(value));
+		int numFields = fields.size();
+		for (int i = 0; i < numFields; i++) {
+			Field field = fields.get(i);
+			String value = "";
+			if (Field.ID == field) {
+				value = "Id";
+			} else if (Field.TITLE == field) {
+				value = "Title";
+			} else if (Field.STARTDATE == field) {
+				value = "Start Date";
+			} else if (Field.ENDDATE == field) {
+				value = "End Date";
+			} else if (Field.LOCATION == field) {
+				value = "Location";
+			} else if (Field.STYLECLASS == field) {
+				value = "Style Class";
+			} else if (Field.NOTES == field) {
+				value = "Notes";
+			}
+			Cell cell = row.createCell(i);
+			if (isXSSF) {
+				cell.setCellValue(new XSSFRichTextString(value));
+			} else {
+				cell.setCellValue(new HSSFRichTextString(value));
+			}
 		}
 	}
 }

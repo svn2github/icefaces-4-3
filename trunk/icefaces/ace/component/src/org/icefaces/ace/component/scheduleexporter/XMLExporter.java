@@ -28,6 +28,7 @@
 package org.icefaces.ace.component.scheduleexporter;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Collection;
 import java.util.Date;
@@ -58,6 +59,7 @@ public class XMLExporter extends Exporter {
 		
 		int rowCount = schedule.getRowCount();
     	int first = 0;
+		ArrayList<ScheduleEvent> eventsToExport = new ArrayList<ScheduleEvent>();
 
     	String tagName = "event";
     	for (int i = first; i < rowCount; i++) {
@@ -65,15 +67,27 @@ public class XMLExporter extends Exporter {
 			Object rowData = schedule.getRowData();
 
 			if (rowData instanceof ScheduleEvent) {
-				builder.append("\t<" + tagName + ">\n");
-				addScheduleEventData(builder, (ScheduleEvent) rowData);
-				builder.append("\t</" + tagName + ">\n");
+				if (exportAllEvents) {
+					eventsToExport.add((ScheduleEvent) rowData);
+				} else {
+					ScheduleEvent event = (ScheduleEvent) rowData;
+					if (isWithinRange(event)) eventsToExport.add(event);
+				}
 			}
+		}
+
+    	schedule.setRowIndex(-1);
+
+		sortEvents(eventsToExport);
+
+		int size = eventsToExport.size();
+		for (int i = 0; i < size; i++) {
+			builder.append("\t<" + tagName + ">\n");
+			addScheduleEventData(builder, eventsToExport.get(i));
+			builder.append("\t</" + tagName + ">\n");
 		}
     	
     	builder.append("</" + schedule.getId() + ">");
-    	
-    	schedule.setRowIndex(-1);
 
 		byte[] bytes = builder.toString().getBytes(encodingType);
 		
@@ -83,36 +97,40 @@ public class XMLExporter extends Exporter {
 	protected void addScheduleEventData(StringBuilder builder, ScheduleEvent event) throws IOException {
 		if (event == null) return;
 		else {
-			String value;
-			value = event.getTitle();
-			value = value == null ? "" : value.trim();
-			builder.append("\t\t<title>");
-			builder.append(encloseInCDATASection(value));
-			builder.append("</title>\n");
-
-			Date startDate = event.getStartDate();
-			value = startDate != null ? startDate.toString() : "";
-			builder.append("\t\t<startDate>");
-			builder.append(encloseInCDATASection(value));
-			builder.append("</startDate>\n");
-
-			Date endDate = event.getEndDate();
-			value = endDate != null ? endDate.toString() : "";
-			builder.append("\t\t<endDate>");
-			builder.append(encloseInCDATASection(value));
-			builder.append("</endDate>\n");
-
-			value = event.getLocation();
-			value = value == null ? "" : value.trim();
-			builder.append("\t\t<location>");
-			builder.append(encloseInCDATASection(value));
-			builder.append("</location>\n");
-
-			value = event.getNotes();
-			value = value == null ? "" : value.trim();
-			builder.append("\t\t<notes>");
-			builder.append(encloseInCDATASection(value));
-			builder.append("</notes>\n");
+			int numFields = fields.size();
+			for (int i = 0; i < numFields; i++) {
+				Field field = fields.get(i);
+				String value = null;
+				String tag = "_";
+				if (Field.ID == field) {
+					value = event.getId();
+					tag = "id";
+				} else if (Field.TITLE == field) {
+					value = event.getTitle();
+					tag = "title";
+				} else if (Field.STARTDATE == field) {
+					Date startDate = event.getStartDate();
+					value = startDate != null ? formatDate(startDate) : "";;
+					tag = "startDate";
+				} else if (Field.ENDDATE == field) {
+					Date endDate = event.getEndDate();
+					value = endDate != null ? formatDate(endDate) : "";
+					tag = "endDate";
+				} else if (Field.LOCATION == field) {
+					value = event.getLocation();
+					tag = "location";
+				} else if (Field.STYLECLASS == field) {
+					value = event.getStyleClass();
+					tag = "styleClass";
+				} else if (Field.NOTES == field) {
+					value = event.getNotes();
+					tag = "notes";
+				}
+				value = value == null ? "" : value.trim();
+				builder.append("\t\t<" + tag + ">");
+				builder.append(encloseInCDATASection(value));
+				builder.append("</" + tag + ">\n");
+			}
 		}
 	}
 

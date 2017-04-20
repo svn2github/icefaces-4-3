@@ -30,6 +30,7 @@ package org.icefaces.ace.component.scheduleexporter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Collection;
 import java.util.Date;
@@ -118,8 +119,7 @@ public class PDFExporter extends Exporter {
 			if (schedule.getRowCount() > 0) {
 				//PdfPTable pdfTable = exportPDFTable(table, pageOnly,excludeColumns, encodingType, include3, includeFooters, selectedRowsOnly);
 
-				Object pdfTable = pdfPTableConstructor.newInstance(new Object[] { new Integer(5) });
-				// TO DO: specify number of fields specified in attribute
+				Object pdfTable = pdfPTableConstructor.newInstance(new Object[] { new Integer(fields.size()) });
 
 				exportPDFTable(facesContext, pdfTable, schedule, encodingType, includeHeaders);
 				//document.add(pdfTable);
@@ -170,6 +170,7 @@ public class PDFExporter extends Exporter {
 		
 		int rowCount = schedule.getRowCount();
     	int first = 0;
+		ArrayList<ScheduleEvent> eventsToExport = new ArrayList<ScheduleEvent>();
     	
 		if (includeHeaders) {
 			//Font headerFont = FontFactory.getFont(FontFactory.TIMES, encoding, Font.DEFAULTSIZE, Font.BOLD);			
@@ -182,73 +183,86 @@ public class PDFExporter extends Exporter {
     		schedule.setRowIndex(i);
 			Object rowData = schedule.getRowData();
 
-			//addColumnValue(pdfTable, columns.get(j).getChildren(), j, font);
 			if (rowData instanceof ScheduleEvent) {
-				addScheduleEventData(pdfTable, (ScheduleEvent) rowData, font);
+				if (exportAllEvents) {
+					eventsToExport.add((ScheduleEvent) rowData);
+				} else {
+					ScheduleEvent event = (ScheduleEvent) rowData;
+					if (isWithinRange(event)) eventsToExport.add(event);
+				}
 			}
 		}
     	
     	schedule.setRowIndex(-1);
+
+		sortEvents(eventsToExport);
+
+		int size = eventsToExport.size();
+		for (int i = 0; i < size; i++) {
+			//addColumnValue(pdfTable, columns.get(j).getChildren(), j, font);
+			addScheduleEventData(pdfTable, eventsToExport.get(i), font);
+		}
 	}
 
 	protected void addScheduleEventData(Object pdfTable, ScheduleEvent event, Object font)
 		throws IllegalAccessException, InvocationTargetException, InstantiationException {
 		if (event == null) return;
 		else {
-			String value;
-			value = event.getTitle();
-			value = value == null ? "" : value.trim();
-			//pdfTable.addCell(new Paragraph(value, font));
-			Object paragraph = paragraphConstructor.newInstance(new Object[] { value, font });
-			addCellMethod.invoke(pdfTable, new Object[] { paragraph });
+			int numFields = fields.size();
+			for (int i = 0; i < numFields; i++) {
+				Field field = fields.get(i);
+				String value = null;
+				if (Field.ID == field) {
+					value = event.getId();
+				} else if (Field.TITLE == field) {
+					value = event.getTitle();
+				} else if (Field.STARTDATE == field) {
+					Date startDate = event.getStartDate();
+					value = startDate != null ? formatDate(startDate) : "";;
+				} else if (Field.ENDDATE == field) {
+					Date endDate = event.getEndDate();
+					value = endDate != null ? formatDate(endDate) : "";
+				} else if (Field.LOCATION == field) {
+					value = event.getLocation();
+				} else if (Field.STYLECLASS == field) {
+					value = event.getStyleClass();
+				} else if (Field.NOTES == field) {
+					value = event.getNotes();
+				}
+				value = value == null ? "" : value.trim();
 
-			Date startDate = event.getStartDate();
-			value = startDate != null ? startDate.toString() : "";
-			//pdfTable.addCell(new Paragraph(value, font));
-			paragraph = paragraphConstructor.newInstance(new Object[] { value, font });
-			addCellMethod.invoke(pdfTable, new Object[] { paragraph });
-
-			Date endDate = event.getEndDate();
-			value = endDate != null ? endDate.toString() : "";
-			//pdfTable.addCell(new Paragraph(value, font));
-			paragraph = paragraphConstructor.newInstance(new Object[] { value, font });
-			addCellMethod.invoke(pdfTable, new Object[] { paragraph });
-
-			value = event.getLocation();
-			value = value == null ? "" : value.trim();
-			//pdfTable.addCell(new Paragraph(value, font));
-			paragraph = paragraphConstructor.newInstance(new Object[] { value, font });
-			addCellMethod.invoke(pdfTable, new Object[] { paragraph });
-
-			value = event.getNotes();
-			value = value == null ? "" : value.trim();
-			//pdfTable.addCell(new Paragraph(value, font));
-			paragraph = paragraphConstructor.newInstance(new Object[] { value, font });
-			addCellMethod.invoke(pdfTable, new Object[] { paragraph });
+				//pdfTable.addCell(new Paragraph(value, font));
+				Object paragraph = paragraphConstructor.newInstance(new Object[] { value, font });
+				addCellMethod.invoke(pdfTable, new Object[] { paragraph });
+			}
 		}
 	}
 
 	protected void addHeaders(Object pdfTable, Object font)
 		throws IllegalAccessException, InvocationTargetException, InstantiationException {
 
-		//pdfTable.addCell(new Paragraph(value, font));
-		Object paragraph = paragraphConstructor.newInstance(new Object[] { "Title", font });
-		addCellMethod.invoke(pdfTable, new Object[] { paragraph });
-
-		//pdfTable.addCell(new Paragraph(value, font));
-		paragraph = paragraphConstructor.newInstance(new Object[] { "Start Date", font });
-		addCellMethod.invoke(pdfTable, new Object[] { paragraph });
-
-		//pdfTable.addCell(new Paragraph(value, font));
-		paragraph = paragraphConstructor.newInstance(new Object[] { "End Date", font });
-		addCellMethod.invoke(pdfTable, new Object[] { paragraph });
-
-		//pdfTable.addCell(new Paragraph(value, font));
-		paragraph = paragraphConstructor.newInstance(new Object[] { "Location", font });
-		addCellMethod.invoke(pdfTable, new Object[] { paragraph });
-
-		//pdfTable.addCell(new Paragraph(value, font));
-		paragraph = paragraphConstructor.newInstance(new Object[] { "Notes", font });
-		addCellMethod.invoke(pdfTable, new Object[] { paragraph });
+		int numFields = fields.size();
+		for (int i = 0; i < numFields; i++) {
+			Field field = fields.get(i);
+			String value = "";
+			if (Field.ID == field) {
+				value = "Id";
+			} else if (Field.TITLE == field) {
+				value = "Title";
+			} else if (Field.STARTDATE == field) {
+				value = "Start Date";
+			} else if (Field.ENDDATE == field) {
+				value = "End Date";
+			} else if (Field.LOCATION == field) {
+				value = "Location";
+			} else if (Field.STYLECLASS == field) {
+				value = "Style Class";
+			} else if (Field.NOTES == field) {
+				value = "Notes";
+			}
+			//pdfTable.addCell(new Paragraph(value, font));
+			Object paragraph = paragraphConstructor.newInstance(new Object[] { value, font });
+			addCellMethod.invoke(pdfTable, new Object[] { paragraph });
+		}
 	}
 }

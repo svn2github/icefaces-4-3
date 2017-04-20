@@ -96,11 +96,18 @@ public class ScheduleExporterMeta extends UIComponentBaseMeta {
 	@Property(tlddoc = "The absolute path in the host system (e.g. C:\\Windows\\Fonts\\arial.ttf) to a font file to be used in the PDF exporting instead of the default font. If specifying a custom 'encoding' value, it has to be supported by this custom font. Note that the default font does not support unicode characters, so a custom font has to be set in order to support these characters.")
 	String pdfFont;
 
-/*
-TO DO:
- exportAllEvents
- fieldsToExport
- dateFormat
- sortBy
-*/
+	@Property(tlddoc = "Specifies the event fields to include when exporting as well as the order of those fields. The fields that can be specified are 'title', 'startdate', 'enddate', 'location', 'notes', 'id' and 'styleclass'. The field names are case insensitive and must be separated by commas. Spaces are ignored.", defaultValue="title,startdate,enddate,location,notes")
+	String fieldsToExport;
+
+	@Property(tlddoc = "Specifies the date pattern that will be used when formatting the startdate and enddate fields. Valid patterns are those supported by the class java.text.SimpleDateFormat.", defaultValue="yyyy-MM-dd HH:mm")
+	String datePattern;
+
+	@Property(tlddoc = "Specifies whether all the events contained by the ace:schedule component should be exported, instead of only exporting the events in the period currently being viewed. This attribute doesn't apply if the ace:schedule component is set to work in a lazy loading mode.", defaultValue="false")
+	boolean exportAllEvents;
+
+    @Property(tlddoc="Specifies the name of the field by which to sort events when exporting. The fields that can be specified are 'title', 'startdate', 'enddate', 'location', 'notes', 'id' and 'styleclass'. The field names are case insensitive.", defaultValue = "startdate")
+    private String sortBy;
+
+    @Property(tlddoc="Specifies the direction, ascending or descending, by which the events will be sorted (chronologically, alphabetically, or numerically, depending on the field to sort by).", defaultValue = "true")
+    private boolean sortAscending;
 }

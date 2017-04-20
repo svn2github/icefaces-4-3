@@ -28,6 +28,7 @@
 package org.icefaces.ace.component.scheduleexporter;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Collection;
 import java.util.Date;
@@ -46,23 +47,58 @@ public class CSVExporter extends Exporter {
 		StringBuilder builder = new StringBuilder();
     	
     	if (includeHeaders) {
-			builder.append("\"Title\",\"Start Date\",\"End Date\",\"Location\",\"Notes\"\n");
+			int numFields = fields.size();
+			for (int i = 0; i < numFields; i++) {
+				Field field = fields.get(i);
+				String value = "";
+				if (Field.ID == field) {
+					value = "Id";
+				} else if (Field.TITLE == field) {
+					value = "Title";
+				} else if (Field.STARTDATE == field) {
+					value = "Start Date";
+				} else if (Field.ENDDATE == field) {
+					value = "End Date";
+				} else if (Field.LOCATION == field) {
+					value = "Location";
+				} else if (Field.STYLECLASS == field) {
+					value = "Style Class";
+				} else if (Field.NOTES == field) {
+					value = "Notes";
+				}
+				builder.append("\"" + value + "\"");
+				if (i < (numFields-1)) builder.append(",");
+			}
+			builder.append("\n");
 		}
-    	
+
 		int rowCount = schedule.getRowCount();
     	int first = 0;
+		ArrayList<ScheduleEvent> eventsToExport = new ArrayList<ScheduleEvent>();
 
     	for (int i = first; i < rowCount; i++) {
     		schedule.setRowIndex(i);
 			Object rowData = schedule.getRowData();
 
 			if (rowData instanceof ScheduleEvent) {
-				addScheduleEventData(builder, (ScheduleEvent) rowData);
+				if (exportAllEvents) {
+					eventsToExport.add((ScheduleEvent) rowData);
+				} else {
+					ScheduleEvent event = (ScheduleEvent) rowData;
+					if (isWithinRange(event)) eventsToExport.add(event);
+				}
 			}
-			builder.append("\n");
 		}
     	
     	schedule.setRowIndex(-1);
+
+		sortEvents(eventsToExport);
+
+		int size = eventsToExport.size();
+		for (int i = 0; i < size; i++) {
+			addScheduleEventData(builder, eventsToExport.get(i));
+			builder.append("\n");
+		}
 
 		byte[] bytes;
 		try {
@@ -79,26 +115,31 @@ public class CSVExporter extends Exporter {
 	protected void addScheduleEventData(StringBuilder builder, ScheduleEvent event) throws IOException {
 		if (event == null) return;
 		else {
-			String value;
-			value = event.getTitle();
-			value = value == null ? "" : value.trim();
-			builder.append("\"" + value + "\",");
-
-			Date startDate = event.getStartDate();
-			value = startDate != null ? startDate.toString() : "";
-			builder.append("\"" + value + "\",");
-
-			Date endDate = event.getEndDate();
-			value = endDate != null ? endDate.toString() : "";
-			builder.append("\"" + value + "\",");
-
-			value = event.getLocation();
-			value = value == null ? "" : value.trim();
-			builder.append("\"" + value + "\",");
-
-			value = event.getNotes();
-			value = value == null ? "" : value.trim();
-			builder.append("\"" + value + "\"");
+			int numFields = fields.size();
+			for (int i = 0; i < numFields; i++) {
+				Field field = fields.get(i);
+				String value = null;
+				if (Field.ID == field) {
+					value = event.getId();
+				} else if (Field.TITLE == field) {
+					value = event.getTitle();
+				} else if (Field.STARTDATE == field) {
+					Date startDate = event.getStartDate();
+					value = startDate != null ? formatDate(startDate) : "";;
+				} else if (Field.ENDDATE == field) {
+					Date endDate = event.getEndDate();
+					value = endDate != null ? formatDate(endDate) : "";
+				} else if (Field.LOCATION == field) {
+					value = event.getLocation();
+				} else if (Field.STYLECLASS == field) {
+					value = event.getStyleClass();
+				} else if (Field.NOTES == field) {
+					value = event.getNotes();
+				}
+				value = value == null ? "" : value.trim();
+				builder.append("\"" + value + "\"");
+				if (i < (numFields-1)) builder.append(",");
+			}
 		}
 	}
 }
