@@ -828,7 +828,12 @@ public class CentralDataList {
 							new DemoSource[] { 
 								new DemoSource(DemoSource.Type.XHTML, "scheduleCustomStyling.xhtml", "schedule"), 
 								new DemoSource(DemoSource.Type.JAVA, "ScheduleCustomStylingBean.java", "schedule"),
-								new DemoSource(DemoSource.Type.JAVA, "DefaultDistributionEventGenerator.java", "schedule") }))
+								new DemoSource(DemoSource.Type.JAVA, "DefaultDistributionEventGenerator.java", "schedule") })),
+				new ComponentGroup("ace:scheduleExporter", "Schedule Exporter", "scheduleExporter.html",
+						new Demo(msgs("overview"), msgs("example.ace.scheduleExporter.description"),
+								 "scheduleExporter", "scheduleExporter.xhtml", "scheduleExporterBean.java"),
+						new Demo(msgs("menu.ace.scheduleExporter.subMenu.config"), msgs("example.ace.scheduleExporter.config.description"),
+								 "scheduleExporter", "scheduleExporterConfiguration.xhtml", "scheduleExporterConfigurationBean.java"))
 		));
 	
 		toReturn.add(new CategoryGroup(msgs("menu.ace.group.validator.title"),
