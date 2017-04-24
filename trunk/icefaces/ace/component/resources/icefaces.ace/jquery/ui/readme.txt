@@ -25,3 +25,4 @@ ICE-10470: fix to avoid setting explicit heights of panes when the accordion isn
 ICE-10918: fix for honouring the selected time zone when pressing the Today/Now button
 ICE-10970: increased z-index of popup datepicker
 ICE-10735: added onclick="this.focus();" to slider handle for accesskey purposes on Chrome
+ICE-11292: set overflow CSS property to hidden on the main content pane, since the inner content pane will now contain the overflow:auto; styling

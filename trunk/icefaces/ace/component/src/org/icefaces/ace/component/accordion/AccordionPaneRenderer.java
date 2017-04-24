@@ -32,7 +32,7 @@ public class AccordionPaneRenderer extends Renderer {
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId + "_content", null);
         //help resizable component calculate properly its maximum bounds
-        writer.writeAttribute("style", "height: 100%;", null);
+        writer.writeAttribute("style", "height: 100%;overflow:auto;", null);
     }
 
     public void encodeEnd(FacesContext context, UIComponent kid) throws IOException {

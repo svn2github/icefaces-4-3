@@ -4695,7 +4695,7 @@
                                     $( this ).innerHeight() + $( this ).height() ) );
                             if ($( this ).height() == 0) $( this ).height( "" ); // ICE-10470
                         })
-                        .css( "overflow", "auto" );
+                        .css( "overflow", "hidden" ); // ICE-11292
             } else if ( options.autoHeight ) {
                 maxHeight = 0;
                 this.headers.next()
