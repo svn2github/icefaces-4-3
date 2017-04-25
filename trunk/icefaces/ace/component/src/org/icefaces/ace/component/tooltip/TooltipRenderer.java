@@ -231,20 +231,44 @@ public class TooltipRenderer extends CoreRenderer {
 
 			String forElement = tooltip.getForElement();
 			if(_for != null) {
-				UIComponent forComponent = tooltip.findComponent(_for);
-				if(forComponent == null) {
-					String containerId = tooltip.getForContainer();
-					UIComponent container = null;
-					if (containerId != null) {
-						container = CoreComponentUtils.findComponentInView(facesContext.getViewRoot(), containerId);
+				if (_for.indexOf(",") > -1) { // multiple component ID's
+					ArrayList<String> clientIds = new ArrayList<String>();
+					String[] forIds = _for.split(",");
+					for (int i = 0; i < forIds.length; i++) {
+						String forId = forIds[i].trim();
+						UIComponent forComponent = tooltip.findComponent(forId);
+						if(forComponent == null) {
+							String containerId = tooltip.getForContainer();
+							UIComponent container = null;
+							if (containerId != null) {
+								container = CoreComponentUtils.findComponentInView(facesContext.getViewRoot(), containerId);
+							}
+							if (container != null) {
+								clientIds.addAll(collectClientIds(facesContext, container, forId));
+							} else {
+								throw new FacesException("Cannot find component \"" + forId + "\" in view.");
+							}
+						} else {
+							clientIds.add(forComponent.getClientId(facesContext));
+						}
 					}
-					if (container != null) {
-						return collectClientIds(facesContext, container, _for);
+					return clientIds;
+				} else { // single component ID
+					UIComponent forComponent = tooltip.findComponent(_for);
+					if(forComponent == null) {
+						String containerId = tooltip.getForContainer();
+						UIComponent container = null;
+						if (containerId != null) {
+							container = CoreComponentUtils.findComponentInView(facesContext.getViewRoot(), containerId);
+						}
+						if (container != null) {
+							return collectClientIds(facesContext, container, _for);
+						} else {
+							throw new FacesException("Cannot find component \"" + _for + "\" in view.");
+						}
 					} else {
-						throw new FacesException("Cannot find component \"" + _for + "\" in view.");
+						return forComponent.getClientId(facesContext);
 					}
-				} else {
-					return forComponent.getClientId(facesContext);
 				}
 
 			} else if(forElement != null) {

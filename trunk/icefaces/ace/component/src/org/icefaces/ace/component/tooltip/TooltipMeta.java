@@ -84,7 +84,7 @@ public class TooltipMeta extends UIOutputMeta {
 	@Property(tlddoc="Length of time in milliseconds the hide effect will last for.", defaultValue="500")
 	private int hideEffectLength;
 
-	@Property(name="for", tlddoc="Specifies the id of the component that will display the tooltip. Ignored if \"global\" is true.")
+	@Property(name="for", tlddoc="Specifies the id of the component that will display the tooltip. Ignored if \"global\" is true. Multiple component ids can be specified separated by commas.")
 	private String forValue;
 
 	@Property(tlddoc="Specifies the id of the HTML element that will display the tooltip. Applicable only if \"for\" component is not specified. Ignored if \"global\" is true.")
