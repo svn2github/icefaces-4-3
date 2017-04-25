@@ -129,8 +129,25 @@ ice.ace.Tooltip = function(id, cfg) {
 			if (this === delegateNode) { // event bubbled to the highest point, we can now begin
 				var findTargetComponent = function(node) {
 					if (node) {
-						if (node.id && ice.ace.Tooltip.endsWith(node.id, self.cfg.forComponent)) {
-							return node.id;
+						if (node.id) {
+							var endsWithId = false;
+							if (self.cfg.forComponents) {
+								var forComponents = self.cfg.forComponents;
+								var i;
+								for (i = 0; i < forComponents.length; i++) {
+									if (ice.ace.Tooltip.endsWith(node.id, forComponents[i])) {
+										endsWithId = true;
+										break;
+									}
+								}
+							} else {
+								endsWithId = ice.ace.Tooltip.endsWith(node.id, self.cfg.forComponent);
+							}
+							if (endsWithId) {
+								return node.id;
+							} else {
+								return findTargetComponent(node.parentNode);
+							}
 						} else {
 							return findTargetComponent(node.parentNode);
 						}

@@ -182,7 +182,22 @@ public class TooltipRenderer extends CoreRenderer {
 			UIComponent delegateComponent = CoreComponentUtils.findComponentInView(facesContext.getViewRoot(), delegateId);
 			if (delegateComponent != null && delegateComponent instanceof Delegate) {
 				jb.entry("forDelegate", delegateComponent.getClientId(facesContext));
-				jb.entry("forComponent", tooltip.getFor());
+				String _for = tooltip.getFor();
+				if (_for != null) {
+					if (_for.indexOf(",") > -1) {
+						jb.beginArray("forComponents");
+						String[] forIds = _for.split(",");
+						for (int i = 0; i < forIds.length; i++) {
+							String forId = forIds[i].trim();
+							jb.item(forId);
+						}
+						jb.endArray();
+					} else {
+						jb.entry("forComponent", _for);
+					}
+				} else {
+					throw new FacesException("No 'for' attribute was specified for ace:tooltip component with ID \"" + tooltip.getId() + "\".");
+				}
 			} else {
 				throw new FacesException("Cannot find delegate component \"" + delegateId + "\" in view or it is not an instance of <ace:delegate>.");
 			}
