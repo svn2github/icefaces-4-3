@@ -53,7 +53,7 @@ import javax.el.ValueExpression;
 })
 public class ContextMenuMeta extends UIComponentBaseMeta {
 
-    @Property(name = "for", tlddoc = "Server side id of the component to attach to.")
+    @Property(name = "for", tlddoc = "Server side id of the component to attach to. Multiple component ids can be specified separated by commas.")
     private String forValue;
 	
     @Property(tlddoc = "Server side id of the ace:delegate component to attach to.")

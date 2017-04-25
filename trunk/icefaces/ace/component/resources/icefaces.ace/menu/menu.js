@@ -388,8 +388,25 @@ ice.ace.ContextMenu = function(id, cfg) {
 			if (this === delegateNode && !ignoreEvent) { // event bubbled to the highest point, we can now begin
 				var findTargetComponent = function(node) {
 					if (node) {
-						if (node.id && ice.ace.ContextMenu.endsWith(node.id, cfg.forComponent)) {
-							return node.id;
+						if (node.id) {
+							var endsWithId = false;
+							if (cfg.forComponents) {
+								var forComponents = cfg.forComponents;
+								var i;
+								for (i = 0; i < forComponents.length; i++) {
+									if (ice.ace.ContextMenu.endsWith(node.id, forComponents[i])) {
+										endsWithId = true;
+										break;
+									}
+								}
+							} else {
+								endsWithId = ice.ace.ContextMenu.endsWith(node.id, cfg.forComponent);
+							}
+							if (endsWithId) {
+								return node.id;
+							} else {
+								return findTargetComponent(node.parentNode);
+							}
 						} else {
 							return findTargetComponent(node.parentNode);
 						}
@@ -432,7 +449,17 @@ ice.ace.ContextMenu.prototype.initialize = function(id, cfg) {
     //configuration
     this.cfg.orientation = 'vertical';
     this.cfg.triggerEvent = 'rtclick';
-    this.cfg.trigger = typeof this.cfg.target == 'string' ? ice.ace.escapeClientId(this.cfg.target) : this.cfg.target;
+	if (this.cfg.target && typeof this.cfg.target == 'string' && this.cfg.target.indexOf(',') > -1) {
+		this.cfg.trigger = '';
+		var clientIds = this.cfg.target.split(',');
+		var i;
+		for (i = 0; i < clientIds.length; i++) {
+			this.cfg.trigger += ice.ace.escapeClientId(clientIds[i]);
+			if (i < (clientIds.length - 1)) this.cfg.trigger += ', ';
+		}
+	} else {
+		this.cfg.trigger = typeof this.cfg.target == 'string' ? ice.ace.escapeClientId(this.cfg.target) : this.cfg.target;
+	}
 
     var _self = this;
 	

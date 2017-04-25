@@ -123,7 +123,22 @@ public class ContextMenuRenderer extends BaseMenuRenderer {
 				UIComponent delegateComponent = CoreComponentUtils.findComponentInView(context.getViewRoot(), delegateId);
 				if (delegateComponent != null && delegateComponent instanceof Delegate) {
 					json.entry("forDelegate", delegateComponent.getClientId(context));
-					json.entry("forComponent", menu.getFor());
+					String _for = menu.getFor();
+					if (_for != null) {
+						if (_for.indexOf(",") > -1) {
+							json.beginArray("forComponents");
+							String[] forIds = _for.split(",");
+							for (int i = 0; i < forIds.length; i++) {
+								String forId = forIds[i].trim();
+								json.item(forId);
+							}
+							json.endArray();
+						} else {
+							json.entry("forComponent", _for);
+						}
+					} else {
+						throw new FacesException("No 'for' attribute was specified for ace:contextMenu component with ID \"" + menu.getId() + "\".");
+					}
 				} else {
 					throw new FacesException("Cannot find delegate component \"" + delegateId + "\" in view or it is not an instance of <ace:delegate>.");
 				}
@@ -279,12 +294,32 @@ public class ContextMenuRenderer extends BaseMenuRenderer {
 		String _for = menu.getFor();
 
 		if(_for != null && !"".equals(_for)) {
-			UIComponent forComponent = menu.findComponent(_for);
 
-			if(forComponent == null)
-				throw new FacesException("Cannot find component '" + _for + "' in view.");
-			else {
-                return "'" +  forComponent.getClientId(context) + "'";
+			if (_for.indexOf(",") > -1) { // multiple component ID's
+				String clientIds = "'";
+				String[] forIds = _for.split(",");
+				for (int i = 0; i < forIds.length; i++) {
+					String forId = forIds[i].trim();
+
+					UIComponent forComponent = menu.findComponent(forId);
+
+					if(forComponent == null) {
+						throw new FacesException("Cannot find component '" + forId + "' in view.");
+					} else {
+						clientIds += forComponent.getClientId(context);
+						if (i < (forIds.length - 1)) clientIds += ",";
+					}
+				}
+				clientIds += "'";
+				return clientIds;
+			} else { // single component ID
+				UIComponent forComponent = menu.findComponent(_for);
+
+				if(forComponent == null)
+					throw new FacesException("Cannot find component '" + _for + "' in view.");
+				else {
+					return "'" +  forComponent.getClientId(context) + "'";
+				}
 			}
 		}
 		else {
