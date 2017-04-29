@@ -292,6 +292,7 @@ ice.ace.DataTable.prototype.cellSelector = ' > div > table > tbody.ui-datatable-
 ice.ace.DataTable.prototype.scrollBodySelector = ' > div.ui-datatable-scrollable-body';
 ice.ace.DataTable.prototype.bodyTableSelector = '> div > table > tbody.ui-datatable-data';
 ice.ace.DataTable.prototype.filterSelector = ' > div > table > thead > tr > th > div > input.ui-column-filter';
+ice.ace.DataTable.prototype.filterButtonSelector = ' > div > table > thead > tr > th > div > .ui-column-filter-button';
 ice.ace.DataTable.prototype.panelExpansionSelector = ' > div > table > tbody.ui-datatable-data > tr:not(.ui-expanded-row-content) > td *:not(tbody) a.ui-row-panel-toggler';
 ice.ace.DataTable.prototype.rowExpansionSelector = ' > div > table > tbody.ui-datatable-data > tr > td *:not(tbody) a.ui-row-toggler';
 // 'link' will be replaced with the style class of the element in question
@@ -405,6 +406,29 @@ ice.ace.DataTable.prototype.setupFilterEvents = function () {
             }
         });
 	}
+
+	this.element.off('click', this.filterButtonSelector);
+	this.element.on('click', this.filterButtonSelector, function (event) {
+		var _event = event;
+		var button = ice.ace.jq(this);
+		if (button.hasClass('fa-chevron-down')) {
+			button.removeClass('fa-chevron-down');
+			button.addClass('fa-chevron-up');
+			var position = button.position();
+			button.next().css({top: position.top + button.outerHeight() + 'px', left: position.left + 'px'});
+			button.next().show();
+		} else if (button.hasClass('fa-chevron-up')) {
+			button.removeClass('fa-chevron-up');
+			button.addClass('fa-chevron-down');
+			button.next().hide();
+			if (_self.delayedFilterCall)
+				clearTimeout(_self.delayedFilterCall);
+
+			_self.delayedFilterCall = setTimeout(function () {
+				_self.filter(_event);
+			}, 400);
+		}
+	});
 
 	this.element.off('input', this.filterSelector);
     this.element.on('input', this.filterSelector, function (event) {

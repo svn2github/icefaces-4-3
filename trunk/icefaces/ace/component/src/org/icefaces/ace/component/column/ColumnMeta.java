@@ -19,10 +19,15 @@ package org.icefaces.ace.component.column;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.DefaultValueType;
 import org.icefaces.ace.meta.annotation.Expression;
+import org.icefaces.ace.meta.annotation.Facet;
+import org.icefaces.ace.meta.annotation.Facets;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIColumnMeta;
 
 import org.icefaces.resources.ICEResourceDependencies;
+
+import javax.faces.component.UIComponent;
+
 import java.util.Comparator;
 
 @Component(
@@ -181,6 +186,12 @@ public class ColumnMeta extends UIColumnMeta {
 
 	@Property(tlddoc = "Access key that, when pressed, transfers focus to the filter input of this column, if filtering is enabled for this column, or to the ascending sort button, if sorting is enabled for this column.")
 	String accesskey;
+
+    @Facets
+    class FacetsMeta {
+        @Facet(tlddoc = "An optional facet that is rendered in place of the built-in filtering inputs to provide more flexibility when filtering values. This facet is rendered as a simple popup dialog. When using this facet, the 'filterValue' property has to be set as well (or 'filterValueMin' and 'filterValueMax' if working with ranges).")
+        UIComponent filter;
+    }
 
 //    These per-feature configuration attributes will be used when the 'value' property is added to Column.
 //    Until then they are redundant.

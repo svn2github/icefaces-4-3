@@ -430,6 +430,28 @@ public class DataTable extends DataTableBase implements Serializable {
         if (savedSelectionChanges.get(getClientId(context)) != null)
             savedSelectionChanges.get(getClientId(context)).apply(this);
 
+		if (isFilterRequest(context)) {
+			for (Column c : getColumns()) {
+				UIComponent filterFacet = c.getFilterFacet();
+				if (filterFacet != null) {
+					filterFacet.processUpdates(context);
+				}
+			}
+
+			if (savedFilterState != null) {
+				for (Column c : getColumns()) {
+					if (c.getFilterFacet() != null) {
+						Object filterValue = c.getFilterValue();
+						if (filterValue != null) {
+							savedFilterState.saveState(c);
+						} else {
+							savedFilterState.saveState(c, c.getFilterValueMin(), c.getFilterValueMax());
+						}
+					}
+				}
+			}
+		}
+
         if (isApplyingFilters() && !isLazy()) {
             if (savedFilterState != null)
                 savedFilterState.apply(this);
@@ -467,6 +489,15 @@ public class DataTable extends DataTableBase implements Serializable {
 
 		decode(context);
 
+		if (isFilterRequest(context)) {
+			for (Column c : getColumns()) {
+				UIComponent filterFacet = c.getFilterFacet();
+				if (filterFacet != null) {
+					filterFacet.processDecodes(context);
+				}
+			}
+		}
+
         if (isApplyingFilters()) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             queueEvent(
@@ -492,6 +523,15 @@ public class DataTable extends DataTableBase implements Serializable {
 		
 		if (isAlwaysExecuteContents() || !isTableFeatureRequest(context))
 			iterate(context, PhaseId.PROCESS_VALIDATIONS);
+
+		if (isFilterRequest(context)) {
+			for (Column c : getColumns()) {
+				UIComponent filterFacet = c.getFilterFacet();
+				if (filterFacet != null) {
+					filterFacet.processValidators(context);
+				}
+			}
+		}
 
         app.publishEvent(context, PostValidateEvent.class, this);
         popComponentFromEL(context);

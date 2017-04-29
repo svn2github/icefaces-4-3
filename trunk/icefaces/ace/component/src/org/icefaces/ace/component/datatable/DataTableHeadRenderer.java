@@ -374,6 +374,11 @@ public class DataTableHeadRenderer {
         ResponseWriter writer = context.getResponseWriter();
         DataTable table = tableContext.getTable();
 
+		if (column.getFilterFacet() != null) {
+			encodeFilterFacet(context, column);
+			return;
+		}
+
         String filterId = column.getClientId(context) + "_filter";
         String filterFunction = "ice.ace.instance('"+table.getClientId(context)+"').filter(event)";
         String filterStyleClass = column.getFilterStyleClass();
@@ -663,6 +668,25 @@ public class DataTableHeadRenderer {
 		writer.write("document.getElementById('"+clientId+"_input').submitOnEnter = 'disabled';");
 
         writer.endElement("script");
+	}
+
+	private static void encodeFilterFacet(FacesContext context, Column column) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = column.getClientId(context);
+
+        writer.startElement("span", null);
+        writer.writeAttribute("id", clientId + "_filter", null);
+        writer.writeAttribute("class", "ui-column-filter ui-column-filter-button fa fa-chevron-down", null);
+		writer.endElement("span");
+
+        writer.startElement("span", null);
+        writer.writeAttribute("id", clientId + "_filterFacet", null);
+        writer.writeAttribute("class", "ui-widget-content ui-column-filter-facet", null);
+		writer.writeAttribute("style", "display: none;", null);
+
+		column.getFilterFacet().encodeAll(context);
+
+		writer.endElement("span");
 	}
 
     protected static String getResourceRequestPath(FacesContext facesContext, String resourceName) {

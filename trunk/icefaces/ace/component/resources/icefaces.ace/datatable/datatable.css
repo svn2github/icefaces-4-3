@@ -211,6 +211,18 @@
     margin-top:.2em;
 }
 
+.ui-column-filter-button {
+	text-align: center;
+	background-color: #fff;
+	color: #666;
+	border: 1px solid #999;
+	padding: 3px 0;
+}
+
+.ui-column-filter-facet {
+	position: absolute;
+}
+
 .ui-datatable .ui-cell-editor.ui-state-highlight { padding: 6px; }
 
 .ui-datatable .ui-selection-column {

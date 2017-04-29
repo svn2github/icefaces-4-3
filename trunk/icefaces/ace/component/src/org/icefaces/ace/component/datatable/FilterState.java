@@ -59,6 +59,7 @@ public class FilterState {
 
         Map<String,Column> filterMap = table.getFilterMap();
 		for (Column column : filterMap.values()) {
+			if (column.getFilterFacet() != null) continue;
 			String columnId = column.getClientId(context) + "_filter";
 			ColumnType type = column.getColumnType();
 			if (type == ColumnType.TEXT || type == ColumnType.BOOLEAN || !column.isRangedFilter()) {
