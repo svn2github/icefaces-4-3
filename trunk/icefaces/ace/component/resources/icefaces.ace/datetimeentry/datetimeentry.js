@@ -51,22 +51,23 @@ ice.ace.Calendar = function(id, cfg) {
     }
 
 	if (this.cfg.selectableDateRanges) {
-		var _self = this;
+		var ranges = this.cfg.selectableDateRanges;
+		var rangesLength = ranges.length;
+		var i;
+		for (i = 0; i < rangesLength; i++) {
+			ranges[i] = this.convertToMillis(ranges[i]);
+		}
 		this.cfg.beforeShowDay = function(date) {
 			var millis = date.getTime();
-			var ranges = _self.cfg.selectableDateRanges;
-			var rangesLength = ranges.length;
-			var timezoneOffsetMillis = date.getTimezoneOffset() * 60000;
-			var i;
 			for (i = 0; i < rangesLength; i = i + 2) {
 				if ((ranges[i] && ranges[i+1]) 
-					&& (millis >= (ranges[i] + timezoneOffsetMillis) && millis <= (ranges[i+1] + timezoneOffsetMillis))) {
+					&& (millis >= ranges[i] && millis <= ranges[i+1])) {
 					return [true, ''];
 				}
-				if ((ranges[i] && !ranges[i+1]) && millis >= (ranges[i] + timezoneOffsetMillis)) {
+				if ((ranges[i] && !ranges[i+1]) && millis >= ranges[i]) {
 					return [true, ''];
 				}
-				if ((!ranges[i] && ranges[i+1]) && millis <= (ranges[i+1] + timezoneOffsetMillis)) {
+				if ((!ranges[i] && ranges[i+1]) && millis <= ranges[i+1]) {
 					return [true, ''];
 				}
 			}
@@ -293,6 +294,11 @@ ice.ace.CalendarInit = function(options) {
             initEltSet.remove();
         });
     });
+};
+
+ice.ace.Calendar.prototype.convertToMillis = function(date) {
+	if (date) return (new Date(date.year, date.month, date.day, 0, 0, 0, 0)).getTime();
+	else return '';
 };
 
 ice.ace.Calendar.clear = function(id, inFieldLabel, inFieldLabelStyleClass) {

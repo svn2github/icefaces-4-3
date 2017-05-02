@@ -330,7 +330,13 @@ public class DateTimeEntryRenderer extends InputRenderer {
 						String dateString = dates[i];
 						dateString = dateString != null ? dateString.trim() : "";
 						Date convertedDate = format.parse(dateString);
-						json.item(convertedDate.getTime());
+						Calendar cal  = Calendar.getInstance();
+						cal.setTime(convertedDate);
+						json.beginMap()
+							.entry("year", cal.get(Calendar.YEAR))
+							.entry("month", cal.get(Calendar.MONTH))
+							.entry("day", cal.get(Calendar.DATE))
+						.endMap();
 					} catch (ParseException e) {
 						json.item("");
 					}
@@ -344,7 +350,13 @@ public class DateTimeEntryRenderer extends InputRenderer {
 				int size = dates.size();
 				for (int i = 0; i < size; i++) {
 					Date date = dates.get(i);
-					json.item(date.getTime());
+					Calendar cal  = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+					cal.setTime(date);
+					json.beginMap()
+						.entry("year", cal.get(Calendar.YEAR))
+						.entry("month", cal.get(Calendar.MONTH))
+						.entry("day", cal.get(Calendar.DATE))
+					.endMap();
 				}
 				// add end date for last range, if missing
 				if (size % 2 == 1) {
@@ -354,7 +366,13 @@ public class DateTimeEntryRenderer extends InputRenderer {
 				Date[] dates = (Date[]) selectableDateRanges;
 				for (int i = 0; i < dates.length; i++) {
 					Date date = dates[i];
-					json.item(date.getTime());
+					Calendar cal  = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+					cal.setTime(date);
+					json.beginMap()
+						.entry("year", cal.get(Calendar.YEAR))
+						.entry("month", cal.get(Calendar.MONTH))
+						.entry("day", cal.get(Calendar.DATE))
+					.endMap();
 				}
 				// add end date for last range, if missing
 				if (dates.length % 2 == 1) {
