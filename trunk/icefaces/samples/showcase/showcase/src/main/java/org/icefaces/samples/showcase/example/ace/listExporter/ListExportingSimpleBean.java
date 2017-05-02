@@ -14,41 +14,62 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icefaces.samples.showcase.example.ace.list;
+package org.icefaces.samples.showcase.example.ace.listExporter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.model.SelectItem;
 
 import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
-import org.icefaces.samples.showcase.example.ace.dataTable.Car;
 
-@ManagedBean(name= ListExportingBlockBean.BEAN_NAME)
+@ManagedBean(name= ListExportingSimpleBean.BEAN_NAME)
 @CustomScoped(value = "#{window}")
-public class ListExportingBlockBean implements Serializable {
-    public static final String BEAN_NAME = "listExportingBlockBean";
+public class ListExportingSimpleBean implements Serializable {
+    public static final String BEAN_NAME = "listExportingSimpleBean";
 	public String getBeanName() { return BEAN_NAME; }
-
-    public ListExportingBlockBean() {
+    
+    public ListExportingSimpleBean() {
         this.type = "csv";
     }
 
-    List<Car> carList = new ArrayList(DataTableData.getDefaultData().subList(0,10));
+    private List<SelectItem> stringList = new ArrayList<SelectItem>() {{
+        for (String s : DataTableData.CHASSIS_ALL) {
+            add(new SelectItem(s));
+        }
+    }};
+
+    private Set<Object> selections;
     private boolean selectedItemsOnly = false;
     private String type;
 
-    public List<Car> getCarList() {
-        return carList;
+    public List<SelectItem> getStringList() {
+        return stringList;
     }
 
-    public void setCarList(List<Car> carList) {
-        this.carList = new ArrayList(carList);
+    public void setStringList(List<SelectItem> stringList) {
+        this.stringList = stringList;
     }
-
+    
+    public Set<Object> getSelections() {
+        return selections;
+    }
+    
+    public List<Object> getSelectionList() {
+        if (selections != null) {
+            return new ArrayList<Object>(selections);
+        }
+        return null;
+    }
+    
+    public void setSelections(Set<Object> selections) {
+        this.selections = selections;
+    }
+    
     public boolean getSelectedItemsOnly() {
         return selectedItemsOnly;
     }

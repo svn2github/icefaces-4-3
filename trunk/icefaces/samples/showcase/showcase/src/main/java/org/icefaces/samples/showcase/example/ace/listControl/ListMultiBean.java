@@ -14,12 +14,11 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icefaces.samples.showcase.example.ace.list;
+package org.icefaces.samples.showcase.example.ace.listControl;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
@@ -27,25 +26,25 @@ import javax.faces.model.SelectItem;
 
 import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
 
-@ManagedBean(name= ListExportingSimpleBean.BEAN_NAME)
+@ManagedBean(name= ListMultiBean.BEAN_NAME)
 @CustomScoped(value = "#{window}")
-public class ListExportingSimpleBean implements Serializable {
-    public static final String BEAN_NAME = "listExportingSimpleBean";
+public class ListMultiBean implements Serializable {
+    public static final String BEAN_NAME = "listMultiBean";
 	public String getBeanName() { return BEAN_NAME; }
-    
-    public ListExportingSimpleBean() {
-        this.type = "csv";
-    }
 
-    private List<SelectItem> stringList = new ArrayList<SelectItem>() {{
+    List<SelectItem> stringList = new ArrayList<SelectItem>() {{
         for (String s : DataTableData.CHASSIS_ALL) {
             add(new SelectItem(s));
         }
+        remove(DataTableData.CHASSIS_ALL.length-1);
     }};
 
-    private Set<Object> selections;
-    private boolean selectedItemsOnly = false;
-    private String type;
+    List<SelectItem> fstDestStringList = new ArrayList<SelectItem>() {{
+        add(new SelectItem(DataTableData.CHASSIS_ALL[DataTableData.CHASSIS_ALL.length-1]));
+    }};
+
+    List<SelectItem> sndDestStringList = new ArrayList<SelectItem>();
+
 
     public List<SelectItem> getStringList() {
         return stringList;
@@ -54,35 +53,20 @@ public class ListExportingSimpleBean implements Serializable {
     public void setStringList(List<SelectItem> stringList) {
         this.stringList = stringList;
     }
-    
-    public Set<Object> getSelections() {
-        return selections;
-    }
-    
-    public List<Object> getSelectionList() {
-        if (selections != null) {
-            return new ArrayList<Object>(selections);
-        }
-        return null;
-    }
-    
-    public void setSelections(Set<Object> selections) {
-        this.selections = selections;
-    }
-    
-    public boolean getSelectedItemsOnly() {
-        return selectedItemsOnly;
-    }
-    
-    public void setSelectedItemsOnly(boolean selectedItemsOnly) {
-        this.selectedItemsOnly = selectedItemsOnly;
+
+    public List<SelectItem> getFstDestStringList() {
+        return fstDestStringList;
     }
 
-    public String getType() {
-		return type;
-	}
+    public void setFstDestStringList(List<SelectItem> fstDestStringList) {
+        this.fstDestStringList = fstDestStringList;
+    }
 
-    public void setType(String type) {
-		this.type = type;
-	}
+    public List<SelectItem> getSndDestStringList() {
+        return sndDestStringList;
+    }
+
+    public void setSndDestStringList(List<SelectItem> sndDestStringList) {
+        this.sndDestStringList = sndDestStringList;
+    }
 }

@@ -507,14 +507,14 @@ public class CentralDataList {
 								 "list", "listBlockComplex.xhtml", "ListBlockComplexBean.java")),
 				new ComponentGroup("ace:listControl", "List Control", "listControl.html",
 						new Demo(msgs("menu.ace.list.subMenu.dual"), msgs("example.ace.list.dual.description"),
-								 "list", "listDual.xhtml", "ListDualBean.java"),
+								 "listControl", "listDual.xhtml", "ListDualBean.java"),
 						new Demo(msgs("menu.ace.list.subMenu.multi"), msgs("example.ace.list.multi.description"),
-								 "list", "listMulti.xhtml", "ListMultiBean.java")),
+								 "listControl", "listMulti.xhtml", "ListMultiBean.java")),
 				new ComponentGroup("ace:listExporter", "List Exporter", "listExporter.html",
 						new Demo(msgs("menu.ace.list.subMenu.exportingSimple"), msgs("example.ace.list.exportingSimple.description"),
-								 "list", "listExportingSimple.xhtml", "ListExportingSimpleBean.java"),
+								 "listExporter", "listExportingSimple.xhtml", "ListExportingSimpleBean.java"),
 						new Demo(msgs("menu.ace.list.subMenu.exportingBlock"), msgs("example.ace.list.exportingBlock.description"),
-								 "list", "listExportingBlock.xhtml", "ListExportingBlockBean.java"))
+								 "listExporter", "listExportingBlock.xhtml", "ListExportingBlockBean.java"))
 		));
 		
 		toReturn.add(new CategoryGroup(msgs("menu.ace.group.containers.title"),

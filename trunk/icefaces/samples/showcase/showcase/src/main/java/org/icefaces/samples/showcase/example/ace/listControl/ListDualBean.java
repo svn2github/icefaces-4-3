@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icefaces.samples.showcase.example.ace.list;
+package org.icefaces.samples.showcase.example.ace.listControl;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -26,25 +26,37 @@ import javax.faces.model.SelectItem;
 
 import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
 
-@ManagedBean(name= ListMultiBean.BEAN_NAME)
+@ManagedBean(name= ListDualBean.BEAN_NAME)
 @CustomScoped(value = "#{window}")
-public class ListMultiBean implements Serializable {
-    public static final String BEAN_NAME = "listMultiBean";
+public class ListDualBean implements Serializable {
+    public static final String BEAN_NAME = "listDualBean";
 	public String getBeanName() { return BEAN_NAME; }
-
-    List<SelectItem> stringList = new ArrayList<SelectItem>() {{
+    
+    private static final String[] AVAILABLE_POSITIONS = new String[] {
+        "ALL", "BOTH", "TOP", "BOTTOM", "MIDDLE"
+    };
+    private String controlPosition = AVAILABLE_POSITIONS[0];
+    private List<SelectItem> stringList = new ArrayList<SelectItem>() {{
         for (String s : DataTableData.CHASSIS_ALL) {
             add(new SelectItem(s));
         }
         remove(DataTableData.CHASSIS_ALL.length-1);
     }};
-
-    List<SelectItem> fstDestStringList = new ArrayList<SelectItem>() {{
+    private List<SelectItem> destStringList = new ArrayList<SelectItem>() {{
         add(new SelectItem(DataTableData.CHASSIS_ALL[DataTableData.CHASSIS_ALL.length-1]));
     }};
-
-    List<SelectItem> sndDestStringList = new ArrayList<SelectItem>();
-
+    
+    public String[] getAvailablePositions() {
+        return AVAILABLE_POSITIONS;
+    }
+    
+    public String getControlPosition() {
+        return controlPosition;
+    }
+    
+    public void setControlPosition(String controlPosition) {
+        this.controlPosition = controlPosition;
+    }
 
     public List<SelectItem> getStringList() {
         return stringList;
@@ -54,19 +66,11 @@ public class ListMultiBean implements Serializable {
         this.stringList = stringList;
     }
 
-    public List<SelectItem> getFstDestStringList() {
-        return fstDestStringList;
+    public List<SelectItem> getDestStringList() {
+        return destStringList;
     }
 
-    public void setFstDestStringList(List<SelectItem> fstDestStringList) {
-        this.fstDestStringList = fstDestStringList;
-    }
-
-    public List<SelectItem> getSndDestStringList() {
-        return sndDestStringList;
-    }
-
-    public void setSndDestStringList(List<SelectItem> sndDestStringList) {
-        this.sndDestStringList = sndDestStringList;
+    public void setDestStringList(List<SelectItem> destStringList) {
+        this.destStringList = destStringList;
     }
 }
