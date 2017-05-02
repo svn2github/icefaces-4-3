@@ -32,7 +32,7 @@ public class DateSelectableRangesBean implements Serializable {
     public static final String BEAN_NAME = "dateSelectableRangesBean";
 	public String getBeanName() { return BEAN_NAME; }
     
-    private Date selectedDate = new Date(System.currentTimeMillis());
+    private Date selectedDate;
 
     private Date firstRangeStart;
     private Date firstRangeEnd;
@@ -40,12 +40,13 @@ public class DateSelectableRangesBean implements Serializable {
     private Date secondRangeEnd;
 
     public DateSelectableRangesBean() {
-		Date today = new Date(System.currentTimeMillis());
+		Date today = new Date();
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(today);
         calendar.set(Calendar.DATE, 5);
         firstRangeStart = calendar.getTime();
+		selectedDate = calendar.getTime(); // select first date in range
         
         calendar = Calendar.getInstance();
         calendar.setTime(today);

@@ -39,52 +39,59 @@
                     </h:panelGroup>
                 </h:panelGrid>
             </ace:panel>
-                
-            <h:panelGrid id="calendarPanel" width="80%" columns="3"
-                         style="margin-left: auto; margin-right: auto; text-align: center;">
-                <h:outputLabel for="firstRangeStart" value="First Range Start:"/>
-                <ace:dateTimeEntry id="firstRangeStart" value="#{dateSelectableRangesBean.firstRangeStart}"
-                                   timeZone="Canada/Mountain" pattern="MMM/dd/yyyy"
-                                   navigator="true"
-                                   readOnlyInputText="true"
-                                   renderAsPopup="true"/>
-                <h:outputText value=""/>
-                
-                <h:outputLabel for="firstRangeEnd" value="First Range End:"/>
-                <ace:dateTimeEntry id="firstRangeEnd" value="#{dateSelectableRangesBean.firstRangeEnd}"
-                                   timeZone="Canada/Mountain" pattern="MMM/dd/yyyy"
-                                   navigator="true"
-                                   readOnlyInputText="true"
-                                   renderAsPopup="true"/>
-                <h:outputText value=""/>
 
-                <h:outputLabel for="secondRangeStart" value="First Range Start:"/>
-                <ace:dateTimeEntry id="secondRangeStart" value="#{dateSelectableRangesBean.secondRangeStart}"
-                                   timeZone="Canada/Mountain" pattern="MMM/dd/yyyy"
-                                   navigator="true"
-                                   readOnlyInputText="true"
-                                   renderAsPopup="true"/>
-                <h:outputText value=""/>
-                
-                <h:outputLabel for="secondRangeEnd" value="First Range End:"/>
-                <ace:dateTimeEntry id="secondRangeEnd" value="#{dateSelectableRangesBean.secondRangeEnd}"
-                                   timeZone="Canada/Mountain" pattern="MMM/dd/yyyy"
-                                   navigator="true"
-                                   readOnlyInputText="true"
-                                   renderAsPopup="true"/>
-                <h:commandButton id="submitRanges" value="Submit Ranges">
-								 <f:ajax execute="@form" render="@all"/>
-				</h:commandButton>
-                
+            <ace:panel style="margin: 10px 0;">                
+				<h:panelGrid id="configurationPanel" width="100%" columns="4"
+							 style="margin-left: auto; margin-right: auto; text-align: center;">
+					<!-- avoid setting a time zone on the calendars that are only used to specify date ranges -->
+					<h:outputLabel for="firstRangeStart" value="First Range Start:"/>
+					<ace:dateTimeEntry id="firstRangeStart" value="#{dateSelectableRangesBean.firstRangeStart}"
+									   pattern="MMM/dd/yyyy"
+									   navigator="true"
+									   readOnlyInputText="true"
+									   renderAsPopup="true">
+						<ace:ajax/>
+					</ace:dateTimeEntry>
+					
+					<h:outputLabel for="firstRangeEnd" value="First Range End:"/>
+					<ace:dateTimeEntry id="firstRangeEnd" value="#{dateSelectableRangesBean.firstRangeEnd}"
+									   pattern="MMM/dd/yyyy"
+									   navigator="true"
+									   readOnlyInputText="true"
+									   renderAsPopup="true">
+						<ace:ajax/>
+					</ace:dateTimeEntry>
+
+					<h:outputLabel for="secondRangeStart" value="Second Range Start:"/>
+					<ace:dateTimeEntry id="secondRangeStart" value="#{dateSelectableRangesBean.secondRangeStart}"
+									   pattern="MMM/dd/yyyy"
+									   navigator="true"
+									   readOnlyInputText="true"
+									   renderAsPopup="true">
+						<ace:ajax/>
+					</ace:dateTimeEntry>
+					
+					<h:outputLabel for="secondRangeEnd" value="Second Range End:"/>
+					<ace:dateTimeEntry id="secondRangeEnd" value="#{dateSelectableRangesBean.secondRangeEnd}"
+									   pattern="MMM/dd/yyyy"
+									   navigator="true"
+									   readOnlyInputText="true"
+									   renderAsPopup="true">
+						<ace:ajax/>
+					</ace:dateTimeEntry>
+				</h:panelGrid>
+            </ace:panel>
+
+            <h:panelGrid id="examplePanel" width="100%" columns="2"
+                         style="margin-left: auto; margin-right: auto; text-align: center;">
                 <h:outputLabel for="cal" value="Selected Date:"/>
                 <ace:dateTimeEntry id="cal"
                                    value="#{dateSelectableRangesBean.selectedDate}"
-                                   timeZone="Canada/Mountain"
+                                   timeZone="UTC"
                                    pattern="MMM/dd/yyyy"
-                                   selectableDateRanges="#{dateSelectableRangesBean.ranges}"/>
-                <h:commandButton id="submitDate" value="Submit Date">
-								<f:ajax execute="@this cal" render="@all"/>
-				</h:commandButton>
+                                   selectableDateRanges="#{dateSelectableRangesBean.ranges}">
+					<ace:ajax/>
+				</ace:dateTimeEntry>
             </h:panelGrid>
         </h:form>
     </ui:define>
