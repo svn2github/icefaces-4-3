@@ -482,7 +482,10 @@ ice.ace.clearForm = function(node) {
 
 	form.find('*[data-ice-reset]').each(function(i, e) {
 		var array = eval(e.getAttribute('data-ice-reset'));
-		if (array[0] == 'flipswitch') mobi[array[0]].clear.apply(this, array[1]);
+        var comptype = array[0];
+        if (comptype == 'flipswitch' || comptype == 'datespinner' || comptype == 'timespinner') {
+            mobi[array[0]].clear.apply(this, array[1]);
+        }
 		else ice.ace[array[0]].clear.apply(this, array[1]);
 	});
 };
@@ -498,7 +501,10 @@ ice.ace.resetForm = function(node) {
 
 	form.find('*[data-ice-reset]').each(function(i, e) {
 		var array = eval(e.getAttribute('data-ice-reset'));
-		if (array[0] == 'flipswitch') mobi[array[0]].reset.apply(this, array[1]);
+        var comptype = array[0];
+		if (comptype == 'flipswitch' || comptype == 'datespinner' || comptype == 'timespinner') {
+            mobi[array[0]].reset.apply(this, array[1]);
+        }
 		else ice.ace[array[0]].reset.apply(this, array[1]);
 	});
 };

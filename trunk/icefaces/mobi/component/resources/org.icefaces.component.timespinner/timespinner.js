@@ -22,7 +22,13 @@ mobi.timespinner = {
     opened:{},
     centerCalculation:{},
     scrollEvent:{},
-    init:function (clientId, hrSel, mSel, aSel, format) {
+    nativeInit: function(clientId, val){
+         var inputVal = document.getElementById(clientId).value;
+         if (inputVal){
+             this.setResetValue(clientId, inputVal);
+         }
+     } ,
+    init:function (clientId, hrSel, mSel, aSel, format, inputVal) {
         var idPanel = clientId + "_bg";
         if (!document.getElementById(idPanel).className) {
             document.getElementById(idPanel).className = 'mobi-date-bg-inv';
@@ -34,6 +40,7 @@ mobi.timespinner = {
             this.pattern[clientId] = format;
             ice.log.debug(ice.log, ' pattern change not yet implemented =' + this.pattern);
         }
+        this.setResetValue(clientId, inputVal);
         this.opened[clientId] = false;
         //have to set the value controls to the correct integer
         var hrEl = document.getElementById(clientId + "_hrInt");
@@ -178,7 +185,6 @@ mobi.timespinner = {
         }
     },
     inputNative: function(clientId, behaviors){
-        console.log('inputNative');
         if (behaviors && behaviors.event == 'change') {
             ice.ace.ab(behaviors);
         }
@@ -234,6 +240,64 @@ mobi.timespinner = {
          titleEl.innerHTML = "";  */
         this.pattern[clientId] = null;
         this.opened[clientId] = null;
-    }
+    } ,
+    reset: function(clientId){
+        if  (ice.ace){
+            var value = ice.ace.resetValues[clientId];
+            var timeElem = document.getElementById(clientId+"_input");
+            var elem =  document.getElementById(clientId);
+            if (ice.ace.isSet(value)) {
+                if (timeElem) {
+                    timeElem.value = value;
+                    /* hh:mm a */
 
+                    var hrEl = document.getElementById(clientId + "_hrInt");
+                    var minEl = document.getElementById(clientId + "_mInt");
+                    var ampmEl = document.getElementById(clientId + "_ampmInt");
+
+                        var timeString = value.match(/(\d+)(:(\d\d))?\s*(p?)/i);
+                        if (timeString !='') {
+                            var hour = parseInt(timeString[1],10);
+                            var minute = parseInt(timeString[3], 10);
+                            var ampm="PM";
+                            if ( minute < 12) {
+                                ampm = "AM";
+                            }
+                            if (minute==12 && minute==0){
+                                ampm = "AM";
+                            }
+                            hrEl.innerHTML = hour;
+                            minEl.innerHTML = minute;
+                            ampmEl.innerHTML = ampm;
+                            mobi.timespinner.writeTitle(clientId, hour, minute, ampm);
+                        }
+
+                }else{//isUseNative
+                    elem.value=value;
+                }
+            }
+        }
+    } ,
+    setResetValue: function(clientId, value){
+        if (ice.ace){
+            ice.ace.resetValues[clientId] = value ;
+        }
+    }  ,
+    clear: function(clientId){
+        if (ice.ace && typeof ice.ace.resetValues[clientId] == 'undefined') mobi.timespinner.setResetValue(clientId);
+       	var element = document.getElementById(clientId);
+       	var inputElem = document.getElementById(clientId + "_input");
+       	if (element) {
+            element.value="";
+        }
+        if (inputElem){
+            inputElem.value="";
+            var hrEl = document.getElementById(clientId + "_hrInt");
+            var minEl = document.getElementById(clientId + "_mInt");
+            var ampmEl = document.getElementById(clientId + "_ampmInt");
+            hrEl.innerHTML = "";
+            minEl.innerHTML = "";
+            ampmEl.innerHTML = "";
+        }
+    }
 };

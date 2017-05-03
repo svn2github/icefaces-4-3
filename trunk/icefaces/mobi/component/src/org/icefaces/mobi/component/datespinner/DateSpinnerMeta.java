@@ -50,7 +50,9 @@ import javax.faces.application.ResourceDependency;
 }, defaultEvent = "change")
 public class DateSpinnerMeta extends UIInputMeta {
 
-    @Property(defaultValue = "yyyy-MM-dd", tlddoc = "The DateFormat pattern.")
+    @Property(defaultValue = "yyyy-MM-dd", tlddoc = "The DateFormat pattern for the non-native widget only. If useNative is true, then use standard JSF converters and validators." +
+            " Supported patterns for the non native widget" +
+            " are \'dd-MM-yyyy\', \'MM-dd-yyyy\', \'yyyy-MM-dd\', 'yyyy-dd-MM', and the same but using a \'\\' separator instead of a \'-\' ")
     private String pattern;
 
     @Property(defaultValue = "1980", tlddoc = "The first year to appear in the dateScroller. Some validation is provided for input fields, for example" +
@@ -58,7 +60,7 @@ public class DateSpinnerMeta extends UIInputMeta {
             " custom validation message.")
     private int yearStart;
 
-    @Property(defaultValue = "2020", tlddoc = "The last year to appear in the dateScroller. Some validation is provided for input fields, for example" +
+    @Property(defaultValue = "2050", tlddoc = "The last year to appear in the dateScroller. Some validation is provided for input fields, for example" +
                 " when useNative is true and then the property org.icefaces.mobi.component.datespinner.yearRange may be overwritten for  a" +
                 " custom validation message.")
     private int yearEnd;

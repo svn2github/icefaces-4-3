@@ -24,6 +24,12 @@ mobi.datespinner = {
     centerCalculation:{},
     scrollEvent:{},
     cfg: {},
+    nativeInit: function(clientId, val){
+        var inputVal = document.getElementById(clientId).value;
+        if (inputVal){
+            this.setResetValue(clientId, inputVal);
+        }
+    }   ,
     init:function (clientId, cfgIn ) {
         var yrSel = cfgIn.yrInt;
         var mSel = cfgIn.mnthInt;
@@ -40,7 +46,6 @@ mobi.datespinner = {
         var intYr = parseInt(yrSel);
         if (format) {
             this.pattern[clientId] = format;
-            //           ice.log.debug(ice.log, ' pattern changed to ='+this.pattern);
         }
         this.opened[clientId] = false;
         //have to set the value controls to the correct integer
@@ -163,8 +168,8 @@ mobi.datespinner = {
         }
         var hiddenEl = document.getElementById(clientId + '_hidden');
         var inputEl = document.getElementById(clientId + '_input');
-       // inputEl.value= upDate.toDateString();
         hiddenEl.value = inputEl.value;
+        this.setResetValue(clientId, inputEl.value);
         this.writeTitle(clientId, upDate);
     },
 
@@ -210,8 +215,6 @@ mobi.datespinner = {
         } else return 1;
     },
     select:function (clientId, cfg) {
-        //
-        console.log(" select!");
         var inputEl = document.getElementById(clientId + '_input');
         var hiddenEl = document.getElementById(clientId + '_hidden');
         var dInt = this.getIntValue(clientId + "_dInt");
@@ -262,7 +265,9 @@ mobi.datespinner = {
         var mInt = this.getIntValue(clientId + "_mInt");
         var yInt = this.getIntValue(clientId + "_yInt");
         var dInt = this.getIntValue(dId);
-        if (this.validate(clientId, yInt, mInt, dInt)){
+        var updatedValue = this.validate(clientId, yInt, mInt, dInt);
+        if (updatedValue){
+            var dateInnerVal = new Date(updatedValue) ;
             var behaviors = cfgIn.behaviors;
             if (behaviors) {
                 if (behaviors.event=='change') {
@@ -282,7 +287,7 @@ mobi.datespinner = {
            dateError.innerHTML = errorMessage;
            dateError.style.display="inherit";
         } else {
-           dateError.style.display= "none";
+            dateError.style.display= "none";
             if (behaviors ) {
                 ice.ace.ab(behaviors);
             }
@@ -319,7 +324,6 @@ mobi.datespinner = {
                 }
             }
             hiddenEl.value = inputEl.value;
-            var event = cfg.event;
             var behaviors = cfg.behaviors;
             if (behaviors) { //will work as long as there is only a single event defined
                 ice.ace.ab(behaviors);
@@ -377,9 +381,80 @@ mobi.datespinner = {
         this.centerCalculation[clientId] = undefined;
     },
     unload:function (clientId) {
-        /* var titleEl = document.getElementById(clientId+'_title');
-         titleEl.innerHTML = "";  */
         this.pattern[clientId] = null;
         this.opened[clientId] = null;
+    } ,
+    reset: function(clientId){
+        if  (ice.ace){
+            var value = ice.ace.resetValues[clientId];
+            if (ice.ace.isSet(value)) {
+                var dateElem = document.getElementById(clientId+"_input");
+                var elem = document.getElementById(clientId);
+                if (dateElem) {
+                    dateElem.value = value;
+                    var myPattern = mobi.datespinner.pattern[clientId];
+                         // compare '-' dash delimiter
+                    var month=1;
+                    var day=1;
+                    var year=2017;
+                    var dDate = new Date(value);
+                    if (myPattern == "MM-dd-yyyy" || myPattern == 'MM/dd/yyyy') {
+                        month = value.slice(0,1);
+                        day=value.slice(3,4);
+                        year = value.slice(6,9);
+                    }else if (myPattern == 'yyyy-MM-dd' || myPattern == 'yyyy/MM/dd') {
+                        month = value.slice(5,6);
+                        day=value.slice(8,9);
+                        year = value.slice(0,3);
+                    } else if (myPattern == 'yyyy-dd-MM' || myPattern == 'yyyy/dd/MM') {
+                        month = value.slice(8,9);
+                        day=value.slice(5,6);
+                        year = value.slice(0,3);
+                    }  else if (myPattern =='dd-MM-yyyy' || myPattern == 'dd/MM/yyyy') {
+                        day = value.slice(0,1);
+                        month = value.slice(3,4);
+                        year = value.slice(6,9);
+                    } else {
+                        var month = dDate.getMonth()+1;
+                        var year = dDate.getFullYear();
+                        var day = dDate.getDay()+1;
+                    }
+                    var updatedValue = mobi.datespinner.validate(clientId, year, month, day);
+                    mobi.datespinner.writeTitle(clientId, updatedValue);
+                    var dayElem = document.getElementById(clientId+"_dInt");
+                    dayElem.innerHTML = day;
+                    var monElem =  document.getElementById(clientId+"_mInt");
+                    monElem.innerHTML = month;
+                    var yrElem =  document.getElementById(clientId+"_yInt");
+                    yrElem.innerHTML = year;
+                }
+                if (elem){
+                    elem.value=value;
+                }
+            }
+        }
+    } ,
+    setResetValue: function(clientId, value){
+        if (ice.ace){
+            ice.ace.resetValues[clientId] = value ;
+        }
+    }  ,
+    clear: function(clientId){
+        if (ice.ace && typeof ice.ace.resetValues[clientId] == 'undefined') mobi.datespinner.setResetValue(clientId);
+       	var element = document.getElementById(clientId);
+       	var inputElem = document.getElementById(clientId + "_input");
+       	if (element) {
+            element.value="";
+        }
+        if (inputElem){
+            inputElem.value="";
+            var dayElem = document.getElementById(clientId+"_dInt");
+           dayElem.innerHTML = "";
+           var monElem =  document.getElementById(clientId+"_mInt");
+           monElem.innerHTML = "";
+            var yrElem =  document.getElementById(clientId+"_yInt");
+            yrElem.innerHTML = "";
+        }
     }
 };
+

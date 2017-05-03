@@ -42,6 +42,7 @@ public class DateSpinner extends DateSpinnerBase implements Validateable {
     public static final String SEL_VALUE_CLASS = "mobi-date-select-value";
     public static final String BUTTON_DEC_CONT_CLASS = "mobi-date-btn-cont-decr";
     public static final String BUTTON_DEC_CLASS = "mobi-date-btn mobi-date-btn-decr ui-button ui-state-default";
+    public static final String HTML_INPUTDATE_PATTERN="yyyy-MM-dd" ; /* html5 type date requires this pattern */
     private static Logger logger = Logger.getLogger(DateSpinner.class.getName());
     private String[] commonAttributeNames = {
             "size"

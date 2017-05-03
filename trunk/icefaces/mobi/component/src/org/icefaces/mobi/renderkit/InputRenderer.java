@@ -27,6 +27,8 @@
  */
 package org.icefaces.mobi.renderkit;
 
+import org.icefaces.ace.util.JSONBuilder;
+
 import java.util.*;
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
@@ -377,7 +379,7 @@ public class InputRenderer extends CoreRenderer {
         }
     }
 
-    protected void writeAriaAttributes(Map<String, Object> ariaAttributes, Map<String, Object> labelAttributes) throws IOException {
+    /*protected void writeAriaAttributes(Map<String, Object> ariaAttributes, Map<String, Object> labelAttributes) throws IOException {
         ResponseWriter writer = FacesContext.getCurrentInstance().getResponseWriter();
 
         String autocomplete = (String) ariaAttributes.get("autocomplete");
@@ -417,5 +419,20 @@ public class InputRenderer extends CoreRenderer {
                 writer.writeAttribute("aria-labelledby", "label_" + clientId, null);
             }
         }
-    }
+    } */
+    protected void renderResetSettings(FacesContext context, UIComponent component, String jsKey) throws IOException {
+         ResponseWriter writer = context.getResponseWriter();
+
+    		String clientId = component.getClientId(context);
+
+    		JSONBuilder jb = JSONBuilder.create();
+    		jb.beginArray();
+    		jb.item(jsKey);
+    		jb.beginArray();
+    		jb.item(clientId);
+    		jb.endArray();
+    		jb.endArray();
+
+    		writer.writeAttribute("data-ice-reset", jb.toString(), null);
+     }
 }

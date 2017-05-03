@@ -40,9 +40,7 @@ public class TimeSpinnerRenderer extends InputRenderer {
     public static final String TOUCH_START_EVENT = "ontouchstart";
     public static final String CLICK_EVENT = "onclick";
     private static final Logger logger = Logger.getLogger(TimeSpinnerRenderer.class.getName());
-    private static final String JS_NAME = "timespinner.js";
-    private static final String JS_MIN_NAME = "timespinner.c.js";
-    private static final String JS_LIBRARY = "org.icefaces.component.timespinner";
+
 
     static boolean shouldUseNative(TimeSpinner component) {
        return component.isUseNative() && Utils.getClientDescriptor().isHasNativeDatePicker();
@@ -80,9 +78,12 @@ public class TimeSpinnerRenderer extends InputRenderer {
         spinner.setTouchEnabled(Utils.isTouchEventEnabled(context));
 
         if (shouldUseNative(spinner)) {
+            writer.startElement("span", component);
+            writer.writeAttribute("id", clientId+"_wrap", null);
             writer.startElement("input", component);
             writer.writeAttribute("type", "time", "type");
             writer.writeAttribute("id", clientId, null);
+            renderResetSettings(context, component, "timespinner");
             writer.writeAttribute("name", clientId, null);
             String styleClass = spinner.getStyleClass();
             String style = spinner.getStyle();
@@ -100,12 +101,11 @@ public class TimeSpinnerRenderer extends InputRenderer {
                 Date aDate = new Date();
                 writer.writeAttribute("value", df2.format(aDate), "value");
             } else {
-                String clockVal24 = initialValue;
                 if (!isFormattedDate(initialValue, "HH:mm")) {
-                    clockVal24 = convertStringInput("EEE MMM dd hh:mm:ss zzz yyyy", defaultPattern, initialValue);
+                    initialValue = convertStringInput("EEE MMM dd hh:mm:ss zzz yyyy", defaultPattern, initialValue);
                 }
                 //check that only 24 hour clock came in.... as html5 input type="date" uses 24 hr clock
-                writer.writeAttribute("value", clockVal24, "value");
+                writer.writeAttribute("value", initialValue, "value");
             }
             if (disabled) {
                 writer.writeAttribute("disabled", component, "disabled");
@@ -121,13 +121,24 @@ public class TimeSpinnerRenderer extends InputRenderer {
                writer.writeAttribute(event, "ice.setFocus(''); ice.ace.ab("+cbhCall+");", null) ;
               //  writer.writeAttribute(event, "mobi.timespinner.inputNative('"+clientId+"',"+cbhCall+");", null);
             }
+
             ComponentUtils.renderPassThroughAttributes(writer, spinner, spinner.getCommonAttributeNames());
             writer.endElement("input");
+            writer.startElement("span", component);
+            writer.writeAttribute("id", clientId+"_useNativeInit", null);
+            writer.writeAttribute(HTML.CLASS_ATTR, "mobi-hidden", null);
+            writer.writeAttribute("id", clientId + "_script", "id");
+            writer.startElement("script", null);
+            writer.writeAttribute("type", "text/javascript", null);
+            String nativeInitScr = "mobi.timespinner.nativeInit('" + clientId + "','"+initialValue+"' );";
+            writer.write(nativeInitScr);
+            writer.endElement("script");
+            writer.endElement("span");
+            writer.endElement("span");
         } else {
-            writeJavascriptFile(context, component, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
             String value = this.encodeValue(spinner, initialValue);
             encodeMarkup(context, component, value, hasBehaviors);
-            encodeScript(context, component);
+            encodeScript(context, component, value);
         }
     }
 
@@ -159,6 +170,7 @@ public class TimeSpinnerRenderer extends InputRenderer {
         writer.startElement("input", uiComponent);
         writer.writeAttribute("id", clientId + "_input", "id");
         writer.writeAttribute("name", clientId + "_input", "name");
+        renderResetSettings(context, uiComponent, "timespinner");
         if (!disabledOrReadonly){
 			StringBuilder onblur = new StringBuilder(255);
 			onblur.append("mobi.timespinner.inputSubmit('").append(clientId).append("',{ event: event");
@@ -344,7 +356,7 @@ public class TimeSpinnerRenderer extends InputRenderer {
         writer.endElement("div");                                         //end of entire container
     }
 
-    public void encodeScript(FacesContext context, UIComponent uiComponent) throws IOException {
+    public void encodeScript(FacesContext context, UIComponent uiComponent, String value) throws IOException {
         //need to initialize the component on the page and can also
         ResponseWriter writer = context.getResponseWriter();
         TimeSpinner spinner = (TimeSpinner) uiComponent;
@@ -359,7 +371,7 @@ public class TimeSpinnerRenderer extends InputRenderer {
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
         writer.write("mobi.timespinner.init('" + clientId + "'," + hourInt +
-                "," + minuteInt + "," + ampm + ",'" + spinner.getPattern() + "');");
+                "," + minuteInt + "," + ampm + ",'" + spinner.getPattern() +"','"+value+"');");
         writer.endElement("script");
         writer.endElement("span");
     }

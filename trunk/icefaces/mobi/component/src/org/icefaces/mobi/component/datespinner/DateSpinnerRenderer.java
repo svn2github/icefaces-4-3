@@ -16,6 +16,7 @@
 
 package org.icefaces.mobi.component.datespinner;
 
+import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.component.PassthroughAttributes;
 import org.icefaces.mobi.renderkit.InputRenderer;
 import org.icefaces.ace.util.Utils;
@@ -48,9 +49,6 @@ public class DateSpinnerRenderer extends InputRenderer {
     public static final String TOUCH_START_EVENT = "ontouchstart";
     public static final String CLICK_EVENT = "onclick";
     private static final Logger logger = Logger.getLogger(DateSpinnerRenderer.class.getName());
-    private static final String JS_NAME = "datespinner.js";
-    private static final String JS_MIN_NAME = "datespinner.c.js";
-    private static final String JS_LIBRARY = "org.icefaces.component.datespinner";
 
     /**
      * Utility to see if the date spinner will use the native input method for a
@@ -78,9 +76,8 @@ public class DateSpinnerRenderer extends InputRenderer {
             inputField = clientId;
         }
         String inputValue = context.getExternalContext().getRequestParameterMap().get(inputField);
-        String hiddenValue = context.getExternalContext().getRequestParameterMap().get(clientId + "_hidden");
+       // String hiddenValue = context.getExternalContext().getRequestParameterMap().get(clientId + "_hidden");
         boolean inputNull = isValueBlank(inputValue);
-        boolean hiddenNull = isValueBlank(hiddenValue);
         if (inputNull && dateSpinner.isRequired()){
             final ResourceBundle bundle = ComponentUtils.getComponentResourceBundle(FacesContext.getCurrentInstance(), "org.icefaces.mobi.resources.messages");
             final String validmessage = ComponentUtils.getLocalisedMessageFromBundle(bundle,
@@ -97,11 +94,7 @@ public class DateSpinnerRenderer extends InputRenderer {
                 dateSpinner.setSubmittedValue(inputValue);
             }
 
-        }/* else if (!hiddenNull) {
-            if (withindateRange(dateSpinner, hiddenValue)){
-                dateSpinner.setSubmittedValue(hiddenValue);
-            }
-        } */
+        }
         decodeBehaviors(context, dateSpinner);
     }
 
@@ -126,6 +119,7 @@ public class DateSpinnerRenderer extends InputRenderer {
             writer.writeAttribute("id", clientId+"_nwrap", null);
             writer.startElement("input", component);
             writer.writeAttribute("type", "date", "type");
+            renderResetSettings(context, component, "datespinner");
             writer.writeAttribute("id", clientId, null);
             writer.writeAttribute("name", clientId, null);
             String styleClass = spinner.getStyleClass();
@@ -140,7 +134,7 @@ public class DateSpinnerRenderer extends InputRenderer {
             boolean readonly = spinner.isReadonly();
 
             if (isValueBlank(initialValue)) {
-                SimpleDateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat df2 = new SimpleDateFormat(spinner.HTML_INPUTDATE_PATTERN);
                 Date aDate = new Date();
                 writer.writeAttribute("value", df2.format(aDate), "value");
 
@@ -173,9 +167,17 @@ public class DateSpinnerRenderer extends InputRenderer {
 
             writer.endElement("input");
             generateErrorMessageSpan(component, writer, clientId);
+            writer.startElement("span", component);
+            writer.writeAttribute("id", clientId+"_useNativeInit", null);
+            writer.writeAttribute(HTML.CLASS_ATTR, "mobi-hidden", null);
+            writer.writeAttribute("id", clientId + "_script", "id");
+            writer.startElement("script", null);
+            writer.writeAttribute("type", "text/javascript", null);
+            writer.write("mobi.datespinner.nativeInit('" + clientId + "',"+initialValue+" );");
+            writer.endElement("script");
+            writer.endElement("span");
             writer.endElement("div");
         } else {
-            writeJavascriptFile(context, component, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
             String value = encodeValue(spinner, initialValue);
             encodeMarkup(context, component, value, hasBehaviors, errorMessage);
             encodeScript(context, component, hasBehaviors, errorMessage);
@@ -235,6 +237,7 @@ public class DateSpinnerRenderer extends InputRenderer {
         }
         writer.startElement("span", uiComponent);
         writer.writeAttribute("id", clientId, "id");
+        renderResetSettings(context, uiComponent, "datespinner");
         writer.writeAttribute("name", clientId, "name");
         writer.writeAttribute("class", "mobi-date-wrapper", "class");
         writer.startElement("input", uiComponent);
@@ -243,9 +246,6 @@ public class DateSpinnerRenderer extends InputRenderer {
         if (!disabledOrReadonly){
             writer.writeAttribute("onblur", inputCall.toString(), null);
         }
-        // apply class attribute and pass though attributes for style.
-//        PassThruAttributeWriter.renderNonBooleanAttributes(writer, uiComponent,
-//                dateSpinner.getCommonAttributeNames());
         String style = dateSpinner.getStyle();
         if (style!=null){
             writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
@@ -654,13 +654,22 @@ public class DateSpinnerRenderer extends InputRenderer {
             DateTimeConverter tmp = (DateTimeConverter) converter;
             pattern = tmp.getPattern();
         }
+        if (null==pattern){
+            pattern = dateSpinner.HTML_INPUTDATE_PATTERN;
+        }
         return pattern;
     }
 
     private boolean withindateRange(DateSpinner spinner, String inputVal){
         if (inputVal==null)return false;
         String pattern = findPattern(spinner);
+        if (spinner.isUseNative()){
+           pattern=spinner.HTML_INPUTDATE_PATTERN;
+        }
         SimpleDateFormat df2 = new SimpleDateFormat(pattern);
+        Date dateObj;
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+
         if (spinner.getTimeZone() !=null){
             Object zoneObj = spinner.getTimeZone();
             if (zoneObj instanceof java.util.TimeZone) {
@@ -672,7 +681,7 @@ public class DateSpinnerRenderer extends InputRenderer {
             }
         }
         try {
-            Date dateObj = df2.parse(inputVal);
+            dateObj = df2.parse(inputVal);
             Calendar cal = Calendar.getInstance();
             cal.setTime(dateObj);
             int tempYear = cal.get(Calendar.YEAR);
@@ -690,6 +699,8 @@ public class DateSpinnerRenderer extends InputRenderer {
         }
         return false;
     }
+
+
 
 }
 
