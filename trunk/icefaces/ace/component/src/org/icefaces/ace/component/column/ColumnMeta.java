@@ -80,6 +80,9 @@ public class ColumnMeta extends UIColumnMeta {
     @Property(tlddoc="Defines the string input filtering this column, coming from the client, or from " +
             "the application via a value binding.")
     private String filterValue;
+
+    @Property(tlddoc="Defines multiple filter values. This property can only be set programmatically, typically when using the filter facet as well. The value must be a Collection or an Array of strings. If this attribute is set, 'filterValue', 'filterValueMin', and 'filterValueMax' are ignored.")
+    private Object filterValues;
     
 	@Property(tlddoc="Defines additional CSS rules to be applied to the filter text input.")
 	private String filterStyle;

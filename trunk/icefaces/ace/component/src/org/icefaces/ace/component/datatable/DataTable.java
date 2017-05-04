@@ -438,11 +438,15 @@ public class DataTable extends DataTableBase implements Serializable {
 				}
 			}
 
+			// after model values have been updated, we save the filter state if using the filter facet,
+			// since the filter values are decoded independetly in this case,
+			// so we must now fetch them to use them later at the render response phase
 			if (savedFilterState != null) {
 				for (Column c : getColumns()) {
 					if (c.getFilterFacet() != null) {
 						Object filterValue = c.getFilterValue();
-						if (filterValue != null) {
+						Object filterValues = c.getFilterValues();
+						if (filterValue != null || filterValues != null) {
 							savedFilterState.saveState(c);
 						} else {
 							savedFilterState.saveState(c, c.getFilterValueMin(), c.getFilterValueMax());

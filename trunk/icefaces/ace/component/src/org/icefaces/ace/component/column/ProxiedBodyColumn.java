@@ -198,6 +198,14 @@ public class ProxiedBodyColumn implements IProxiableColumn{
         return (isPropertySpecified(bodyColumn, "filterValue") ? bodyColumn : headerColumn).getFilterValue();
     }
 
+    public void setFilterValues(Object filterValues) {
+        (isPropertySpecified(bodyColumn, "filterValues") ? bodyColumn : headerColumn).setFilterValues(filterValues);
+    }
+
+    public Object getFilterValues() {
+        return (isPropertySpecified(bodyColumn, "filterValues") ? bodyColumn : headerColumn).getFilterValues();
+    }
+
     public void setFooterText(String footerText) {
         (isPropertySpecified(bodyColumn, "footerText") ? bodyColumn : headerColumn).setFooterText(footerText);
     }

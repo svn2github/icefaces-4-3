@@ -19,6 +19,7 @@ package org.icefaces.ace.util.collections;
 import org.icefaces.ace.component.column.Column;
 import org.icefaces.ace.component.column.ColumnType;
 import org.icefaces.ace.model.filter.FilterConstraint;
+import org.icefaces.ace.json.JSONArray;
 
 import javax.el.ELResolver;
 import javax.el.ValueExpression;
@@ -34,6 +35,7 @@ public class PropertyConstraintPredicate implements Predicate {
     FilterConstraint filterConstraint;
     FacesContext facesContext;
 	Column column;
+	JSONArray filterValues;
 
     public PropertyConstraintPredicate(FacesContext context, ValueExpression filterBy, String filterValue, FilterConstraint constraint, Column column) {
         this.filterValue = filterValue;
@@ -41,6 +43,13 @@ public class PropertyConstraintPredicate implements Predicate {
         this.facesContext = context;
         this.filterBy = filterBy;
 		this.column = column;
+		if (column.getFilterValues() != null) {
+			try {
+				filterValues = new JSONArray(filterValue);
+			} catch (Exception e) {
+				filterValues = null;
+			}
+		}
     }
 
     public boolean evaluate(Object object) {
@@ -52,8 +61,24 @@ public class PropertyConstraintPredicate implements Predicate {
 				value = dateFormat.format(value);
 			}
 
-			if (value != null)
-				return filterConstraint.applies(value.toString(), filterValue);
+			if (value != null) {
+				if (filterValues != null) {
+					for (int i = 0; i < filterValues.length(); i++) {
+						String fv;
+						try {
+							fv = filterValues.getString(i);
+						} catch (Exception e) {
+							fv = null;
+						}
+						if (fv != null && filterConstraint.applies(value.toString(), fv)) return true;
+					}
+					if (filterValues.length() == 0) return true;
+					return false;
+				} else {
+					return filterConstraint.applies(value.toString(), filterValue);
+				}
+			} else if (filterValues != null && filterValues.length() > 0)
+				return false;			
 			else if (filterValue != null && filterValue.length() > 0)
 				return false;
 			else

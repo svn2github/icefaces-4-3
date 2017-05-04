@@ -19,9 +19,12 @@ package org.icefaces.ace.component.datatable;
 import org.icefaces.ace.component.column.Column;
 import org.icefaces.ace.component.column.ColumnType;
 import org.icefaces.ace.context.RequestContext;
+import org.icefaces.ace.json.JSONArray;
 
+import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -181,7 +184,23 @@ public class FilterState {
     }
 
     public void saveState(Column column) {
-        valueMap.put(column, column.getFilterValue());
+		Object filterValues = column.getFilterValues();
+		if (filterValues != null) {
+			if (filterValues instanceof Collection || Object[].class.isAssignableFrom(filterValues.getClass())) {
+				JSONArray jsonArray = null;
+				try {
+					if (filterValues instanceof Collection) jsonArray = new JSONArray((Collection) filterValues);
+					else jsonArray = new JSONArray(filterValues);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				if (jsonArray != null) valueMap.put(column, jsonArray.toString());
+			} else {
+				throw new FacesException("Attribute filterValues in ace:column with ID '" + column.getId() + "' must be either a Collection or an array of strings.");
+			}
+		} else {
+			valueMap.put(column, column.getFilterValue());
+		}
     }
 
     public void saveState(Column column, String value) {
