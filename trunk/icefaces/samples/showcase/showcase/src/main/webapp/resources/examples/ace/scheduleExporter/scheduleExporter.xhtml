@@ -43,6 +43,13 @@
 						</ace:radioButtons>
 				</h:panelGrid>
 			</ace:panel>
+			<div style="text-align:center;">
+				<ace:scheduleExporter	
+									label="Export File"
+									type="#{scheduleExporterBean.type}"
+									target="schedule"
+									fileName="events"/>
+			</div>
 			<ace:schedule 	id="schedule"
 							value="#{scheduleExporterBean.lazyScheduleEventList}"
 							showEventDetails="disabled"
@@ -55,13 +62,6 @@
 							deleteEvents="true"
 							timeZone="UTC"
 							viewMode="#{scheduleExporterBean.viewMode}" />
-			<div style="text-align:center;">
-				<ace:scheduleExporter	
-									label="Export File"
-									type="#{scheduleExporterBean.type}"
-									target="schedule"
-									fileName="events"/>
-			</div>
         </h:form>
     </ui:define>
 </ui:composition>

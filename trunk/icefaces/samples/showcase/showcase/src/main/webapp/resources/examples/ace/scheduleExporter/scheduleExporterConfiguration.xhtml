@@ -88,18 +88,6 @@
 						</ace:checkboxButton>
 				</h:panelGrid>
 			</ace:panel>
-			<ace:schedule 	id="schedule"
-							value="#{scheduleExporterConfigurationBean.events}"
-							showEventDetails="disabled"
-							showTooltip="true"
-							scrollable="true"
-							scrollHeight="400"
-							sideBar="hidden"
-							addEvents="true"
-							editEvents="true"
-							deleteEvents="true"
-							timeZone="UTC"
-							viewMode="#{scheduleExporterConfigurationBean.viewMode}" />
 			<div style="text-align:center;">
 				<ace:scheduleExporter	
 									label="Export File"
@@ -112,6 +100,18 @@
 									sortBy="#{scheduleExporterConfigurationBean.sortBy}"
 									sortAscending="#{scheduleExporterConfigurationBean.sortAscending}"/>
 			</div>
+			<ace:schedule 	id="schedule"
+							value="#{scheduleExporterConfigurationBean.events}"
+							showEventDetails="disabled"
+							showTooltip="true"
+							scrollable="true"
+							scrollHeight="400"
+							sideBar="hidden"
+							addEvents="true"
+							editEvents="true"
+							deleteEvents="true"
+							timeZone="UTC"
+							viewMode="#{scheduleExporterConfigurationBean.viewMode}" />
         </h:form>
     </ui:define>
 </ui:composition>
