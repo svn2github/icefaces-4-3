@@ -36,7 +36,62 @@
                 <ace:column id="name" headerText="Name" filterBy="#{car.name}" filterMatchMode="contains">
                     <h:outputText id="nameCell" value="#{car.name}"/>
                 </ace:column>
-                <ace:column id="chassis" headerText="Chassis" filterBy="#{car.chassis}" filterMatchMode="contains">
+                <ace:column id="chassis" headerText="Chassis" filterBy="#{car.chassis}" filterMatchMode="contains" filterValues="#{dataTableFiltering.filterValues}">
+					<f:facet name="filter">
+						<h:panelGrid columns="2">
+							<ace:checkboxButton value="#{dataTableFiltering.custom}">
+								<ace:ajax execute="@form" render="@form"/>
+							</ace:checkboxButton>
+							<ace:textEntry value="#{dataTableFiltering.customFilter}">
+								<ace:ajax execute="@form" render="@form"/>
+							</ace:textEntry>
+
+							<ace:checkboxButton value="#{dataTableFiltering.bus}">
+								<ace:ajax execute="@form" render="@form"/>
+							</ace:checkboxButton>
+							<h:outputText value="Bus" />
+
+							<ace:checkboxButton value="#{dataTableFiltering.luxury}">
+								<ace:ajax execute="@form" render="@form"/>
+							</ace:checkboxButton>
+							<h:outputText value="Luxury" />
+
+							<ace:checkboxButton value="#{dataTableFiltering.midSize}">
+								<ace:ajax execute="@form" render="@form"/>
+							</ace:checkboxButton>
+							<h:outputText value="Mid-Size" />
+
+							<ace:checkboxButton value="#{dataTableFiltering.motorcycle}">
+								<ace:ajax execute="@form" render="@form"/>
+							</ace:checkboxButton>
+							<h:outputText value="Motorcycle" />
+
+							<ace:checkboxButton value="#{dataTableFiltering.pickup}">
+								<ace:ajax execute="@form" render="@form"/>
+							</ace:checkboxButton>
+							<h:outputText value="Pickup" />
+
+							<ace:checkboxButton value="#{dataTableFiltering.semiTruck}">
+								<ace:ajax execute="@form" render="@form"/>
+							</ace:checkboxButton>
+							<h:outputText value="Semi-Truck" />
+
+							<ace:checkboxButton value="#{dataTableFiltering.stationWagon}">
+								<ace:ajax execute="@form" render="@form"/>
+							</ace:checkboxButton>
+							<h:outputText value="Station Wagon" />
+
+							<ace:checkboxButton value="#{dataTableFiltering.subcompact}">
+								<ace:ajax execute="@form" render="@form"/>
+							</ace:checkboxButton>
+							<h:outputText value="Subcompact" />
+
+							<ace:checkboxButton value="#{dataTableFiltering.van}">
+								<ace:ajax execute="@form" render="@form"/>
+							</ace:checkboxButton>
+							<h:outputText value="Van" />
+						</h:panelGrid>
+					</f:facet>
                     <h:outputText id="chassisCell" value="#{car.chassis}"/>
                 </ace:column>
                 <ace:column id="weight" headerText="Weight" filterBy="#{car.weight}" filterMatchMode="contains">

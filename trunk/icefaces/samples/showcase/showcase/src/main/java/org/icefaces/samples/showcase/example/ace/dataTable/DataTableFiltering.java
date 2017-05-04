@@ -55,4 +55,63 @@ public class DataTableFiltering implements Serializable {
     public void setAccelOptions(List<SelectItem> accelOptions) {
         this.accelOptions = accelOptions;
     }
+
+	private String customFilter;
+	public String getCustomFilter() { return customFilter; }
+	public void setCustomFilter(String customFilter) { this.customFilter = customFilter; }
+
+	private boolean custom;
+	public boolean isCustom() { return custom; }
+	public void setCustom(boolean custom) { this.custom = custom; }
+
+	private boolean bus;
+	public boolean isBus() { return bus; }
+	public void setBus(boolean bus) { this.bus = bus; }
+
+	private boolean luxury;
+	public boolean isLuxury() { return luxury; }
+	public void setLuxury(boolean luxury) { this.luxury = luxury; }
+
+	private boolean midSize;
+	public boolean isMidSize() { return midSize; }
+	public void setMidSize(boolean midSize) { this.midSize = midSize; }
+
+	private boolean motorcycle;
+	public boolean isMotorcycle() { return motorcycle; }
+	public void setMotorcycle(boolean motorcycle) { this.motorcycle = motorcycle; }
+
+	private boolean pickup;
+	public boolean isPickup() { return pickup; }
+	public void setPickup(boolean pickup) { this.pickup = pickup; }
+
+	private boolean semiTruck;
+	public boolean isSemiTruck() { return semiTruck; }
+	public void setSemiTruck(boolean semiTruck) { this.semiTruck = semiTruck; }
+
+	private boolean stationWagon;
+	public boolean isStationWagon() { return stationWagon; }
+	public void setStationWagon(boolean stationWagon) { this.stationWagon = stationWagon; }
+
+	private boolean subcompact;
+	public boolean isSubcompact() { return subcompact; }
+	public void setSubcompact(boolean subcompact) { this.subcompact = subcompact; }
+
+	private boolean van;
+	public boolean isVan() { return van; }
+	public void setVan(boolean van) { this.van = van; }
+
+	public List<String> getFilterValues() {
+		List<String> filterValues = new ArrayList<String>();
+		if (custom) filterValues.add(customFilter);
+		if (bus) filterValues.add("Bus");
+		if (luxury) filterValues.add("Luxury");
+		if (midSize) filterValues.add("Mid-Size");
+		if (motorcycle) filterValues.add("Motorcycle");
+		if (pickup) filterValues.add("Pickup");
+		if (semiTruck) filterValues.add("Semi-Truck");
+		if (stationWagon) filterValues.add("Station Wagon");
+		if (subcompact) filterValues.add("Subcompact");
+		if (van) filterValues.add("Van");
+		return filterValues;
+	}
 }
