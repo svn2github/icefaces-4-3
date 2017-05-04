@@ -46,7 +46,7 @@
 					<!-- avoid setting a time zone on the calendars that are only used to specify date ranges -->
 					<h:outputLabel for="firstRangeStart" value="Start:"/>
 					<ace:dateTimeEntry id="firstRangeStart" value="#{dateSelectableRangesBean.firstRangeStart}"
-									   pattern="MMM/dd/yyyy" valueChangeListener="#{dateSelectableRangesBean.valueChangeListener}"
+									   pattern="MMM/dd/yyyy" validator="#{dateSelectableRangesBean.validateFirstRangeStart}"
 									   navigator="true"
 									   readOnlyInputText="true"
 									   renderAsPopup="true">
@@ -55,7 +55,7 @@
 					
 					<h:outputLabel for="firstRangeEnd" value="End:"/>
 					<ace:dateTimeEntry id="firstRangeEnd" value="#{dateSelectableRangesBean.firstRangeEnd}"
-									   pattern="MMM/dd/yyyy" valueChangeListener="#{dateSelectableRangesBean.valueChangeListener}"
+									   pattern="MMM/dd/yyyy" validator="#{dateSelectableRangesBean.validateFirstRangeEnd}"
 									   navigator="true"
 									   readOnlyInputText="true"
 									   renderAsPopup="true">
@@ -70,7 +70,7 @@
 					<!-- avoid setting a time zone on the calendars that are only used to specify date ranges -->
 					<h:outputLabel for="secondRangeStart" value="Start:"/>
 					<ace:dateTimeEntry id="secondRangeStart" value="#{dateSelectableRangesBean.secondRangeStart}"
-									   pattern="MMM/dd/yyyy" valueChangeListener="#{dateSelectableRangesBean.valueChangeListener}"
+									   pattern="MMM/dd/yyyy" validator="#{dateSelectableRangesBean.validateSecondRangeStart}"
 									   navigator="true"
 									   readOnlyInputText="true"
 									   renderAsPopup="true">
@@ -79,7 +79,7 @@
 					
 					<h:outputLabel for="secondRangeEnd" value="End:"/>
 					<ace:dateTimeEntry id="secondRangeEnd" value="#{dateSelectableRangesBean.secondRangeEnd}"
-									   pattern="MMM/dd/yyyy" valueChangeListener="#{dateSelectableRangesBean.valueChangeListener}"
+									   pattern="MMM/dd/yyyy" validator="#{dateSelectableRangesBean.validateSecondRangeEnd}"
 									   navigator="true"
 									   readOnlyInputText="true"
 									   renderAsPopup="true">

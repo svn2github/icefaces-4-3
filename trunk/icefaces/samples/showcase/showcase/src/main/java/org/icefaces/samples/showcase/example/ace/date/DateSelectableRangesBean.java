@@ -28,6 +28,9 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
+import javax.faces.validator.ValidatorException;
 
 @ManagedBean(name= DateSelectableRangesBean.BEAN_NAME)
 @CustomScoped(value = "#{window}")
@@ -96,39 +99,43 @@ public class DateSelectableRangesBean implements Serializable {
 		return ranges;
 	}
 
-	public void listenerFirstRangeStart(ValueChangeEvent e) {
-		Date date = (Date) e.getNewValue();
+	public void validateFirstRangeStart(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+		Date date = (Date) value;
 		if (date.after(firstRangeEnd)) {
-			String message = "Start date is after the end date in first range.";
+			((UIInput) component).setValid(false);
+			String message = "ERROR: Start date is after end date in first range.";
             FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message);
-            FacesContext.getCurrentInstance().addMessage(e.getComponent().getClientId(), facesMessage);
+            FacesContext.getCurrentInstance().addMessage(component.getClientId(), facesMessage);
 		}
 	}
 
-	public void listenerFirstRangeEnd(ValueChangeEvent e) {
-		Date date = (Date) e.getNewValue();
+	public void validateFirstRangeEnd(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+		Date date = (Date) value;
 		if (firstRangeStart.after(date)) {
-			String message = "Start date is after the end date in first range.";
+			((UIInput) component).setValid(false);
+			String message = "ERROR: End date is before start date in first range.";
             FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message);
-            FacesContext.getCurrentInstance().addMessage(e.getComponent().getClientId(), facesMessage);
+            FacesContext.getCurrentInstance().addMessage(component.getClientId(), facesMessage);
 		}
 	}
 
-	public void listenerSecondRangeStart(ValueChangeEvent e) {
-		Date date = (Date) e.getNewValue();
+	public void validateSecondRangeStart(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+		Date date = (Date) value;
 		if (date.after(secondRangeEnd)) {
-			String message = "Start date is after the end date in second range.";
+			((UIInput) component).setValid(false);
+			String message = "ERROR: Start date is after end date in second range.";
             FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message);
-            FacesContext.getCurrentInstance().addMessage(e.getComponent().getClientId(), facesMessage);
+            FacesContext.getCurrentInstance().addMessage(component.getClientId(), facesMessage);
 		}
 	}
 
-	public void listenerSecondRangeEnd(ValueChangeEvent e) {
-		Date date = (Date) e.getNewValue();
+	public void validateSecondRangeEnd(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+		Date date = (Date) value;
 		if (secondRangeStart.after(date)) {
-			String message = "Start date is after the end date in second range.";
+			((UIInput) component).setValid(false);
+			String message = "ERROR: End date is before start date in second range.";
             FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message);
-            FacesContext.getCurrentInstance().addMessage(e.getComponent().getClientId(), facesMessage);
+            FacesContext.getCurrentInstance().addMessage(component.getClientId(), facesMessage);
 		}
 	}
 }
