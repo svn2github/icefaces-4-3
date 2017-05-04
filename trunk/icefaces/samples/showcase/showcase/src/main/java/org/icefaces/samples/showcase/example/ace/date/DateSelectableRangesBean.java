@@ -25,6 +25,9 @@ import java.util.ArrayList;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 
 @ManagedBean(name= DateSelectableRangesBean.BEAN_NAME)
 @CustomScoped(value = "#{window}")
@@ -91,5 +94,41 @@ public class DateSelectableRangesBean implements Serializable {
 		ranges.add(secondRangeStart);
 		ranges.add(secondRangeEnd);
 		return ranges;
+	}
+
+	public void listenerFirstRangeStart(ValueChangeEvent e) {
+		Date date = (Date) e.getNewValue();
+		if (date.after(firstRangeEnd)) {
+			String message = "Start date is after the end date in first range.";
+            FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message);
+            FacesContext.getCurrentInstance().addMessage(e.getComponent().getClientId(), facesMessage);
+		}
+	}
+
+	public void listenerFirstRangeEnd(ValueChangeEvent e) {
+		Date date = (Date) e.getNewValue();
+		if (firstRangeStart.after(date)) {
+			String message = "Start date is after the end date in first range.";
+            FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message);
+            FacesContext.getCurrentInstance().addMessage(e.getComponent().getClientId(), facesMessage);
+		}
+	}
+
+	public void listenerSecondRangeStart(ValueChangeEvent e) {
+		Date date = (Date) e.getNewValue();
+		if (date.after(secondRangeEnd)) {
+			String message = "Start date is after the end date in second range.";
+            FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message);
+            FacesContext.getCurrentInstance().addMessage(e.getComponent().getClientId(), facesMessage);
+		}
+	}
+
+	public void listenerSecondRangeEnd(ValueChangeEvent e) {
+		Date date = (Date) e.getNewValue();
+		if (secondRangeStart.after(date)) {
+			String message = "Start date is after the end date in second range.";
+            FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message);
+            FacesContext.getCurrentInstance().addMessage(e.getComponent().getClientId(), facesMessage);
+		}
 	}
 }

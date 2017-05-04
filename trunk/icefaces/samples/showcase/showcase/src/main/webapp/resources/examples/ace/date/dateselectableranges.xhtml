@@ -40,40 +40,46 @@
                 </h:panelGrid>
             </ace:panel>
 
-            <ace:panel style="margin: 10px 0;">                
-				<h:panelGrid id="configurationPanel" width="100%" columns="4"
+            <ace:panel style="margin: 10px 0;" header="First Range">
+				<h:panelGrid id="configurationPanel1" width="100%" columns="4"
 							 style="margin-left: auto; margin-right: auto; text-align: center;">
 					<!-- avoid setting a time zone on the calendars that are only used to specify date ranges -->
-					<h:outputLabel for="firstRangeStart" value="First Range Start:"/>
+					<h:outputLabel for="firstRangeStart" value="Start:"/>
 					<ace:dateTimeEntry id="firstRangeStart" value="#{dateSelectableRangesBean.firstRangeStart}"
-									   pattern="MMM/dd/yyyy"
+									   pattern="MMM/dd/yyyy" valueChangeListener="#{dateSelectableRangesBean.valueChangeListener}"
 									   navigator="true"
 									   readOnlyInputText="true"
 									   renderAsPopup="true">
 						<ace:ajax/>
 					</ace:dateTimeEntry>
 					
-					<h:outputLabel for="firstRangeEnd" value="First Range End:"/>
+					<h:outputLabel for="firstRangeEnd" value="End:"/>
 					<ace:dateTimeEntry id="firstRangeEnd" value="#{dateSelectableRangesBean.firstRangeEnd}"
-									   pattern="MMM/dd/yyyy"
+									   pattern="MMM/dd/yyyy" valueChangeListener="#{dateSelectableRangesBean.valueChangeListener}"
 									   navigator="true"
 									   readOnlyInputText="true"
 									   renderAsPopup="true">
 						<ace:ajax/>
 					</ace:dateTimeEntry>
+				</h:panelGrid>
+            </ace:panel>
 
-					<h:outputLabel for="secondRangeStart" value="Second Range Start:"/>
+            <ace:panel style="margin: 10px 0;" header="Second Range">
+				<h:panelGrid id="configurationPanel2" width="100%" columns="4"
+							 style="margin-left: auto; margin-right: auto; text-align: center;">
+					<!-- avoid setting a time zone on the calendars that are only used to specify date ranges -->
+					<h:outputLabel for="secondRangeStart" value="Start:"/>
 					<ace:dateTimeEntry id="secondRangeStart" value="#{dateSelectableRangesBean.secondRangeStart}"
-									   pattern="MMM/dd/yyyy"
+									   pattern="MMM/dd/yyyy" valueChangeListener="#{dateSelectableRangesBean.valueChangeListener}"
 									   navigator="true"
 									   readOnlyInputText="true"
 									   renderAsPopup="true">
 						<ace:ajax/>
 					</ace:dateTimeEntry>
 					
-					<h:outputLabel for="secondRangeEnd" value="Second Range End:"/>
+					<h:outputLabel for="secondRangeEnd" value="End:"/>
 					<ace:dateTimeEntry id="secondRangeEnd" value="#{dateSelectableRangesBean.secondRangeEnd}"
-									   pattern="MMM/dd/yyyy"
+									   pattern="MMM/dd/yyyy" valueChangeListener="#{dateSelectableRangesBean.valueChangeListener}"
 									   navigator="true"
 									   readOnlyInputText="true"
 									   renderAsPopup="true">
@@ -93,6 +99,7 @@
 					<ace:ajax/>
 				</ace:dateTimeEntry>
             </h:panelGrid>
+            <ace:growlMessages  autoHide="true" for="@inView"/>
         </h:form>
     </ui:define>
 </ui:composition>
