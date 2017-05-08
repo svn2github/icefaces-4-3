@@ -258,10 +258,9 @@ ice.ace.CalendarInit = function(options) {
             }
         });
 
-		// if instance was previously initialized, create right away and return
+		// if instance was previously initialized, create right away
 		if (ice.ace.Calendar.instances[id]) {
 			create();
-			return;
 		}
 
 		ice.ace.lazy.registry[id] = function() {
