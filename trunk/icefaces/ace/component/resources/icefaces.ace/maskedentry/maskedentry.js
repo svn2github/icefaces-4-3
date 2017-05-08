@@ -308,9 +308,14 @@ ice.ace.InputMask = function(id, cfg) {
 	this.jq.mask(this.cfg.mask, this.cfg);
 
 	if (this.cfg.inFieldLabel) {
-		if (!this.cfg.labelIsInField) ice.ace.setResetValue(this.jq.attr('id'), this.jq.val());
-		else ice.ace.setResetValue(this.jq.attr('id'), '');
-	} else ice.ace.setResetValue(this.jq.attr('id'), this.jq.val());
+		if (!this.cfg.labelIsInField) {
+		    ice.ace.setResetValue(this.jq.attr('id'), this.jq.val());
+        } else {
+            this.jq.val(cfg.inFieldLabel);
+        }
+	} else {
+	    ice.ace.setResetValue(this.jq.attr('id'), this.jq.val());
+    }
 
     this.jq.change(function() { ice.setFocus(''); });
     //Client behaviors
