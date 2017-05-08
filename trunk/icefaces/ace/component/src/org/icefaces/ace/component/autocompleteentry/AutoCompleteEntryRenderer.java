@@ -245,6 +245,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
                 ComponentUtils.renderPassThroughAttribute(writer, autoCompleteEntry, name);
             }
         }
+        ComponentUtils.renderExternalPassThroughAttributes(writer, autoCompleteEntry);
 
         if (ariaEnabled) {
             Map<String, Object> ariaAttributes = new HashMap<String, Object>() {{

@@ -395,6 +395,16 @@ public class ComponentUtils {
     }
 
 
+    public static void renderExternalPassThroughAttributes(ResponseWriter writer, UIComponent component) throws IOException {
+        Map<String, Object> attributes = component.getPassThroughAttributes();
+        if (!attributes.isEmpty()) {
+            for (Map.Entry<String, Object> entry : attributes.entrySet()) {
+                writer.writeAttribute(entry.getKey(), entry.getValue().toString(),null);
+            }
+        }
+    }
+
+
     private static boolean shouldRenderAttribute(Object value) {
         if (value == null)
             return false;

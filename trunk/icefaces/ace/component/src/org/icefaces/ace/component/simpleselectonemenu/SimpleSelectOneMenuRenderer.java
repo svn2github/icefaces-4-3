@@ -95,6 +95,7 @@ public class SimpleSelectOneMenuRenderer extends InputRenderer {
 		writer.writeAttribute("style", style, null);
 
         ComponentUtils.renderPassThroughAttributes(writer, simpleSelectOneMenu, PASSTHROUGH_ATTRIBUTES);
+        ComponentUtils.renderExternalPassThroughAttributes(writer, simpleSelectOneMenu);
 
         Map<String, Object> ariaAttributes = null;
 		if (ariaEnabled) {

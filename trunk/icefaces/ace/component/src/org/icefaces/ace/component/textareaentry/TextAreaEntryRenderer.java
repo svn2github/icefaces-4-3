@@ -192,6 +192,7 @@ public class TextAreaEntryRenderer extends InputRenderer {
                 ComponentUtils.renderPassThroughAttribute(writer, textAreaEntry, name);
             }
         }
+        ComponentUtils.renderExternalPassThroughAttributes(writer, textAreaEntry);
 
         writer.endElement("textarea");
     }

@@ -103,6 +103,7 @@ public class TextEntryRenderer extends InputRenderer {
         if (!isDateType) writer.writeAttribute("autocorrect", textEntry.getAutocorrect(), null);
         else writer.writeAttribute("autocorrect", "on", null);
         writer.writeAttribute("autocapitalize", textEntry.getAutocapitalize(), null);
+        writer.writeAttribute("pattern", textEntry.getPattern(), null);
         String embeddedLabel = null;
         String nameToRender = clientId + "_input";
         String valueToRender = null;
@@ -190,6 +191,7 @@ public class TextEntryRenderer extends InputRenderer {
                 ComponentUtils.renderPassThroughAttribute(writer, textEntry, name);
             }
         }
+        ComponentUtils.renderExternalPassThroughAttributes(writer, textEntry);
 
         writer.endElement("input");
 

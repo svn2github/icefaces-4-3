@@ -51,6 +51,7 @@ public class GraphicImageRenderer extends Renderer {
         writer.writeAttribute("id", clientId, null);
 
         ComponentUtils.renderPassThroughAttributes(writer, uiGraphic, PASSTHROUGH_ATTRIBUTES);
+        ComponentUtils.renderExternalPassThroughAttributes(writer, uiGraphic);
 
         String styleClass;
         if (null != (styleClass = (String)

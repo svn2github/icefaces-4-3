@@ -208,6 +208,7 @@ public class MaskedEntryRenderer extends InputRenderer {
 		Utils.writeConcatenatedStyleClasses(writer, defaultClass, styleClass);
 
         ComponentUtils.renderPassThroughAttributes(writer, maskedEntry, PASSTHROUGH_ATTRIBUTES);
+        ComponentUtils.renderExternalPassThroughAttributes(writer, maskedEntry);
 
         writer.endElement("input");
 		

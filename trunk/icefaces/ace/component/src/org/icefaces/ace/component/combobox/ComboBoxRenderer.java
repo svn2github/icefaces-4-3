@@ -189,6 +189,7 @@ public class ComboBoxRenderer extends InputRenderer {
 		if (placeholder != null) writer.writeAttribute("placeholder", placeholder, null);
 
         ComponentUtils.renderPassThroughAttributes(writer, comboBox, PASSTHROUGH_ATTRIBUTES);
+        ComponentUtils.renderExternalPassThroughAttributes(writer, comboBox);
 
         writer.endElement("input");
 		writer.endElement("span");

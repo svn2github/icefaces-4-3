@@ -135,6 +135,7 @@ public class PanelRenderer extends CoreRenderer {
         }
 
         ComponentUtils.renderPassThroughAttributes(writer, panel, PASSTHROUGH_ATTRIBUTES);
+        ComponentUtils.renderExternalPassThroughAttributes(writer, panel);
 
         encodeHeader(context, panel, domUpdateMap);
         encodeContent(context, panel);

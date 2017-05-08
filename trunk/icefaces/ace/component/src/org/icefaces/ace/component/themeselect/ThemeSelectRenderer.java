@@ -146,6 +146,7 @@ public class ThemeSelectRenderer extends InputRenderer {
         renderOptions(context, themeSelectComponent);
 
         ComponentUtils.renderPassThroughAttributes(writer, themeSelectComponent, PASSTHROUGH_ATTRIBUTES);
+        ComponentUtils.renderExternalPassThroughAttributes(writer, themeSelectComponent);
 
         writer.endElement("select");
 
