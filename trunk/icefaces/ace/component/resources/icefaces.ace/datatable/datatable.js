@@ -244,6 +244,9 @@ ice.ace.DataTable = function (id, cfg) {
         if (this.cfg.filterEvent && this.cfg.filterEvent != "blur" && this.cfg.filterEvent != "keyup")
             this.setupFilterEvents();
 
+		if (this.element.find(this.filterButtonSelector).size() > 0)
+			this.setupFilterFacetEvents();
+
         if (this.cfg.reorderableColumns) {
             this.reorderStart = 0;
             this.reorderEnd = 0;
@@ -407,9 +410,51 @@ ice.ace.DataTable.prototype.setupFilterEvents = function () {
         });
 	}
 
+	this.element.off('input', this.filterSelector);
+    this.element.on('input', this.filterSelector, function (event) {
+        if ((event.target || event.srcElement).value == '') {
+            _self.filter(event);
+        }
+    });
+};
+
+ice.ace.DataTable.prototype.setupFilterFacetEvents = function () {
+    var _self = this;
+
+	if (!ice.ace.DataTable.hideFilterFacetListeners)
+		ice.ace.DataTable.hideFilterFacetListeners = {};
+
 	this.element.off('click', this.filterButtonSelector);
 	this.element.on('click', this.filterButtonSelector, function (event) {
 		var _event = event;
+		var id = this.id;
+		if (!ice.ace.DataTable.hideFilterFacetListeners[id]) {
+			ice.ace.DataTable.hideFilterFacetListeners[id] = function(e) {
+				var facetId = id + 'Facet';
+				var target = ice.ace.jq(e.target);
+				var facet = target.closest(ice.ace.escapeClientId(facetId));
+				if (e.target.id == id || facet.size() > 0) {
+					return;
+				} else {
+					var button = ice.ace.jq(ice.ace.escapeClientId(id));
+					if (button.size() > 0) {
+						button.removeClass('fa-chevron-up');
+						button.addClass('fa-chevron-down');
+						button.next().hide();
+						ice.ace.jq(window).off('click', ice.ace.DataTable.hideFilterFacetListeners[id]);
+						if (_self.delayedFilterCall)
+							clearTimeout(_self.delayedFilterCall);
+
+						_self.delayedFilterCall = setTimeout(function () {
+							var button = ice.ace.jq(ice.ace.escapeClientId(id));
+							if (button.size() > 0) {
+								_self.filter(_event);
+							}
+						}, 400);
+					}
+				}
+			};
+		}
 		var button = ice.ace.jq(this);
 		if (button.hasClass('fa-chevron-down')) {
 			button.removeClass('fa-chevron-down');
@@ -417,10 +462,15 @@ ice.ace.DataTable.prototype.setupFilterEvents = function () {
 			var position = button.position();
 			button.next().css({top: position.top + button.outerHeight() + 'px', left: position.left + 'px'});
 			button.next().show();
+			setTimeout(function () {
+				ice.ace.jq(window).on('click', ice.ace.DataTable.hideFilterFacetListeners[id]);
+			}, 0);
 		} else if (button.hasClass('fa-chevron-up')) {
+			_event.stopImmediatePropagation();
 			button.removeClass('fa-chevron-up');
 			button.addClass('fa-chevron-down');
 			button.next().hide();
+			ice.ace.jq(window).off('click', ice.ace.DataTable.hideFilterFacetListeners[id]);
 			if (_self.delayedFilterCall)
 				clearTimeout(_self.delayedFilterCall);
 
@@ -429,13 +479,6 @@ ice.ace.DataTable.prototype.setupFilterEvents = function () {
 			}, 400);
 		}
 	});
-
-	this.element.off('input', this.filterSelector);
-    this.element.on('input', this.filterSelector, function (event) {
-        if ((event.target || event.srcElement).value == '') {
-            _self.filter(event);
-        }
-    });
 };
 
 ice.ace.DataTable.prototype.setupPaginator = function () {
