@@ -111,7 +111,7 @@
 
 .ui-tabset {
     position: relative;
-    padding: .2em;
+    padding: .2em 1px;
     display: table;
 	width: 100%;
 }
