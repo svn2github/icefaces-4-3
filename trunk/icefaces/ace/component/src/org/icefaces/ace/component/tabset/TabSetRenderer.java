@@ -418,7 +418,7 @@ public class TabSetRenderer extends CoreRenderer {
 			+ "if (!r.keyEvent && !r.mouseDown) {var e = ice.ace.jq(r)"
 			+ ".find('.ui-tabs-panel').find(':focusable:visible:enabled:first');"
 			+ "if (e.size() > 0) e.focus();}}", null);
-        writer.writeAttribute(HTML.ONMOUSEDOWN_ATTR, "document.getElementById('"+tabSetClientId+"').mouseDown = true;setTimeout(function(){document.getElementById('"+tabSetClientId+"').mouseDown = false;},1000);", null);
+        writer.writeAttribute(HTML.ONMOUSEDOWN_ATTR, "document.getElementById('"+tabSetClientId+"').mouseDown = true; setTimeout(function(){try {document.getElementById('"+tabSetClientId+"').mouseDown = false;} catch (ex) {}},1000);", null);
 
         writer.startElement("em", tab);
         writer.writeAttribute(HTML.ID_ATTR, clientId+ "Lbl", HTML.ID_ATTR); 
