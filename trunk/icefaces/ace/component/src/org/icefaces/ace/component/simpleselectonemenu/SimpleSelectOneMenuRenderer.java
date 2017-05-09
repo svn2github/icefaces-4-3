@@ -164,7 +164,6 @@ public class SimpleSelectOneMenuRenderer extends InputRenderer {
         boolean readonly = simpleSelectOneMenu.isReadonly();
         Object value = submittedValue != null ? submittedValue : simpleSelectOneMenu.getValue();
 		String convertedValue = value != null ? getConvertedValueForClient(facesContext, simpleSelectOneMenu, value) : null;
-		String clientId = simpleSelectOneMenu.getClientId(facesContext);
 		boolean ariaEnabled = EnvUtils.isAriaEnabled(facesContext);
         simpleSelectOneMenu.populateItemList();
         Iterator matches = simpleSelectOneMenu.getItemListIterator();
@@ -191,7 +190,6 @@ public class SimpleSelectOneMenuRenderer extends InputRenderer {
 					selectedFound = true;
 				}
 				itemLabel = itemLabel == null ? itemValue.toString() : itemLabel;
-				itemLabel = item.isEscape() ? DOMUtils.escapeAnsi(itemLabel) : itemLabel;
                 boolean isSelected = String.valueOf(convertedValue).equals(itemValue);
                 if (item.isDisabled() || (!isSelected && readonly)) {
 					sb.append("<option disabled=\"disabled\" value=\"" + (itemValue == null ? "" : itemValue) + "\"" + selected + role + ">").append(itemLabel).append("</option>");
