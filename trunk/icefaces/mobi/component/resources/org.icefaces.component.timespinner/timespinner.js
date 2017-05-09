@@ -68,55 +68,55 @@ mobi.timespinner = {
         var minEl = document.getElementById(mId);
         if (minEl) {
             var mInt = this.getIntValue(mId);
-            if (mInt == 59) {
+            if (mInt == 59 || mInt == -1) {
                 minEl.innerHTML = 0;
             }
             else {
                 minEl.innerHTML = mInt + 1;
             }
+            this.updateTime(clientId);
         }
-        this.updateTime(clientId);
     },
     mDn:function (clientId) {
         var mId = clientId + '_mInt';
         var minEl = document.getElementById(mId);
         if (minEl) {
             var mInt = this.getIntValue(mId);
-            if (mInt == 0) {
+            if (mInt <= 0) {
                 minEl.innerHTML = 59;
             }
             else {
                 minEl.innerHTML = mInt - 1;
             }
+            this.updateTime(clientId);
         }
-        this.updateTime(clientId);
     },
     hrUp:function (clientId) {
         var hrId = clientId + '_hrInt';
         var hrEl = document.getElementById(hrId);
         if (hrEl) {
             var hrInt = this.getIntValue(hrId);
-            if (hrInt == 12) {
+            if (hrInt == 12 || hrInt == -1) {
                 hrEl.innerHTML = 1;
             }
             else {
                 hrEl.innerHTML = hrInt + 1;
             }
+            this.updateTime(clientId);
         }
-        this.updateTime(clientId);
     },
     hrDn:function (clientId) {
         var hrEl = document.getElementById(clientId + '_hrInt');
         if (hrEl) {
             var hrInt = this.getIntValue(clientId + '_hrInt');
-            if (hrInt == 1) {
+            if (hrInt == 1 || hrInt == -1) {
                 hrEl.innerHTML = 12;
             }
             else {
                 hrEl.innerHTML = hrInt - 1;
             }
+            this.updateTime(clientId);
         }
-        this.updateTime(clientId);
     },
     ampmToggle:function (clientId) {
         var aId = clientId + '_ampmInt';
@@ -151,10 +151,11 @@ mobi.timespinner = {
 
     getIntValue:function (id) {
         var element = document.getElementById(id);
-        if (element) {
-            var stringEl = element.innerHTML;
-            return parseInt(stringEl);
-        } else return 1;
+           if (element) {
+               var stringEl = element.innerHTML;
+               if (stringEl == "NaN" || stringEl == "" )return -1;
+               return parseInt(stringEl);
+           } else return 1;
     },
     select:function (clientId, cfg) {
         this.cfg = cfg;
@@ -235,9 +236,7 @@ mobi.timespinner = {
         this.centerCalculation[clientId] = undefined;
     },
     unload:function (clientId) {
-        alert("unloading for clientId");
-        /* var titleEl = document.getElementById(clientId+'_title');
-         titleEl.innerHTML = "";  */
+        console.log("unloading for clientId");
         this.pattern[clientId] = null;
         this.opened[clientId] = null;
     } ,
@@ -250,7 +249,6 @@ mobi.timespinner = {
                 if (timeElem) {
                     timeElem.value = value;
                     /* hh:mm a */
-
                     var hrEl = document.getElementById(clientId + "_hrInt");
                     var minEl = document.getElementById(clientId + "_mInt");
                     var ampmEl = document.getElementById(clientId + "_ampmInt");

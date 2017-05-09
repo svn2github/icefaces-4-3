@@ -69,21 +69,21 @@ mobi.datespinner = {
         var mnthEl = document.getElementById(mId);
         if (mnthEl) {
             var mInt = this.getIntValue(mId);
-            if (mInt == 12) {
+            if (mInt == 12 || mInt == -1) {
                 mnthEl.innerHTML = 1;
             }
             else {
                 mnthEl.innerHTML = mInt + 1;
             }
-        }
-        this.updateDate(clientId);
+            this.updateDate(clientId)
+        };
     },
     mDn:function (clientId) {
         var mId = clientId + '_mInt';
         var mnthEl = document.getElementById(mId);
         if (mnthEl) {
             var mInt = this.getIntValue(mId);
-            if (mInt == 1) {
+            if (mInt == 1 || mInt == -1) {
                 mnthEl.innerHTML = 12;
             }
             else {
@@ -92,32 +92,39 @@ mobi.datespinner = {
         }
         this.updateDate(clientId);
     },
+    checkForEmptyYear: function (yrEl) {
+            var today = new Date();
+            yrEl.innerHTML = today.getFullYear();
+
+    },
     yUp:function (clientId, yrMin, yrMax) {
         var yId = clientId + '_yInt';
         var yrEl = document.getElementById(yId);
         if (yrEl) {
             var yInt = this.getIntValue(yId);
-            if (yInt == yrMax) {
-                //nothing
+            if (yInt == -1) {
+                this.checkForEmptyYear(yrEl);
             }
-            else {
-                yrEl.innerHTML = yInt + 1;
+            else if (yInt != yrMax) {
+                yrEl.innerHTML = yInt+1;
             }
+            this.updateDate(clientId);
         }
-        this.updateDate(clientId);
     },
     yDn:function (clientId, yrMin, yrMax) {
-        var yrEl = document.getElementById(clientId + '_yInt');
+        var yId = clientId + '_yInt';
+        var yrEl = document.getElementById(yId);
         if (yrEl) {
-            yInt = this.getIntValue(clientId + '_yInt');
-            if (yInt == yrMin) {
-                //nothing
+            yInt = this.getIntValue(yId);
+            var yInt = this.getIntValue(yId);
+            if (yInt == -1) {
+                this.checkForEmptyYear(yrEl);
             }
-            else {
-                yrEl.innerHTML = yInt - 1;
+            else if (yInt != yrMin) {
+                yrEl.innerHTML = yInt-1;
             }
+            this.updateDate(clientId);
         }
-        this.updateDate(clientId);
     },
     dUp:function (clientId) {
         var dId = clientId + '_dInt';
@@ -128,14 +135,15 @@ mobi.datespinner = {
         var dInt = this.getIntValue(dId);
         var numDaysInMonth = this.daysInMonth(mInt, yInt);
         if (dEl) {
-            if (dInt >= numDaysInMonth) {
+            if (dInt >= numDaysInMonth || dInt == -1) {
                 dEl.innerHTML = 1;
             }
             else {
                 dEl.innerHTML = dInt + 1;
             }
+            this.updateDate(clientId);
         }
-        this.updateDate(clientId);
+
     },
     dDn:function (clientId) {
         var dId = clientId + '_dInt';
@@ -145,14 +153,14 @@ mobi.datespinner = {
         var dInt = this.getIntValue(dId);
         var numDaysInMonth = this.daysInMonth(mInt, yInt);
         if (dEl) {
-            if (dInt == 1 || dInt > numDaysInMonth) {
+            if (dInt == 1 || dInt > numDaysInMonth || dInt ==-1) {
                 dEl.innerHTML = numDaysInMonth;
             }
             else {
                 dEl.innerHTML = dInt - 1;
             }
+            this.updateDate(clientId);
         }
-        this.updateDate(clientId);
     },
     updateDate:function (clientId) {
         var dId = clientId + "_dInt";
@@ -211,6 +219,7 @@ mobi.datespinner = {
         var element = document.getElementById(id);
         if (element) {
             var stringEl = element.innerHTML;
+            if (stringEl == "NaN" || stringEl == "" )return -1;
             return parseInt(stringEl);
         } else return 1;
     },
@@ -398,26 +407,34 @@ mobi.datespinner = {
                     var day=1;
                     var year=2017;
                     var dDate = new Date(value);
+                    var separator ='-' ;
+                    if (value.indexOf('/')>=0){
+                       separator = '/';
+                    }
                     if (myPattern == "MM-dd-yyyy" || myPattern == 'MM/dd/yyyy') {
-                        month = value.slice(0,1);
-                        day=value.slice(3,4);
-                        year = value.slice(6,9);
+                        var vals = value.split(separator);
+                        month = vals[0];
+                        day=vals[1];
+                        year = vals[2];
                     }else if (myPattern == 'yyyy-MM-dd' || myPattern == 'yyyy/MM/dd') {
-                        month = value.slice(5,6);
-                        day=value.slice(8,9);
-                        year = value.slice(0,3);
+                        var vals = value.split(separator);
+                        month = vals[1];
+                        day=vals[2];
+                        year = vals[0];
                     } else if (myPattern == 'yyyy-dd-MM' || myPattern == 'yyyy/dd/MM') {
-                        month = value.slice(8,9);
-                        day=value.slice(5,6);
-                        year = value.slice(0,3);
+                        var vals = value.split(separator);
+                        month = vals[2];
+                        day=vals[1];
+                        year = vals[0];
                     }  else if (myPattern =='dd-MM-yyyy' || myPattern == 'dd/MM/yyyy') {
-                        day = value.slice(0,1);
-                        month = value.slice(3,4);
-                        year = value.slice(6,9);
+                        var vals = value.split(separator);
+                        month = vals[1];
+                        day=vals[0];
+                        year = vals[2];
                     } else {
-                        var month = dDate.getMonth()+1;
-                        var year = dDate.getFullYear();
-                        var day = dDate.getDay()+1;
+                        month = dDate.getMonth()+1;
+                        year = dDate.getFullYear();
+                        day = dDate.getDay()+1;
                     }
                     var updatedValue = mobi.datespinner.validate(clientId, year, month, day);
                     mobi.datespinner.writeTitle(clientId, updatedValue);
