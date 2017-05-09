@@ -85,31 +85,74 @@ public class PropertyConstraintPredicate implements Predicate {
 				return true;
 		} else if (this.column.getColumnType() == ColumnType.BOOLEAN) {
 			if (value != null) {
-				if ("true".equalsIgnoreCase(filterValue)) {
-					return (Boolean) value == true;
+				if (filterValues != null) {
+					for (int i = 0; i < filterValues.length(); i++) {
+						String fv;
+						try {
+							fv = filterValues.getString(i);
+						} catch (Exception e) {
+							fv = null;
+						}
+						if (fv != null) {
+							if (((Boolean) value) == Boolean.valueOf(fv)) {
+								return true;
+							}
+						}
+					}
+					if (filterValues.length() == 0) return true;
+					return false;
 				} else {
-					return (Boolean) value == false;
+					if ("true".equalsIgnoreCase(filterValue)) {
+						return ((Boolean) value) == true;
+					} else {
+						return ((Boolean) value) == false;
+					}
 				}
-			} else if (filterValue != null)
+			} else if (filterValues != null && filterValues.length() > 0)
+				return false;			
+			else if (filterValue != null)
 				return false;
 			else
 				return true;			
 		} else if (this.column.getColumnType() == ColumnType.DATE) {
 			Date filterDate = null;
+			Date[] filterDates = null;
 			DateFormat dateFormat = new SimpleDateFormat(this.column.getFilterDatePattern(), 
 				this.column.calculateLocale(this.facesContext));
 			try {
-				if (filterValue != null && !"".equals(filterValue)) filterDate = dateFormat.parse(filterValue);
+				if (filterValues != null) {
+					int size = filterValues.length();
+					filterDates = new Date[size];
+					for (int i = 0; i < size; i++) {
+						String fv;
+						try {
+							fv = filterValues.getString(i);
+						} catch (Exception e) {
+							fv = null;
+						}
+						if (fv != null && !"".equals(fv)) filterDates[i] = dateFormat.parse(fv);
+						else filterDates[i] = null;
+					}
+				} else if (filterValue != null && !"".equals(filterValue)) filterDate = dateFormat.parse(filterValue);
 			} catch (ParseException e) {
 				filterDate = null;
 			}
 
 			if (value instanceof Date) {
-				if (value != null && filterDate != null) {
+				if (value != null && filterDates != null) {
+					String valueString = dateFormat.format(value);
+					for (int i = 0; i < filterDates.length; i++) {
+						String filterString = dateFormat.format(filterDates[i]);
+						if (valueString.equals(filterString)) return true;
+					}
+					return false;
+				} else if (value != null && filterDate != null) {
 					String valueString = dateFormat.format(value);
 					String filterString = dateFormat.format(filterDate);
 					return valueString.equals(filterString);
-				} else if (filterDate != null)
+				} else if (filterValues != null && filterValues.length() > 0)
+					return false;			
+				else if (filterDate != null)
 					return false;
 				else
 					return true;
@@ -119,114 +162,252 @@ public class PropertyConstraintPredicate implements Predicate {
 		} else if (this.column.getColumnType() == ColumnType.BYTE) {
 			Byte convertedValue = null;
 			Byte convertedFilterValue = null;
+			Byte[] convertedFilterValues = null;
 			try {
-				if (value != null && !"".equals(value)) convertedValue = 
-					new Byte(Byte.parseByte(value.toString()));
-				if (filterValue != null && !"".equals(filterValue)) convertedFilterValue = 
-					new Byte(Byte.parseByte(filterValue));
+				if (filterValues != null) {
+					int size = filterValues.length();
+					convertedFilterValues = new Byte[size];
+					for (int i = 0; i < size; i++) {
+						String fv;
+						try {
+							fv = filterValues.getString(i);
+						} catch (Exception e) {
+							fv = null;
+						}
+						if (fv != null && !"".equals(fv)) convertedFilterValues[i] = new Byte(Byte.parseByte(fv));
+						else convertedFilterValues[i] = null;
+					}
+				} else if (filterValue != null && !"".equals(filterValue))
+					convertedFilterValue = new Byte(Byte.parseByte(filterValue));
+
+				if (value != null && !"".equals(value))
+					convertedValue = new Byte(Byte.parseByte(value.toString()));
 			} catch (NumberFormatException e) {
 				convertedValue = null;
 				convertedFilterValue = null;
+				convertedFilterValues = null;
 			}
 
-			if (convertedValue != null && convertedFilterValue != null) {
+			if (convertedValue != null && convertedFilterValues != null) {
+				for (int i = 0; i < convertedFilterValues.length; i++) {
+					if (convertedValue.byteValue() == convertedFilterValues[i].byteValue()) return true;
+				}
+				return false;
+			} else if (convertedValue != null && convertedFilterValue != null) {
 				return convertedValue.byteValue() == convertedFilterValue.byteValue();
-			} else if (convertedFilterValue != null)
+			} else if (filterValues != null && filterValues.length() > 0)
+				return false;			
+			else if (convertedFilterValue != null)
 				return false;
 			else
 				return true;
 		} else if (this.column.getColumnType() == ColumnType.SHORT) {
 			Short convertedValue = null;
 			Short convertedFilterValue = null;
+			Short[] convertedFilterValues = null;
 			try {
-				if (value != null && !"".equals(value)) convertedValue = 
-					new Short(Short.parseShort(value.toString()));
-				if (filterValue != null && !"".equals(filterValue)) convertedFilterValue = 
-					new Short(Short.parseShort(filterValue));
+				if (filterValues != null) {
+					int size = filterValues.length();
+					convertedFilterValues = new Short[size];
+					for (int i = 0; i < size; i++) {
+						String fv;
+						try {
+							fv = filterValues.getString(i);
+						} catch (Exception e) {
+							fv = null;
+						}
+						if (fv != null && !"".equals(fv)) convertedFilterValues[i] = new Short(Short.parseShort(fv));
+						else convertedFilterValues[i] = null;
+					}
+				} else if (filterValue != null && !"".equals(filterValue))
+					convertedFilterValue = new Short(Short.parseShort(filterValue));
+
+				if (value != null && !"".equals(value))
+					convertedValue = new Short(Short.parseShort(value.toString()));
 			} catch (NumberFormatException e) {
 				convertedValue = null;
 				convertedFilterValue = null;
+				convertedFilterValues = null;
 			}
 
-			if (convertedValue != null && convertedFilterValue != null) {
+			if (convertedValue != null && convertedFilterValues != null) {
+				for (int i = 0; i < convertedFilterValues.length; i++) {
+					if (convertedValue.shortValue() == convertedFilterValues[i].shortValue()) return true;
+				}
+				return false;
+			} else if (convertedValue != null && convertedFilterValue != null) {
 				return convertedValue.shortValue() == convertedFilterValue.shortValue();
-			} else if (convertedFilterValue != null)
+			} else if (filterValues != null && filterValues.length() > 0)
+				return false;			
+			else if (convertedFilterValue != null)
 				return false;
 			else
 				return true;
 		} else if (this.column.getColumnType() == ColumnType.INT) {
 			Integer convertedValue = null;
 			Integer convertedFilterValue = null;
+			Integer[] convertedFilterValues = null;
 			try {
-				if (value != null && !"".equals(value)) convertedValue = 
-					new Integer(Integer.parseInt(value.toString()));
-				if (filterValue != null && !"".equals(filterValue)) convertedFilterValue = 
-					new Integer(Integer.parseInt(filterValue));
+				if (filterValues != null) {
+					int size = filterValues.length();
+					convertedFilterValues = new Integer[size];
+					for (int i = 0; i < size; i++) {
+						String fv;
+						try {
+							fv = filterValues.getString(i);
+						} catch (Exception e) {
+							fv = null;
+						}
+						if (fv != null && !"".equals(fv)) convertedFilterValues[i] = new Integer(Integer.parseInt(fv));
+						else convertedFilterValues[i] = null;
+					}
+				} else if (filterValue != null && !"".equals(filterValue))
+					convertedFilterValue = new Integer(Integer.parseInt(filterValue));
+
+				if (value != null && !"".equals(value))
+					convertedValue = new Integer(Integer.parseInt(value.toString()));
 			} catch (NumberFormatException e) {
 				convertedValue = null;
 				convertedFilterValue = null;
+				convertedFilterValues = null;
 			}
 
-			if (convertedValue != null && convertedFilterValue != null) {
+			if (convertedValue != null && convertedFilterValues != null) {
+				for (int i = 0; i < convertedFilterValues.length; i++) {
+					if (convertedValue.intValue() == convertedFilterValues[i].intValue()) return true;
+				}
+				return false;
+			} else if (convertedValue != null && convertedFilterValue != null) {
 				return convertedValue.intValue() == convertedFilterValue.intValue();
-			} else if (convertedFilterValue != null)
+			} else if (filterValues != null && filterValues.length() > 0)
+				return false;			
+			else if (convertedFilterValue != null)
 				return false;
 			else
 				return true;
 		} else if (this.column.getColumnType() == ColumnType.LONG) {
 			Long convertedValue = null;
 			Long convertedFilterValue = null;
+			Long[] convertedFilterValues = null;
 			try {
-				if (value != null && !"".equals(value)) convertedValue = 
-					new Long(Long.parseLong(value.toString()));
-				if (filterValue != null && !"".equals(filterValue)) convertedFilterValue = 
-					new Long(Long.parseLong(filterValue));
+				if (filterValues != null) {
+					int size = filterValues.length();
+					convertedFilterValues = new Long[size];
+					for (int i = 0; i < size; i++) {
+						String fv;
+						try {
+							fv = filterValues.getString(i);
+						} catch (Exception e) {
+							fv = null;
+						}
+						if (fv != null && !"".equals(fv)) convertedFilterValues[i] = new Long(Long.parseLong(fv));
+						else convertedFilterValues[i] = null;
+					}
+				} else if (filterValue != null && !"".equals(filterValue))
+					convertedFilterValue = new Long(Long.parseLong(filterValue));
+
+				if (value != null && !"".equals(value))
+					convertedValue = new Long(Long.parseLong(value.toString()));
 			} catch (NumberFormatException e) {
 				convertedValue = null;
 				convertedFilterValue = null;
+				convertedFilterValues = null;
 			}
 
-			if (convertedValue != null && convertedFilterValue != null) {
+			if (convertedValue != null && convertedFilterValues != null) {
+				for (int i = 0; i < convertedFilterValues.length; i++) {
+					if (convertedValue.longValue() == convertedFilterValues[i].longValue()) return true;
+				}
+				return false;
+			} else if (convertedValue != null && convertedFilterValue != null) {
 				return convertedValue.longValue() == convertedFilterValue.longValue();
-			} else if (convertedFilterValue != null)
+			} else if (filterValues != null && filterValues.length() > 0)
+				return false;			
+			else if (convertedFilterValue != null)
 				return false;
 			else
 				return true;
 		} else if (this.column.getColumnType() == ColumnType.FLOAT) {
 			Float convertedValue = null;
 			Float convertedFilterValue = null;
+			Float[] convertedFilterValues = null;
 			try {
-				if (value != null && !"".equals(value)) convertedValue = 
-					new Float(Float.parseFloat(value.toString()));
-				if (filterValue != null && !"".equals(filterValue)) convertedFilterValue = 
-					new Float(Float.parseFloat(filterValue));
+				if (filterValues != null) {
+					int size = filterValues.length();
+					convertedFilterValues = new Float[size];
+					for (int i = 0; i < size; i++) {
+						String fv;
+						try {
+							fv = filterValues.getString(i);
+						} catch (Exception e) {
+							fv = null;
+						}
+						if (fv != null && !"".equals(fv)) convertedFilterValues[i] = new Float(Float.parseFloat(fv));
+						else convertedFilterValues[i] = null;
+					}
+				} else if (filterValue != null && !"".equals(filterValue))
+					convertedFilterValue = new Float(Float.parseFloat(filterValue));
+
+				if (value != null && !"".equals(value))
+					convertedValue = new Float(Float.parseFloat(value.toString()));
 			} catch (NumberFormatException e) {
 				convertedValue = null;
 				convertedFilterValue = null;
+				convertedFilterValues = null;
 			}
 
-			if (convertedValue != null && convertedFilterValue != null) {
+			if (convertedValue != null && convertedFilterValues != null) {
+				for (int i = 0; i < convertedFilterValues.length; i++) {
+					if (convertedValue.floatValue() == convertedFilterValues[i].floatValue()) return true;
+				}
+				return false;
+			} if (convertedValue != null && convertedFilterValue != null) {
 				return convertedValue.floatValue() == convertedFilterValue.floatValue();
-			} else if (convertedFilterValue != null)
+			} else if (filterValues != null && filterValues.length() > 0)
+				return false;			
+			else if (convertedFilterValue != null)
 				return false;
 			else
 				return true;
 		} else if (this.column.getColumnType() == ColumnType.DOUBLE) {
 			Double convertedValue = null;
 			Double convertedFilterValue = null;
+			Double[] convertedFilterValues = null;
 			try {
-				if (value != null && !"".equals(value)) convertedValue = 
-					new Double(Double.parseDouble(value.toString()));
-				if (filterValue != null && !"".equals(filterValue)) convertedFilterValue = 
-					new Double(Double.parseDouble(filterValue));
+				if (filterValues != null) {
+					int size = filterValues.length();
+					convertedFilterValues = new Double[size];
+					for (int i = 0; i < size; i++) {
+						String fv;
+						try {
+							fv = filterValues.getString(i);
+						} catch (Exception e) {
+							fv = null;
+						}
+						if (fv != null && !"".equals(fv)) convertedFilterValues[i] = new Double(Double.parseDouble(fv));
+						else convertedFilterValues[i] = null;
+					}
+				} else if (filterValue != null && !"".equals(filterValue))
+					convertedFilterValue = new Double(Double.parseDouble(filterValue));
+
+				if (value != null && !"".equals(value))
+					convertedValue = new Double(Double.parseDouble(value.toString()));
 			} catch (NumberFormatException e) {
 				convertedValue = null;
 				convertedFilterValue = null;
+				convertedFilterValues = null;
 			}
 
-			if (convertedValue != null && convertedFilterValue != null) {
+			if (convertedValue != null && convertedFilterValues != null) {
+				for (int i = 0; i < convertedFilterValues.length; i++) {
+					if (convertedValue.doubleValue() == convertedFilterValues[i].doubleValue()) return true;
+				}
+				return false;
+			} if (convertedValue != null && convertedFilterValue != null) {
 				return convertedValue.doubleValue() == convertedFilterValue.doubleValue();
-			} else if (convertedFilterValue != null)
+			} else if (filterValues != null && filterValues.length() > 0)
+				return false;			
+			else if (convertedFilterValue != null)
 				return false;
 			else
 				return true;
