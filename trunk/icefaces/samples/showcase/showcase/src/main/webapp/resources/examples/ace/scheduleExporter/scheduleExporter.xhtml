@@ -26,30 +26,35 @@
     <ui:define name="example">
         <h:form id="form">
 			<ace:panel header="Configuration">
-				<h:panelGrid width="100%" columns="2" cellpadding="6" cellspacing="6">
+				<h:panelGrid width="100%" columns="1" cellpadding="6" cellspacing="6">
 						<ace:radioButtons id="viewMode" header="Select view mode" value="#{scheduleExporterBean.viewMode}" labelPosition="top">
 							<ace:ajax render="@all" />
 							<f:selectItem itemValue="month" itemLabel="Month" />
 							<f:selectItem itemValue="week" itemLabel="Week" />
 							<f:selectItem itemValue="day" itemLabel="Day" />
 						</ace:radioButtons>
-						<ace:radioButtons id="type" header="Select export format" value="#{scheduleExporterBean.type}" labelPosition="top">
-							<ace:ajax render="@all" />
+				</h:panelGrid>
+				<div style="height:20px;"> </div>
+				<h:panelGrid columns="2" styleClass="centeredPanelGrid">
+						<h:outputLabel for="type" value="Export As:"/>
+						<h:selectOneRadio id="type" value="#{scheduleExporterBean.type}">
+							<f:ajax render="@all" />
                             <f:selectItem itemValue="csv" itemLabel="CSV"/>
                             <f:selectItem itemValue="pdf" itemLabel="PDF"/>
                             <f:selectItem itemValue="xls" itemLabel="XLS"/>
                             <f:selectItem itemValue="xlsx" itemLabel="XLSX"/>
                             <f:selectItem itemValue="xml" itemLabel="XML"/>
-						</ace:radioButtons>
+						</h:selectOneRadio>
 				</h:panelGrid>
+				<div style="text-align:center;">
+					<ace:scheduleExporter	
+										label="Export File"
+										type="#{scheduleExporterBean.type}"
+										target="schedule"
+										fileName="events"/>
+				</div>
+				<div style="height:20px;"> </div>
 			</ace:panel>
-			<div style="text-align:center;">
-				<ace:scheduleExporter	
-									label="Export File"
-									type="#{scheduleExporterBean.type}"
-									target="schedule"
-									fileName="events"/>
-			</div>
 			<ace:schedule 	id="schedule"
 							value="#{scheduleExporterBean.lazyScheduleEventList}"
 							showEventDetails="disabled"
