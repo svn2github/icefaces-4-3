@@ -81,7 +81,8 @@ ice.ace.AccordionPanel.prototype.onTabChange = function(event, ui) {
 
     //Write state
     ice.ace.jq(this.activeId).val(ui.options.active);
-
+    //avoid firing the event for eventual enclosing accordion
+    event.stopPropagation();
 	this.fireAjaxTabChangeEvent(panel);
 };
 
