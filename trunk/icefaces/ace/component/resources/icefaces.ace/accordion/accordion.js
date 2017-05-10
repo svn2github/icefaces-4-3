@@ -47,6 +47,22 @@ ice.ace.AccordionPanel = function(id, cfg) {
 		this.cfg.active = 0;
 	}
 
+	// prevent vertical scrollbars from showing while applying effects
+	this.cfg.changestart = function(event, ui) {
+		if (ui.oldContent)
+			ice.ace.jq(ice.ace.escapeClientId(ui.oldContent.get(0).id + '_content')).css('overflow', 'hidden');
+
+		if (ui.newContent)
+			ice.ace.jq(ice.ace.escapeClientId(ui.newContent.get(0).id + '_content')).css('overflow', 'hidden');
+	};
+	this.cfg.change = function(event, ui) {
+		if (ui.oldContent)
+			ice.ace.jq(ice.ace.escapeClientId(ui.oldContent.get(0).id + '_content')).css('overflow', 'auto');
+
+		if (ui.newContent)
+			ice.ace.jq(ice.ace.escapeClientId(ui.newContent.get(0).id + '_content')).css('overflow', 'auto');
+	};
+
     //Create accordion
     this.jq.accordion(this.cfg);
     
