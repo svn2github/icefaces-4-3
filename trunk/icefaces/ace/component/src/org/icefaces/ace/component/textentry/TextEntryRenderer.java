@@ -104,6 +104,7 @@ public class TextEntryRenderer extends InputRenderer {
         else writer.writeAttribute("autocorrect", "on", null);
         writer.writeAttribute("autocapitalize", textEntry.getAutocapitalize(), null);
         writer.writeAttribute("pattern", textEntry.getPattern(), null);
+        writer.writeAttribute("placeholder", textEntry.getPlaceholder(), null);
         String embeddedLabel = null;
         String nameToRender = clientId + "_input";
         String valueToRender = null;
