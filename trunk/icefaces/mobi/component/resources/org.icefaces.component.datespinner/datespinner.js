@@ -465,12 +465,6 @@ mobi.datespinner = {
         }
         if (inputElem){
             inputElem.value="";
-            var dayElem = document.getElementById(clientId+"_dInt");
-           dayElem.innerHTML = "";
-           var monElem =  document.getElementById(clientId+"_mInt");
-           monElem.innerHTML = "";
-            var yrElem =  document.getElementById(clientId+"_yInt");
-            yrElem.innerHTML = "";
         }
     }
 };

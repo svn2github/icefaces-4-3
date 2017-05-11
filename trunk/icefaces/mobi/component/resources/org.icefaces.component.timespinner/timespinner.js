@@ -290,12 +290,6 @@ mobi.timespinner = {
         }
         if (inputElem){
             inputElem.value="";
-            var hrEl = document.getElementById(clientId + "_hrInt");
-            var minEl = document.getElementById(clientId + "_mInt");
-            var ampmEl = document.getElementById(clientId + "_ampmInt");
-            hrEl.innerHTML = "";
-            minEl.innerHTML = "";
-            ampmEl.innerHTML = "";
         }
     }
 };
