@@ -49,17 +49,17 @@ ice.ace.AccordionPanel = function(id, cfg) {
 
 	// prevent vertical scrollbars from showing while applying effects
 	this.cfg.changestart = function(event, ui) {
-		if (ui.oldContent)
+		if (ui.oldContent && ui.oldContent.size() > 0)
 			ice.ace.jq(ice.ace.escapeClientId(ui.oldContent.get(0).id + '_content')).css('overflow', 'hidden');
 
-		if (ui.newContent)
+		if (ui.newContent && ui.newContent.size() > 0)
 			ice.ace.jq(ice.ace.escapeClientId(ui.newContent.get(0).id + '_content')).css('overflow', 'hidden');
 	};
 	this.cfg.change = function(event, ui) {
-		if (ui.oldContent)
+		if (ui.oldContent && ui.oldContent.size() > 0)
 			ice.ace.jq(ice.ace.escapeClientId(ui.oldContent.get(0).id + '_content')).css('overflow', 'auto');
 
-		if (ui.newContent)
+		if (ui.newContent && ui.newContent.size() > 0)
 			ice.ace.jq(ice.ace.escapeClientId(ui.newContent.get(0).id + '_content')).css('overflow', 'auto');
 	};
 
