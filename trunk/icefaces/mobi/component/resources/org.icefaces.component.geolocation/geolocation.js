@@ -57,8 +57,8 @@ ice.mobi.storeDirection = function(id, orient) {
 };
 
 ice.mobi.geolocation = {
-    watchId: 0,
-    clientId: "",
+	orientationCallbacks: {},
+    watchIds: {},
 
     /**
      * Perform a call to watchPosition to fetch running updates to position.
@@ -70,8 +70,7 @@ ice.mobi.geolocation = {
      */
     watchLocation: function (pClientId, highAccuracy, maxAge, timeout) {
 
-        ice.mobi.geolocation.clientId = pClientId;
-        ice.mobi.geolocation.clearWatch();
+        ice.mobi.geolocation.clearWatch(pClientId);
         // It seems like on Android that passing any argument at all for enableHighAccuracy
         // enables high accuracy.
         var geoParams = {};
@@ -89,14 +88,18 @@ ice.mobi.geolocation = {
             ' timeout: ' + geoParams.timeout + '(ms)' +
             ' highAccuracy: ' + geoParams.enableHighAccuracy);
 
-        ice.mobi.geolocation.watchId = navigator.geolocation.watchPosition(
-                this.getSuccessCallback(pClientId), this.errorCallback,
-                geoParams );
+        ice.mobi.geolocation.watchIds[pClientId] = navigator.geolocation.watchPosition(
+                ice.mobi.geolocation.getSuccessCallback(pClientId), ice.mobi.geolocation.getErrorCallback(pClientId),
+                geoParams);
 
-        ice.mobi.addListener(window, 'deviceorientation', ice.mobi.geolocation.orientationCallback);
-        ice.onElementRemove(pClientId, ice.mobi.geolocation.clearWatch);
+		if (ice.mobi.geolocation.orientationCallbacks[pClientId]) {
+			window.removeEventListener('deviceorientation', ice.mobi.geolocation.orientationCallbacks[pClientId]);
+		}
+		ice.mobi.geolocation.orientationCallbacks[pClientId] = ice.mobi.geolocation.getOrientationCallback(pClientId);
+        ice.mobi.addListener(window, 'deviceorientation', ice.mobi.geolocation.orientationCallbacks[pClientId]);
+        ice.onElementRemove(pClientId, function() { ice.mobi.geolocation.clearWatch(pClientId); });
         console.log('Lauching positionWatch for client: ' + pClientId +
-                ' watchId: ' + ice.mobi.geolocation.watchId);
+                ' watchId: ' + ice.mobi.geolocation.watchIds[pClientId]);
     },
 
     /**
@@ -104,8 +107,7 @@ ice.mobi.geolocation = {
      */
     getLocation: function (pClientId, highAccuracy, maxAge, timeout) {
 
-        ice.mobi.geolocation.clientId = pClientId;
-        ice.mobi.geolocation.clearWatch();
+        ice.mobi.geolocation.clearWatch(pClientId);
 
         var geoParams = {};
         if (maxAge > 0)  {
@@ -122,16 +124,18 @@ ice.mobi.geolocation = {
             ' timeout: ' + geoParams.timeout + '(ms)' +
             ' highAccuracy: ' + geoParams.enableHighAccuracy);
 
-       navigator.geolocation.getCurrentPosition(this.getSuccessCallback(pClientId), this.errorCallback,
-                    geoParams );
+       navigator.geolocation.getCurrentPosition(ice.mobi.geolocation.getSuccessCallback(pClientId), ice.mobi.geolocation.getErrorCallback(pClientId), geoParams);
 
-        ice.mobi.addListener(window, 'deviceorientation', ice.mobi.geolocation.orientationCallback);
-        ice.onElementRemove(pClientId, ice.mobi.geolocation.clearWatch);
+		if (ice.mobi.geolocation.orientationCallbacks[pClientId]) {
+			window.removeEventListener('deviceorientation', ice.mobi.geolocation.orientationCallbacks[pClientId]);
+		}
+		ice.mobi.geolocation.orientationCallbacks[pClientId] = ice.mobi.geolocation.getOrientationCallback(pClientId);
+        ice.mobi.addListener(window, 'deviceorientation', ice.mobi.geolocation.orientationCallbacks[pClientId]);
+        ice.onElementRemove(pClientId, function() { ice.mobi.geolocation.clearWatch(pClientId); });
     },
 
 	getSuccessCallback: function(id) {
-		var self = this;
-		return function(pos) { self.successCallback(pos,id) };
+		return function(pos) { ice.mobi.geolocation.successCallback(pos,id) };
 	},
 
     successCallback: function(pos, id) {
@@ -145,24 +149,32 @@ ice.mobi.geolocation = {
         }
     },
 
-    errorCallback: function(positionError) {
+	getErrorCallback: function(id) {
+		return function(pos) { ice.mobi.geolocation.errorCallback(pos,id) };
+	},
+
+    errorCallback: function(positionError, id) {
         console.log('Error in watchPosition, code: ' + positionError.code + ' Message: ' + positionError.message);
-        ice.mobi.geolocation.clearWatch();
+        ice.mobi.geolocation.clearWatch(id);
     },
 
-    orientationCallback: function(orient) {
-        inputId = ice.mobi.geolocation.clientId + "_locHidden";
+	getOrientationCallback: function(id) {
+		return function(orient) { ice.mobi.geolocation.orientationCallback(orient,id) };
+	},
+
+    orientationCallback: function(orient, id) {
+        inputId = id + "_locHidden";
         ice.mobi.storeDirection(inputId, orient);
     },
 
     // Clear any existing positionUpdate listeners
-    clearWatch: function() {
-        if (ice.mobi.geolocation.watchId > 0) {
-            console.log('Existing positionWatch: ' + ice.mobi.geolocation.watchId + ' removed');
-            navigator.geolocation.clearWatch(ice.mobi.geolocation.watchId);
-            ice.mobi.geolocation.watchId = 0;
+    clearWatch: function(pClientId) {
+        if (ice.mobi.geolocation.watchIds[pClientId]) {
+            console.log('Existing positionWatch: ' + ice.mobi.geolocation.watchIds[pClientId] + ' removed');
+            navigator.geolocation.clearWatch(ice.mobi.geolocation.watchIds[pClientId]);
+            ice.mobi.geolocation.watchIds[pClientId] = 0;
         }
-        window.removeEventListener('deviceorientation', ice.mobi.geolocation.orientationCallback);
+        window.removeEventListener('deviceorientation', ice.mobi.geolocation.orientationCallbacks[pClientId]);
     }
 };
 
