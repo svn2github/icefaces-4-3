@@ -34,7 +34,7 @@ import org.icefaces.resources.ICEResourceLibrary;
         componentType = "org.icefaces.ace.component.GMapServices",
         rendererType = "org.icefaces.ace.component.GMapServicesRenderer",
         componentFamily = "org.icefaces.ace.component",
-        tlddoc = "The ace:gMapServices tag allows access to the various 'services' that Google provides through its maps API. Elevation gives the height of any point above or below sea level. Max zoom gives the highest level of satellite zoom available. " +
+        tlddoc = "The ace:gMapServices tag allows access to the various 'services' that Google provides through its maps API. Directions gives detailed instructions on how to reach point B from point A. Elevation gives the height of any point above or below sea level. Max zoom gives the highest level of satellite zoom available. " +
                 "Distance gives the distance between two points along a set mode of transit and directions show the way between given locations." +
                 " For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/GMap\">gMap</a> Wiki Documentation."
 )

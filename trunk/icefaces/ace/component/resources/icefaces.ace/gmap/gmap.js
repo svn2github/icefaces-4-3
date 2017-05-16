@@ -682,11 +682,10 @@ ice.ace.gMap.addMarkerCallback = function(id, callback){
                 if (status != google.maps.DirectionsStatus.OK) {
                     alert('Error was: ' + status);
                 } else {
-                    var renderer = (wrapper.services[ele] != null) ? wrapper.services[ele] : new google.maps.DirectionsRenderer();
+                    var renderer = new google.maps.DirectionsRenderer();
                     renderer.setMap(map);
                     renderer.setDirections(response);
                     renderer.setPanel(document.getElementById(div));
-                    wrapper.services[ele] = renderer;
                 }
             }
 
@@ -755,7 +754,7 @@ ice.ace.gMap.addMarkerCallback = function(id, callback){
                     window.console.log("Not a valid service name");
                 }
                 return;
-        }//switch
+        }// end switch
     }
 
     ice.ace.gMap.removeGOverlay = function (ele, overlayID) {
