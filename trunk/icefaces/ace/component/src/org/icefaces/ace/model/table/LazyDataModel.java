@@ -94,7 +94,7 @@ public abstract class LazyDataModel<T> extends DataModel implements Serializable
 
     public abstract List<T> load(int first, int pageSize, SortCriteria[] sortCriteria, Map<String, String> filters);
 
-	public List<T> load(int first, int pageSize, SortCriteria[] sortCriteria, Map<String, String> filters, Map<String, Object> minFilters, Map<String, Object> maxFilter) {
+	public List<T> load(int first, int pageSize, SortCriteria[] sortCriteria, Map<String, String> filters, Map<String, Object> minFilters, Map<String, Object> maxFilters) {
 		return load(first, pageSize, sortCriteria, filters);
 	}
 }
