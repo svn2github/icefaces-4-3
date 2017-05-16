@@ -257,7 +257,7 @@ public class ColorEntryRenderer extends InputRenderer {
             jb.entry("swatchesWidth", picker.getSwatchesWidth());
         }
         if (swatchName!=null && swatchName.length()>0){
-            jb.entry("swatches", swatchName);
+            jb.entry("swatches", swatchName.toLowerCase());
         }
         if (picker.getTitle()!=null && picker.getTitle().length()>0){
             jb.entry("title", picker.getTitle());

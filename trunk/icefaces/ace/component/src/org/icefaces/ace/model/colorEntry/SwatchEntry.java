@@ -26,27 +26,59 @@ public class SwatchEntry implements Serializable{
      * for a swatch.
      */
     private String colorName;
+    public static final double DEFAULT_OPACITY = 0.9;
 
     private double rpercent;
     private double bpercent;
     private double gpercent;
+    private double opacity;
 
     public SwatchEntry(String colorName, double red, double green, double blue){
         if (colorName==null || colorName.length() < 1){
               throw new IllegalArgumentException(" ColorName must not be null or empty");
         }
         this.colorName = colorName;
-        if (red >=0 && red <= 255 && green >=0 && green <=255 && blue >=0 && blue <=255){
+        if (red >=0 && red <= 1 && green >=0 && green <=1 && blue >=0 && blue <=1){
             this.rpercent= red;
             this.bpercent = blue;
             this.gpercent = green;
-        }   else throw new IllegalArgumentException("Bad value in rgb input.  Values must be int between 0 and 255") ;
+        }   else throw new IllegalArgumentException("Bad value in rgb input.  Values must be rgb percent between 0 and 1") ;
+        this.opacity = DEFAULT_OPACITY;
     }
+
+    public SwatchEntry(String colorName, double red, double green, double blue, double opacity){
+         if (colorName==null || colorName.length() < 1){
+               throw new IllegalArgumentException(" ColorName must not be null or empty");
+         }
+         this.colorName = colorName;
+         if (red >=0 && red <= 1 && green >=0 && green <=1 && blue >=0 && blue <=1){
+             this.rpercent= red;
+             this.bpercent = blue;
+             this.gpercent = green;
+         }   else throw new IllegalArgumentException("Bad value in rgb input.  Values must be rgb percent between 0 and 1") ;
+        this.opacity = opacity;
+     }
+    /*
+       this is required to write to js file for plugin to read the values.
+     */
     public String getWrittenEntry(){
         return  "{ name: '"+this.colorName+"', r: "+this.rpercent+", g: "+this.gpercent+", b: "+this.bpercent+"}";
     }
 
-
+    /**
+     *
+     * @return String representing rgba percent with opacity for css
+     */
+    public String getRGBAPercentForCSS(){
+        return "rgba(" + this.rpercent*100 + "%, " + this.gpercent*100 + "%, " + this.bpercent*100 + "%, " + this.opacity + ");";
+    }
+    /**
+       *
+       * @return String representing rgba percent for css
+       */
+    public String getRGBPercentForCSS(){
+        return "rgb(" + this.rpercent*100 + "%, " + this.gpercent*100 + "%, " + this.bpercent*100+ "%); ";
+    }
 
     public String getColorName() {
         return colorName;
@@ -79,5 +111,13 @@ public class SwatchEntry implements Serializable{
 
     public void setGpercent(double gpercent) {
         this.gpercent = gpercent;
+    }
+
+    public double getOpacity() {
+        return opacity;
+    }
+
+    public void setOpacity(double opacity) {
+        this.opacity = opacity;
     }
 }
