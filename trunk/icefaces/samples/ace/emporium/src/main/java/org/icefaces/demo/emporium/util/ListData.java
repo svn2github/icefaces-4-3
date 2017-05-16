@@ -18,10 +18,14 @@ package org.icefaces.demo.emporium.util;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
+
+import org.icefaces.ace.model.colorEntry.ColorEntryLayout;
+import org.icefaces.ace.model.colorEntry.SwatchEntry;
 
 @ManagedBean(name=ListData.BEAN_NAME)
 @ApplicationScoped
@@ -33,13 +37,17 @@ public class ListData implements Serializable {
 	public static final String DEFAULT_SELECT_LABEL = "-- Select --";
 	public static final String DEFAULT_TAB_ORIENTATION = "top";
 	public static final String DEFAULT_LOCATION = "North America";
-	public static final ColorRGBA DEFAULT_FOREGROUND_COLOR = new ColorRGBA("Black", 0,0,0);
-	public static final ColorRGBA DEFAULT_BACKGROUND_COLOR = new ColorRGBA("Steel Blue", 176,196,222);
-	
+	public static final SwatchEntry DEFAULT_FOREGROUND_COLOR = new SwatchEntry("Black", 0,0,0);
+	public static final SwatchEntry DEFAULT_BACKGROUND_COLOR = new SwatchEntry("Steel Blue", 0.6902, 0.7686, 0.8706);
+
 	public static final String[] TAB_ORIENTATIONS = new String[] {
 		DEFAULT_TAB_ORIENTATION, "bottom"
 	};
-	public static final List<ColorRGBA> COLORS = generateColors();
+
+    public static List<String> SWATCHPARTS = new ArrayList<String>(Arrays.asList("header", "preview", "hex", "swatches", "footer"));
+	public static final List<SwatchEntry> COLORS = generateColors();
+    public static final List<ColorEntryLayout> SWATCHLAYOUT = generateLayout();
+
 	public static final String[] LOCATIONS = new String[] {
 		"Africa", "Asia", "Australia", "Europe", DEFAULT_LOCATION, "South America"
 	};
@@ -95,26 +103,34 @@ public class ListData implements Serializable {
 		"Vase", "Wagon", "Wallet",
 		"Washing Machine", "Watch", "Water Bottle", "White Out", "Window", "Zipper"
 	};
+
+    private static List<ColorEntryLayout> generateLayout() {
+        List<ColorEntryLayout> layout= new ArrayList<ColorEntryLayout>() ;
+        layout.add(new ColorEntryLayout("preview", 0, 0, 1, 1));
+        layout.add(new ColorEntryLayout("hex", 1,0,1,1));
+        layout.add(new ColorEntryLayout("swatches", 2,0, 1, 1));
+        return layout;
+    }
 	
-	private static List<ColorRGBA> generateColors() {
-		List<ColorRGBA> toReturn = new ArrayList<ColorRGBA>();
-		toReturn.add(new ColorRGBA("White", 255,255,255));
+	private static List<SwatchEntry> generateColors() {
+		List<SwatchEntry> toReturn = new ArrayList<SwatchEntry>();
+		toReturn.add(new SwatchEntry("White", 1,1,1));
 		toReturn.add(DEFAULT_FOREGROUND_COLOR);
-		toReturn.add(new ColorRGBA("Red", 255,0,0));
-		toReturn.add(new ColorRGBA("Green", 0,255,0));
-		toReturn.add(new ColorRGBA("Blue", 0,0,255));
-		toReturn.add(new ColorRGBA("Yellow", 255,255,0));
-		toReturn.add(new ColorRGBA("Purple", 128,0,128));
-		toReturn.add(new ColorRGBA("Brown", 165,42,42));
-		toReturn.add(new ColorRGBA("Cyan", 0,139,139));
-		toReturn.add(new ColorRGBA("Orange", 255,140,0));
-		toReturn.add(new ColorRGBA("Salmon", 233,150,122));
-		toReturn.add(new ColorRGBA("Sky Blue", 0,191,255));
-		toReturn.add(new ColorRGBA("Forest Green", 34,139,34));
-		toReturn.add(new ColorRGBA("Gold", 255,215,0));
+		toReturn.add(new SwatchEntry("Red", 1, 0, 0));
+		toReturn.add(new SwatchEntry("Green", 0, 1, 0));
+		toReturn.add(new SwatchEntry("Blue", 0, 0,    1));
+		toReturn.add(new SwatchEntry("Yellow", 1, 1, 0));
+		toReturn.add(new SwatchEntry("Purple", 0.50196, 0, 0.50196));
+		toReturn.add(new SwatchEntry("Brown", 0.647, 0.165, 0.165));
+		toReturn.add(new SwatchEntry("Cyan", 0, 0.529, 0.529));
+		toReturn.add(new SwatchEntry("Orange", 1, 0.549, 0));
+		toReturn.add(new SwatchEntry("Salmon", 0.914, 0.588, 0.478));
+		toReturn.add(new SwatchEntry("Sky Blue", 0, 0.749, 1));
+		toReturn.add(new SwatchEntry("Forest Green", 0.133, 0.545, 0.133));
+		toReturn.add(new SwatchEntry("Gold", 1, 0.843, 0));
 		toReturn.add(DEFAULT_BACKGROUND_COLOR);
-		toReturn.add(new ColorRGBA("Violet Red", 219,112,147));
-		toReturn.add(new ColorRGBA("Seashell", 255,245,238));
+		toReturn.add(new SwatchEntry("Violet Red", 0.859, 0.439, 0.577));
+		toReturn.add(new SwatchEntry("Seashell", 1, 0.961, 0.933));
 		return toReturn;
 	}
 	
@@ -126,9 +142,12 @@ public class ListData implements Serializable {
 		return TAB_ORIENTATIONS;
 	}
 	
-	public List<ColorRGBA> getColors() {
+	public List<SwatchEntry> getColors() {
 		return COLORS;
 	}
+
+    public List<ColorEntryLayout> getSwatchLayout(){ return SWATCHLAYOUT;}
+    public List<String> getSwatchParts(){return SWATCHPARTS;}
 	
 	public String[] getLocations() {
 		return LOCATIONS;

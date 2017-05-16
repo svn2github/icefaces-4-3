@@ -64,15 +64,32 @@
             <c:if test="#{!testFlags.testGrowlMessages}">
 	            <!-- TODO ICE-10612 - When resolved use the new color picker component instead of this custom composite component approach -->
 	            <h:graphicImage id="ncolorbHelp" library="images" name="help.png"/>
-	            <h:outputLabel id="noteBackLabel" for="ncolorb" value="Notification Background:" required="true"/>
-	            <emporium:colorPicker id="ncolorb"
-	                                 value="#{settingsBean.notificationBackground}"/>
+                <h:outputLabel id="noteBackLabel" for="ncolorb" value="Notification Background:" required="true"/>
+                <ace:colorEntry id="ncolorb"
+                                 value="#{settingsBean.notificationBackground}"
+                                 title="Choose Notification Background:"
+                                 renderAsPopup="true"
+                                 swatchesName="notifBg"
+                                 swatchesWidth="80"
+                                 colorFormat="#{settingsBean.colorFormat}"
+                                 swatches="#{listData.colors}"
+                                 customParts="#{listData.swatchParts}"
+                                 customLayout="#{listData.swatchLayout}">
+                 </ace:colorEntry>
 	            <ace:message for="ncolorb"/>
 	            
 	            <h:graphicImage id="ncolorfHelp" library="images" name="help.png"/>
-	            <h:outputLabel id="noteFrontLabel" for="ncolorf" value="Notification Foreground:" required="true"/>
-	            <emporium:colorPicker id="ncolorf"
-	                                 value="#{settingsBean.notificationForeground}"/>
+                <h:outputLabel id="noteFrontLabel" for="ncolorf" value="Notification Foreground:" required="true"/>
+                <ace:colorEntry id="ncolorf"
+                                     value="#{settingsBean.notificationForeground}"
+                                     title="Choose Notification Foreground:"
+                                     renderAsPopup="true"
+                                     swatchesName="notifBg"
+                                     swatchesWidth="80"
+                                     colorFormat="#{settingsBean.colorFormat}"
+                                     swatches="#{listData.colors}"
+                                     customParts="#{listData.swatchParts}"
+                                     customLayout="#{listData.swatchLayout}"/>
 	            <ace:message for="ncolorf"/>
             </c:if>
             

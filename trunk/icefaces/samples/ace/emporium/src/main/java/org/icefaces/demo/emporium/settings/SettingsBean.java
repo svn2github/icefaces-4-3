@@ -24,6 +24,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
+import org.icefaces.ace.component.colorentry.ColorFormat;
 import org.icefaces.demo.emporium.bid.model.AuctionItem;
 import org.icefaces.demo.emporium.util.FacesUtils;
 import org.icefaces.demo.emporium.util.ListData;
@@ -51,6 +52,8 @@ public class SettingsBean implements Serializable {
 	private String notificationForeground;
 	private int popupWidth;
 	private String themeName;
+	private ColorFormat colorFormat = ColorFormat.RGBPERCENT;
+
 	
 	@PostConstruct
 	public void initSettingsBean() {
@@ -86,8 +89,8 @@ public class SettingsBean implements Serializable {
 		location = ListData.DEFAULT_LOCATION;
 		bidIncrement = AuctionItem.DEFAULT_BID_INCREMENT;
 		tabOrientation = ListData.DEFAULT_TAB_ORIENTATION;
-		notificationBackground = ListData.DEFAULT_BACKGROUND_COLOR.getRgba();
-		notificationForeground = ListData.DEFAULT_FOREGROUND_COLOR.getRgba();
+		notificationBackground = ListData.DEFAULT_BACKGROUND_COLOR.getRGBAPercentForCSS();
+		notificationForeground = ListData.DEFAULT_FOREGROUND_COLOR.getRGBAPercentForCSS();
 		popupWidth = 800;
 		themeName = FacesUtils.getFacesParameter(ICEFACES_THEME_PARAM, ICEFACES_THEME_DEFAULT);
 	}
@@ -201,7 +204,11 @@ public class SettingsBean implements Serializable {
 	public void setThemeName(String themeName) {
 		this.themeName = themeName;
 	}
-	
+
+	public ColorFormat getColorFormat() {
+		return colorFormat;
+	}
+
 	@Override
 	public String toString() {
 		return name + " from " + location + " using theme " + themeName + " with fg/bg colors " + notificationForeground + "/" + notificationBackground;
