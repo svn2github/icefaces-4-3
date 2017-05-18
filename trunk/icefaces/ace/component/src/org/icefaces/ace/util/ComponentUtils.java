@@ -32,6 +32,7 @@ import org.icefaces.impl.util.CoreUtils;
 import org.icefaces.ace.api.ButtonGroupMember;
 import org.icefaces.ace.component.buttongroup.ButtonGroup;
 
+import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.ProjectStage;
@@ -40,7 +41,6 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
-import javax.faces.model.SelectItem;
 import javax.faces.application.FacesMessage;
 import java.io.IOException;
 import java.util.*;
@@ -397,9 +397,13 @@ public class ComponentUtils {
 
     public static void renderExternalPassThroughAttributes(ResponseWriter writer, UIComponent component) throws IOException {
         Map<String, Object> attributes = component.getPassThroughAttributes();
+        ELContext context = FacesContext.getCurrentInstance().getELContext();
         if (!attributes.isEmpty()) {
             for (Map.Entry<String, Object> entry : attributes.entrySet()) {
-                writer.writeAttribute(entry.getKey(), entry.getValue().toString(),null);
+                String name = entry.getKey();
+                Object value = entry.getValue();
+                Object result = value instanceof ValueExpression ? ((ValueExpression) value).getValue(context) : value;
+                writer.writeAttribute(name, result.toString(), null);
             }
         }
     }
