@@ -979,14 +979,14 @@ ice.ace.DataTable.prototype.setupClickEvents = function() {
         var inputTypes = ['a', 'input', 'textarea', 'button', 'select'];
 
         //test if target is an input element
-        if (inputTypes.indexOf(target[0].nodeName.toLowerCase()) > -1) {
+        if (ice.ace.jq.inArray(target[0].nodeName.toLowerCase(), inputTypes) >= 0) {
             return true;
         }
 
         //test if any of the parents of the target is an input element
         var ancestors = target.parentsUntil(parent);
         for (var i = 0, l = ancestors.length; i < l; i++) {
-            if (inputTypes.indexOf(ancestors[i].nodeName.toLowerCase()) > -1) {
+            if (ice.ace.jq.inArray(ancestors[i].nodeName.toLowerCase(), inputTypes) >= 0) {
                 return true;
             }
         }
