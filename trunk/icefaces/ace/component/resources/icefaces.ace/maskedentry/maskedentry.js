@@ -106,9 +106,9 @@
                 input.data("labelIsInField", settings.labelIsInField);
 
 				function seekNext(pos) {
-					while (++pos <= len && !tests[pos]) {};
+					while (++pos <= len && !tests[pos]) {}
 					return pos;
-				};
+				}
 
 				function shiftL(pos) {
 					while (!tests[pos] && --pos >= 0) {};
@@ -124,7 +124,7 @@
 					}
 					writeBuffer();
 					input.caret(Math.max(firstNonMaskPos, pos));
-				};
+				}
 
 				function shiftR(pos) {
 					for (var i = pos, c = settings.placeholder; i < len; i++) {
@@ -138,7 +138,7 @@
 								break;
 						}
 					}
-				};
+				}
 
 				function keydownEvent(e) {
 					var pos = $(this).caret();
@@ -158,7 +158,7 @@
 						input.caret(0, checkVal());
 						return false;
 					}
-				};
+				}
 
 				function keypressEvent(e) {
                     input.removeData("fromCharCode");
@@ -190,16 +190,18 @@
 						}
 					}
 					return false;
-				};
+				}
 
 				function clearBuffer(start, end) {
 					for (var i = start; i < end && i < len; i++) {
 						if (tests[i])
 							buffer[i] = settings.placeholder;
 					}
-				};
+				}
 
-				function writeBuffer() { return input.val(buffer.join('')).val(); };
+				function writeBuffer() {
+				    return input.val(buffer.join('')).val();
+				}
 
 				function checkVal(allow) {
 					//try to place characters where they belong
@@ -231,7 +233,7 @@
 						if (!allow) input.val(input.val().substring(0, lastMatch + 1));
 					}
 					return (partialPosition ? i : firstNonMaskPos);
-				};
+				}
 
 				if (!input.attr("readonly"))
 					input
@@ -275,7 +277,13 @@
 						setTimeout(function() {
                             input.caret(checkVal(false));
                         }, 0);
-					});
+					})
+                    .bind('keypress.mask', function(e) {
+                        //verify value before a submit triggered by 'Enter' key
+                        if (e.keyCode == 13) {
+                            checkVal();
+                        }
+                    });
 
 				checkVal(); //Perform initial check for existing values
 				// ICE-8154: in-field label handling
@@ -333,10 +341,14 @@ ice.ace.InputMask = function(id, cfg) {
 			});
 		}
 		if (behaviors.change) {
-			element.bind('change', function() { ice.ace.ab.call(element, behaviors.change); });
-			element.bind('keypress', function(e,ui) { if (e.keyCode == 13) { 
-				ice.ace.ab.call(element, behaviors.change);
-				e.stopPropagation();} 
+			element.bind('change', function() {
+			    ice.ace.ab.call(element, behaviors.change);
+			});
+			element.bind('keypress', function(e,ui) {
+			    if (e.keyCode == 13) {
+                    ice.ace.ab.call(element, behaviors.change);
+                    e.stopPropagation();
+			    }
 			});
 		}
         if (behaviors.keypress) {
@@ -362,7 +374,7 @@ ice.ace.InputMask = function(id, cfg) {
     if(this.cfg.theme != false) {
         ice.ace.util.bindHoverFocusStyle(this.jq);
     }
-}
+};
 
 ice.ace.InputMask.clear = function(id, inFieldLabel, inFieldLabelStyleClass) {
 	var input = ice.ace.jq(ice.ace.escapeClientId(id));
