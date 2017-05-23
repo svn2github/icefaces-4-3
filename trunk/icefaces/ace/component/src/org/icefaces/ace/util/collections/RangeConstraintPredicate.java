@@ -17,6 +17,7 @@
 package org.icefaces.ace.util.collections;
 
 import org.icefaces.ace.component.column.ColumnType;
+import org.icefaces.ace.component.list.FilterType;
 
 import javax.el.ELResolver;
 import javax.el.ValueExpression;
@@ -39,6 +40,34 @@ public class RangeConstraintPredicate implements Predicate {
 		this.filterValueMin = filterValueMin;
 		this.filterValueMax = filterValueMax;
 		this.type = type;
+    }
+
+    public RangeConstraintPredicate(FacesContext context, ValueExpression filterBy, 
+			Object filterValueMin, Object filterValueMax, FilterType type) {
+        this.facesContext = context;
+        this.filterBy = filterBy;
+		this.filterValueMin = filterValueMin;
+		this.filterValueMax = filterValueMax;
+
+		if (type == FilterType.TEXT) {
+			this.type = ColumnType.TEXT;
+		} else if (type == FilterType.BOOLEAN) {
+			this.type = ColumnType.BOOLEAN;
+		} else if (type == FilterType.DATE) {
+			this.type = ColumnType.DATE;
+		} else if (type == FilterType.BYTE) {
+			this.type = ColumnType.BYTE;
+		} else if (type == FilterType.SHORT) {
+			this.type = ColumnType.SHORT;
+		} else if (type == FilterType.INT) {
+			this.type = ColumnType.INT;
+		} else if (type == FilterType.LONG) {
+			this.type = ColumnType.LONG;
+		} else if (type == FilterType.FLOAT) {
+			this.type = ColumnType.FLOAT;
+		} else if (type == FilterType.DOUBLE) {
+			this.type = ColumnType.DOUBLE;
+		}
     }
 
     public boolean evaluate(Object object) {

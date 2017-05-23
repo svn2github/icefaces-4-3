@@ -31,9 +31,17 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.model.SelectItem;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+
+import java.text.DateFormat;
+import java.text.DateFormatSymbols;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
+import org.icefaces.ace.component.datetimeentry.DateTimeEntry;
+import org.icefaces.ace.component.datetimeentry.DateTimeEntryRenderer;
+import org.icefaces.ace.component.datetimeentry.DateTimeEntryUtils;
+import org.icefaces.util.EnvUtils;
+import javax.faces.application.Resource;
 
 @MandatoryResourceComponent(tagName="list", value="org.icefaces.ace.component.list.ACEList")
 public class ListRenderer extends CoreRenderer {
@@ -55,41 +63,53 @@ public class ListRenderer extends CoreRenderer {
     public void decode(FacesContext context, UIComponent component) {
         ACEList list = (ACEList)component;
         String id = list.getClientId(context);
-        String select = id + "_selections";
-        String deselect = id + "_deselections";
-        String reordering = id + "_reorderings";
-        String immigration = id + "_immigration";
-        String emigration = id + "_emigration";
+
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        String filtering = id + "_filtering";
 
-        String selectInput = params.get(select);
-        String deselectInput = params.get(deselect);
-        String reorderingInput = params.get(reordering);
-        String immigrationInput = params.get(immigration);
-        String emigrationInput = params.get(emigration);
+		if (params.get(filtering) != null) {
+			// Ensure this refiltering occurs on the original data
+			//list.setFirst(0);
+			//list.setPage(1);
 
-        ListDecoder decoder = new ListDecoder(list);
+			list.savedFilterState = new FilterState(context, list);
+			list.applyFilters();
+		} else {
+			String select = id + "_selections";
+			String deselect = id + "_deselections";
+			String reordering = id + "_reorderings";
+			String immigration = id + "_immigration";
+			String emigration = id + "_emigration";
 
-        try {
-            decoder.processSelections(selectInput)
-                    .processDeselections(deselectInput)
-                     // If source, find outgoing objects and pass them
-                     // to their destination list
-                     .attachEmigrants(context, emigrationInput)
-                      .processReorderings(reorderingInput)
-                       /// If destination, fetch incoming objects if not
-                       /// already passed by decoding source list
-                       .fetchImmigrants(context, immigrationInput)
-                        //// If destination, insert immigrant objects from
-                        //// records attached to List
-                        .insertImmigrants()
-                         ///// If source, check destination list for attached
-                         ///// immigrants (if we did not earlier put them there)
-                         ///// and remove them from our attached list
-                         .removeEmigrants(context, emigrationInput);
-        } catch (JSONException e) {
-            throw new FacesException(e);
-        }
+			String selectInput = params.get(select);
+			String deselectInput = params.get(deselect);
+			String reorderingInput = params.get(reordering);
+			String immigrationInput = params.get(immigration);
+			String emigrationInput = params.get(emigration);
+
+			ListDecoder decoder = new ListDecoder(list);
+
+			try {
+				decoder.processSelections(selectInput)
+						.processDeselections(deselectInput)
+						 // If source, find outgoing objects and pass them
+						 // to their destination list
+						 .attachEmigrants(context, emigrationInput)
+						  .processReorderings(reorderingInput)
+						   /// If destination, fetch incoming objects if not
+						   /// already passed by decoding source list
+						   .fetchImmigrants(context, immigrationInput)
+							//// If destination, insert immigrant objects from
+							//// records attached to List
+							.insertImmigrants()
+							 ///// If source, check destination list for attached
+							 ///// immigrants (if we did not earlier put them there)
+							 ///// and remove them from our attached list
+							 .removeEmigrants(context, emigrationInput);
+			} catch (JSONException e) {
+				throw new FacesException(e);
+			}
+		}
 
         decodeBehaviors(context, component);
     }
@@ -119,6 +139,13 @@ public class ListRenderer extends CoreRenderer {
 
         if (list.isControlsEnabled())
             encodeControls(context, writer, list);
+
+		if (list.getValueExpression("filterBy") != null) {
+			writer.startElement(HTML.DIV_ELEM, null);
+			writer.writeAttribute(HTML.CLASS_ATTR, "if-list-filter", null);
+			encodeFilter(context, list);
+			writer.endElement(HTML.DIV_ELEM);
+		}
     }
 
     private void encodeControls(FacesContext context, ResponseWriter writer, ACEList component) throws IOException {
@@ -389,6 +416,10 @@ public class ListRenderer extends CoreRenderer {
                 cfgBuilder.entry("dblclk_migrate", true);
         }
 
+        if (component.getValueExpression("filterBy") != null) {
+			cfgBuilder.entry("filterEvent", component.getFilterEvent());
+		}
+
         encodeClientBehaviors(context, component, cfgBuilder);
 
         cfgBuilder.endMap().endArray().endFunction();
@@ -413,5 +444,343 @@ public class ListRenderer extends CoreRenderer {
             facet.encodeAll(context);
 
         writer.endElement(HTML.DIV_ELEM);
+    }
+
+	// ---------------------
+	// ----- FILTERING -----
+	// ---------------------
+
+    private static void encodeFilter(FacesContext context, ACEList list) throws IOException {
+        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        ResponseWriter writer = context.getResponseWriter();
+
+		if (list.getFilterFacet() != null) {
+			encodeFilterFacet(context, list);
+			return;
+		}
+
+		String clientId = list.getClientId(context);
+        String filterId = clientId + "_filter";
+        String filterFunction = "ice.ace.instance('"+clientId+"').filter(event)";
+
+        String filterStyleClass = list.getFilterStyleClass();
+        String filterEvent = list.getFilterEvent();
+		boolean rangeFiltering = list.isRangedFilter();
+        filterStyleClass = filterStyleClass == null ? 
+				"if-list-filter"
+                : "if-list-filter" + " " + filterStyleClass;
+
+
+        if (list.getValueExpression("filterOptions") == null) {
+			if (!(list.getFilterType() == FilterType.DATE)) {
+				if (rangeFiltering && (list.getFilterType() != FilterType.TEXT && list.getFilterType() != FilterType.BOOLEAN)) {
+					encodeFilterField(context, list, filterId, filterFunction, 
+						filterStyleClass, filterEvent, "_min");
+					encodeFilterField(context, list, filterId, filterFunction, 
+						filterStyleClass, filterEvent, "_max");
+				} else if (list.getFilterType() == FilterType.BOOLEAN) {
+					encodeBooleanMenu(context, list, filterId, filterFunction, 
+						filterStyleClass);
+				} else {
+
+					encodeFilterField(context, list, filterId, filterFunction, 
+						filterStyleClass, filterEvent, "");
+
+				}
+			} else {
+				if (rangeFiltering) {
+					encodeDatePicker(context, list, filterId, filterFunction, "_min");
+					encodeDatePicker(context, list, filterId, filterFunction, "_max");
+				} else {
+					encodeDatePicker(context, list, filterId, filterFunction, "");
+				}
+			}
+        }
+        else {
+            writer.startElement("select", null);
+            writer.writeAttribute(HTML.ID_ATTR, filterId, null);
+            writer.writeAttribute(HTML.NAME_ATTR, filterId, null);
+            writer.writeAttribute(HTML.TABINDEX_ATTR, list.getTabIndex(), null);
+            //writer.writeAttribute(HTML.CLASS_ATTR, filterStyleClass, null);
+            writer.writeAttribute("onchange", filterFunction, null);
+			String accesskey = list.getAccesskey();
+			if (accesskey != null) {
+				writer.writeAttribute("accesskey", accesskey, null);				
+			}
+
+            SelectItem[] itemsArray = (SelectItem[]) getFilterOptions(list);
+            Object filterVal = list.getFilterValue();
+
+            for (SelectItem item : itemsArray) {
+                writer.startElement("option", null);
+                writer.writeAttribute("value", item.getValue(), null);
+
+                Object itemVal = item.getValue();
+
+                if ((filterVal == null && itemVal == null)
+                        || itemVal.toString().equals(filterVal)) {
+                    writer.writeAttribute("selected", "selected", null);
+                }
+
+                writer.write(item.getLabel());
+                writer.endElement("option");
+            }
+
+            writer.endElement("select");
+        }
+    }
+
+	private static void encodeFilterField(FacesContext context, ACEList list,
+			String filterId, String filterFunction, String filterStyleClass, String filterEvent, String suffix) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		Object filterValue;
+
+		if ("_min".equals(suffix)) filterValue = list.getFilterValueMin() != null ? list.getFilterValueMin() : "";
+		else if ("_max".equals(suffix)) filterValue = list.getFilterValueMax() != null ? list.getFilterValueMax() : "";
+		else filterValue = list.getFilterValue() != null ? list.getFilterValue() : "";
+
+		FilterType type = list.getFilterType();
+		boolean isNumber = type == FilterType.BYTE
+				|| type == FilterType.SHORT
+				|| type == FilterType.INT
+				|| type == FilterType.LONG
+				|| type == FilterType.FLOAT
+				|| type == FilterType.DOUBLE;
+
+		if (type == FilterType.FLOAT || type == FilterType.DOUBLE) {
+			filterValue = filterValue.toString().replaceAll("\\.0$", "");
+		}
+
+		writer.startElement(HTML.INPUT_ELEM, null);
+		writer.writeAttribute(HTML.ID_ATTR, filterId + suffix, null);
+		writer.writeAttribute(HTML.NAME_ATTR, filterId + suffix, null);
+		writer.writeAttribute(HTML.TABINDEX_ATTR, list.getTabIndex(), null);
+		writer.writeAttribute(HTML.CLASS_ATTR, filterStyleClass, null);
+		writer.writeAttribute("size", "1", null); // Webkit requires none zero/null size value to use CSS width correctly.
+		writer.writeAttribute("value", filterValue , null);
+/*
+		if (isNumber) {
+			writer.writeAttribute("onkeydown", "return ice.ace.DataTable.numberRestriction(event || window.event);", null);
+		}
+*/
+
+		if (filterEvent.equals("keyup") || filterEvent.equals("blur"))
+			writer.writeAttribute("on"+filterEvent, "ice.setFocus('"+filterId+suffix+"');"+filterFunction , null);
+
+		if (list.getFilterStyle() != null)
+			writer.writeAttribute(HTML.STYLE_ELEM, list.getFilterStyle(), null);
+
+		if ("".equals(suffix) || "_min".equals(suffix)) {
+			String accesskey = list.getAccesskey();
+			if (accesskey != null) writer.writeAttribute("accesskey", accesskey, null);
+		}
+
+		writer.endElement(HTML.INPUT_ELEM);
+
+		writer.startElement(HTML.SPAN_ELEM, null);
+		writer.writeAttribute(HTML.ID_ATTR, filterId + suffix + "_script", null);
+		writer.startElement(HTML.SCRIPT_ELEM, null);
+		writer.writeAttribute("type", "text/javascript", null);
+		writer.write("document.getElementById('"+filterId+suffix+"').submitOnEnter = 'disabled'; // "+filterValue);
+
+		writer.endElement(HTML.SCRIPT_ELEM);
+		writer.endElement(HTML.SPAN_ELEM);
+	}
+
+	private static void encodeBooleanMenu(FacesContext context, ACEList list,
+			String filterId, String filterFunction, String filterStyleClass) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		Object filterValue = list.getFilterValue();
+		filterValue = filterValue != null ? filterValue : "";
+
+		writer.startElement(HTML.SELECT_ELEM, null);
+		writer.writeAttribute(HTML.ID_ATTR, filterId, null);
+		writer.writeAttribute(HTML.NAME_ATTR, filterId, null);
+		writer.writeAttribute(HTML.TABINDEX_ATTR, list.getTabIndex(), null);
+		writer.writeAttribute(HTML.CLASS_ATTR, filterStyleClass, null);
+		writer.writeAttribute("value", filterValue , null);
+		String accesskey = list.getAccesskey();
+		if (accesskey != null) {
+			writer.writeAttribute("accesskey", accesskey, null);
+		}
+
+		writer.startElement(HTML.OPTION_ELEM, null);
+		writer.writeAttribute("value", "", null);
+		if (!"true".equalsIgnoreCase((String) filterValue)
+			&& !"false".equalsIgnoreCase((String) filterValue)) writer.writeAttribute("selected", "selected", null);
+		writer.endElement(HTML.OPTION_ELEM);
+
+		writer.startElement(HTML.OPTION_ELEM, null);
+		writer.writeAttribute("value", "true", null);
+		if ("true".equalsIgnoreCase((String) filterValue)) writer.writeAttribute("selected", "selected", null);
+		writer.write("True");
+		writer.endElement(HTML.OPTION_ELEM);
+
+		writer.startElement(HTML.OPTION_ELEM, null);
+		writer.writeAttribute("value", "false", null);
+		if ("false".equalsIgnoreCase((String) filterValue)) writer.writeAttribute("selected", "selected", null);
+		writer.write("False");
+		writer.endElement(HTML.OPTION_ELEM);
+
+		writer.writeAttribute("onchange", filterFunction , null);
+
+		if (list.getFilterStyle() != null)
+			writer.writeAttribute(HTML.STYLE_ELEM, list.getFilterStyle(), null);
+
+		writer.endElement(HTML.SELECT_ELEM);
+
+		writer.startElement(HTML.SPAN_ELEM, null);
+		writer.startElement(HTML.SCRIPT_ELEM, null);
+		writer.writeAttribute("type", "text/javascript", null);
+		writer.write("document.getElementById('"+filterId+"').submitOnEnter = 'disabled'; // "+filterValue);
+		writer.endElement(HTML.SCRIPT_ELEM);
+		writer.endElement(HTML.SPAN_ELEM);
+	}
+
+	private static void encodeDatePicker(FacesContext context, ACEList list,
+			String clientId, String filterFunction, String suffix) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+
+        String inputId = clientId + suffix + "_input";
+        Map paramMap = context.getExternalContext().getRequestParameterMap();
+        boolean ariaEnabled = EnvUtils.isAriaEnabled(context);
+
+        writer.startElement("span", null);
+        writer.writeAttribute("id", clientId + suffix, null);
+        writer.writeAttribute("class", "if-list-filter", null);
+
+        // input
+        writer.startElement("input", null);
+        writer.writeAttribute("id", inputId, null);
+        writer.writeAttribute("name", inputId, null);
+        writer.writeAttribute("type", "text", null);
+		writer.writeAttribute("tabindex", "0", null);
+		writer.writeAttribute("onchange", filterFunction , null);
+        if (ariaEnabled) {
+            writer.writeAttribute("role", "textbox", null);
+        }
+
+		Object filterValue;
+		if ("_min".equals(suffix)) {
+			filterValue = list.getFilterValueMin() != null ? list.getFilterValueMin() : "";
+		} else if ("_max".equals(suffix)) {
+			filterValue = list.getFilterValueMax() != null ? list.getFilterValueMax() : "";
+		} else filterValue = list.getFilterValue() != null ? list.getFilterValue() : "";
+
+		String datePattern = list.getFilterDatePattern();
+
+		// convert date to string
+		if (filterValue instanceof Date) {
+			Locale locale = list.calculateLocale(context);
+			DateFormat format = new SimpleDateFormat(datePattern, locale);
+			filterValue = format.format((Date) filterValue);
+		}
+
+		String inFieldLabelClass = "ui-input-label-infield";
+		boolean labelIsInField = false;
+		if (filterValue != null && !"".equals(filterValue)) {
+			writer.writeAttribute("value", filterValue, null);
+		} else {
+			writer.writeAttribute("value", datePattern, null);
+			labelIsInField = true;
+		}
+
+		writer.writeAttribute("class", "ui-inputfield ui-widget ui-state-default ui-corner-all" 
+			+ (labelIsInField ? " " + inFieldLabelClass : ""), null);
+
+		writer.writeAttribute("size", "12", null);
+
+        writer.endElement("input");
+
+		encodeDatePickerScript(context, list, clientId + suffix, labelIsInField, datePattern, inFieldLabelClass);
+
+        writer.endElement("span");
+	}
+
+	private static void encodeDatePickerScript(FacesContext context, ACEList list,
+			String clientId, boolean labelIsInField, String datePattern, String InFieldLabelClass) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        writer.startElement("script", null);
+        writer.writeAttribute("type", "text/javascript", null);
+
+        StringBuilder script = new StringBuilder();
+        JSONBuilder json = JSONBuilder.create();
+
+        writer.write("ice.ace.jq(function(){");
+
+        Locale locale = list.calculateLocale(context);
+        json.beginMap()
+            .entry("id", clientId)
+            .entry("popup", true)
+            .entry("locale", locale.toString())
+			.entryNonNullValue("inFieldLabel", datePattern)
+			.entry("inFieldLabelStyleClass", InFieldLabelClass)
+			.entry("labelIsInField", labelIsInField)
+            .entryNonNullValue("pattern", 
+                DateTimeEntryUtils.parseTimeZone(DateTimeEntryUtils.convertPattern(list.getFilterDatePattern()), locale, java.util.TimeZone.getDefault()));
+
+        json.entryNonNullValue("yearRange", "c-10:c+10");
+
+		Resource resource = context.getApplication().getResourceHandler().createResource(DateTimeEntry.POPUP_ICON, "icefaces.ace");
+        String iconSrc = resource.getRequestPath();
+
+		json.entry("showOn", "both")
+			.entry("buttonImage", iconSrc)
+			.entry("buttonImageOnly", false);
+
+		json.entry("showOtherMonths", true)
+			.entry("selectOtherMonths", false);
+
+        json.entry("disableHoverStyling", true);
+        json.entry("showCurrentAtPos", 0);
+        json.entry("clientId", clientId);
+        json.entry("buttonText", "");
+        json.entry("ariaEnabled", EnvUtils.isAriaEnabled(context));
+        json.entry("todayNowButtonsAlsoSelect", false);
+
+        Calendar calendar = Calendar.getInstance(locale);
+        SimpleDateFormat formatter = (SimpleDateFormat) DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, locale);
+        DateFormatSymbols dateFormatSymbols = formatter.getDateFormatSymbols();
+        DateTimeEntryRenderer.buildUnicodeArray(json, "monthNames", dateFormatSymbols.getMonths(), 0);
+        DateTimeEntryRenderer.buildUnicodeArray(json, "monthNamesShort", dateFormatSymbols.getShortMonths(), 0);
+        DateTimeEntryRenderer.buildUnicodeArray(json, "dayNames", dateFormatSymbols.getWeekdays(), 1);
+        DateTimeEntryRenderer.buildUnicodeArray(json, "dayNamesShort", dateFormatSymbols.getShortWeekdays(), 1);
+        DateTimeEntryRenderer.buildUnicodeArray(json, "dayNamesMin", dateFormatSymbols.getShortWeekdays(), 1);
+        json.entry("firstDay", calendar.getFirstDayOfWeek() - 1);
+
+        json.endMap();
+
+        writer.write("ice.ace.create('CalendarInit',[" + json + "]);");
+		writer.write("});");
+		writer.write("document.getElementById('"+clientId+"_input').submitOnEnter = 'disabled';");
+
+        writer.endElement("script");
+	}
+
+	private static void encodeFilterFacet(FacesContext context, ACEList list) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = list.getClientId(context);
+
+        writer.startElement("span", null);
+        writer.writeAttribute("id", clientId + "_filter", null);
+        writer.writeAttribute("class", "if-list-filter if-list-filter-button fa fa-chevron-down", null);
+		writer.endElement("span");
+
+        writer.startElement("span", null);
+        writer.writeAttribute("id", clientId + "_filterFacet", null);
+        writer.writeAttribute("class", "ui-widget-content if-list-filter-facet", null);
+		writer.writeAttribute("style", "display: none;", null);
+
+		list.getFilterFacet().encodeAll(context);
+
+		writer.endElement("span");
+	}
+
+    private static SelectItem[] getFilterOptions(ACEList list) {
+        Object options = list.getFilterOptions();
+        if (options instanceof SelectItem[]) return (SelectItem[]) options;
+        else if (options instanceof Collection<?>) return ((Collection<SelectItem>) list.getFilterOptions()).toArray(new SelectItem[] {});
+        else throw new FacesException("Filter options for list " + list.getClientId() + " should be a SelectItem array or collection");
     }
 }

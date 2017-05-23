@@ -88,6 +88,13 @@ ice.ace.List = function(id, cfg) {
     if (cfg.controls)
         this.setupControls();
 
+	// blur and keyup are handled by the xhtml on____ attributes, and written by the renderer
+	if (cfg.filterEvent && cfg.filterEvent != "blur" && cfg.filterEvent != "keyup")
+		this.setupFilterEvents();
+
+	if (this.element.find(this.filterButtonSelector).size() > 0)
+		this.setupFilterFacetEvents();
+
     if (cfg.dragging) {
         var options = {
             placeholder: cfg.placeholder,
@@ -279,6 +286,155 @@ ice.ace.List.prototype.setupControls = function() {
             .off('click', itemSelector).on('click', itemSelector, function(e) {
                 self.controlClickHandler.call(self, e);
             });
+};
+
+ice.ace.List.prototype.filterSelector = ' .if-list-filter input';
+ice.ace.List.prototype.filterButtonSelector = ' .if-list-filter-button';
+
+ice.ace.List.prototype.setupFilterEvents = function() {
+    var _self = this;
+
+    // Don't run form level enter key handling
+    this.element.on('keypress', this.filterSelector, function (event) {
+        var keyCode = event.keyCode || event.which;
+        if (keyCode == 13) {
+            event.stopPropagation();
+        }
+    });
+
+    if (this.cfg.filterEvent == "enter") {
+		this.element.off('keydown', this.filterSelector);
+        this.element.on('keydown', this.filterSelector, function (event) {
+            event.stopPropagation();
+            var keyCode = event.keyCode || event.which;
+            if (keyCode == 13) {
+                if (event.preventDefault) {
+                    event.preventDefault();
+                } else {
+                    event.returnValue = false;
+                }
+                _self.filter(event);
+            }
+        });
+	}
+
+    else if (this.cfg.filterEvent == "change") {
+		this.element.off('keyup', this.filterSelector);
+        this.element.on('keyup', this.filterSelector, function (event) {
+            var _event = event;
+            var keyCode = event.keyCode || event.which;
+            if (keyCode == 8 || keyCode == 13 || keyCode > 40 || event.isTrigger) {
+                if (_self.delayedFilterCall)
+                    clearTimeout(_self.delayedFilterCall);
+
+                _self.delayedFilterCall = setTimeout(function () {
+                    _self.filter(_event);
+                }, 400);
+            }
+        });
+	}
+
+	this.element.off('input', this.filterSelector);
+    this.element.on('input', this.filterSelector, function (event) {
+        if ((event.target || event.srcElement).value == '') {
+            _self.filter(event);
+        }
+    });
+};
+
+ice.ace.List.prototype.setupFilterFacetEvents = function () {
+    var _self = this;
+
+	if (!ice.ace.List.hideFilterFacetListeners)
+		ice.ace.List.hideFilterFacetListeners = {};
+
+	this.element.off('click', this.filterButtonSelector);
+	this.element.on('click', this.filterButtonSelector, function (event) {
+		var _event = event;
+		var id = this.id;
+		if (!ice.ace.List.hideFilterFacetListeners[id]) {
+			ice.ace.List.hideFilterFacetListeners[id] = function(e) {
+				var facetId = id + 'Facet';
+				var target = ice.ace.jq(e.target);
+				var facet = target.closest(ice.ace.escapeClientId(facetId));
+				if (e.target.id == id || facet.size() > 0) {
+					return;
+				} else {
+					var button = ice.ace.jq(ice.ace.escapeClientId(id));
+					if (button.size() > 0) {
+						button.removeClass('fa-chevron-up');
+						button.addClass('fa-chevron-down');
+						button.next().hide();
+						ice.ace.jq(window).off('click', ice.ace.List.hideFilterFacetListeners[id]);
+						if (_self.delayedFilterCall)
+							clearTimeout(_self.delayedFilterCall);
+
+						_self.delayedFilterCall = setTimeout(function () {
+							var button = ice.ace.jq(ice.ace.escapeClientId(id));
+							if (button.size() > 0) {
+								_self.filter(_event);
+							}
+						}, 400);
+					}
+				}
+			};
+		}
+		var button = ice.ace.jq(this);
+		if (button.hasClass('fa-chevron-down')) {
+			button.removeClass('fa-chevron-down');
+			button.addClass('fa-chevron-up');
+			var position = button.position();
+			button.next().css({top: position.top + button.outerHeight() + 'px', left: position.left + 'px'});
+			button.next().show();
+			setTimeout(function () {
+				ice.ace.jq(window).on('click', ice.ace.List.hideFilterFacetListeners[id]);
+			}, 0);
+		} else if (button.hasClass('fa-chevron-up')) {
+			_event.stopImmediatePropagation();
+			button.removeClass('fa-chevron-up');
+			button.addClass('fa-chevron-down');
+			button.next().hide();
+			ice.ace.jq(window).off('click', ice.ace.List.hideFilterFacetListeners[id]);
+			if (_self.delayedFilterCall)
+				clearTimeout(_self.delayedFilterCall);
+
+			_self.delayedFilterCall = setTimeout(function () {
+				_self.filter(_event);
+			}, 400);
+		}
+	});
+};
+
+ice.ace.List.prototype.filter = function (evn) {
+	if (this.filterObserver) clearTimeout(this.filterObserver);
+    var options = {
+        source:this.id,
+        render:this.id,
+        execute:this.id,
+        formId:this.cfg.formId
+    };
+
+	var input = evn.target ? evn.target : evn.srcElement;
+    var _self = this;
+    var params = {};
+    params[this.id + "_filtering"] = true;
+    //params[this.id + "_filteredColumn"] = ice.ace.jq(input).attr('id');
+    options.params = params;
+
+    if (this.behaviors)
+        if (this.behaviors.filter) {
+            ice.ace.ab(ice.ace.extendAjaxArgs(
+                this.behaviors.filter,
+                options
+            ));
+            return;
+        }
+
+	this.filterObserver = setTimeout(function() {
+		if (ice.ace.jq(input).hasClass('hasDatepicker')) ice.setFocus('');
+		ice.ace.AjaxRequest(options);
+		_self.filterObserver = null;
+	}, 200);
 };
 
 ice.ace.List.prototype.controlClickHandler = function(e) {

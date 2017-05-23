@@ -18,6 +18,8 @@ package org.icefaces.ace.util.collections;
 
 import org.icefaces.ace.component.column.Column;
 import org.icefaces.ace.component.column.ColumnType;
+import org.icefaces.ace.component.list.ACEList;
+import org.icefaces.ace.component.list.FilterType;
 import org.icefaces.ace.model.filter.FilterConstraint;
 import org.icefaces.ace.json.JSONArray;
 
@@ -34,7 +36,8 @@ public class PropertyConstraintPredicate implements Predicate {
     String filterValue;
     FilterConstraint filterConstraint;
     FacesContext facesContext;
-	Column column;
+	Column column = null;
+	ACEList list = null;
 	JSONArray filterValues;
 
     public PropertyConstraintPredicate(FacesContext context, ValueExpression filterBy, String filterValue, FilterConstraint constraint, Column column) {
@@ -52,10 +55,26 @@ public class PropertyConstraintPredicate implements Predicate {
 		}
     }
 
+    public PropertyConstraintPredicate(FacesContext context, ValueExpression filterBy, String filterValue, FilterConstraint constraint, ACEList list) {
+        this.filterValue = filterValue;
+        this.filterConstraint = constraint;
+        this.facesContext = context;
+        this.filterBy = filterBy;
+		this.list = list;
+		if (list.getFilterValues() != null) {
+			try {
+				filterValues = new JSONArray(filterValue);
+			} catch (Exception e) {
+				filterValues = null;
+			}
+		}
+    }
+
     public boolean evaluate(Object object) {
         Object value = filterBy.getValue(facesContext.getELContext());
 
-		if (this.column.getColumnType() == ColumnType.TEXT) {
+		if ((this.column != null && this.column.getColumnType() == ColumnType.TEXT)
+			|| (this.list != null && this.list.getFilterType() == FilterType.TEXT)) {
 			if (value instanceof Date) {
 				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 				value = dateFormat.format(value);
@@ -83,7 +102,8 @@ public class PropertyConstraintPredicate implements Predicate {
 				return false;
 			else
 				return true;
-		} else if (this.column.getColumnType() == ColumnType.BOOLEAN) {
+		} else if ((this.column != null && this.column.getColumnType() == ColumnType.BOOLEAN)
+					|| (this.list != null && this.list.getFilterType() == FilterType.BOOLEAN)) {
 			if (value != null) {
 				if (filterValues != null) {
 					for (int i = 0; i < filterValues.length(); i++) {
@@ -114,11 +134,15 @@ public class PropertyConstraintPredicate implements Predicate {
 				return false;
 			else
 				return true;			
-		} else if (this.column.getColumnType() == ColumnType.DATE) {
+		} else if ((this.column != null && this.column.getColumnType() == ColumnType.DATE)
+					|| (this.list != null && this.list.getFilterType() == FilterType.DATE)) {
 			Date filterDate = null;
 			Date[] filterDates = null;
-			DateFormat dateFormat = new SimpleDateFormat(this.column.getFilterDatePattern(), 
-				this.column.calculateLocale(this.facesContext));
+			DateFormat dateFormat;
+				if (this.column != null) dateFormat = new SimpleDateFormat(this.column.getFilterDatePattern(), 
+					this.column.calculateLocale(this.facesContext));
+				else dateFormat = new SimpleDateFormat(this.list.getFilterDatePattern(), 
+					this.list.calculateLocale(this.facesContext));
 			try {
 				if (filterValues != null) {
 					int size = filterValues.length();
@@ -159,7 +183,8 @@ public class PropertyConstraintPredicate implements Predicate {
 			} else {
 				return false;
 			}
-		} else if (this.column.getColumnType() == ColumnType.BYTE) {
+		} else if ((this.column != null && this.column.getColumnType() == ColumnType.BYTE)
+					|| (this.list != null && this.list.getFilterType() == FilterType.BYTE)) {
 			Byte convertedValue = null;
 			Byte convertedFilterValue = null;
 			Byte[] convertedFilterValues = null;
@@ -201,7 +226,8 @@ public class PropertyConstraintPredicate implements Predicate {
 				return false;
 			else
 				return true;
-		} else if (this.column.getColumnType() == ColumnType.SHORT) {
+		} else if ((this.column != null && this.column.getColumnType() == ColumnType.SHORT)
+					|| (this.list != null && this.list.getFilterType() == FilterType.SHORT)) {
 			Short convertedValue = null;
 			Short convertedFilterValue = null;
 			Short[] convertedFilterValues = null;
@@ -243,7 +269,8 @@ public class PropertyConstraintPredicate implements Predicate {
 				return false;
 			else
 				return true;
-		} else if (this.column.getColumnType() == ColumnType.INT) {
+		} else if ((this.column != null && this.column.getColumnType() == ColumnType.INT)
+					|| (this.list != null && this.list.getFilterType() == FilterType.INT)) {
 			Integer convertedValue = null;
 			Integer convertedFilterValue = null;
 			Integer[] convertedFilterValues = null;
@@ -285,7 +312,8 @@ public class PropertyConstraintPredicate implements Predicate {
 				return false;
 			else
 				return true;
-		} else if (this.column.getColumnType() == ColumnType.LONG) {
+		} else if ((this.column != null && this.column.getColumnType() == ColumnType.LONG)
+					|| (this.list != null && this.list.getFilterType() == FilterType.LONG)) {
 			Long convertedValue = null;
 			Long convertedFilterValue = null;
 			Long[] convertedFilterValues = null;
@@ -327,7 +355,8 @@ public class PropertyConstraintPredicate implements Predicate {
 				return false;
 			else
 				return true;
-		} else if (this.column.getColumnType() == ColumnType.FLOAT) {
+		} else if ((this.column != null && this.column.getColumnType() == ColumnType.FLOAT)
+					|| (this.list != null && this.list.getFilterType() == FilterType.FLOAT)) {
 			Float convertedValue = null;
 			Float convertedFilterValue = null;
 			Float[] convertedFilterValues = null;
@@ -369,7 +398,8 @@ public class PropertyConstraintPredicate implements Predicate {
 				return false;
 			else
 				return true;
-		} else if (this.column.getColumnType() == ColumnType.DOUBLE) {
+		} else if ((this.column != null && this.column.getColumnType() == ColumnType.DOUBLE)
+					|| (this.list != null && this.list.getFilterType() == FilterType.DOUBLE)) {
 			Double convertedValue = null;
 			Double convertedFilterValue = null;
 			Double[] convertedFilterValues = null;

@@ -62,6 +62,27 @@
     text-align: center;
 }
 
+.if-list .if-list-filter {
+	text-align: center;
+}
+
+.if-list .if-list-filter > input {
+    width: 98%;
+}
+
+.if-list .if-list-filter-button {
+	text-align: center;
+	background-color: #fff;
+	color: #666;
+	border: 1px solid #999;
+	padding: 3px 0;
+    width: 98%;
+}
+
+.if-list .if-list-filter-facet {
+	position: absolute;
+}
+
 .if-list-ctrl-spcr {
     width:25%;
     /* IE7 width fix */

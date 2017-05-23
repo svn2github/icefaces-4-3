@@ -20,12 +20,14 @@ import org.icefaces.ace.meta.annotation.*;
 import org.icefaces.ace.meta.baseMeta.UIDataMeta;
 
 import javax.el.MethodExpression;
+import javax.faces.component.UIComponent;
 
 import org.icefaces.ace.resources.ACEResourceNames;
 import org.icefaces.resources.ICEResourceDependencies;
 import org.icefaces.resources.ICEResourceDependency;
 import org.icefaces.resources.ICEResourceLibrary;
 
+import java.util.List;
 import java.util.Set;
 
 @Component(
@@ -48,6 +50,7 @@ import java.util.Set;
 )
 @ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
+	@ICEResourceDependency(name = "fontawesome/font-awesome.css"),
 	@ICEResourceDependency(name = "util/ace-core.js"),
 	@ICEResourceDependency(name = "jquery/jquery.js"),
 	@ICEResourceDependency(name = "dnd/dragdrop.js"),
@@ -206,4 +209,83 @@ public class ListMeta extends UIDataMeta {
 	
 	@Property(tlddoc = "Specifies the jQuery selector(s) of the elements inside the item container (<li> element) that will be used as the drag handle(s). This is intended to be used only when the list contains nested components and/or elements. If this attribute isn't specified, any point of the item container can initiate the dragging action. The selectors are relative to the item's root element. When using multiple selectors, separate them by commas.")
 	String dragHandle;
+
+    @Property(tlddoc = "Defines a tabindex to be shared by all keyboard navigable elements of the table. " +
+            "This includes sort controls, filter fields and individual rows themselves.",
+            defaultValue = "0",
+            defaultValueType = DefaultValueType.EXPRESSION)
+    private Integer tabIndex;
+
+	@Property(tlddoc = "Access key that, when pressed, transfers focus to this component.")
+	private String accesskey;
+
+	@Property(expression = Expression.VALUE_EXPRESSION,
+            tlddoc="Defines a ValueExpression of the value of this row to use when filtering this list. " +
+                   "Setting this attribute enables filtering.")
+	private Object filterBy;
+
+    @Property(tlddoc="Defines the string input filtering this column, coming from the client, or from " +
+            "the application via a value binding.")
+    private String filterValue;
+
+    @Property(tlddoc="Defines multiple filter values. This property can only be set programmatically, typically when using the filter facet as well. The value must be a Collection or an Array of strings. If this attribute is set, 'filterValue', 'filterValueMin', and 'filterValueMax' are ignored.")
+    private Object filterValues;
+    
+	@Property(tlddoc="Defines additional CSS rules to be applied to the filter text input.")
+	private String filterStyle;
+	
+	@Property(tlddoc="Defines supplementary CSS classes to add to those already " +
+            "applied on this component.")
+	private String filterStyleClass;
+	
+	@Property(tlddoc="Defines a collection of SelectItem objects for use as filter choices.")
+	private Object filterOptions;
+	
+	@Property(tlddoc="Defines the method of filter comparison used, default is \"startsWith\". " +
+            "Types available include: \"contains\", \"exact\", \"startsWith\" and \"endsWith\".", defaultValue="startsWith")
+	private String filterMatchMode;
+
+    @Property(tlddoc="If true, range filtering is enabled. When range filtering is enabled, two input fields will be rendered for filtering this column. The first one is to specify the minimum value and the second one is to specify the maximum value. All rows with values for this column in between this range will be matched. If only the minimum value is specified, all values greater than or equal to it will be matched; if only the maximum value is specified, all values less than or equal to it will be matched.",
+            defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
+    private boolean rangedFilter;
+
+    @Property(tlddoc="When range filtering is enabled, this property is used to access or to set the minimum filter value of the range. The value can't be a primitive type; use the corresponding wrapper object instead.")
+    private Object filterValueMin;
+
+    @Property(tlddoc="When range filtering is enabled, this property is used to access or to set the maximum filter value of the range. The value can't be a primitive type; use the corresponding wrapper object instead.")
+    private Object filterValueMax;
+
+    @Property(defaultValue = "yyyy-MM-dd", tlddoc = "DateFormat pattern for the date filter input. See the " +
+            "<a href=\"http://wiki.icefaces.org/display/ICE/DateTimeEntry\">DateTimeEntry Wiki Documentation</a> for limitations. ")
+    private String filterDatePattern;
+
+    @Property(tlddoc = "Locale to be used for the date filter input. Valid values can be a Locale string or java.util.Locale objects. Default is locale of view root.")
+    private Object filterDateLocale;
+
+    @Property(tlddoc="Defines the Javascript event on which to trigger filter event, ex. " +
+            "\'keyup\', \'blur\', \'change\' and \'enter\' (Note: columns filtered based on Date values always trigger the event on change).", defaultValue="change")
+    private String filterEvent;
+
+    @Property(defaultValue = "text",
+              defaultValueType = DefaultValueType.EXPRESSION,
+              tlddoc = "Specifies the data type of this column, determining how the " +
+                      "'value' attribute of this component will be handled when filtering. Valid options " +
+                      "include : 'text', 'boolean', 'date', 'byte', 'short', 'int', 'long', 'float', and 'double' " +
+                      "(when 'text' is used, all values are treated as strings; 'date' assumes the value object is a Date object).")
+    String type;
+
+    @Facets
+    class FacetsMeta {
+        @Facet(tlddoc = "An optional facet that is rendered in place of the built-in filtering inputs to provide more flexibility when filtering values. This facet is rendered as a simple popup dialog. When using this facet, the 'filterValue' property has to be set as well (or 'filterValueMin' and 'filterValueMax' if working with ranges).")
+        UIComponent filter;
+    }
+
+    @Field(defaultValue = "true", defaultValueIsStringLiteral = false)
+    protected Boolean applyingFilters;
+
+    @Field(defaultValue = "null", defaultValueIsStringLiteral = false)
+    protected List filteredData;
+
+    @Field(defaultValue = "null", defaultValueIsStringLiteral = false)
+    protected Integer valueHashCode;
 }

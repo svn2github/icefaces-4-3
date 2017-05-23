@@ -17,6 +17,9 @@
 package org.icefaces.ace.component.list;
 
 import org.icefaces.ace.event.ListSelectEvent;
+import org.icefaces.ace.model.filter.*;
+import org.icefaces.ace.util.collections.*;
+import org.icefaces.ace.util.collections.*;
 
 import javax.el.ELContext;
 import javax.el.MethodExpression;
@@ -45,6 +48,7 @@ public class ACEList extends ListBase {
 
     DataModel model;
     boolean selectItemModel = false;
+	transient protected FilterState savedFilterState;
 
     @Override
     protected DataModel getDataModel() {
@@ -83,6 +87,34 @@ public class ACEList extends ListBase {
 
         return (model);
     }
+
+	@Override
+	public Object getValue() {
+		Object superValue = super.getValue();
+		int superValueHash;
+		if (superValue != null) superValueHash = superValue.hashCode();
+		else return null;
+
+		// If model is altered or new reapply filters / sorting
+		if (getValueHashCode() == null || superValueHash != getValueHashCode()) {
+			setValueHashCode(superValueHash);
+
+			//if (!(superValue instanceof LazyDataModel)) {
+				//applySorting();
+
+				if (getFilteredData() != null) {
+					applyFilters();
+				}
+			//}
+		}
+
+		// If we have filtered data return that instead of the standard collection
+		// Lazy case should recalculate filters in the persistence layer with every load
+		List filteredValue = getFilteredData();
+		if (filteredValue != null)
+			return filteredValue;
+			else return superValue;
+	}
 
     @Override
     public void setRowIndex(int i) {
@@ -241,5 +273,194 @@ public class ACEList extends ListBase {
 
     public void setSelectItemModel(boolean isSelect) {
         selectItemModel = isSelect;
+    }
+
+    public void applyFilters() {
+        setApplyingFilters(true);
+    }
+
+	// ---------------------
+	// ----- FILTERING -----
+	// ---------------------
+
+/*
+    @Property(tlddoc = "Enable to force creation of the filtered data set from the bound " +
+            "value every render. Alternately attempt to use hashCodes of the " +
+            "value property to detect changes and prompt refiltering.",
+            defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
+    private boolean constantRefilter;
+*/
+    public Boolean isApplyingFilters() {
+        //if (isConstantRefilter()) return true;
+
+        return super.isApplyingFilters();
+    }
+
+    @Override
+    public void processUpdates(FacesContext context) {
+        if (context == null) {
+            throw new NullPointerException();
+        }
+        if (!isRendered()) {
+            return;
+        }
+
+		super.processUpdates(context);
+
+        pushComponentToEL(context, this);
+
+		if (isFilterRequest(context)) {
+			UIComponent filterFacet = getFilterFacet();
+			if (filterFacet != null) {
+				filterFacet.processUpdates(context);
+			}
+
+			// after model values have been updated, we save the filter state if using the filter facet,
+			// since the filter values are decoded independetly in this case,
+			// so we must now fetch them to use them later at the render response phase
+			if (savedFilterState != null) {
+				if (getFilterFacet() != null) {
+					Object filterValue = getFilterValue();
+					Object filterValues = getFilterValues();
+					if (filterValue != null || filterValues != null) {
+						savedFilterState.saveState(this);
+					} else {
+						savedFilterState.saveState(this, getFilterValueMin(), getFilterValueMax());
+					}
+				}
+			}
+		}
+
+        if (isApplyingFilters()) {
+            if (savedFilterState != null)
+                savedFilterState.apply(this);
+            setFilteredData(processFilters(context));
+        }
+
+        popComponentFromEL(context);
+    }
+
+    protected List processFilters(FacesContext context) {
+        try {
+			Predicate filterSet = AllPredicate.getInstance(new ArrayList<Predicate>());
+
+			FilterType filterType = getFilterType();
+			if (filterType == FilterType.TEXT || !isRangedFilter()) {
+				String filterValue = getFilterValue();
+				if (filterValue != null && !filterValue.equals("")) {
+					filterSet = new PropertyConstraintPredicate(context,
+								getValueExpression("filterBy"),
+								filterValue,
+								getFilterConstraint(),
+								this);
+				}
+			} else {
+				Object filterValueMin = getFilterValueMin();
+				Object filterValueMax = getFilterValueMax();
+				if (filterValueMin != null || filterValueMax != null) {
+					filterSet = new RangeConstraintPredicate(context,
+								getValueExpression("filterBy"),
+								filterValueMin,
+								filterValueMax,
+								filterType);
+				}
+			}
+
+            List filteredData = new ArrayList();
+            setFilteredData(null);
+			try { setDataModel(null); }
+			catch (UnsupportedOperationException uoe) {
+				//MyFaces doesn't support this method and throws an UnsupportedOperationException
+			}
+
+            DataModel model = getDataModel();
+            String var = getVar();
+
+            int index = 0;
+
+            // UIData Iteration
+            setRowIndex(index);
+            while (model.isRowAvailable()) {
+                Object rowData = model.getRowData();
+
+                if (var != null) context.getExternalContext().getRequestMap().put(var, rowData);
+
+                if  (filterSet.evaluate(rowData)) {
+					filteredData.add(rowData);
+                }
+                index++;
+                setRowIndex(index);
+            }
+
+            // Iteration clean up
+            setRowIndex(-1);
+            if (var != null) context.getExternalContext().getRequestMap().remove(var);
+            return  filteredData;
+        } finally {
+            //setForcedUpdateCounter(getForcedUpdateCounter()+1);
+            setApplyingFilters(false);
+        }
+    }
+
+    public Locale calculateLocale(FacesContext facesContext) {
+		Locale locale;
+		Object userLocale = getFilterDateLocale();
+		if (userLocale != null) {
+			if (userLocale instanceof String) {
+				String[] tokens = ((String) userLocale).split("_");
+				if (tokens.length == 1)
+					locale = new Locale(tokens[0], "");
+				else
+					locale = new Locale(tokens[0], tokens[1]);
+			} else if (userLocale instanceof Locale)
+				locale = (Locale) userLocale;
+			else
+				throw new IllegalArgumentException("Type:" + userLocale.getClass() + " is not a valid locale type for column:" + this.getClientId(facesContext));
+		} else {
+			locale = facesContext.getViewRoot().getLocale();
+		}
+
+        return locale;
+    }
+
+	public FilterType getFilterType() {
+		String type = getType();
+		if ("boolean".equalsIgnoreCase(type)) return FilterType.BOOLEAN;
+		if ("date".equalsIgnoreCase(type)) return FilterType.DATE;
+		if ("byte".equalsIgnoreCase(type)) return FilterType.BYTE;
+		if ("short".equalsIgnoreCase(type)) return FilterType.SHORT;
+		if ("int".equalsIgnoreCase(type)) return FilterType.INT;
+		if ("long".equalsIgnoreCase(type)) return FilterType.LONG;
+		if ("float".equalsIgnoreCase(type)) return FilterType.FLOAT;
+		if ("double".equalsIgnoreCase(type)) return FilterType.DOUBLE;
+
+		return FilterType.TEXT;
+	}
+
+	public FilterConstraint getFilterConstraint() {
+		String filterMatchMode = getFilterMatchMode();
+		FilterConstraint filterConstraint;
+
+		if (filterMatchMode.equals("startsWith")) {
+			filterConstraint = new StartsWithFilterConstraint();
+		} else if (filterMatchMode.equals("endsWith")) {
+			filterConstraint = new EndsWithFilterConstraint();
+		} else if (filterMatchMode.equals("contains")) {
+			filterConstraint = new ContainsFilterConstraint();
+		} else if (filterMatchMode.equals("exact")) {
+			filterConstraint = new ExactFilterConstraint();
+		} else {
+			filterConstraint = new StartsWithFilterConstraint();
+		}
+
+		return filterConstraint;
+	}
+
+	protected boolean isFilterRequest(FacesContext x) {
+		return isIdPrefixedParamSet("_filtering", x);
+	}
+
+    private boolean isIdPrefixedParamSet(String param, FacesContext x) {
+        return x.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(x) + param);
     }
 }
