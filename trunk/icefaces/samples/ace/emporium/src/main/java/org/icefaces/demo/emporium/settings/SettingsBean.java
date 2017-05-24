@@ -52,7 +52,7 @@ public class SettingsBean implements Serializable {
 	private String notificationForeground;
 	private int popupWidth;
 	private String themeName;
-	private ColorFormat colorFormat = ColorFormat.RGBPERCENT;
+	private ColorFormat colorFormat = ColorFormat.NAME;
 
 	
 	@PostConstruct
@@ -89,8 +89,8 @@ public class SettingsBean implements Serializable {
 		location = ListData.DEFAULT_LOCATION;
 		bidIncrement = AuctionItem.DEFAULT_BID_INCREMENT;
 		tabOrientation = ListData.DEFAULT_TAB_ORIENTATION;
-		notificationBackground = ListData.DEFAULT_BACKGROUND_COLOR.getRGBAPercentForCSS();
-		notificationForeground = ListData.DEFAULT_FOREGROUND_COLOR.getRGBAPercentForCSS();
+		notificationBackground = ListData.DEFAULT_BACKGROUND_COLOR.getColorName();
+		notificationForeground = ListData.DEFAULT_FOREGROUND_COLOR.getColorName();
 		popupWidth = 800;
 		themeName = FacesUtils.getFacesParameter(ICEFACES_THEME_PARAM, ICEFACES_THEME_DEFAULT);
 	}

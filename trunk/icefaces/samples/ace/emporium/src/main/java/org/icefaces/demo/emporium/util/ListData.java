@@ -118,7 +118,7 @@ public class ListData implements Serializable {
 		toReturn.add(DEFAULT_FOREGROUND_COLOR);
 		toReturn.add(new SwatchEntry("Red", 1, 0, 0));
 		toReturn.add(new SwatchEntry("Green", 0, 1, 0));
-		toReturn.add(new SwatchEntry("Blue", 0, 0,    1));
+		toReturn.add(new SwatchEntry("Blue", 0, 0, 1));
 		toReturn.add(new SwatchEntry("Yellow", 1, 1, 0));
 		toReturn.add(new SwatchEntry("Purple", 0.50196, 0, 0.50196));
 		toReturn.add(new SwatchEntry("Brown", 0.647, 0.165, 0.165));
@@ -126,10 +126,10 @@ public class ListData implements Serializable {
 		toReturn.add(new SwatchEntry("Orange", 1, 0.549, 0));
 		toReturn.add(new SwatchEntry("Salmon", 0.914, 0.588, 0.478));
 		toReturn.add(new SwatchEntry("Sky Blue", 0, 0.749, 1));
-		toReturn.add(new SwatchEntry("Forest Green", 0.133, 0.545, 0.133));
+		toReturn.add(new SwatchEntry("Forestgreen", 0.133, 0.545, 0.133));
 		toReturn.add(new SwatchEntry("Gold", 1, 0.843, 0));
 		toReturn.add(DEFAULT_BACKGROUND_COLOR);
-		toReturn.add(new SwatchEntry("Violet Red", 0.859, 0.439, 0.577));
+		toReturn.add(new SwatchEntry("MediumVioletRed", 0.859, 0.439, 0.577));
 		toReturn.add(new SwatchEntry("Seashell", 1, 0.961, 0.933));
 		return toReturn;
 	}
