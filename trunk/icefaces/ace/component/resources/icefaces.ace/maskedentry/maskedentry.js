@@ -283,6 +283,17 @@
                         if (e.keyCode == 13) {
                             checkVal();
                         }
+                    })
+                    .closest('form').bind('submit', function() {
+                        if (input.data("labelIsInField")) {
+                            input.val("");
+                            input.data("labelIsInField", false);
+                            input.attr({name: input.attr("id")});
+                            setTimeout(function() {
+                                input.val(settings.inFieldLabel);
+                                input.data("labelIsInField", true);
+                            }, 100);
+                        }
                     });
 
 				checkVal(); //Perform initial check for existing values
