@@ -88,6 +88,9 @@ ice.ace.List = function(id, cfg) {
     if (cfg.controls)
         this.setupControls();
 
+	if (cfg.sorting)
+		this.setupSortEvents();
+
 	// blur and keyup are handled by the xhtml on____ attributes, and written by the renderer
 	if (cfg.filterEvent && cfg.filterEvent != "blur" && cfg.filterEvent != "keyup")
 		this.setupFilterEvents();
@@ -437,6 +440,174 @@ ice.ace.List.prototype.filter = function (evn) {
 	}, 200);
 };
 
+ice.ace.List.prototype.sortControlSelector = ' > div.if-list-sort > span.ui-sortable-control';
+
+ice.ace.List.prototype.setupSortEvents = function () {
+    var _self = this;
+
+    // Bind clickable control events
+    this.element.find(this.sortControlSelector)
+        .unbind('click').bind("click", function (event, altY, altMeta) {
+            var $this = ice.ace.jq(this);
+
+			_self.setupSortRequest(_self, ice.ace.jq(this), event, altY, altMeta);
+			event.stopPropagation();
+        })
+        .unbind('mousemove').bind('mousemove', function (event) {
+            var target = ice.ace.jq(event.target);
+
+            var $this = ice.ace.jq(this),
+                topCarat = ice.ace.jq($this.find("a.ui-icon-triangle-1-n")[0]),
+                bottomCarat = ice.ace.jq($this.find("a.ui-icon-triangle-1-s")[0]),
+                controlOffset = $this.offset(),
+                controlHeight = !_self.cfg.singleSort ? $this.outerHeight() : 22,
+                ieOffset = ice.ace.jq.browser.msie ? 4 : 0;
+
+            if (!bottomCarat.hasClass('ui-toggled') && !topCarat.hasClass('ui-toggled')) {
+                if (event.pageY > (controlOffset.top + (controlHeight / 2) - ieOffset)) {
+                    if (!bottomCarat.hasClass('ui-toggled'))
+                        bottomCarat.fadeTo(0, .66);
+                    if (!topCarat.hasClass('ui-toggled'))
+                        topCarat.fadeTo(0, .33);
+                } else {
+                    if (!topCarat.hasClass('ui-toggled'))
+                        topCarat.fadeTo(0, .66);
+                    if (!bottomCarat.hasClass('ui-toggled'))
+                        bottomCarat.fadeTo(0, .33);
+                }
+            }
+        })
+        .unbind('mouseleave').bind('mouseleave',function (event) {
+            var $this = ice.ace.jq(this),
+                topCarat = ice.ace.jq($this.find("a.ui-icon-triangle-1-n")[0]),
+                bottomCarat = ice.ace.jq($this.find("a.ui-icon-triangle-1-s")[0]);
+
+            if (!bottomCarat.hasClass('ui-toggled'))
+				bottomCarat.fadeTo(0, .33);
+
+            if (!topCarat.hasClass('ui-toggled'))
+				topCarat.fadeTo(0, .33);
+
+            if ($this.closest('th').find('> hr').size() == 0)
+                $this.closest('th').removeClass('ui-state-hover');
+            else
+                $this.closest('div.ui-sortable-column').removeClass('ui-state-hover');
+        })
+
+        // Bind keypress kb-navigable sort icons
+        .unbind('keypress').bind('keypress', function (event) {
+            if (event.which == 32 || event.which == 13) {
+                var $currentTarget = ice.ace.jq(event.currentTarget);
+                $currentTarget.closest('.ui-sortable-control')
+                    .trigger('click', [$currentTarget.offset().top, event.metaKey]);
+                return false;
+            }
+        })
+        .unbind('keypress').bind('keypress', function (event) {
+            if (event.which == 32 || event.which == 13) {
+                var $currentTarget = ice.ace.jq(event.currentTarget);
+                $currentTarget.closest('.ui-sortable-control')
+                    .trigger('click', [$currentTarget.offset().top + 6, event.metaKey]);
+                return false;
+            }
+        }).each(function () {
+            // Prefade sort controls
+            var $this = ice.ace.jq(this),
+                topCarat = ice.ace.jq($this.find("a.ui-icon-triangle-1-n")[0]),
+                bottomCarat = ice.ace.jq($this.find("a.ui-icon-triangle-1-s")[0]);
+
+			if (!topCarat.hasClass('ui-toggled')) topCarat.fadeTo(0, .33);
+			if (!bottomCarat.hasClass('ui-toggled')) bottomCarat.fadeTo(0, .33);
+        });
+};
+
+ice.ace.List.prototype.setupSortRequest = function (_self, $this, event, altY, altMeta) {
+    var topCarat = $this.find(".ui-icon-triangle-1-n")[0],
+        bottomCarat = $this.find(".ui-icon-triangle-1-s")[0],
+        controlOffset = $this.offset(),
+        controlHeight = 22,
+        descending = false,
+        ieOffset = ice.ace.jq.browser.msie ? 7 : 0,
+        // altY and altMeta allow these event parameters to be optionally passed in
+        // from an event triggering this event artificially
+        eventY = (altY == undefined) ? event.pageY : altY,
+        isAscending = ice.ace.jq(topCarat).hasClass('ui-toggled');
+
+    if (eventY > (controlOffset.top + (controlHeight / 2) - ieOffset))
+        descending = true;
+
+	if (descending) {
+		ice.ace.jq(bottomCarat).addClass('ui-toggled');
+		ice.ace.jq(topCarat).removeClass('ui-toggled');
+	} else {
+		ice.ace.jq(topCarat).addClass('ui-toggled');
+		ice.ace.jq(bottomCarat).removeClass('ui-toggled');
+	}
+
+    // submit sort info
+    _self.sort(isAscending);
+
+    return false;
+};
+
+ice.ace.List.prototype.sort = function (isAscending) {
+    var options = {
+        source:this.id,
+        render:this.id,
+        execute:this.id,
+        formId:this.cfg.formId
+    };
+
+    var _self = this;
+    options.onsuccess = function (responseXML) {
+        var xmlDoc = responseXML.documentElement,
+                extensions = xmlDoc.getElementsByTagName("extension"),
+                args = {};
+
+        for (var i = 0; i < extensions.length; i++) {
+            var extension = extensions[i];
+            if (extension.getAttributeNode('aceCallbackParam')) {
+                var jsonObj = ice.ace.jq.parseJSON(extension.firstChild.data);
+
+                for (var paramName in jsonObj)
+                    if (paramName) args[paramName] = jsonObj[paramName];
+            }
+        }
+
+        if (args.validationFailed) { // restore sort state
+			if (isAscending) {
+				_self.element.find('.ui-icon-triangle-1-n:first').addClass('ui-toggled').fadeTo(0, 1);
+				_self.element.find('.ui-icon-triangle-1-s:first').removeClass('ui-toggled').fadeTo(0, .33);
+			} else {
+				_self.element.find('.ui-icon-triangle-1-s:first').addClass('ui-toggled').fadeTo(0, 1);
+				_self.element.find('.ui-icon-triangle-1-n:first').removeClass('ui-toggled').fadeTo(0, .33);
+			}
+		}
+
+        _self.setupSortEvents();
+        return false;
+    };
+
+    var params = {};
+    params[this.id + "_sorting"] = true;
+	var isAscending = ice.ace.jq(ice.ace.escapeClientId(this.id))
+            .find('a.ui-icon-triangle-1-n').hasClass('ui-toggled');
+    params[this.id + "_sortDir"] = isAscending;
+
+    options.params = params;
+
+    if (this.behaviors)
+        if (this.behaviors.sort) {
+            ice.ace.ab(ice.ace.extendAjaxArgs(
+                this.behaviors.sort,
+                options
+            ));
+            return;
+        }
+
+    ice.ace.AjaxRequest(options);
+};
+
 ice.ace.List.prototype.controlClickHandler = function(e) {
     var ctrl = e.currentTarget,
         jqCtrl = ice.ace.jq(ctrl),
@@ -479,7 +650,7 @@ ice.ace.List.prototype.setupClickMigration = function() {
     ice.ace.jq(this.element)
             .off('dblclick', selector)
             .on('dblclick', selector, function(e) { self.itemDoubleClickHandler.call(self, e); });
-}
+};
 
 ice.ace.List.prototype.itemEnter = function(e) {
     ice.ace.jq(e.currentTarget).addClass('ui-state-hover');

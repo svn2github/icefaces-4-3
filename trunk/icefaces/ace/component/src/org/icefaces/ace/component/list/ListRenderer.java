@@ -66,14 +66,14 @@ public class ListRenderer extends CoreRenderer {
 
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String filtering = id + "_filtering";
+        String sorting = id + "_sorting";
 
 		if (params.get(filtering) != null) {
-			// Ensure this refiltering occurs on the original data
-			//list.setFirst(0);
-			//list.setPage(1);
-
 			list.savedFilterState = new FilterState(context, list);
 			list.applyFilters();
+		} else if (params.get(sorting) != null) {
+			list.savedSortState = SortState.getSortStateFromRequest(context, list);
+			list.applySorting();
 		} else {
 			String select = id + "_selections";
 			String deselect = id + "_deselections";
@@ -137,8 +137,12 @@ public class ListRenderer extends CoreRenderer {
         if (list.getFacet("header") != null)
             encodeHeader(context, writer, list);
 
-        if (list.isControlsEnabled())
-            encodeControls(context, writer, list);
+		if (list.getValueExpression("sortBy") != null) {
+			writer.startElement(HTML.DIV_ELEM, null);
+			writer.writeAttribute(HTML.CLASS_ATTR, "if-list-sort", null);
+			encodeSortControl(writer, context, list);
+			writer.endElement(HTML.DIV_ELEM);
+		}
 
 		if (list.getValueExpression("filterBy") != null) {
 			writer.startElement(HTML.DIV_ELEM, null);
@@ -146,6 +150,9 @@ public class ListRenderer extends CoreRenderer {
 			encodeFilter(context, list);
 			writer.endElement(HTML.DIV_ELEM);
 		}
+
+        if (list.isControlsEnabled())
+            encodeControls(context, writer, list);
     }
 
     private void encodeControls(FacesContext context, ResponseWriter writer, ACEList component) throws IOException {
@@ -418,6 +425,10 @@ public class ListRenderer extends CoreRenderer {
 
         if (component.getValueExpression("filterBy") != null) {
 			cfgBuilder.entry("filterEvent", component.getFilterEvent());
+		}
+
+		if (component.getValueExpression("sortBy") != null) {
+			cfgBuilder.entry("sorting", true);
 		}
 
         encodeClientBehaviors(context, component, cfgBuilder);
@@ -782,5 +793,54 @@ public class ListRenderer extends CoreRenderer {
         if (options instanceof SelectItem[]) return (SelectItem[]) options;
         else if (options instanceof Collection<?>) return ((Collection<SelectItem>) list.getFilterOptions()).toArray(new SelectItem[] {});
         else throw new FacesException("Filter options for list " + list.getClientId() + " should be a SelectItem array or collection");
+    }
+
+	// -------------------
+	// ----- SORTING -----
+	// -------------------
+
+    private static void encodeSortControl(ResponseWriter writer, FacesContext context, ACEList list) throws IOException {
+        writer.startElement(HTML.SPAN_ELEM, null);
+		String clientId = list.getClientId();
+        writer.writeAttribute(HTML.ID_ATTR, clientId + "_sortControl", null);
+        writer.writeAttribute(HTML.CLASS_ATTR, "ui-sortable-control", null);
+
+        // Write carats
+		writer.startElement(HTML.SPAN_ELEM, null);
+		writer.writeAttribute(HTML.CLASS_ATTR, "ui-sortable-list-icon", null);
+
+		final String iconUpID = clientId + "_sortControl_up";
+		final String iconDownID = clientId + "_sortControl_down";
+
+		writer.startElement(HTML.ANCHOR_ELEM, null);
+		writer.writeAttribute(HTML.ID_ATTR, iconUpID, null);
+		writer.writeAttribute(HTML.TABINDEX_ATTR, list.getTabIndex(), null);
+		writer.writeAttribute(HTML.ONCLICK_ATTR, "ice.setFocus('" + iconUpID + "');", null);
+		if (list.isSortAscending())
+			writer.writeAttribute(HTML.CLASS_ATTR, "ui-icon ui-icon-triangle-1-n" + " ui-toggled", null);
+		else writer.writeAttribute(HTML.CLASS_ATTR, "ui-icon ui-icon-triangle-1-n", null);
+		if (list.getValueExpression("filterBy") == null) {
+			String accesskey = list.getAccesskey();
+			if (accesskey != null) writer.writeAttribute("accesskey", accesskey, null);
+		}
+		writer.endElement(HTML.ANCHOR_ELEM);
+
+		writer.startElement(HTML.ANCHOR_ELEM, null);
+		writer.writeAttribute(HTML.ID_ATTR, iconDownID, null);
+		writer.writeAttribute(HTML.TABINDEX_ATTR, list.getTabIndex(), null);
+		writer.writeAttribute(HTML.ONCLICK_ATTR, "ice.setFocus('" + iconDownID + "');", null);
+		if (!list.isSortAscending())
+			writer.writeAttribute(HTML.CLASS_ATTR, "ui-icon ui-icon-triangle-1-s" + " ui-toggled", null);
+		else writer.writeAttribute(HTML.CLASS_ATTR, "ui-icon ui-icon-triangle-1-s", null);
+		writer.endElement(HTML.ANCHOR_ELEM);
+
+		writer.startElement(HTML.SCRIPT_ELEM, null);
+		writer.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);
+		writer.writeText("(function() {var list = ice.ace.instance('" + clientId + "'); if (list) list.setupSortEvents();})();", null);
+		writer.endElement(HTML.SCRIPT_ELEM);
+
+        writer.endElement(HTML.SPAN_ELEM);
+
+        writer.endElement(HTML.SPAN_ELEM);
     }
 }

@@ -27,6 +27,7 @@ import org.icefaces.resources.ICEResourceDependencies;
 import org.icefaces.resources.ICEResourceDependency;
 import org.icefaces.resources.ICEResourceLibrary;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
@@ -288,4 +289,29 @@ public class ListMeta extends UIDataMeta {
 
     @Field(defaultValue = "null", defaultValueIsStringLiteral = false)
     protected Integer valueHashCode;
+
+	// -------------------
+	// ----- SORTING -----
+	// -------------------
+
+	@Property(expression = Expression.VALUE_EXPRESSION,
+            tlddoc="Defines a value expression representing the value of this column per row when sorting. " +
+                   "Setting this attribute, or the \"value\" attribute for a column enables sorting.")
+	private Object sortBy;
+
+	@Property(expression = Expression.VALUE_EXPRESSION,
+            tlddoc="Defines an alternate method of sorting. Sort this column using a " +
+            "Comparator<Object> object that takes the sortBy values of this column as input.")
+	private Comparator sortFunction;
+
+    @Property(tlddoc="Defines the direction of column values during sorting. " +
+            "The column directions incoming from the client during a sort request " +
+            "overwrite any set by the application. Processing the sorted columns is " +
+            "done by the component whenever a client edits a sort control or the " +
+            "application calls table.applySorting().",
+            defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
+    private Boolean sortAscending;
+
+    @Field(defaultValue = "true", defaultValueIsStringLiteral = false)
+    protected Boolean applyingSorts;
 }

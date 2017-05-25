@@ -36,6 +36,9 @@ import javax.xml.transform.Result;
 import java.sql.ResultSet;
 import java.util.*;
 
+import org.icefaces.ace.model.SingleExpressionComparator;
+import org.icefaces.ace.model.table.SortCriteria;
+
 public class ACEList extends ListBase {
     private static Class SQL_RESULT = null;
     static {
@@ -49,6 +52,7 @@ public class ACEList extends ListBase {
     DataModel model;
     boolean selectItemModel = false;
 	transient protected FilterState savedFilterState;
+	transient protected SortState savedSortState;
 
     @Override
     protected DataModel getDataModel() {
@@ -99,13 +103,11 @@ public class ACEList extends ListBase {
 		if (getValueHashCode() == null || superValueHash != getValueHashCode()) {
 			setValueHashCode(superValueHash);
 
-			//if (!(superValue instanceof LazyDataModel)) {
-				//applySorting();
+			applySorting();
 
-				if (getFilteredData() != null) {
-					applyFilters();
-				}
-			//}
+			if (getFilteredData() != null) {
+				applyFilters();
+			}
 		}
 
 		// If we have filtered data return that instead of the standard collection
@@ -275,13 +277,13 @@ public class ACEList extends ListBase {
         selectItemModel = isSelect;
     }
 
-    public void applyFilters() {
-        setApplyingFilters(true);
-    }
-
 	// ---------------------
 	// ----- FILTERING -----
 	// ---------------------
+
+    public void applyFilters() {
+        setApplyingFilters(true);
+    }
 
 /*
     @Property(tlddoc = "Enable to force creation of the filtered data set from the bound " +
@@ -335,6 +337,12 @@ public class ACEList extends ListBase {
             if (savedFilterState != null)
                 savedFilterState.apply(this);
             setFilteredData(processFilters(context));
+        }
+
+        if (isApplyingSorts()) {
+            if (savedSortState != null)
+                savedSortState.apply(this);
+            processSorting();
         }
 
         popComponentFromEL(context);
@@ -462,5 +470,51 @@ public class ACEList extends ListBase {
 
     private boolean isIdPrefixedParamSet(String param, FacesContext x) {
         return x.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(x) + param);
+    }
+
+	// -------------------
+	// ----- SORTING -----
+	// -------------------
+
+    public void applySorting() {
+        setApplyingSorts(true);
+    }
+
+    protected void processSorting() {
+        Object value = getValue();
+        if (value instanceof List) {
+            List list = (List)value;
+            SortCriteria criteria = getSortCriteria();
+            String rowVar = getVar();
+
+            if (criteria != null) {
+                if (list.size() > 0 && list.get(0) instanceof Map.Entry)
+                    Collections.sort(list, new EntryKeyComparatorWrapper(new SingleExpressionComparator(criteria, rowVar)));
+                else
+                    Collections.sort(list, new SingleExpressionComparator(criteria, rowVar));
+            }
+        }
+        //setForcedUpdateCounter(getForcedUpdateCounter()+1);
+        setApplyingSorts(false);
+    }
+
+    protected SortCriteria getSortCriteria() {
+        SortCriteria criteria;
+		Comparator<Object> comp = getSortFunction();
+		if (comp == null) criteria = new SortCriteria(getValueExpression("sortBy"), isSortAscending());
+		else criteria = new SortCriteria(getValueExpression("sortBy"), isSortAscending(), comp);
+        return criteria;
+    }
+
+    private class EntryKeyComparatorWrapper<T> implements Comparator {
+        Comparator<T> comparator;
+
+        public EntryKeyComparatorWrapper(Comparator<T> comparator) {
+            this.comparator = comparator;
+        }
+
+        public int compare(Object o1, Object o2) {
+            return comparator.compare(((Map.Entry<T, Object>) o1).getKey(), ((Map.Entry<T, Object>) o2).getKey());
+        }
     }
 }
