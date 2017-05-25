@@ -118,7 +118,7 @@ ice.ace.Schedule = function(id, cfg) {
 		});
 	}
 	if (behaviors && behaviors.dayDblclick) {
-		this.jqRoot.delegate('.day', 'dblclick', function(event) {
+		this.jqRoot.delegate('.schedule-day', 'dblclick', function(event) {
 			var node = event['target'];
 			node = node.className.indexOf('schedule-day-number') > -1 ? node.parentNode : node;
 			node = node.className.indexOf('schedule-state') > -1 ? node.parentNode : node;
