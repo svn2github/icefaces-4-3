@@ -126,6 +126,10 @@
 }
 /********************/
 
+.if-list .if-list-sort {
+	text-align: center;
+}
+
 .if-list .ui-sortable-control {
     vertical-align: middle;
     cursor:pointer;
@@ -138,10 +142,6 @@
     height:1.7em;
     margin-left: 5px;
     position:relative;
-}
-
-.if-list .if-list-sort {
-	padding: 0 0 0 95%;
 }
 
 .if-list .ui-sortable-list-icon .ui-icon-triangle-1-n {
