@@ -159,8 +159,10 @@ public class ScheduleRenderer extends CoreRenderer {
 		String previousViewMode = params.get(clientId + "_viewMode");
 		String selectedDateString = params.get(clientId + "_selectedDate");
 		boolean selectCurrentDate = false;
+		boolean viewChange = false;
 		if (!isCurrentDateProgrammaticallySet) {
 			if (previousViewMode != null && !viewMode.equalsIgnoreCase(previousViewMode)) {
+				viewChange = true;
 				if (selectedDateString != null && !"".equals(selectedDateString)) {
 					Date selectedDate = ScheduleUtils.convertDateTimeToServerFormat(selectedDateString, "00:00");
 					if (selectedDate != null) {
@@ -327,7 +329,7 @@ public class ScheduleRenderer extends CoreRenderer {
 		writer.writeAttribute("id", clientId + "_selectedDate", null);
 		writer.writeAttribute("name", clientId + "_selectedDate", null);
 		writer.writeAttribute("type", "hidden", null);
-		if (selectedDateString != null && !"".equals(selectedDateString) && !selectCurrentDate) {
+		if (!viewChange && (selectedDateString != null && !"".equals(selectedDateString) && !selectCurrentDate)) {
 			writer.writeAttribute("value", selectedDateString, null);
 		} else {
 			writer.writeAttribute("value", currentDateValues[0]
