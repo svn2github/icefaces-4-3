@@ -312,6 +312,6 @@ public class ListMeta extends UIDataMeta {
             defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
     private Boolean sortAscending;
 
-    @Field(defaultValue = "true", defaultValueIsStringLiteral = false)
+    @Field(defaultValue = "false", defaultValueIsStringLiteral = false)
     protected Boolean applyingSorts;
 }

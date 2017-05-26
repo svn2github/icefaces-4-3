@@ -103,7 +103,10 @@ public class ACEList extends ListBase {
 		if (getValueHashCode() == null || superValueHash != getValueHashCode()) {
 			setValueHashCode(superValueHash);
 
-			applySorting();
+			javax.el.ValueExpression sortBy = getValueExpression("sortBy");
+			if (sortBy != null && !"".equals(sortBy.getExpressionString())) {
+				applySorting();
+			}
 
 			if (getFilteredData() != null) {
 				applyFilters();
