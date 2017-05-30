@@ -57,9 +57,6 @@ public class ChartBean implements Serializable {
     private Axis[] barDemoYAxes = new Axis[] {
             new Axis(){{
                 setType(AxisType.CATEGORY);
-                setAutoscale(true);
-                setTickInterval("5");
-                setLabel("USD Millions");
              }}
       };
 
