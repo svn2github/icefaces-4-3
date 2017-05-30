@@ -1611,7 +1611,7 @@ public class DataTable extends DataTableBase implements Serializable {
 		Object load = null;
 		// only call the load method from LazyDataModel once during the render phase and once during the previous phases
 		if (FacesContext.getCurrentInstance().getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
-			// ...unless we're applying filters, in which case we should load the model again
+			// also cache the filtering data within each of these two phases
 			if (savedFilterState != null) {
 				savedFilterState.apply(this);
 				if (filterLazyLoad != null) {
