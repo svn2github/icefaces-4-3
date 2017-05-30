@@ -281,7 +281,7 @@ public class ListMeta extends UIDataMeta {
         UIComponent filter;
     }
 
-    @Field(defaultValue = "true", defaultValueIsStringLiteral = false)
+    @Field(defaultValue = "false", defaultValueIsStringLiteral = false)
     protected Boolean applyingFilters;
 
     @Field(defaultValue = "null", defaultValueIsStringLiteral = false)
