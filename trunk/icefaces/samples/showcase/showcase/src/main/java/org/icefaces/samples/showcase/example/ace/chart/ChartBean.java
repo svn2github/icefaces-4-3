@@ -54,11 +54,15 @@ public class ChartBean implements Serializable {
         setType(AxisType.CATEGORY);
     }};
 
-    private Axis barDemoYAxis = new Axis() {{
-            setAutoscale(true);
-            setTickInterval("5");
-            setLabel("USD Millions");
-}};
+    private Axis[] barDemoYAxes = new Axis[] {
+            new Axis(){{
+                setType(AxisType.CATEGORY);
+                setAutoscale(true);
+                setTickInterval("5");
+                setLabel("USD Millions");
+             }}
+      };
+
 
     private Axis barDemoXTwoAxis = new Axis() {{
         setTicks(new String[] {"Nickle", "Aluminum", "Xenon", "Silver", "Sulfur", "Silicon", "Vanadium"});
@@ -97,11 +101,11 @@ public class ChartBean implements Serializable {
         this.barDemoXTwoAxis = barDemoXTwoAxis;
     }
 
-    public Axis getBarDemoYAxis() {
-        return barDemoYAxis;
+    public Axis[] getBarDemoYAxes() {
+        return barDemoYAxes;
     }
 
-    public void setBarDemoYAxis(Axis barDemoYAxis) {
-        this.barDemoYAxis = barDemoYAxis;
+    public void setBarDemoYAxis(Axis[] barDemoYAxis) {
+        this.barDemoYAxes = barDemoYAxis;
     }
 }
