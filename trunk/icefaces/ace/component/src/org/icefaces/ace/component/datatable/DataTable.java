@@ -1611,24 +1611,40 @@ public class DataTable extends DataTableBase implements Serializable {
 		Object load = null;
 		// only call the load method from LazyDataModel once during the render phase and once during the previous phases
 		if (FacesContext.getCurrentInstance().getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
-			if (renderLazyLoad != null) {
-				load = renderLazyLoad;
+			// ...unless we're applying filters, in which case we should load the model again
+			if (savedFilterState != null) {
+				savedFilterState.apply(this);
+				if (filterLazyLoad != null) {
+					load = filterLazyLoad;
+				} else {
+					load = model.load(getFirst(), getRows(), getSortCriteria(), getFilters(), getMinFilters(), getMaxFilters());
+					filterLazyLoad = load;
+				}
 			} else {
-				load = model.load(getFirst(), getRows(), getSortCriteria(), getFilters(), getMinFilters(), getMaxFilters());
-				renderLazyLoad = load;
+				if (renderLazyLoad != null) {
+					load = renderLazyLoad;
+				} else {
+					load = model.load(getFirst(), getRows(), getSortCriteria(), getFilters(), getMinFilters(), getMaxFilters());
+					renderLazyLoad = load;
+				}
 			}
 		} else {
-			if (preRenderLazyLoad != null) {
-				load = preRenderLazyLoad;
+			if (savedFilterState != null) {
+				savedFilterState.apply(this);
+				if (filterLazyLoad != null) {
+					load = filterLazyLoad;
+				} else {
+					load = model.load(getFirst(), getRows(), getSortCriteria(), getFilters(), getMinFilters(), getMaxFilters());
+					filterLazyLoad = load;
+				}
 			} else {
-				load = model.load(getFirst(), getRows(), getSortCriteria(), getFilters(), getMinFilters(), getMaxFilters());
-				preRenderLazyLoad = load;
+				if (preRenderLazyLoad != null) {
+					load = preRenderLazyLoad;
+				} else {
+					load = model.load(getFirst(), getRows(), getSortCriteria(), getFilters(), getMinFilters(), getMaxFilters());
+					preRenderLazyLoad = load;
+				}
 			}
-		}
-		// ...unless we're applying filters, in which case we should load the model again
-		if (savedFilterState != null) {
-			savedFilterState.apply(this);
-			load = model.load(getFirst(), getRows(), getSortCriteria(), getFilters(), getMinFilters(), getMaxFilters());
 		}
         model.setPageSize(getRows());
         model.setWrappedData(load);
@@ -1636,6 +1652,7 @@ public class DataTable extends DataTableBase implements Serializable {
 
 	private transient Object preRenderLazyLoad = null;
 	private transient Object renderLazyLoad = null;
+	private transient Object filterLazyLoad = null;
 
 
     /*#######################################################################*/
