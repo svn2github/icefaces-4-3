@@ -56,15 +56,15 @@ public class ChartBean implements Serializable {
 
     private Axis[] barDemoYAxes = new Axis[] {
             new Axis(){{
-                setType(AxisType.CATEGORY);
-             }}
+                setMin(0);
+                setMax(20);
+                setTickInterval("4");
+                setFormatString("%d");
+                setPad(0.0);
+                setLabel("Sales Units");
+            }}
       };
 
-
-    private Axis barDemoXTwoAxis = new Axis() {{
-        setTicks(new String[] {"Nickle", "Aluminum", "Xenon", "Silver", "Sulfur", "Silicon", "Vanadium"});
-        setType(AxisType.CATEGORY);
-    }};
 
     public CartesianSeries getBarData() {
         return barData;
@@ -88,14 +88,6 @@ public class ChartBean implements Serializable {
 
     public void setBarDemoDefaultAxis(Axis barDemoDefaultAxis) {
         this.barDemoDefaultAxis = barDemoDefaultAxis;
-    }
-
-    public Axis getBarDemoXTwoAxis() {
-        return barDemoXTwoAxis;
-    }
-
-    public void setBarDemoXTwoAxis(Axis barDemoXTwoAxis) {
-        this.barDemoXTwoAxis = barDemoXTwoAxis;
     }
 
     public Axis[] getBarDemoYAxes() {
