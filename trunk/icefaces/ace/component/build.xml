@@ -328,6 +328,7 @@
 			<file name="${resources}/icefaces.ace/datetimeentry/jquery-ui-timepicker-addon.js" />
 			<file name="${resources}/icefaces.ace/dialog/dialog.js" />
 			<file name="${resources}/icefaces.ace/dnd/dragdrop.js" />
+			<file name="${resources}/icefaces.ace/drawerpanel/drawerpanel.js" />
 			<file name="${resources}/icefaces.ace/fileentry/fileEntry.js" />
 			<file name="${resources}/icefaces.ace/gmap/gmap.js" />
 			<file name="${resources}/icefaces.ace/growlmessages/growlmessages.js" />
