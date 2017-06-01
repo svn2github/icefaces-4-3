@@ -187,7 +187,7 @@ ice.ace.DrawerPanel.prototype.show = function() {
     var focusOn = this.cfg.setFocus;
     setTimeout(function() {
        self.cfg.isVisible=true;
-       var dialogParent = self.jq.parent();
+       var dialogParent = self.jq;
        if (dialogParent.hasClass("ice-ace-drawer-hidden")) {
                 dialogParent.removeClass("ice-ace-drawer-hidden");
                 dialogParent.children().removeClass("ice-ace-drawer-hidden");

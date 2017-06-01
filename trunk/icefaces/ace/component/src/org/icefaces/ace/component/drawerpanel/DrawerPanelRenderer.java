@@ -64,7 +64,7 @@ public class DrawerPanelRenderer extends CoreRenderer {
         if (drawerPanel.getStyleClass() !=null && drawerPanel.getStyleClass().trim().length()>0){
             baseclass += drawerPanel.getStyleClass();
         }
-        //writer.writeAttribute("class", baseclass, null);
+        writer.writeAttribute("class", baseclass, null);
 	}
 
     @Override
