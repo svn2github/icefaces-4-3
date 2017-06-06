@@ -51,8 +51,12 @@
 				</h:panelGrid>
 			</ace:panel>
 				<div style="text-align:center;">
-					<ace:pushButton id="show" value="Show" onclick="ice.ace.instance('#{drawer.clientId}').show();" />
-					<ace:pushButton id="hide" value="Hide" onclick="ice.ace.instance('#{drawer.clientId}').hide();" />
+					<ace:pushButton id="show" value="Show" onclick="ice.ace.instance('#{drawer.clientId}').show();return false;">
+						<ace:ajax onStart="return false;"/>
+					</ace:pushButton>
+					<ace:pushButton id="hide" value="Hide" onclick="ice.ace.instance('#{drawer.clientId}').hide();return false;">
+						<ace:ajax onStart="return false;"/>
+					</ace:pushButton>
 				</div>
 				<div style="height:20px;"></div>
 			<div id="div" style="width: 600px; height: 500px; border: 1px solid #000;">
