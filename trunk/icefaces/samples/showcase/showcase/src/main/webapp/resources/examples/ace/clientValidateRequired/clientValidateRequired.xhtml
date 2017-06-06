@@ -17,9 +17,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
     xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
     xmlns:ace="http://www.icefaces.org/icefaces/components"
-    xmlns:icecore="http://www.icefaces.org/icefaces/core"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     template="/resources/templates/content-template.xhtml">
 
@@ -30,18 +28,22 @@
 			<h:panelGrid id="inputGrid" columns="1" width="100%"
 				styleClass="textEntryInputTable">
 				<ace:textEntry id="textEntry1"
-					value="#{clientValidateRequiredBean.name}" label="Name "
+					value="#{clientValidateRequiredBean.name}"
+					label="Name "
 					labelPosition="left">
-				<ace:clientValidateRequired />
+				    <ace:clientValidateRequired />
 				</ace:textEntry>
 				<ace:textEntry id="textEntry2"
-					value="#{clientValidateRequiredBean.city}" label="City "
+					value="#{clientValidateRequiredBean.city}"
+					label="City "
 					labelPosition="left">
 					<ace:clientValidateRequired />
 				</ace:textEntry>
-				<ace:checkboxButtons id="transportMode" header="Transportation Mode:"
-					style="width:400px;"
-					value="#{clientValidateRequiredBean.selected}" labelPosition="top">
+				<ace:checkboxButtons id="transportMode"
+									 header="Transportation Mode:"
+					                 style="width:400px;"
+					                 value="#{clientValidateRequiredBean.selected}"
+									 labelPosition="top">
 					<f:selectItem itemLabel="Walk" itemValue="One" />
 					<f:selectItem itemLabel="Bike" itemValue="Two" />
 					<f:selectItem itemLabel="Transit" itemValue="Three" />
@@ -52,7 +54,7 @@
 			</h:panelGrid>
 		</ace:panel>
 		<h:panelGrid id="messageGrid" width="400px;">
-		<ace:messages id="messages1" for="@inView" />
+		    <ace:messages id="messages1" for="@inView" />
 		</h:panelGrid>
 	</h:form>
 

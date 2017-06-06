@@ -29,11 +29,11 @@
             <h:panelGrid columns="2" cellspacing="6" cellpadding="6">
                 <h:outputLabel for="rowsIn" value="Number of Rows (1-40):"/>
                 <h:panelGroup id="rowsWrap">
-                    <h:inputText id="rowsIn" value="#{autoCompleteEntryRowsBean.rows}"
+                    <ace:textEntry id="rowsIn" value="#{autoCompleteEntryRowsBean.rows}"
                                  maxlength="2" required="true">
-                         <f:ajax event="valueChange" render="rowsWrap autoComplete"/>
+                         <ace:ajax event="valueChange" render="rowsWrap autoComplete"/>
                          <f:validateLongRange minimum="1" maximum="40"/>
-                    </h:inputText>
+                    </ace:textEntry>
                     <ace:message for="rowsIn"/>
                 </h:panelGroup>
                 

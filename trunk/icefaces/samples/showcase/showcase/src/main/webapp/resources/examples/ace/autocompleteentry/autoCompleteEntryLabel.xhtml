@@ -29,9 +29,9 @@
             <ace:panel header="Label Customization">
                 <h:panelGrid width="50%" columns="2" cellpadding="6" cellspacing="6">
                      <h:outputLabel for="labelText" value="Label Text:"/>
-                     <h:inputText id="labelText" value="#{autoCompleteEntryLabelBean.labelText}" maxlength="250">
-                         <f:ajax execute="@this" render="@all"/>
-                     </h:inputText>
+                     <ace:textEntry id="labelText" value="#{autoCompleteEntryLabelBean.labelText}" maxlength="250">
+                         <ace:ajax execute="@this" render="@all"/>
+                     </ace:textEntry>
                      
                      <h:outputLabel for="positionIn" value="Label Position:"/>
                      <ace:simpleSelectOneMenu id="positionIn" value="#{autoCompleteEntryLabelBean.labelPosition}">

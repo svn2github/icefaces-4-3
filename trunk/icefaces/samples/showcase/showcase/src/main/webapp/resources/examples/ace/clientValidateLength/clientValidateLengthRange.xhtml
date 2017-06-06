@@ -17,47 +17,49 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
     xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
     xmlns:ace="http://www.icefaces.org/icefaces/components"
-    xmlns:icecore="http://www.icefaces.org/icefaces/core"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     template="/resources/templates/content-template.xhtml">
 
     <ui:define name="example">
 
-			<h:form id="lengthRangeForm">
+		<h:form id="lengthRangeForm">
 			<ace:panel id="panel1">
-			<h:panelGrid id="inputGrid" columns="1" width="100%"
-				styleClass="textEntryInputTable">
-				<p>The <b>&lt;ace:textEntry&gt;</b> uses an <b>&lt;ace:clientValidateLength&gt;</b> with the minimum attribute set to 4 and the maximum attribute set to 8. </p>
-					<ace:textEntry id="userName" label="User Name " labelPosition="left"
-					value="#{clientValidateLength.userName2}" >
-					<ace:clientValidateRequired />
-					<ace:clientValidateLength minimum="4" maximum="8" />
-				</ace:textEntry>
+			    <h:panelGrid id="inputGrid"
+							 columns="1"
+							 width="100%"
+				             styleClass="textEntryInputTable">
+					<p>The <b>&lt;ace:textEntry&gt;</b> uses an <b>&lt;ace:clientValidateLength&gt;</b> with the minimum attribute set to 4 and the maximum attribute set to 8. </p>
+					<ace:textEntry id="userName"
+								   label="User Name "
+								   labelPosition="left"
+					               value="#{clientValidateLength.userName2}" >
+					    <ace:clientValidateRequired />
+					    <ace:clientValidateLength minimum="4" maximum="8" />
+				    </ace:textEntry>
 
-				<p>The <b>&lt;ace:checkboxButtons&gt;</b> use an <b>&lt;ace:clientValidateLength&gt;</b> with the minimum attribute set to 2 and the maximum attribute set to 4. </p>
-				<ace:checkboxButtons id="Selections"
-					header="Select from 2 to 4 options"
-					value="#{clientValidateLength.selected2}" labelPosition="top"
-					style="width: 500px;">
-					<f:selectItem itemLabel="Java" itemValue="One" />
-					<f:selectItem itemLabel="C" itemValue="Two" />
-					<f:selectItem itemLabel="Python" itemValue="Three" />
-					<f:selectItem itemLabel="PHP" itemValue="Four" />
-					<f:selectItem itemLabel="JavaScript" itemValue="Five" />
-					<ace:clientValidateRequired />
-					<ace:clientValidateLength minimum="2" maximum="4" />
-				</ace:checkboxButtons>
+				    <p>The <b>&lt;ace:checkboxButtons&gt;</b> use an <b>&lt;ace:clientValidateLength&gt;</b> with the minimum attribute set to 2 and the maximum attribute set to 4. </p>
+				    <ace:checkboxButtons id="Selections"
+					                     header="Select from 2 to 4 options"
+					                     value="#{clientValidateLength.selected2}" labelPosition="top"
+					                     style="width: 500px;">
+						<f:selectItem itemLabel="Java" itemValue="One" />
+					    <f:selectItem itemLabel="C" itemValue="Two" />
+					    <f:selectItem itemLabel="Python" itemValue="Three" />
+					    <f:selectItem itemLabel="PHP" itemValue="Four" />
+					    <f:selectItem itemLabel="JavaScript" itemValue="Five" />
+					    <ace:clientValidateRequired />
+					    <ace:clientValidateLength minimum="2" maximum="4" />
+				    </ace:checkboxButtons>
 
-				<ace:pushButton id="submitButton" value="Submit" />
+				    <ace:pushButton id="submitButton" value="Submit" />
 
-				<h:panelGroup id="messageDiv" style="width: 400px;">
-				    <ace:messages id="messages1" for="@inView" />
-				</h:panelGroup>
-			</h:panelGrid>
+				    <h:panelGroup id="messageDiv" style="width: 400px;">
+				        <ace:messages id="messages1" for="@inView" />
+                    </h:panelGroup>
+			    </h:panelGrid>
 			</ace:panel>
-			</h:form>
+        </h:form>
 			
     </ui:define>
 </ui:composition>

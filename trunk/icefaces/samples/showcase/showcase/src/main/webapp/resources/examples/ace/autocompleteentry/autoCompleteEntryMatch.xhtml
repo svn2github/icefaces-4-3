@@ -37,9 +37,9 @@
                 </ace:simpleSelectOneMenu>
                 
                 <h:outputLabel for="caseIn" value="Case Sensitive:"/>
-                <h:selectBooleanCheckbox id="caseIn" value="#{autoCompleteEntryMatchBean.caseSensitive}">
-                    <f:ajax event="valueChange" render="@this autoComplete"/>
-                </h:selectBooleanCheckbox>
+                <ace:checkboxButton id="caseIn" value="#{autoCompleteEntryMatchBean.caseSensitive}">
+                    <ace:ajax event="valueChange" render="@this autoComplete"/>
+                </ace:checkboxButton>
                 
                 <h:outputLabel for="autoComplete" value="Cities of the World:"/>
                 <ace:autoCompleteEntry id="autoComplete"

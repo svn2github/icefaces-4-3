@@ -28,21 +28,23 @@
             <ace:panel header="Indicator Customization">
                 <h:panelGrid width="60%" columns="2" cellpadding="6" cellspacing="6">
                      <h:outputLabel for="requiredIn" value="Required?"/>
-                     <h:selectBooleanCheckbox id="requiredIn" value="#{autoCompleteEntryIndicatorBean.required}" valueChangeListener="#{autoCompleteEntryIndicatorBean.applyRequired}" immediate="true">
-                         <f:ajax execute="@form" render="@all"/>
-                     </h:selectBooleanCheckbox>
+                     <ace:checkboxButton id="requiredIn" value="#{autoCompleteEntryIndicatorBean.required}"
+                                         valueChangeListener="#{autoCompleteEntryIndicatorBean.applyRequired}"
+                                         immediate="true">
+                         <ace:ajax execute="@form" render="@all"/>
+                     </ace:checkboxButton>
                      
                      <h:outputLabel for="requiredText" value="Required Indicator Text:"/>
-                     <h:inputText id="requiredText" value="#{autoCompleteEntryIndicatorBean.requiredText}"
+                     <ace:textEntry id="requiredText" value="#{autoCompleteEntryIndicatorBean.requiredText}"
                                   disabled="#{!autoCompleteEntryIndicatorBean.required}">
-                         <f:ajax execute="@this" render="@all"/>
-                     </h:inputText>
+                         <ace:ajax execute="@this" render="@all"/>
+                     </ace:textEntry>
                      
                      <h:outputLabel for="optionalText" value="Optional Indicator Text:"/>
-                     <h:inputText id="optionalText" value="#{autoCompleteEntryIndicatorBean.optionalText}"
+                     <ace:textEntry id="optionalText" value="#{autoCompleteEntryIndicatorBean.optionalText}"
                                   disabled="#{autoCompleteEntryIndicatorBean.required}">
-                         <f:ajax execute="@this" render="@all"/>
-                     </h:inputText>
+                         <ace:ajax execute="@this" render="@all"/>
+                     </ace:textEntry>
                                   
                      <h:outputLabel for="positionIn" value="Indicator Position:"/>
                      <ace:simpleSelectOneMenu id="positionIn" value="#{autoCompleteEntryIndicatorBean.position}">

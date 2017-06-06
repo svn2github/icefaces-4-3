@@ -17,9 +17,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
     xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
     xmlns:ace="http://www.icefaces.org/icefaces/components"
-    xmlns:icecore="http://www.icefaces.org/icefaces/core"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     template="/resources/templates/content-template.xhtml">
     <ui:param name="title" value="#{msgs['example.ace.confirmationdialog.title']}"/>
@@ -28,7 +26,9 @@
     <ui:define name="example">
         <h:form id="form">
             <h:panelGrid styleClass="centeredPanelGrid">
-                <h:commandButton id="save" value="Save" onclick="ice.ace.instance('#{confirmDialog.clientId}').show();return false;" type="button"/>
+                <ace:pushButton id="save" value="Save" type="button">
+                        <ace:ajax execute="@none" render="@none" onStart="ice.ace.instance('#{confirmDialog.clientId}').show();return false;"/>
+                </ace:pushButton>
                 <h:outputText id="outcome" value="#{confirmationDialogBean.outcome}" rendered="#{confirmationDialogBean.outcome != null}"/>
             </h:panelGrid>
 
@@ -40,12 +40,12 @@
 								    closable="true"
 								    position="center">
                 <h:panelGrid columns="2" styleClass="centeredPanelGrid">
-                    <h:commandButton id="yes" value="Yes" onclick="ice.ace.instance('#{confirmDialog.clientId}').hide();" actionListener="#{confirmationDialogBean.yes}">
-                        <f:ajax execute="@this" render="@all"/>
-                    </h:commandButton>
-                    <h:commandButton id="no" value="No" onclick="ice.ace.instance('#{confirmDialog.clientId}').hide();" actionListener="#{confirmationDialogBean.no}">
-                        <f:ajax execute="@this" render="@all"/>
-                    </h:commandButton>
+                    <ace:pushButton id="yes" value="Yes" onclick="ice.ace.instance('#{confirmDialog.clientId}').hide();" actionListener="#{confirmationDialogBean.yes}">
+                        <ace:ajax execute="@this" render="@all" />
+                    </ace:pushButton>
+                    <ace:pushButton id="no" value="No" onclick="ice.ace.instance('#{confirmDialog.clientId}').hide();" actionListener="#{confirmationDialogBean.no}">
+                        <ace:ajax execute="@this" render="@all" />
+                    </ace:pushButton>
                 </h:panelGrid>
             </ace:confirmationDialog>
         </h:form>

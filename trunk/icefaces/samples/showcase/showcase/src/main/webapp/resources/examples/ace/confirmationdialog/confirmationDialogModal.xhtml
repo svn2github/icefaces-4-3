@@ -17,9 +17,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
     xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
     xmlns:ace="http://www.icefaces.org/icefaces/components"
-    xmlns:icecore="http://www.icefaces.org/icefaces/core"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     template="/resources/templates/content-template.xhtml">
     <ui:param name="title" value="#{msgs['example.ace.confirmationdialog.modal.title']}"/>
@@ -28,7 +26,9 @@
     <ui:define name="example">
         <h:form id="form">
             <h:panelGrid width="100%" style="text-align: center;">
-                <h:commandButton id="show" value="Display dialog" onclick="ice.ace.instance('#{confirmDialogModal.clientId}').show()" type="button"/>
+                <ace:pushButton id="show" value="Display dialog"  type="button">
+                    <ace:ajax execute="@this" render="@all" onStart="ice.ace.instance('#{confirmDialogModal.clientId}').show();" />
+                </ace:pushButton>
             </h:panelGrid>
         
             <ace:confirmationDialog id="confirmDialog" binding="#{confirmDialogModal}"
@@ -41,8 +41,12 @@
 									closeOnEscape="false">
                 
                 <h:panelGrid width="100%" style="text-align: center;" columns="2" cellspacing="30">
-                    <h:commandButton id="yes" value="Yes" onclick="ice.ace.instance('#{confirmDialogModal.clientId}').hide()"/>
-                    <h:commandButton id="no" value="No" onclick="ice.ace.instance('#{confirmDialogModal.clientId}').hide()"/>
+                    <ace:pushButton id="yes" value="Yes">
+                         <ace:ajax execute="@this" render="@all" onStart="ice.ace.instance('#{confirmDialogModal.clientId}').hide()"/>
+                    </ace:pushButton>
+                    <ace:pushButton id="no" value="No" >
+                        <ace:ajax execute="@this" render="@all" onStart="ice.ace.instance('#{confirmDialogModal.clientId}').hide()"/>
+                    </ace:pushButton>
                 </h:panelGrid>
             </ace:confirmationDialog>
 

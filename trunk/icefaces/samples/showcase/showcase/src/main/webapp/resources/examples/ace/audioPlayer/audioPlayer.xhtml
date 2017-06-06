@@ -40,24 +40,24 @@
                     </h:selectOneMenu>
 
                     <h:outputLabel for="autoplay" value="Autoplay: "/>
-                    <h:selectBooleanCheckbox id="autoplay" value="#{audioPlayerBean.autoplay}">
+                    <ace:checkboxButton id="autoplay" value="#{audioPlayerBean.autoplay}">
 						<f:ajax render="audioPlayer" />
-                    </h:selectBooleanCheckbox>
+                    </ace:checkboxButton>
 
                     <h:outputLabel for="loop" value="Loop: "/>
-                    <h:selectBooleanCheckbox id="loop" value="#{audioPlayerBean.loop}">
+                    <ace:checkboxButton id="loop" value="#{audioPlayerBean.loop}">
 						<f:ajax render="audioPlayer" />
-                    </h:selectBooleanCheckbox>
+                    </ace:checkboxButton>
 
                     <h:outputLabel for="muted" value="Muted: "/>
-                    <h:selectBooleanCheckbox id="muted" value="#{audioPlayerBean.muted}">
+                    <ace:checkboxButton id="muted" value="#{audioPlayerBean.muted}">
 						<f:ajax render="audioPlayer" />
-                    </h:selectBooleanCheckbox>
+                    </ace:checkboxButton>
 
                     <h:outputLabel for="newwindow" value="Play in new window: "/>
-                    <h:selectBooleanCheckbox id="newwindow" value="#{audioPlayerBean.newWindow}">
+                    <ace:checkboxButton id="newwindow" value="#{audioPlayerBean.newWindow}">
 						<f:ajax render="audioPlayer" />
-                    </h:selectBooleanCheckbox>
+                    </ace:checkboxButton>
 				</h:panelGrid>
 
             <ace:audioPlayer id="audioPlayer"

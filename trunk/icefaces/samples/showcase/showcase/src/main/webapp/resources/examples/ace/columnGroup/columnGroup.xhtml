@@ -17,9 +17,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
     xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
     xmlns:ace="http://www.icefaces.org/icefaces/components"
-    xmlns:icecore="http://www.icefaces.org/icefaces/core"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     template="/resources/templates/content-template.xhtml">
     <ui:param name="title" value="#{msgs['example.ace.columnGroup.title']}"/>
@@ -64,37 +62,37 @@
                 <ace:column id="name">
                     <h:outputText id="nameCell" value="#{car.name}"/>
                 </ace:column>
-               <ace:column id="chassis">
+                <ace:column id="chassis">
                     <h:outputText id="chassisCell" value="#{car.chassis}"/>
                 </ace:column>
-               <ace:column id="weight">
+                <ace:column id="weight">
                    <h:outputText value="#{car.weight}"/>
                 </ace:column>
-               <ace:column id="acceleration">
+                <ace:column id="acceleration">
                    <h:outputText id="accelerationCell" value="#{car.acceleration}"/>
                 </ace:column>
-               <ace:column id="mpg" stacked="true">
+                <ace:column id="mpg" stacked="true">
                    <h:outputText id="mpgCell" value="#{car.mpg}"/>
-               </ace:column>
+                </ace:column>
                 <ace:column id="cost">
                    <h:outputText id="costCell" value="#{car.cost}">
-                   <f:convertNumber type="currency"
-                                         currencySymbol="$"
-                                         groupingUsed="true"
-                                         minFractionDigits="2"
-                                         maxFractionDigits="2"/>
+                       <f:convertNumber type="currency"
+                             currencySymbol="$"
+                             groupingUsed="true"
+                             minFractionDigits="2"
+                             maxFractionDigits="2"/>
                    </h:outputText>
-               </ace:column>
+                </ace:column>
                 <ace:column id="exp">
                     <ace:expansionToggler />
                 </ace:column>
                 
-              <f:facet name="footer">
+                <f:facet name="footer">
                   <h:outputText value="Car data provided for you by ICEsoft"/>
-              </f:facet>
+                </f:facet>
 
                 <ace:panelExpansion>
-                    <h:outputText id="costPerLbTxt" value="Cost Per Pound: " />
+                    <h:outputLabel for="costPerLb" value="Cost Per Pound: " />
                     <h:outputText id="costPerLb" value="#{car.cost /  car.weight}">
                         <f:convertNumber     type="currency"
                                              currencySymbol="$"

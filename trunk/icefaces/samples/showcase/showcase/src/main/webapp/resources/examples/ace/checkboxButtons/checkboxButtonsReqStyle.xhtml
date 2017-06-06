@@ -26,15 +26,13 @@
     <ui:define name="example">
         
         <h:form id="inputForm">
-
-            
             <ace:panel header="Color Customization">
                 <h:panelGrid width="100%" columns="3" columnClasses="col25,col25,col50"
                              cellpadding="6" cellspacing="6">
                         <h:outputLabel for="reqColor" value="Required Color Style:"/>
                         <ace:simpleSelectOneMenu id="reqColor" value="#{checkboxButtonsReqStyleBean.reqColor}"
                                          style="width: 150px;" disabled="#{checkboxButtonsReqStyleBean.useTheme}">
-										 <ace:ajax execute="@this" />
+							<ace:ajax execute="@this" />
                             <f:selectItem itemValue="blueRS" itemLabel="Blue"/>
                             <f:selectItem itemValue="greenRS" itemLabel="Green"/>
                             <f:selectItem itemValue="redRS" itemLabel="Red"/>
@@ -44,7 +42,7 @@
                         <h:outputLabel for="optColor" value="Optional Color Style:"/>
                         <ace:simpleSelectOneMenu id="optColor" value="#{checkboxButtonsReqStyleBean.optColor}"
                                          style="width: 150px;" disabled="#{checkboxButtonsReqStyleBean.useTheme}">
-										 <ace:ajax execute="@this" />
+							<ace:ajax execute="@this" />
                             <f:selectItem itemValue="blueRS" itemLabel="Blue"/>
                             <f:selectItem itemValue="greenRS" itemLabel="Green"/>
                             <f:selectItem itemValue="redRS" itemLabel="Red"/>
@@ -52,10 +50,12 @@
                         <ace:message for="optColor"/>
                 </h:panelGrid>
 				<h:panelGroup>
-					<h:selectBooleanCheckbox id="useTheme" value="#{checkboxButtonsReqStyleBean.useTheme}" >
-                        <f:ajax execute="@this" render="@all"/>
-					</h:selectBooleanCheckbox>
-					<h:outputLabel for="useTheme" value=" No custom styling (use theme)" />
+					<ace:checkboxButton id="useTheme"
+										label=" No custom styling (use theme)"
+										labelPosition="right"
+										value="#{checkboxButtonsReqStyleBean.useTheme}" >
+                        <ace:ajax execute="@this" render="@all"/>
+					</ace:checkboxButton>
 				</h:panelGroup>
             </ace:panel>
        </h:form>

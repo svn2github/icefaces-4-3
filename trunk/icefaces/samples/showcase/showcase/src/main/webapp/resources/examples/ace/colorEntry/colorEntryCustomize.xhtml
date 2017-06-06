@@ -17,9 +17,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
     xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
     xmlns:ace="http://www.icefaces.org/icefaces/components"
-    xmlns:icecore="http://www.icefaces.org/icefaces/core"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     template="/resources/templates/content-template.xhtml">
     <ui:param name="title" value="#{msgs['example.ace.colorEntry.customize.title']}"/>
@@ -28,24 +26,24 @@
     <ui:define name="example">
         <h:form id="inputOptionsForm">
             <ace:panel id="inpOptionsPan" header="Options">
-                <h:panelGrid id="inputOptions" columns="2">
-                    <h:outputLabel for="alternateLayout" value="Choose Custom Layout: "/>
-                    <ace:simpleSelectOneMenu id="alternateLayout" value="#{colorEntryCustomBean.customLayout}">
-                        <f:selectItem itemLabel="Hex and RGB Slider" itemValue="layout1"/>
-                        <f:selectItem itemLabel="Full Control" itemValue="layout2"/>
-                        <ace:ajax execute="@this" render="@all" listener="#{colorEntryCustomBean.changeLayout}"/>
-                    </ace:simpleSelectOneMenu>
-                </h:panelGrid>
+                <ace:simpleSelectOneMenu id="alternateLayout"
+                                             label="Choose Custom Layout: "
+                                             labelPosition="left"
+                                             value="#{colorEntryCustomBean.customLayout}">
+                    <f:selectItem itemLabel="Hex and RGB Slider" itemValue="layout1"/>
+                    <f:selectItem itemLabel="Full Control" itemValue="layout2"/>
+                    <ace:ajax execute="@this" render="@all" listener="#{colorEntryCustomBean.changeLayout}"/>
+                </ace:simpleSelectOneMenu>
             </ace:panel>
         </h:form>
         <ace:panel id="layoutvalues" header="Custom Parts and Layout">
-                <h:panelGrid columns="2">
-                    <h:outputLabel value="Parts Defined: " for="partsDefined"/>
-                    <h:outputText id="partsDefined" value="#{colorEntryCustomBean.partsDefined}"/>
-                    <h:outputLabel value="Layout Defined: " for="layoutDefined"/>
-                    <h:outputText id="layoutDefined" value="#{colorEntryCustomBean.layoutDefined}"/>
-                </h:panelGrid>
-            </ace:panel>
+            <h:panelGrid columns="2">
+                <h:outputLabel value="Parts Defined: " for="partsDefined"/>
+                <h:outputText id="partsDefined" value="#{colorEntryCustomBean.partsDefined}"/>
+                <h:outputLabel value="Layout Defined: " for="layoutDefined"/>
+                <h:outputText id="layoutDefined" value="#{colorEntryCustomBean.layoutDefined}"/>
+            </h:panelGrid>
+        </ace:panel>
         <h:form>
             <ace:panel id="colorInputPanel" header="ColorEntry - Customizable" styleClass="required-styling-demo">
                 <h:panelGrid id="inputGrid" columns="2" width="100%" >
@@ -64,7 +62,7 @@
             </ace:panel>
             <ace:panel>
 				<h:panelGrid style="text-align: center; background-color:##{colorEntryCustomBean.value};" width="100%">
-					<h:panelGroup class="ui-widget ui-widget-content" style="opacity:0.7; padding-left: 6px; padding-right: 6px; border:none;">  
+					<h:panelGroup class="ui-widget ui-widget-content" style="opacity:0.7; padding-left: 6px; padding-right: 6px; border:none;">
 						<h:outputLabel for="selColorInline" value="Selected Color: " />
 						<h:outputText id="selColorInline" value="#{colorEntryCustomBean.value}" style="font-weight: bold;"/>
 					</h:panelGroup>

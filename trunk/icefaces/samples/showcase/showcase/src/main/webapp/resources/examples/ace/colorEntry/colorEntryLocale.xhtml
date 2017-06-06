@@ -17,9 +17,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
     xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
     xmlns:ace="http://www.icefaces.org/icefaces/components"
-    xmlns:icecore="http://www.icefaces.org/icefaces/core"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     template="/resources/templates/content-template.xhtml">
     <ui:param name="title" value="#{msgs['example.ace.colorEntry.locale.title']}"/>
@@ -28,21 +26,21 @@
     <ui:define name="example">
         <h:form id="inputOptionsForm">
             <ace:panel id="inpOptionsPan" header="Options">
-                <h:panelGrid id="inputOptions" columns="2">
-                    <h:outputLabel for="selLocale" value="Select Locale "/>
-                    <ace:simpleSelectOneMenu id="selLocale" value="#{colorEntryLocaleBean.localeString}">
-                         <f:selectItem itemLabel="nl" itemValue="nl"/>
-                         <f:selectItem itemLabel="en" itemValue="en"/>
-                         <f:selectItem itemLabel="de" itemValue="de"/>
-                         <f:selectItem itemLabel="fr" itemValue="fr"/>
-                         <f:selectItem itemLabel="en-GB" itemValue="en-GB"/>
-                         <f:selectItem itemLabel="en-US" itemValue="en-US"/>
-                         <f:selectItem itemLabel="pt-br" itemValue="pt-br"/>
-                         <f:selectItem itemLabel="ru" itemValue="ru"/>
-                         <f:selectItem itemLabel="sr" itemValue="sr"/>
-                         <ace:ajax execute="@this" render="@all"/>
-                    </ace:simpleSelectOneMenu>
-                </h:panelGrid>
+                <ace:simpleSelectOneMenu id="selLocale"
+                                         label="Select Locale "
+                                         labelPosition="left"
+                                         value="#{colorEntryLocaleBean.localeString}">
+                    <f:selectItem itemLabel="nl" itemValue="nl"/>
+                    <f:selectItem itemLabel="en" itemValue="en"/>
+                    <f:selectItem itemLabel="de" itemValue="de"/>
+                    <f:selectItem itemLabel="fr" itemValue="fr"/>
+                    <f:selectItem itemLabel="en-GB" itemValue="en-GB"/>
+                    <f:selectItem itemLabel="en-US" itemValue="en-US"/>
+                    <f:selectItem itemLabel="pt-br" itemValue="pt-br"/>
+                    <f:selectItem itemLabel="ru" itemValue="ru"/>
+                    <f:selectItem itemLabel="sr" itemValue="sr"/>
+                    <ace:ajax execute="@this" render="@all"/>
+                </ace:simpleSelectOneMenu>
             </ace:panel>
         </h:form>
 
@@ -50,16 +48,16 @@
             <ace:panel id="colorInputPanel" header="ColorEntry - Customizable"
                        styleClass="required-styling-demo">
                 <h:panelGrid id="inputGrid" columns="1" width="100%" >
-                          <ace:colorEntry id="swatchNameID" value="#{colorEntryLocaleBean.color}"
-                                      renderAsPopup="true"
-                                      customParts="#{colorEntryLocaleBean.full}"
-                                      customLayout="#{colorEntryLocaleBean.fullLayout}"
-                                      showNoneButton="true"
-                                      locale="#{colorEntryLocaleBean.localeString}"
-                                      label="Select a Color:"
-                                      labelPosition="left" >
-                              <ace:ajax execute="@this" render="@all"/>
-                          </ace:colorEntry>
+                    <ace:colorEntry id="swatchNameID" value="#{colorEntryLocaleBean.color}"
+                                    renderAsPopup="true"
+                                    customParts="#{colorEntryLocaleBean.full}"
+                                    customLayout="#{colorEntryLocaleBean.fullLayout}"
+                                    showNoneButton="true"
+                                    locale="#{colorEntryLocaleBean.localeString}"
+                                    label="Select a Color:"
+                                    labelPosition="left" >
+                        <ace:ajax execute="@this" render="@all"/>
+                    </ace:colorEntry>
                 </h:panelGrid>
             </ace:panel>
         </h:form>

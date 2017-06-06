@@ -17,9 +17,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
     xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
     xmlns:ace="http://www.icefaces.org/icefaces/components"
-    xmlns:icecore="http://www.icefaces.org/icefaces/core"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     template="/resources/templates/content-template.xhtml">
     <ui:param name="title" value="#{msgs['example.ace.colorEntry.title']}"/>
@@ -36,14 +34,12 @@
                     <ace:pushButton id="submitColor" value="Submit Color">
                         <ace:ajax execute="@this colorInput" render="@all"/>
                     </ace:pushButton>
-
                 </h:panelGrid>
-
             </ace:panel>
             <ace:panel>
                 <h:panelGrid style="text-align: center; background-color: ##{colorEntryBean.selectedColor};"
                              width="100%" >
-					<h:panelGroup class="ui-widget ui-widget-content" style="opacity:0.7; padding-left: 6px; padding-right: 6px; border:none;">  
+					<h:panelGroup class="ui-widget ui-widget-content" style="opacity:0.7; padding-left: 6px; padding-right: 6px; border:none;">
 							<h:outputLabel for="selColorInline" value="Selected Color: " />
 							<h:outputText id="selColorInline" value="#{colorEntryBean.selectedColor}" style="font-weight: bold;"/>
                     </h:panelGroup>

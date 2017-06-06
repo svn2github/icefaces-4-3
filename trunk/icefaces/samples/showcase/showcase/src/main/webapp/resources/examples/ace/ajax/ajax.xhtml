@@ -17,9 +17,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
     xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
     xmlns:ace="http://www.icefaces.org/icefaces/components"
-    xmlns:icecore="http://www.icefaces.org/icefaces/core"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     template="/resources/templates/content-template.xhtml">
 
@@ -30,18 +28,20 @@
             <ace:panel id="ajaxSettings" header="Settings" style="width: 100%;">
 				 <h:outputLabel for="ajaxEnabled" value="Enable Ajax? "/>
 				 <ace:checkboxButton id="ajaxEnabled" value="#{ajaxBean.ajaxEnabled}">
-					 <ace:ajax execute="@all" render="@all"/>
+					 <ace:ajax execute="@form" render="@all"/>
 				 </ace:checkboxButton>
             </ace:panel>
 
             <ace:panel id="ajaxInput" header="Input" style="width: 100%;">
-                <h:panelGrid width="60%" columns="2" cellpadding="20" cellspacing="20">
-					<ace:textEntry id="ajaxText" value="#{ajaxBean.textValue}">
+                <h:panelGrid width="80%" columns="2" cellpadding="20" cellspacing="20">
+					<ace:textEntry id="ajaxText" value="#{ajaxBean.textValue}"
+								   label="TextEntry:" labelPosition="left">
 						<ace:ajax disabled="#{!ajaxBean.ajaxEnabled}" />
 					</ace:textEntry>
 					<h:outputText id="textEntryOutput" value="#{ajaxBean.textValue}"/>
 
-					<ace:simpleSelectOneMenu id="ajaxSelect" value="#{ajaxBean.selectValue}">
+					<ace:simpleSelectOneMenu id="ajaxSelect" value="#{ajaxBean.selectValue}"
+					                         label="Simple Select Menu:" labelPosition="left">
 						<ace:ajax disabled="#{!ajaxBean.ajaxEnabled}" />
 						<f:selectItem itemLabel="item1" itemValue="item1" />
 						<f:selectItem itemLabel="item2" itemValue="item2" />
@@ -53,6 +53,8 @@
 
 					<ace:sliderEntry id="ajaxSlider"
 									 axis="x"
+									 label="Slider:"
+									 labelPosition="left"
 									 clickableRail="true"
 									 length="300"
 									 min="0"
@@ -62,7 +64,8 @@
 					</ace:sliderEntry>
 					<h:outputText id="sliderOutput" value="#{ajaxBean.sliderValue}"/>
 
-					<h:commandButton id="submitButton" value="Submit" />
+					<ace:pushButton id="submitButton" value="Submit" rendered="#{!ajaxBean.ajaxEnabled}" />
+
 					<h:outputText value="" />
                 </h:panelGrid>
             </ace:panel>

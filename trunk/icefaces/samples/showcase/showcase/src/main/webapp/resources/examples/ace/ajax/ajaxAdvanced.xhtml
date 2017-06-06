@@ -28,30 +28,32 @@
 		<h:form id="form">
 
             <ace:panel id="ajaxAdvancedSettings" header="Settings" style="width: 100%;">
-                <h:panelGrid width="60%" columns="2" cellpadding="20" cellspacing="20">
-					<h:outputText value="Update values: "/>
-					<h:selectOneRadio id="radioButton" value="#{ajaxAdvancedBean.event}">
-						<f:ajax render="ajaxAdvancedSlider" />
+                <h:panelGrid width="60%" columns="1" cellpadding="20" cellspacing="20">
+					<ace:radioButtons id="radioButton" header="Update values: "
+									  value="#{ajaxAdvancedBean.event}">
+						<ace:ajax render="ajaxAdvancedSlider" />
 						<f:selectItem itemLabel="after releasing handle" itemValue="slideEnd" />
 						<f:selectItem itemLabel="as the handle is moved" itemValue="slide" />
-					</h:selectOneRadio>
-					<h:outputLabel for="updateCelsius" value="Update Celsius value: " />
-					<h:selectBooleanCheckbox id="updateCelsius" value="#{ajaxAdvancedBean.updateCelsius}">
+					</ace:radioButtons>
+					<ace:checkboxButton id="updateCelsius" value="#{ajaxAdvancedBean.updateCelsius}"
+					                    label="Update Celsius value: " labelPosition="left">
+						<ace:ajax render="ajaxAdvancedSlider" />
+					</ace:checkboxButton>
+					<ace:checkboxButton id="updateFahrenheit" label="Update Fahrenheit value: "
+										labelPosition="left"
+										value="#{ajaxAdvancedBean.updateFahrenheit}">
 						<f:ajax render="ajaxAdvancedSlider" />
-					</h:selectBooleanCheckbox>
-					<h:outputLabel for="updateFahrenheit" value="Update Fahrenheit value: " />
-					<h:selectBooleanCheckbox id="updateFahrenheit" value="#{ajaxAdvancedBean.updateFahrenheit}">
+					</ace:checkboxButton>
+					<ace:checkboxButton id="updateKelvin" label="Update Kelvin value: "
+										labelPosition="left"
+										value="#{ajaxAdvancedBean.updateKelvin}">
 						<f:ajax render="ajaxAdvancedSlider" />
-					</h:selectBooleanCheckbox>
-					<h:outputLabel for="updateKelvin" value="Update Kelvin value: " />
-					<h:selectBooleanCheckbox id="updateKelvin" value="#{ajaxAdvancedBean.updateKelvin}">
-						<f:ajax render="ajaxAdvancedSlider" />
-					</h:selectBooleanCheckbox>
+					</ace:checkboxButton>
 				</h:panelGrid>
             </ace:panel>
 
             <ace:panel id="ajaxAdvancedInput" header="Input" style="width: 100%;">
-					<h:outputText value="Enter temperature: "/>
+					<h:outputLabel for="ajaxAdvancedSlider" value="Enter temperature: "/>
 					<ace:sliderEntry id="ajaxAdvancedSlider"
 									 axis="x"
 									 clickableRail="true"

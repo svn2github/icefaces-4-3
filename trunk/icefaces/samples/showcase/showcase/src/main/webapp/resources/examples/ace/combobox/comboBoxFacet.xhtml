@@ -17,9 +17,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
     xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
     xmlns:ace="http://www.icefaces.org/icefaces/components"
-    xmlns:icecore="http://www.icefaces.org/icefaces/core"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     template="/resources/templates/content-template.xhtml">
     <ui:param name="title" value="#{msgs['example.ace.combobox.facet.title']}"/>
@@ -34,7 +32,7 @@
         <h:form id="form">
             
             <ace:panel id="facetPanel">
-			<h:panelGrid columns="2" class="grid">
+			<h:panelGrid columns="2" styleClass="grid">
 				<h:panelGroup>
 				<ace:comboBox id="selectTextColor" value="#{comboBoxFacetBean.textColor}" listVar="color" listValue="#{comboBoxFacetBean.textColors}" itemValue="#{color.hexValue}" label="Select a color or enter a color code for the text: " labelPosition="top" validator="#{comboBoxFacetBean.colorValidator}" width="300">
 					<f:facet name="row">

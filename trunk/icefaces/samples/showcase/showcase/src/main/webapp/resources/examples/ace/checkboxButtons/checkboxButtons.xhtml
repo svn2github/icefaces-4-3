@@ -24,10 +24,12 @@
 
     <ui:define name="example">
         <h:form id= "form" style="text-align: center">
-			<h:outputLabel for="mutuallyExclusive" value="Enable mutual exclusivity: " />
-			<h:selectBooleanCheckbox id="mutuallyExclusive" value="#{checkboxButtons.mutuallyExclusive}">
-				<f:ajax render="@form" />
-			</h:selectBooleanCheckbox>
+			<ace:checkboxButton id="mutuallyExclusive"
+								label="Enable mutual exclusivity: "
+								labelPosition="left"
+								value="#{checkboxButtons.mutuallyExclusive}">
+				<ace:ajax render="@form" />
+			</ace:checkboxButton>
             <ace:panel>
 				<ace:checkboxButtons id="checkboxButtons" header="Using ace:checkboxButtons" mutuallyExclusive="#{checkboxButtons.mutuallyExclusive}" value="#{checkboxButtons.selected}" labelPosition="top">
 					<f:selectItem itemLabel="One" itemValue="One" />

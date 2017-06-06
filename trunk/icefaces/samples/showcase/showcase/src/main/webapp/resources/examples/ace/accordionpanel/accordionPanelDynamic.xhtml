@@ -28,50 +28,47 @@
     <ui:define name="example">
         <h:form id="form">
                 
-                    <ace:accordion id="accordion" paneChangeListener="#{accordionPanelDynamicBean.onPaneChange}">
-					<ace:ajax execute="@this" render="feedbackHolder" />
-                        <ace:accordionPane title="Electronic Devices" id="electronicDevices">
-                            <ace:panel id="electronics">
-                                <h:panelGrid columns="#{accordionPanelDynamicBean.imagesOfElectronicDevicesSize}" width="100%">
-                                    <c:forEach items="#{accordionPanelDynamicBean.imagesOfElectronicDevices}" var="deviceImage">
-                                        <h:graphicImage value="#{deviceImage.path}" alt="#{deviceImage.description}"/>
-                                    </c:forEach>
-                                </h:panelGrid>
-                            </ace:panel>
-                           <br/><br/>
-                           <br/><br/>
-                       </ace:accordionPane>
+            <ace:accordion id="accordion" paneChangeListener="#{accordionPanelDynamicBean.onPaneChange}">
+                <ace:ajax execute="@this" render="feedbackHolder" />
+                <ace:accordionPane title="Electronic Devices" id="electronicDevices">
+                    <ace:panel id="electronics">
+                        <h:panelGrid columns="#{accordionPanelDynamicBean.imagesOfElectronicDevicesSize}" width="100%">
+                            <c:forEach items="#{accordionPanelDynamicBean.imagesOfElectronicDevices}" var="deviceImage">
+                                <ace:graphicImage value="#{deviceImage.path}" alt="#{deviceImage.description}"/>
+                            </c:forEach>
+                        </h:panelGrid>
+                    </ace:panel>
+                    <br/><br/>
+                    <br/><br/>
+                </ace:accordionPane>
 
-                       <ace:accordionPane title="Cars" id="cars">
-                           <ace:panel id="vehicles">
-                               <h:panelGrid columns="#{accordionPanelDynamicBean.imagesOfCarsSize}" width="100%">
-                                    <c:forEach items="#{accordionPanelDynamicBean.imagesOfCars}" var="carImage">
-                                        <h:graphicImage value="#{carImage.path}" alt="#{carImage.description}"/>
-                                    </c:forEach>
-                                </h:panelGrid>
-                           </ace:panel>
+                <ace:accordionPane title="Cars" id="cars">
+                    <ace:panel id="vehicles">
+                        <h:panelGrid columns="#{accordionPanelDynamicBean.imagesOfCarsSize}" width="100%">
+                            <c:forEach items="#{accordionPanelDynamicBean.imagesOfCars}" var="carImage">
+                                <ace:graphicImage value="#{carImage.path}" alt="#{carImage.description}"/>
+                            </c:forEach>
+                        </h:panelGrid>
+                    </ace:panel>
+                </ace:accordionPane>
 
-                       </ace:accordionPane>
-                    
-                        <ace:accordionPane title="Food" id="food">
-                            <ace:panel id="edibles">
-                                <h:panelGrid columns="#{accordionPanelDynamicBean.imagesOfFoodSize}" width="100%">
-                                    <c:forEach items="#{accordionPanelDynamicBean.imagesOfFood}" var="foodImage">
-                                        <h:graphicImage value="#{foodImage.path}" alt="#{foodImage.description}"/>
-                                    </c:forEach>
-                                </h:panelGrid>
-                            </ace:panel>
-                           <br/><br/>
-                           <br/><br/>
-                       </ace:accordionPane>
-	</ace:accordion>
-            
-                <br/>
+                <ace:accordionPane title="Food" id="food">
+                    <ace:panel id="edibles">
+                        <h:panelGrid columns="#{accordionPanelDynamicBean.imagesOfFoodSize}" width="100%">
+                            <c:forEach items="#{accordionPanelDynamicBean.imagesOfFood}" var="foodImage">
+                                <ace:graphicImage value="#{foodImage.path}" alt="#{foodImage.description}"/>
+                            </c:forEach>
+                        </h:panelGrid>
+                    </ace:panel>
+                    <br/><br/>
+                    <br/><br/>
+                </ace:accordionPane>
+	        </ace:accordion>
+            <br/>
+            <h:panelGrid id="feedbackHolder" styleClass="centeredPanelGrid">
+                <h:outputText id="activePane" value="#{accordionPanelDynamicBean.tabChangeDescriptor}" style="font-weight: bold;"/>
+            </h:panelGrid>
 
-                <h:panelGrid id="feedbackHolder" styleClass="centeredPanelGrid">
-                    <h:outputText id="activePane" value="#{accordionPanelDynamicBean.tabChangeDescriptor}" style="font-weight: bold;"/>
-                </h:panelGrid>
-                
         </h:form>
     </ui:define>
 </ui:composition>
