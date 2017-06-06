@@ -17,9 +17,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
     xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
     xmlns:ace="http://www.icefaces.org/icefaces/components"
-    xmlns:icecore="http://www.icefaces.org/icefaces/core"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     template="/resources/templates/content-template.xhtml">
     <ui:param name="title" value="#{msgs['example.ace.contextMenu.effect.title']}"/>
@@ -28,20 +26,25 @@
     <ui:define name="example">
         <h:form id="form">
             <ace:panel>
-                <h:panelGrid columns="3">
-                    <h:outputLabel for="effectIn" value="Transition Effect:"/>
-                    <h:selectOneRadio id="effectIn" required="true" value="#{contextMenuEffect.effectName}">
+                <h:panelGrid columns="2">
+                    <ace:radioButtons id="effectIn" required="true"
+                                      header="Transition Effect:"
+                                      labelPosition="left"
+                                      value="#{contextMenuEffect.effectName}">
                         <f:selectItems value="#{contextMenuEffect.availableEffects}"/>
-                        <f:ajax execute="@this" render="@all"/>
-                    </h:selectOneRadio>
+                        <ace:ajax execute="@this" render="@all"/>
+                    </ace:radioButtons>
                     <ace:message for="effectIn"/>
 
-                    <h:outputLabel for="durationIn" value="Effect Duration (50-2000 milliseconds):"/>
-                    <h:inputText id="durationIn" value="#{contextMenuEffect.effectDuration}"
-                                 required="true" size="4" maxlength="4">
+                    <ace:textEntry id="durationIn"
+                                   label="Effect Duration (50-2000 milliseconds):"
+                                   labelPosition="left"
+                                   value="#{contextMenuEffect.effectDuration}"
+                                   required="true" size="4"
+                                   maxlength="4">
                          <f:validateLongRange minimum="50" maximum="2000"/>
-                        <f:ajax execute="@this" render="@all"/>
-                    </h:inputText>
+                        <ace:ajax execute="@this" render="@all"/>
+                    </ace:textEntry>
                     <ace:message id="msg" for="durationIn"/>
                 </h:panelGrid>
             </ace:panel>
