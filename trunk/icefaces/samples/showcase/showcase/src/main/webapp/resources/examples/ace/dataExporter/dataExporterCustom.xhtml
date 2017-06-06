@@ -17,9 +17,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
     xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
     xmlns:ace="http://www.icefaces.org/icefaces/components"
-    xmlns:icecore="http://www.icefaces.org/icefaces/core"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     template="/resources/templates/content-template.xhtml">
 	<ui:param name="title" value="#{msgs['example.ace.dataExporter.custom.title']}"/>
@@ -32,9 +30,14 @@
 		}
 		</style>
 		<h:form id="mainForm" >
-			<h:panelGrid id="panelGrid" columns="2" class="grid">
-				<ace:dataTable id="carTable" value="#{dataExporterCustom.carsData}" var="car" rows="10" paginator="true" paginatorPosition="top" rowIndexVar="i">
-					<ace:ajax event="page" excute="@form" render="@form" />
+			<h:panelGrid id="panelGrid" columns="2" styleClass="grid">
+				<ace:dataTable id="carTable"
+							   value="#{dataExporterCustom.carsData}"
+							   var="car" rows="10"
+							   paginator="true"
+							   paginatorPosition="top"
+							   rowIndexVar="i">
+					<ace:ajax event="page" execute="@form" render="@form" />
 					<ace:column id="exp">
 						<ace:expansionToggler />
 					</ace:column>		
@@ -104,7 +107,11 @@
 						<f:selectItems value="#{dataExporterCustom.selectItems}" />
 						<f:ajax execute="@this" render="@this" />
 					</h:selectOneListbox><br />
-					<ace:dataExporter id="dataExporter" label="Export" target="carTable" fileName="cars" pageOnly="true" customExporter="#{dataExporterCustom.customExporter}" />
+					<ace:dataExporter id="dataExporter" label="Export"
+                                      target="carTable"
+                                      fileName="cars"
+                                      pageOnly="true"
+                                      customExporter="#{dataExporterCustom.customExporter}" />
 				</h:panelGroup>
 			</h:panelGrid>
 		</h:form>

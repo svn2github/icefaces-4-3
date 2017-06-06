@@ -17,9 +17,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
     xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
     xmlns:ace="http://www.icefaces.org/icefaces/components"
-    xmlns:icecore="http://www.icefaces.org/icefaces/core"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     template="/resources/templates/content-template.xhtml">
     <ui:param name="title" value="#{msgs['example.ace.dataExporter.rows.title']}"/>
@@ -30,17 +28,16 @@
         <ace:panel>
             <h:panelGrid styleClass="centeredPanelGridWithBorderSpacing">
             <h:form id="form1">
-                <h:panelGrid columns="2">
-                        <h:outputLabel for="typeIn" value="Export As:"/>
-                        <h:selectOneRadio id="typeIn" value="#{dataExporterRows.type}" required="true">
-                            <f:ajax disabled="false"/>
-                            <f:selectItem itemValue="csv" itemLabel="CSV"/>
-                            <f:selectItem itemValue="pdf" itemLabel="PDF"/>
-                            <f:selectItem itemValue="xls" itemLabel="XLS"/>
-                            <f:selectItem itemValue="xlsx" itemLabel="XLSX"/>
-                            <f:selectItem itemValue="xml" itemLabel="XML"/>
-                        </h:selectOneRadio>
-                </h:panelGrid>
+                <ace:radioButtons id="typeIn"
+                                  header="Export As:"
+                                  value="#{dataExporterRows.type}" required="true">
+                    <f:ajax disabled="false"/>
+                    <f:selectItem itemValue="csv" itemLabel="CSV"/>
+                    <f:selectItem itemValue="pdf" itemLabel="PDF"/>
+                    <f:selectItem itemValue="xls" itemLabel="XLS"/>
+                    <f:selectItem itemValue="xlsx" itemLabel="XLSX"/>
+                    <f:selectItem itemValue="xml" itemLabel="XML"/>
+                </ace:radioButtons>
             </h:form>
 
             <h:form id="form3">
