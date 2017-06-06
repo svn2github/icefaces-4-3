@@ -534,6 +534,12 @@ public class CentralDataList {
 							 "accordionpanel", "accordionPanelDynamic.xhtml", "AccordionPanelDynamicBean.java"),
 					new Demo(msgs("menu.ace.accordionpanel.subMenu.effect"), msgs("example.ace.accordionpanel.effect.description"),
 							 "accordionpanel", "accordionPanelEffect.xhtml", "AccordionPanelEffectBean.java")),
+				new ComponentGroup("ace:drawerPanel", new DemoResource[] {
+						new DemoResource(DemoResource.Type.WIKI, "ace:drawerPanel", "DrawerPanel"),
+						new DemoResource(DemoResource.Type.TLD, "ace:drawerPanel", "drawerPanel.html")
+				},
+					new Demo(msgs("overview"), msgs("example.ace.drawerpanel.description"),
+							 "drawerpanel", "drawerPanel.xhtml", "DrawerPanelBean.java")),
 				new ComponentGroup("ace:panel", "Panel", "panel.html",
 						new Demo(msgs("overview"), msgs("example.ace.panel.description"),
 								 "panel", "panel.xhtml", "PanelBean.java"),

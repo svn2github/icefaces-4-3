@@ -1,0 +1,72 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+    xmlns:ace="http://www.icefaces.org/icefaces/components"
+    xmlns:icecore="http://www.icefaces.org/icefaces/core"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    template="/resources/templates/content-template.xhtml">
+
+    <ui:define name="example">
+        <h:form id="form">
+			<ace:panel header="Configuration">
+				<h:panelGrid width="100%" columns="1" cellpadding="6" cellspacing="6">
+					<ace:radioButtons id="position" header="position" value="#{drawerPanelBean.position}" labelPosition="top">
+						<ace:ajax render="@all" />
+						<f:selectItem itemValue="left" itemLabel="Left" />
+						<f:selectItem itemValue="right" itemLabel="Right" />
+						<f:selectItem itemValue="top" itemLabel="Top" />
+						<f:selectItem itemValue="bottom" itemLabel="Bottom" />
+					</ace:radioButtons>
+				</h:panelGrid>
+				<h:panelGrid columns="2" cellpadding="6" cellspacing="6">
+						<h:outputLabel for="showHandleOpen" value="Show handle to open: "/>
+						<ace:checkboxButton id="showHandleOpen" value="#{drawerPanelBean.showHandleOpen}">
+							<ace:ajax render="@all"/>
+						</ace:checkboxButton>
+						<h:outputLabel for="showHandleClose" value="Show handle to close: "/>
+						<ace:checkboxButton id="showHandleClose" value="#{drawerPanelBean.showHandleClose}">
+							<ace:ajax render="@all"/>
+						</ace:checkboxButton>
+						<h:outputLabel for="divContainer" value="Display inside div element: "/>
+						<ace:checkboxButton id="divContainer" value="#{drawerPanelBean.divContainer}">
+							<ace:ajax render="@all"/>
+						</ace:checkboxButton>
+				</h:panelGrid>
+			</ace:panel>
+				<div style="text-align:center;">
+					<ace:pushButton id="show" value="Show" onclick="ice.ace.instance('#{drawer.clientId}').show();" />
+					<ace:pushButton id="hide" value="Hide" onclick="ice.ace.instance('#{drawer.clientId}').hide();" />
+				</div>
+				<div style="height:20px;"></div>
+			<div id="div" style="width: 600px; height: 500px; border: 1px solid #000;">
+				The drawer panel can be set to appear inside this container.
+			</div>
+			<ace:drawerPanel 	id="drawer" binding="#{drawer}"
+								position="#{drawerPanelBean.position}"
+								showHandleOpen="#{drawerPanelBean.showHandleOpen}"
+								showHandleClose="#{drawerPanelBean.showHandleClose}"
+								container="#{drawerPanelBean.container}">
+				<ace:linkButton value="Menu item 1"/><br/><br />
+				<ace:linkButton value="Menu item 2"/><br/><br />
+				<ace:linkButton value="Menu item 3"/><br/><br />
+			</ace:drawerPanel>
+        </h:form>
+    </ui:define>
+</ui:composition>
