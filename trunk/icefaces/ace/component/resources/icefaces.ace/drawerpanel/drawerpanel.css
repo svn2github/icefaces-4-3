@@ -28,3 +28,37 @@ border-radius:0;
     visibility: hidden;
     height:0;
 }
+
+.ice-ace-drawer .ui-dialog-titlebar-close {
+	display: none;
+}
+
+.ice-ace-drawer.ui-dialog {
+	padding: 0;
+}
+
+.ice-ace-drawer.ui-dialog .ui-dialog-titlebar.ui-state-active {
+	border: 0;
+}
+
+.ice-ace-drawer-handle-show {
+	position: fixed;
+	width: 2em;
+	padding: 0.2em;
+	text-align: center;
+}
+
+.ice-ace-drawer-handle-upper-left {
+	top: 0;
+	left: 0;
+}
+
+.ice-ace-drawer-handle-lower-left {
+	bottom: 0;
+	left: 0;
+}
+
+.ice-ace-drawer-handle-upper-right {
+	top: 0;
+	right: 0;
+}

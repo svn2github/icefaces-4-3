@@ -74,6 +74,28 @@ public class DrawerPanelRenderer extends CoreRenderer {
 
         writer.endElement("div");
 
+		if (drawerPanel.isShowHandleOpen() && "window".equalsIgnoreCase(drawerPanel.getContainer())) {
+			String clientId = drawerPanel.getClientId(context);
+			writer.startElement("div", component);
+			writer.writeAttribute("id", clientId + "_handle", null);
+
+			String position = drawerPanel.getPosition();
+			String positionClass;
+			if ("right".equalsIgnoreCase(position)) {
+				positionClass = "ice-ace-drawer-handle-upper-right";
+			} else if ("bottom".equalsIgnoreCase(position)) {
+				positionClass = "ice-ace-drawer-handle-lower-left";
+			} else {
+				positionClass = "ice-ace-drawer-handle-upper-left";
+			}
+			writer.writeAttribute("class", "ice-ace-drawer-handle-show " + positionClass + " ui-state-active", null);
+			writer.writeAttribute("onclick", "ice.ace.instance('" + clientId + "').show();", null);
+			writer.startElement("span", component);
+			writer.writeAttribute("class", "fa fa-bars fa-lg", null);
+			writer.endElement("span");
+			writer.endElement("div");
+		}
+
         encodeScript(context, drawerPanel);
 
         writer.endElement("div");
@@ -120,8 +142,13 @@ public class DrawerPanelRenderer extends CoreRenderer {
         String showEffect = drawerPanel.getShowEffect();
         String hideEffect = drawerPanel.getHideEffect();
         String headerText = drawerPanel.getHeader();
-        String position = drawerPanel.getPosition();
+        String drawerPosition = drawerPanel.getPosition();
+		String container = drawerPanel.getContainer();
+		if (container == null) container = "window";
+		if ("window".equalsIgnoreCase(container)) container = "window";
+
         int width = drawerPanel.getWidth();
+        int height = drawerPanel.getHeight();
         int zIndex = drawerPanel.getZindex();
         String onShow = drawerPanel.getOnShow();
         String onHide = drawerPanel.getOnHide();
@@ -129,6 +156,7 @@ public class DrawerPanelRenderer extends CoreRenderer {
         if (styleClass != null) jb.entry("dialogClass", styleClass);
 		if (style != null) jb.entry("dialogStyle", style);
         if (width > 0) jb.entry("width", width);
+        if (height > 0) jb.entry("height", height);
         if (drawerPanel.isModal()) jb.entry("modal", true);
         if (zIndex != 1000) jb.entry("zIndex", zIndex);
         if (showEffect != null) jb.entry("show", showEffect);
@@ -137,17 +165,12 @@ public class DrawerPanelRenderer extends CoreRenderer {
         if (!drawerPanel.isShowHeader()) jb.entry("showHeader", false);
         if (onShow != null) jb.entry("onShow", "function(event, ui) {" + onShow + "}", true);
         if (onHide != null) jb.entry("onHide", "function(event, ui) {" + onHide + "}", true);
+		jb.entry("showHandleOpen", drawerPanel.isShowHandleOpen());
+		jb.entry("showHandleClose", drawerPanel.isShowHandleClose());
+		jb.entry("drawerPosition", drawerPosition != null ? drawerPosition.toLowerCase() : "left");
+		jb.entry("container", container);
 
-        //Position
-        if (position != null) {
-            if (position.contains(",")) {
-				jb.entry("position", "[" + position + "]", true);
-            } else {
-                jb.entry("position", position);
-            }
-        }
-
-        jb.entryNonNullValue("title", headerText);
+        jb.entryNonNullValue("headerText", headerText);
 		jb.entry("ariaEnabled", ariaEnabled);
 
         //Behaviors

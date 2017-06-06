@@ -74,10 +74,6 @@ ice.ace.DrawerPanel = function(parentID, cfg) {
 	}
 
 /*
-    if (closable == false) {
-        this.cfg.closeOnEscape = false;
-    }
-
     // disable unsupported effects
     if (this.cfg.hide == 'pulsate') {
         this.cfg.hide = null;
@@ -113,16 +109,34 @@ ice.ace.DrawerPanel = function(parentID, cfg) {
     //Create the dialog
     this.cfg.autoOpen = false;
 
-
-
 	this.cfg.dialogClass = 'ice-ace-drawer';
-	this.cfg.closeOnEscape = true;
 	this.cfg.resizable = false;
-	this.cfg.modal = false;
 	this.cfg.draggable = false;
-	this.cfg.position = {my: 'left', at: 'left', of: window};
-	this.cfg.show = {effect: 'slide', duration: 1000, direction: 'left'};
-	this.cfg.hide = {effect: 'slide', duration: 1000, direction: 'left'};
+
+	if (this.cfg.container != 'window') {
+		this.cfg.container = ice.ace.escapeClientId(this.cfg.container);
+	} else {
+		this.cfg.container = window;
+	}
+	
+
+	if (this.cfg.drawerPosition == 'right') {
+		this.cfg.position = {my: 'right', at: 'right', of: this.cfg.container};
+		this.cfg.show = {effect: 'slide', duration: 1000, direction: 'right'};
+		this.cfg.hide = {effect: 'slide', duration: 1000, direction: 'right'};
+	} else if (this.cfg.drawerPosition == 'bottom') {
+		this.cfg.position = {my: 'bottom', at: 'bottom', of: this.cfg.container};
+		this.cfg.show = {effect: 'slide', duration: 1000, direction: 'down'};
+		this.cfg.hide = {effect: 'slide', duration: 1000, direction: 'down'};
+	} else if (this.cfg.drawerPosition == 'top') {
+		this.cfg.position = {my: 'top', at: 'top', of: this.cfg.container};
+		this.cfg.show = {effect: 'slide', duration: 1000, direction: 'up'};
+		this.cfg.hide = {effect: 'slide', duration: 1000, direction: 'up'};
+	} else { // left
+		this.cfg.position = {my: 'left', at: 'left', of: this.cfg.container};
+		this.cfg.show = {effect: 'slide', duration: 1000, direction: 'left'};
+		this.cfg.hide = {effect: 'slide', duration: 1000, direction: 'left'};
+	}
 
 
 
@@ -149,18 +163,25 @@ ice.ace.DrawerPanel = function(parentID, cfg) {
         _self.onShow(event, ui);
     });
 
-
-/*
-    //Hide close icon if dialog is not closable
-    if (closable == false) {
-        this.jq.parent().find('.ui-dialog-titlebar-close').hide();
-    }
-*/
+	this.jq.parent().children('.ui-dialog-titlebar').removeClass('ui-corner-all').addClass('ui-state-active');
 
     //Hide header if showHeader is false
-    if (this.cfg.showHeader == false) {
+    if (this.cfg.showHeader == false && this.cfg.showHandleClose == false) {
         this.jq.parent().children('.ui-dialog-titlebar').hide();
-    }
+    } else {
+		var headerText = '';
+		if (this.cfg.showHandleClose == true) {
+			headerText = '<span class="fa fa-bars fa-lg"></span>'
+		}
+		if (this.cfg.headerText) {
+			headerText += this.cfg.headerText;
+		}
+		var titlebar = this.jq.parent().children('.ui-dialog-titlebar').children('.ui-dialog-title');
+		titlebar.html(headerText);
+		titlebar.children('span.fa-bars').on('click', function() {
+			ice.ace.instance(parentID).hide();
+		});
+	}
     if (this.cfg.isVisible){
         this.show();
     }
@@ -192,8 +213,13 @@ ice.ace.DrawerPanel.prototype.show = function() {
                 dialogParent.removeClass("ice-ace-drawer-hidden");
                 dialogParent.children().removeClass("ice-ace-drawer-hidden");
         }
-		var windowHeight = ice.ace.jq( window ).height();
-		self.jq.dialog({height: windowHeight});
+		if (self.cfg.drawerPosition == 'top' || self.cfg.drawerPosition == 'bottom') {
+			var width = ice.ace.jq(self.cfg.container).width();
+			self.jq.dialog({width: width});
+		} else {
+			var height = ice.ace.jq(self.cfg.container).height();
+			self.jq.dialog({height: height});
+		}
         self.jq.dialog('open');
 		self.resizeScrollableTables();
 		self.resizeMaps();

@@ -41,6 +41,7 @@ import org.icefaces.resources.ICEResourceLibrary;
         )
 @ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
+	@ICEResourceDependency(name = "fontawesome/font-awesome.css"),
 	@ICEResourceDependency(name = "util/ace-core.js"),
 	@ICEResourceDependency(name = "jquery/jquery.js"),
 	@ICEResourceDependency(name = "util/ace-jquery-ui.js"),
@@ -52,22 +53,25 @@ import org.icefaces.resources.ICEResourceLibrary;
 
 public class DrawerPanelMeta extends UIPanelMeta {
 	
-	@Property(tlddoc="Header text")
+	@Property(tlddoc="Text that will appear in the header of the drawer.")
 	private String header;
 	
-	@Property(tlddoc="Boolean value that specifies whether the document should be shielded with a partially transparent mask to require the user to close the Panel before being able to activate any elements in the document", defaultValue="false")
+	@Property(tlddoc="Boolean value that specifies whether the document should be shielded with a partially transparent mask to require the user to close the Panel before being able to activate any elements in the document.", defaultValue="false")
 	private boolean modal;
 
-	@Property(tlddoc="visible can be used to toggle visibility on the server, rendered should not be used that way, setting rendered=false on a visible modal drawer will not remove the modality layer, visible=false must be set first (or client-side JS function called)", defaultValue="false")
+	@Property(tlddoc="This attribute can be used to toggle visibility on the server, rendered should not be used that way, setting rendered=false on a visible modal drawer will not remove the modality layer, visible=false must be set first (or client-side JS function called).", defaultValue="false")
 	private boolean visible;
 
-	@Property(tlddoc="Width of the element in pixels. Default (not specified or value <= 0) is auto. If auto, resizable should be false, or resizing may hehave erratically. If auto, IE7 may not size or position properly.", defaultValue="Integer.MIN_VALUE")
+	@Property(tlddoc="Width of the element in pixels. Default (not specified or value <= 0) is auto. If auto, resizable should be false, or resizing may hehave erratically. If auto, IE7 may not size or position properly. This attribute only applies when the 'position' is 'left' or 'right'.", defaultValue="Integer.MIN_VALUE")
 	private int width;
 
-	@Property(tlddoc="zindex property to control overlapping with other elements", defaultValue="1000")
+	@Property(tlddoc="Height of the element in pixels. Default (not specified or value <= 0) is auto. If auto, resizable should be false, or resizing may hehave erratically. If auto, IE7 may not size or position properly. This attribute only applies if the 'position' is 'top' or 'bottom'.", defaultValue="Integer.MIN_VALUE")
+	private int height;
+
+	@Property(tlddoc="z-index property to control overlapping with other elements.", defaultValue="1000")
 	private int zindex;
 	
-	@Property(tlddoc="Style class of the main container of drawer")
+	@Property(tlddoc="Style class of the main container of the drawer.")
 	private String styleClass;
 	
 	@Property(tlddoc="Style to apply to the container element.")
@@ -79,21 +83,30 @@ public class DrawerPanelMeta extends UIPanelMeta {
 	@Property(tlddoc="Effect to use when hiding the drawer. Possible values are 'blind', 'clip', 'drop', 'explode, 'fade', 'fold', 'puff', 'slide', 'scale', 'bounce', 'highlight', and 'shake' (Some effects are not supported in IE browsers, see wiki page for more information).")
 	private String hideEffect;
 	
-	@Property(tlddoc="Specifies where the drawer should be displayed relative to the viewport. Possible values: \n1) a single string representing position within viewport: 'center', 'left', 'right', 'top', 'bottom'.\n2) an array containing an x,y coordinate pair in pixel offset from left, top corner of viewport (e.g. [350,100])\n3) an array containing x,y position string values (e.g. ['right','top'] for top right corner).")
+	@Property(tlddoc="Specifies the side on which the drawer should be displayed. Possible values are 'left', 'right', 'top', 'bottom'", defaultValue="left")
 	private String position;
 	
 	@Property(tlddoc="Boolean value that Specifies whether the drawer should close when it has focus and the user presses the escape (ESC) key.", defaultValue="true")
 	private boolean closeOnEscape;
 	
-	@Property(tlddoc="Javascript code to be executed when showing the drawer")
+	@Property(tlddoc="Javascript code to be executed when showing the drawer.")
 	private String onShow;
 	
-	@Property(tlddoc="Javascript code to be executed when hiding the drawer")
+	@Property(tlddoc="Javascript code to be executed when hiding the drawer.")
 	private String onHide;
 	
-	@Property(tlddoc="Boolean value that specifies whether the drawer should have a header (default true)", defaultValue="true")
+	@Property(tlddoc="Boolean value that specifies whether the drawer should have a header (default true). If 'showHandleOpen' is set to true, a header will be shown regardless of the value of this attribute.", defaultValue="true")
 	private boolean showHeader;
 
     @Property(tlddoc = "Specifies the ID of the component that should receive focus when the drawer is opened.")
     String setFocus;
+
+	@Property(tlddoc="Boolean value that specifies whether to display a three-horizontal-bars icon to open the drawer. This handle will appear at the upper left corner of the viewport if the 'position' is 'left' or 'top', at the uper right corner of the viewport if the 'position' is 'right', and at the lower left corner of the viewport if the 'position' is 'bottom'. This handle will only be displayed if the 'container' is set to 'window'.", defaultValue="true")
+	private boolean showHandleOpen;
+
+	@Property(tlddoc="Boolean value that specifies whether to display a three-horizontal-bars icon inside the drawer to close it. This handle will appear at the opper left corner of the drawer, inside the drawer's header.", defaultValue="true")
+	private boolean showHandleClose;
+
+	@Property(tlddoc="Specify the container whose edges the drawer will appear from. The default mode is the entire window, but it's possible to specify a client id of an element on the page to have the drawer.", defaultValue="window")
+	private String container;
 }
