@@ -117,7 +117,7 @@ ice.ace.DrawerPanel = function(parentID, cfg) {
 		this.cfg.container = ice.ace.escapeClientId(this.cfg.container);
 	} else {
 		this.cfg.container = window;
-		dialogClass += ' ice-ace-drawer-fixed';
+		this.cfg.dialogClass += ' ice-ace-drawer-fixed';
 	}
 	
 
