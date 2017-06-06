@@ -117,23 +117,24 @@ ice.ace.DrawerPanel = function(parentID, cfg) {
 		this.cfg.container = ice.ace.escapeClientId(this.cfg.container);
 	} else {
 		this.cfg.container = window;
+		dialogClass += ' ice-ace-drawer-fixed';
 	}
 	
 
 	if (this.cfg.drawerPosition == 'right') {
-		this.cfg.position = {my: 'right', at: 'right', of: this.cfg.container};
+		this.cfg.position = {my: 'right', at: 'right', of: this.cfg.container, collision: 'none'};
 		this.cfg.show = {effect: 'slide', duration: 1000, direction: 'right'};
 		this.cfg.hide = {effect: 'slide', duration: 1000, direction: 'right'};
 	} else if (this.cfg.drawerPosition == 'bottom') {
-		this.cfg.position = {my: 'bottom', at: 'bottom', of: this.cfg.container};
+		this.cfg.position = {my: 'bottom', at: 'bottom', of: this.cfg.container, collision: 'none'};
 		this.cfg.show = {effect: 'slide', duration: 1000, direction: 'down'};
 		this.cfg.hide = {effect: 'slide', duration: 1000, direction: 'down'};
 	} else if (this.cfg.drawerPosition == 'top') {
-		this.cfg.position = {my: 'top', at: 'top', of: this.cfg.container};
+		this.cfg.position = {my: 'top', at: 'top', of: this.cfg.container, collision: 'none'};
 		this.cfg.show = {effect: 'slide', duration: 1000, direction: 'up'};
 		this.cfg.hide = {effect: 'slide', duration: 1000, direction: 'up'};
 	} else { // left
-		this.cfg.position = {my: 'left', at: 'left', of: this.cfg.container};
+		this.cfg.position = {my: 'left', at: 'left', of: this.cfg.container, collision: 'none'};
 		this.cfg.show = {effect: 'slide', duration: 1000, direction: 'left'};
 		this.cfg.hide = {effect: 'slide', duration: 1000, direction: 'left'};
 	}

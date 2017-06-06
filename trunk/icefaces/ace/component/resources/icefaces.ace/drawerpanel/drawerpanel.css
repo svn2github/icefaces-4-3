@@ -18,11 +18,15 @@
     opacity:1;
     visibility: inherit;
     display: block;
-position:fixed;
--moz-border-radius:0;
--webkit-border-radius:0;
-border-radius:0;
+	-moz-border-radius:0;
+	-webkit-border-radius:0;
+	border-radius:0;
 }
+
+.ice-ace-drawer-fixed {
+	position:fixed;
+}
+
 .ice-ace-drawer-hidden {
     opacity: 0;
     visibility: hidden;
