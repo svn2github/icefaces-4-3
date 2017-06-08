@@ -16,10 +16,8 @@
 
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html" 
-    xmlns:f="http://xmlns.jcp.org/jsf/core" 
-    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" 
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
     xmlns:ace="http://www.icefaces.org/icefaces/components"
-    xmlns:icecore="http://www.icefaces.org/icefaces/core"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets" 
     template="/resources/templates/content-template.xhtml">
     <ui:param name="title" value="#{msgs['example.ace.dateentry.minmax.title']}"/>
@@ -58,10 +56,11 @@
                                    navigator="true"
                                    readOnlyInputText="true"
                                    renderAsPopup="true"/>
-                <h:commandButton id="submitMinMax" value="Submit Min/Max Dates"
-                                 actionListener="#{dateMinMax.submitMinMax}">
-								 <f:ajax execute="@form" render="@all"/>
-				</h:commandButton>
+                <ace:pushButton id="submitMinMax"
+                                value="Submit Min/Max Dates"
+                                actionListener="#{dateMinMax.submitMinMax}">
+					<ace:ajax execute="@form" render="@all"/>
+				</ace:pushButton>
                 
                 <h:outputLabel for="cal" value="Selected Date:"/>
                 <ace:dateTimeEntry id="cal"
@@ -70,9 +69,9 @@
                                    pattern="MMM/dd/yyyy"
                                    mindate="#{dateMinMax.minDate}"
                                    maxdate="#{dateMinMax.maxDate}"/>
-                <h:commandButton id="submitDate" value="Submit Date">
-								<f:ajax execute="@this cal" render="@all"/>
-				</h:commandButton>
+                <ace:pushButton id="submitDate" value="Submit Date">
+                    <ace:ajax execute="@this cal" render="@all"/>
+				</ace:pushButton>
             </h:panelGrid>
         </h:form>
     </ui:define>

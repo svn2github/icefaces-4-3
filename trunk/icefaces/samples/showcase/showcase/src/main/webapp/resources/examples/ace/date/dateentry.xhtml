@@ -16,10 +16,8 @@
 
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html" 
-    xmlns:f="http://xmlns.jcp.org/jsf/core" 
-    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" 
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
     xmlns:ace="http://www.icefaces.org/icefaces/components"
-    xmlns:icecore="http://www.icefaces.org/icefaces/core"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets" 
     template="/resources/templates/content-template.xhtml">
     <ui:param name="title" value="#{msgs['example.ace.dateentry.title']}"/>
@@ -32,8 +30,8 @@
                     <h:panelGroup>
                         <h:outputLabel for="selected" value="Selected Date: "/>
                         <h:outputText id="selected"
-                                                value="#{dateEntry.selectedDate}"
-                                                style="font-weight: bold;">
+                                      value="#{dateEntry.selectedDate}"
+                                      style="font-weight: bold;">
                             <f:convertDateTime pattern="MMMM dd, yyyy"/>
                         </h:outputText>
                     </h:panelGroup>
@@ -46,9 +44,9 @@
                                    value="#{dateEntry.selectedDate}"
                                    timeZone="Canada/Mountain"
                                    pattern="MMM/dd/yyyy" />
-                        <h:commandButton id="submitDate" value="Submit Date">						
-							<f:ajax execute="@this cal" render="@all"/>
-						</h:commandButton>
+                        <ace:pushButton id="submitDate" value="Submit Date">
+							<ace:ajax execute="@this cal" render="@all"/>
+						</ace:pushButton>
             </h:panelGrid>
         </h:form>
     </ui:define>

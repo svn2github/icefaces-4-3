@@ -16,10 +16,8 @@
 
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html" 
-    xmlns:f="http://xmlns.jcp.org/jsf/core" 
-    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" 
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
     xmlns:ace="http://www.icefaces.org/icefaces/components"
-    xmlns:icecore="http://www.icefaces.org/icefaces/core"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets" 
     template="/resources/templates/content-template.xhtml">
     <ui:param name="title" value="#{msgs['example.ace.dateentry.locale.title']}"/>
@@ -29,27 +27,28 @@
         <h:form id="calLocaleForm">
             <ace:panel>
                 <h:panelGrid style="text-align: center;" width="100%">
-                    <h:panelGroup>
-                        <ace:simpleSelectOneMenu id="localeMenu" value="#{dateLocale.locale}" label="Locale: " labelPosition="left">
-                            <f:selectItem itemValue="default" itemLabel="default"/>
-                            <f:selectItem itemValue="fr_CA" itemLabel="French (Canada)"/>
-                            <f:selectItem itemValue="es_MX" itemLabel="Spanish (Mexico)"/>
-                            <f:selectItem itemValue="pt_BR" itemLabel="Portuguese (Brazil)"/>
-                            <f:selectItem itemValue="zh_HK" itemLabel="Chinese (Hong Kong)"/>
-                            <f:selectItem itemValue="ko_KR" itemLabel="Korean (South Korea)"/>
-                            <f:selectItem itemValue="ja_JP" itemLabel="Japanese (Japan)"/>
-                            <f:selectItem itemValue="it_IT" itemLabel="Italian (Italy)"/>
-                            <f:selectItem itemValue="de_DE" itemLabel="German (Germany)"/>
-                            <f:selectItem itemValue="ru_RU" itemLabel="Russian (Russia)"/>
-                            <ace:ajax render="calLocale"/>
-                        </ace:simpleSelectOneMenu>
-                    </h:panelGroup>
-                    
+                    <ace:simpleSelectOneMenu id="localeMenu"
+                                             value="#{dateLocale.locale}"
+                                             label="Locale: "
+                                             labelPosition="left">
+                        <f:selectItem itemValue="default" itemLabel="default"/>
+                        <f:selectItem itemValue="fr_CA" itemLabel="French (Canada)"/>
+                        <f:selectItem itemValue="es_MX" itemLabel="Spanish (Mexico)"/>
+                        <f:selectItem itemValue="pt_BR" itemLabel="Portuguese (Brazil)"/>
+                        <f:selectItem itemValue="zh_HK" itemLabel="Chinese (Hong Kong)"/>
+                        <f:selectItem itemValue="ko_KR" itemLabel="Korean (South Korea)"/>
+                        <f:selectItem itemValue="ja_JP" itemLabel="Japanese (Japan)"/>
+                        <f:selectItem itemValue="it_IT" itemLabel="Italian (Italy)"/>
+                        <f:selectItem itemValue="de_DE" itemLabel="German (Germany)"/>
+                        <f:selectItem itemValue="ru_RU" itemLabel="Russian (Russia)"/>
+                        <ace:ajax render="calLocale"/>
+                    </ace:simpleSelectOneMenu>
                 </h:panelGrid>
             </ace:panel>
             
             <h:panelGrid style="margin-left: auto; margin-right: auto; text-align: center;" width="100">
-                        <ace:dateTimeEntry id="calLocale" locale="#{dateLocale.locale}"
+                <ace:dateTimeEntry id="calLocale"
+                                   locale="#{dateLocale.locale}"
                                    value="#{dateLocale.selectedDate}"
                                    timeZone="Canada/Mountain"
                                    pattern="MMM/dd/yyyy"/>

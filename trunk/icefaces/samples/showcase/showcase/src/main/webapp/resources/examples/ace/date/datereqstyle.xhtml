@@ -16,10 +16,8 @@
 
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html" 
-    xmlns:f="http://xmlns.jcp.org/jsf/core" 
-    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" 
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
     xmlns:ace="http://www.icefaces.org/icefaces/components"
-    xmlns:icecore="http://www.icefaces.org/icefaces/core"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets" 
     template="/resources/templates/content-template.xhtml">
     <ui:param name="title" value="#{msgs['example.ace.dateentry.reqStyle.title']}"/>
@@ -27,7 +25,6 @@
 
     <ui:define name="example">
         <h:form id="form1">
-
             <ace:panel>
                 <h:panelGrid style="text-align: center;" width="100%">
                     <h:panelGroup>
@@ -50,37 +47,45 @@
             <ace:panel header="Color Customization">
                 <h:panelGrid width="100%" columns="3" columnClasses="col25,col25,col50"
                              cellpadding="6" cellspacing="6">
-                        <h:outputLabel for="reqColor" value="Required Color Style:"/>
-                        <ace:simpleSelectOneMenu id="reqColor" value="#{dateReqStyle.reqColor}"
-                                         style="width: 150px;" disabled="#{dateReqStyle.useTheme}">
-										 <ace:ajax execute="@this" />
-                            <f:selectItem itemValue="blueRS" itemLabel="Blue"/>
-                            <f:selectItem itemValue="greenRS" itemLabel="Green"/>
-                            <f:selectItem itemValue="redRS" itemLabel="Red"/>
-                        </ace:simpleSelectOneMenu>
-                        <ace:message for="reqColor"/>
+                    <h:outputLabel for="reqColor" value="Required Color Style:"/>
+                    <ace:simpleSelectOneMenu id="reqColor"
+                                             value="#{dateReqStyle.reqColor}"
+                                             style="width: 150px;"
+                                             disabled="#{dateReqStyle.useTheme}">
+                        <ace:ajax execute="@this" />
+                        <f:selectItem itemValue="blueRS" itemLabel="Blue"/>
+                        <f:selectItem itemValue="greenRS" itemLabel="Green"/>
+                        <f:selectItem itemValue="redRS" itemLabel="Red"/>
+                    </ace:simpleSelectOneMenu>
+                    <ace:message for="reqColor"/>
                     
-                        <h:outputLabel for="optColor" value="Optional Color Style:"/>
-                        <ace:simpleSelectOneMenu id="optColor" value="#{dateReqStyle.optColor}"
-                                         style="width: 150px;" disabled="#{dateReqStyle.useTheme}">
-										 <ace:ajax execute="@this" />
-                            <f:selectItem itemValue="blueRS" itemLabel="Blue"/>
-                            <f:selectItem itemValue="greenRS" itemLabel="Green"/>
-                            <f:selectItem itemValue="redRS" itemLabel="Red"/>
-                        </ace:simpleSelectOneMenu>
-                        <ace:message for="optColor"/>
+                    <h:outputLabel for="optColor" value="Optional Color Style:"/>
+                    <ace:simpleSelectOneMenu id="optColor"
+                                             value="#{dateReqStyle.optColor}"
+                                             style="width: 150px;"
+                                             disabled="#{dateReqStyle.useTheme}">
+                        <ace:ajax execute="@this" />
+                        <f:selectItem itemValue="blueRS" itemLabel="Blue"/>
+                        <f:selectItem itemValue="greenRS" itemLabel="Green"/>
+                        <f:selectItem itemValue="redRS" itemLabel="Red"/>
+                    </ace:simpleSelectOneMenu>
+                    <ace:message for="optColor"/>
                 </h:panelGrid>
 				<h:panelGroup>
-					<h:selectBooleanCheckbox id="useTheme" value="#{dateReqStyle.useTheme}" >
-                        <f:ajax execute="@this" render="@all"/>
-					</h:selectBooleanCheckbox>
+					<ace:checkboxButton id="useTheme"
+                                        value="#{dateReqStyle.useTheme}" >
+                        <ace:ajax execute="@this" render="@all"/>
+					</ace:checkboxButton>
 					<h:outputLabel for="useTheme" value=" No custom styling (use theme)" />
 				</h:panelGroup>
             </ace:panel>
        </h:form>
        <h:form id="form">             
-            <ace:panel header="Date Entry" styleClass="#{dateReqStyle.useTheme ? '' : 'required-styling-demo'}">
-                <h:panelGrid id="calendarPanel" width="100%" columns="2">
+            <ace:panel header="Date Entry"
+                       styleClass="#{dateReqStyle.useTheme ? '' : 'required-styling-demo'}">
+                <h:panelGrid id="calendarPanel"
+                             width="100%"
+                             columns="2">
                     <ace:dateTimeEntry id="calReq"
                                        value="#{dateReqStyle.selectedDate1}"
                                        timeZone="Canada/Mountain"
@@ -107,9 +112,9 @@
                                        styleClass="#{dateReqStyle.optColor}"/>
                     <ace:message id="calOptMsg" for="calOpt"/>
                 </h:panelGrid>
-                <h:commandButton id="submitDate" value="Submit">
-						<f:ajax execute="@this calReq calOpt" render="@all"/>
-				</h:commandButton>
+                <ace:pushButton id="submitDate" value="Submit">
+                    <ace:ajax execute="@this calReq calOpt" render="@all"/>
+				</ace:pushButton>
             </ace:panel>
         </h:form>
 		<ui:include src="/resources/ice.samples.showcase/reqStyleCss.xhtml" />

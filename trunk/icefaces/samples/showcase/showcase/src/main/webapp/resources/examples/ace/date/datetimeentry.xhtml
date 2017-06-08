@@ -16,10 +16,8 @@
 
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html" 
-    xmlns:f="http://xmlns.jcp.org/jsf/core" 
-    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" 
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
     xmlns:ace="http://www.icefaces.org/icefaces/components"
-    xmlns:icecore="http://www.icefaces.org/icefaces/core"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets" 
     template="/resources/templates/content-template.xhtml">
     <ui:param name="title" value="#{msgs['example.ace.dateentry.timeentry.title']}"/>
@@ -27,7 +25,6 @@
 
     <ui:define name="example">
         <h:form id="form">
-
             <ace:panel>
                 <h:panelGrid style="text-align: center;" width="100%">
                     <h:panelGroup>
@@ -54,17 +51,20 @@
                 </h:panelGrid>
             </ace:panel>
             
-            <h:panelGrid id="calendarPanel" width="50%"
-                         style="margin-left: auto; margin-right: auto; text-align: left;"
-                         cellspacing="8" cellpadding="8">
-                <h:selectOneRadio id="timeType" value="#{dateTime.timeType}"
+            <h:panelGrid id="calendarPanel"
+                         width="60%"
+                         style="margin-left: auto; margin-right: auto; text-align: center;"
+                         cellspacing="8"
+                         cellpadding="8">
+                <ace:radioButtons id="timeType"
+                                  value="#{dateTime.timeType}"
                                   valueChangeListener="#{dateTime.typeChanged}"
                                   required="true">
                     <f:selectItem itemValue="both" itemLabel="Time and Date"/>
                     <f:selectItem itemValue="time" itemLabel="Time Only"/>
                     <f:selectItem itemValue="date" itemLabel="Date Only"/>
-                    <f:ajax execute="@this" render="@all"/>
-                </h:selectOneRadio>
+                    <ace:ajax />
+                </ace:radioButtons>
                 
                 <ace:dateTimeEntry id="cal"
                                    value="#{dateTime.selectedDate}"
@@ -74,9 +74,9 @@
                                    showButtonPanel="false"
                                    valueChangeListener="#{dateTime.valueChanged}"/>
                 <h:panelGroup>
-                    <h:commandButton id="submitDate" value="Submit">
-						<f:ajax execute="@this cal" render="@all"/>
-					</h:commandButton>
+                    <ace:pushButton id="submitDate" value="Submit">
+						<ace:ajax execute="@this cal" render="@all"/>
+					</ace:pushButton>
                     <ace:message for="cal"/>
                 </h:panelGroup>
             </h:panelGrid>

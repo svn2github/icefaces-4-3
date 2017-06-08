@@ -17,9 +17,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
-	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
 	xmlns:ace="http://www.icefaces.org/icefaces/components"
-	xmlns:icecore="http://www.icefaces.org/icefaces/core"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	template="/resources/templates/content-template.xhtml">
 	<ui:param name="title" value="#{msgs['example.ace.dateentry.ajax.title']}"/>
@@ -50,20 +48,24 @@
 				style="margin-left: auto; margin-right: auto; text-align: center;"
 				width="100">
 				<h:panelGroup>
-					<h:selectBooleanCheckbox id="popupIn" value="#{dateAjax.popup}">
-						<f:ajax execute="@this" render="calendarPanel" event="click" />
-					</h:selectBooleanCheckbox>
+					<ace:checkboxButton id="popupIn" value="#{dateAjax.popup}">
+						<ace:ajax execute="@this" render="calendarPanel"  />
+					</ace:checkboxButton>
 					<h:outputLabel for="popupIn" value=" Display as Popup" />
 				</h:panelGroup>
 
-				<ace:dateTimeEntry id="cal" value="#{dateAjax.selectedDate}"
-					timeZone="Canada/Mountain" pattern="MMM/dd/yyyy"
-					renderAsPopup="#{dateAjax.popup}" styleClass="long-text-input">
+				<ace:dateTimeEntry id="cal"
+								   value="#{dateAjax.selectedDate}"
+					               timeZone="Canada/Mountain"
+								   pattern="MMM/dd/yyyy"
+					               renderAsPopup="#{dateAjax.popup}"
+								   styleClass="long-text-input">
 					<ace:ajax event="dateSelect"
-                                     listener="#{dateAjax.dateSelectListener}"
-                                     render="selectedDate"/>
+                              listener="#{dateAjax.dateSelectListener}"
+                              render="selectedDate"/>
 					<ace:ajax event="dateTextChange"
-						listener="#{dateAjax.dateTextChangeListener}" render="selectedDate @this" />
+							  listener="#{dateAjax.dateTextChangeListener}"
+							  render="selectedDate @this" />
 				</ace:dateTimeEntry>
 			</h:panelGrid>
 		</h:form>

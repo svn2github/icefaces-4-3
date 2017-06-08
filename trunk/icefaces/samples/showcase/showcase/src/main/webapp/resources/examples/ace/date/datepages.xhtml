@@ -16,10 +16,8 @@
 
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html" 
-    xmlns:f="http://xmlns.jcp.org/jsf/core" 
-    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" 
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
     xmlns:ace="http://www.icefaces.org/icefaces/components"
-    xmlns:icecore="http://www.icefaces.org/icefaces/core"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets" 
     template="/resources/templates/content-template.xhtml">
     <ui:param name="title" value="#{msgs['example.ace.dateentry.pages.title']}"/>
@@ -32,8 +30,8 @@
                     <h:panelGroup>
                         <h:outputLabel for="selected" value="Selected Date: "/>
                         <h:outputText id="selected"
-                                                value="#{datePages.selectedDate}"
-                                                style="font-weight: bold;">
+                                      value="#{datePages.selectedDate}"
+                                      style="font-weight: bold;">
                             <f:convertDateTime pattern="MMMM dd, yyyy"/>
                         </h:outputText>
                     </h:panelGroup>
@@ -48,15 +46,16 @@
 								   timeZone="Canada/Mountain"
 								   pattern="MMM/dd/yyyy">
                     <ace:ajax event="dateSelect"
-                                     listener="#{datePages.dateSelectListener}"
-                                     render="@this selected"/>
+                              listener="#{datePages.dateSelectListener}"
+                              render="@this selected"/>
                 </ace:dateTimeEntry>
-                <h:selectOneMenu id="pages" value="#{datePages.pages}">
-                    <f:selectItem itemLabel="one page" itemValue="1"/>
-                    <f:selectItem itemLabel="two pages" itemValue="2"/>
-                    <f:selectItem itemLabel="three pages" itemValue="3"/>
-                    <f:ajax execute="@this" event="change" render="@form"/>
-                </h:selectOneMenu>
+                <ace:simpleSelectOneMenu id="pages"
+                                         value="#{datePages.pages}">
+                    <f:selectItem itemLabel="one month" itemValue="1"/>
+                    <f:selectItem itemLabel="two months" itemValue="2"/>
+                    <f:selectItem itemLabel="three months" itemValue="3"/>
+                    <ace:ajax />
+                </ace:simpleSelectOneMenu>
                 
             </h:panelGrid>
         </h:form>
