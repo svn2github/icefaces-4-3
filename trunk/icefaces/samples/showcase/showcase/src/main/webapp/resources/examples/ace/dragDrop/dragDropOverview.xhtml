@@ -17,10 +17,7 @@
 
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
-    xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
     xmlns:ace="http://www.icefaces.org/icefaces/components"
-    xmlns:icecore="http://www.icefaces.org/icefaces/core"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     template="/resources/templates/content-template.xhtml">
     <ui:param name="title" value="#{msgs['example.ace.dragDrop.title']}"/>
@@ -30,18 +27,20 @@
         <h:form id="form" style="overflow-y:auto;">
             <h:panelGrid width="100%" columns="2"> 
                 <ace:dataTable id="sortingList"
-                                         value="#{dragDropOverviewBean.items}"
-                                         var="draggableItem"
-                                         style="width: 25%;">
+                               value="#{dragDropOverviewBean.items}"
+                               var="draggableItem"
+                               style="width: 25%;">
 
                     <ace:column headerText="Sort us please">
                         <ace:panel id="item" header="#{draggableItem.name}">
-                            <h:panelGrid>
-                                <h:graphicImage id="itemImg" value="#{draggableItem.image}" alt="#{draggableItem.name}"/>
-                            </h:panelGrid>
-                            <ace:draggable forValue="item" revert="true" opacity="0.5" scope="#{draggableItem.type}"/>
+                            <ace:graphicImage id="itemImg"
+                                              value="#{draggableItem.image}"
+                                              alt="#{draggableItem.name}"/>
+                            <ace:draggable forValue="item"
+                                           revert="true"
+                                           opacity="0.5"
+                                           scope="#{draggableItem.type}"/>
                         </ace:panel>
-                        
                     </ace:column>
 
                 </ace:dataTable>
@@ -51,10 +50,14 @@
                     <ace:panel id="electronics" header="Electronics">
                         <h:panelGrid columns="2" width="100%">
                             <ace:panel id="electronicsDrop1" styleClass="droppableSlot">
-                                <ace:droppable tolerance="fit" scope="electronicDevice" activeStyleClass="activatedSlot"/>
+                                <ace:droppable tolerance="fit"
+                                               scope="electronicDevice"
+                                               activeStyleClass="activatedSlot"/>
                             </ace:panel>
                             <ace:panel id="electronicsDrop2" styleClass="droppableSlot">
-                                <ace:droppable tolerance="fit" scope="electronicDevice" activeStyleClass="activatedSlot"/>
+                                <ace:droppable tolerance="fit"
+                                               scope="electronicDevice"
+                                               activeStyleClass="activatedSlot"/>
                             </ace:panel>
                         </h:panelGrid>
                     </ace:panel>
@@ -62,10 +65,14 @@
                     <ace:panel id="groceries" header="Groceries">
                         <h:panelGrid columns="2" width="100%">
                             <ace:panel id="groceriesDrop1" styleClass="droppableSlot">
-                                <ace:droppable tolerance="fit" scope="food" activeStyleClass="activatedSlot"/>
+                                <ace:droppable tolerance="fit"
+                                               scope="food"
+                                               activeStyleClass="activatedSlot"/>
                             </ace:panel>
                             <ace:panel id="groceriesDrop2" styleClass="droppableSlot">
-                                <ace:droppable tolerance="fit" scope="food" activeStyleClass="activatedSlot"/>
+                                <ace:droppable tolerance="fit"
+                                               scope="food"
+                                               activeStyleClass="activatedSlot"/>
                             </ace:panel>
                         </h:panelGrid>
                     </ace:panel>

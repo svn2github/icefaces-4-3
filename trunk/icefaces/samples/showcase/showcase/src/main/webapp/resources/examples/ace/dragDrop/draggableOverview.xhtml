@@ -18,9 +18,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
     xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
     xmlns:ace="http://www.icefaces.org/icefaces/components"
-    xmlns:icecore="http://www.icefaces.org/icefaces/core"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     template="/resources/templates/content-template.xhtml">
     <ui:param name="title" value="#{msgs['example.ace.draggable.title']}"/>
@@ -28,76 +26,89 @@
 
     <ui:define name="example">
 	   
-       <h:form id="form" style="overflow-y:auto;">			
-		 <div id="div1"> 
-           <ace:panel id="draggableSetupPanel" header="Draggable Component Configuration Panel">
+        <h:form id="form" style="overflow-y:auto;">
+            <h:panelGroup id="div1">
+                <ace:panel id="draggableSetupPanel"
+                           header="Draggable Component Configuration Panel">
                        
-                        <h:panelGrid columns="2" styleClass="centeredPanelGridWithLeftJustifiedText">
-                           <h:outputLabel id="axisMovementConstraintLabel" for="axisMovementConstraintSelector" value="Axis movement constraint:" />
-                        <ace:simpleSelectOneMenu id="axisMovementConstraintSelector" value="#{draggableOverviewBean.axisMovementConstraint}" title="Limit dragging to either X(horizontal) or Y (vertical) axis">
-							<ace:ajax execute="@this" />
+                    <h:panelGrid columns="2" styleClass="centeredPanelGridWithLeftJustifiedText">
+                        <h:outputLabel id="axisMovementConstraintLabel" for="axisMovementConstraintSelector" value="Axis movement constraint:" />
+                        <ace:simpleSelectOneMenu id="axisMovementConstraintSelector"
+                                                 value="#{draggableOverviewBean.axisMovementConstraint}"
+                                                 title="Limit dragging to either X(horizontal) or Y (vertical) axis">
+                            <ace:ajax execute="@this" />
                             <f:selectItem itemValue="x or y" itemLabel="any direction"/>
                             <f:selectItem itemValue="x" itemLabel="X axis only"/>
                             <f:selectItem itemValue="y" itemLabel="Y axis only"/>
                         </ace:simpleSelectOneMenu>
 
                         <h:outputLabel id="cloneHelperLabel" for="cloneHelperSelector" value="Clone helper mode (show image copy when dragging):"/>
-                        <ace:simpleSelectOneMenu id="cloneHelperSelector" value="#{draggableOverviewBean.helperMode}" title="Allow user to keep the component in original location while displaying its clone during dragging">
-							<ace:ajax execute="@this" />
+                        <ace:simpleSelectOneMenu id="cloneHelperSelector"
+                                            value="#{draggableOverviewBean.helperMode}"
+                                            title="Allow user to keep the component in original location while displaying its clone during dragging">
+                            <ace:ajax execute="@this" />
                             <f:selectItem itemValue="original" itemLabel="no"/>
                             <f:selectItem itemValue="clone" itemLabel="yes"/>
                         </ace:simpleSelectOneMenu>
                         
                         <h:outputLabel id="containmentConstraintLabel" for="containmentConstraintSelector" value="Containment:" />
-                        <ace:simpleSelectOneMenu id="containmentConstraintSelector" value="#{draggableOverviewBean.containmentConstraint}" title="Force draggable component to stay within its parent container area">
-							<ace:ajax execute="@this" />
+                        <ace:simpleSelectOneMenu id="containmentConstraintSelector"
+                                            value="#{draggableOverviewBean.containmentConstraint}"
+                                            title="Force draggable component to stay within its parent container area">
+                            <ace:ajax execute="@this" />
                             <f:selectItem itemValue="#div1" itemLabel="no"/>
                             <f:selectItem itemValue="parent" itemLabel="yes"/>
                         </ace:simpleSelectOneMenu>
                         
                         <h:outputLabel id="gridMovementLabel" for="gridMovementSelector" value="Grid movement mode:" />
-                        <ace:simpleSelectOneMenu id="gridMovementSelector" value="#{draggableOverviewBean.gridMode}">
-							<ace:ajax execute="@this" />
-                            <f:selectItem itemValue="1,1" itemLabel="none"/>
-                            <f:selectItem itemValue="10,40" itemLabel="10x40 pixels"/>
-                            <f:selectItem itemValue="50,100" itemLabel="50x100 pixels"/>
+                        <ace:simpleSelectOneMenu id="gridMovementSelector"
+                                            value="#{draggableOverviewBean.gridMode}">
+                             <ace:ajax execute="@this" />
+                             <f:selectItem itemValue="1,1" itemLabel="none"/>
+                             <f:selectItem itemValue="10,40" itemLabel="10x40 pixels"/>
+                             <f:selectItem itemValue="50,100" itemLabel="50x100 pixels"/>
                         </ace:simpleSelectOneMenu>
                         
                         <h:outputLabel id="revertLabel" for="gridMovementSelector" value="Revert:"/>
-                        <ace:simpleSelectOneMenu id="revertSelector" value="#{draggableOverviewBean.revert}" title="Enables the component to return back to its original location, when a draggable is not dropped onto a matching droppable">
-							<ace:ajax execute="@this" />
+                        <ace:simpleSelectOneMenu id="revertSelector"
+                                            value="#{draggableOverviewBean.revert}"
+                                            title="Enables the component to return back to its original location, when a draggable is not dropped onto a matching droppable">
+                            <ace:ajax execute="@this" />
                             <f:selectItem itemValue="false" itemLabel="no"/>
                             <f:selectItem itemValue="true" itemLabel="yes"/>
                         </ace:simpleSelectOneMenu>
                         
                         <h:outputLabel id="opacityLabel" for="gridMovementSelector" value="Opacity:"/>
-                        <ace:simpleSelectOneMenu id="opacitySelector" value="#{draggableOverviewBean.opacity}" title="Set draggable component opacity during movment. Value must be between 0 and 1">
-							<ace:ajax execute="@this" />
+                        <ace:simpleSelectOneMenu id="opacitySelector"
+                                            value="#{draggableOverviewBean.opacity}"
+                                            title="Set draggable component opacity during movment. Value must be between 0 and 1">
+                            <ace:ajax execute="@this" />
                             <f:selectItem itemValue="1.0" itemLabel="1"/>
                             <f:selectItem itemValue="0.5" itemLabel="0.5"/>
                             <f:selectItem itemValue="0.2" itemLabel="0.2"/>
                         </ace:simpleSelectOneMenu>
 
-                    </h:panelGrid>                    
+                    </h:panelGrid>
                      
-           </ace:panel>
+                </ace:panel>
            
            <br/>
            <br/>
            
-           <ace:panel id="draggableImagePanel">
-               <h:graphicImage id="sampleImage" value="#{draggableOverviewBean.image.path}"
-                               alt="#{draggableOverviewBean.image.description}">
-                   <ace:draggable axis="#{draggableOverviewBean.axisMovementConstraint}"
-                                            helper="#{draggableOverviewBean.helperMode}"
-                                            containment="#{draggableOverviewBean.containmentConstraint}"
-                                            grid="#{draggableOverviewBean.gridMode}"
-                                            revert="#{draggableOverviewBean.revert}"
-                                            opacity="#{draggableOverviewBean.opacity}" />
+                <ace:panel id="draggableImagePanel">
+                    <ace:graphicImage id="sampleImage"
+                                 value="#{draggableOverviewBean.image.path}"
+                                alt="#{draggableOverviewBean.image.description}">
+                        <ace:draggable axis="#{draggableOverviewBean.axisMovementConstraint}"
+                                  helper="#{draggableOverviewBean.helperMode}"
+                                  containment="#{draggableOverviewBean.containmentConstraint}"
+                                  grid="#{draggableOverviewBean.gridMode}"
+                                  revert="#{draggableOverviewBean.revert}"
+                                  opacity="#{draggableOverviewBean.opacity}" />
 											
-               </h:graphicImage>
-           </ace:panel>           
-          </div>
+                   </ace:graphicImage>
+                </ace:panel>
+            </h:panelGroup>
         </h:form>
         
     </ui:define>
