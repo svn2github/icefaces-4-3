@@ -123,6 +123,18 @@ public class ListRenderer extends CoreRenderer {
         String style = list.getStyle();
         Boolean mini = list.isCompact();
 
+		// Make sure filters and sorting are applied in the current data model at this stage of the lifecycle
+		// when using Mojarra (in some scenarios, filters and sorting aren't being applied at this point).
+		if (!EnvUtils.isMyFaces()) {
+				if (list.savedFilterState != null) {
+					list.savedFilterState.apply(list);
+					list.setFilteredData(list.processFilters(context));
+				}
+		}
+		if (list.savedSortState != null) {
+			list.setFilteredData(list.processFilters(context));
+			list.processSorting();
+		}
         list.getDataModel(); // DataModel init determines if some features are available
 
         styleClass = styleClass == null ? containerStyleClass : styleClass + " " + containerStyleClass;

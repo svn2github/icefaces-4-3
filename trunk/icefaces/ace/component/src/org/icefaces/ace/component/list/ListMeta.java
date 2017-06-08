@@ -69,7 +69,15 @@ import java.util.Set;
             tlddoc ="Fired when an item is moved within the List."),
     @ClientEvent(name="migrate", defaultRender="@all", defaultExecute="@this",
             javadoc="Fired when an item is migrated to this List.",
-            tlddoc ="Fired when an item is migrated to this List.")
+            tlddoc ="Fired when an item is migrated to this List."),
+	@ClientEvent(name="sort",
+			javadoc="Fired when a change to the current sort occurs on the list.",
+			tlddoc="Fired when a change to the current sort occurs on the list.",
+			defaultRender="@all", defaultExecute="@this"),
+	@ClientEvent(name="filter",
+			javadoc="Fired when a change to the current filters occurs on the list.",
+			tlddoc="Fired when a change to the current filters occurs on the list.",
+			defaultRender="@all", defaultExecute="@this"),
     },
     defaultEvent = "select"
 )
