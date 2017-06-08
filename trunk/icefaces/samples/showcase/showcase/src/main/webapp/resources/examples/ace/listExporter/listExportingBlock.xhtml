@@ -32,7 +32,7 @@
                 <h:panelGrid columns="2" cellspacing="6" cellpadding="6">
                     <h:outputLabel for="multiIn" value="Export Selected Items Only:"/>
                     <h:selectBooleanCheckbox id="multiIn" value="#{backing.selectedItemsOnly}">
-                        <f:ajax event="click" render="@this list"/>
+                        <f:ajax event="click" render="@this listExporter"/>
                     </h:selectBooleanCheckbox>
                 </h:panelGrid>
             </ace:panel>
