@@ -16,10 +16,7 @@
 
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
-    xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
     xmlns:ace="http://www.icefaces.org/icefaces/components"
-    xmlns:icecore="http://www.icefaces.org/icefaces/core"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     template="/resources/templates/content-template.xhtml">
     <ui:param name="title" value="#{msgs['example.ace.dialog.dialogMaxRestore.title']}"/>
@@ -27,24 +24,35 @@
 
     <ui:define name="example">
             
-            <center>
-                <h:commandButton id="show" value="Show Dialog" onclick="ice.ace.instance('#{dialogMaxRestore.clientId}').show();" type="button"/>
-            </center>
+        <h:panelGroup style="display:block; text-align:center;">
+            <ace:pushButton id="show" value="Show Dialog"
+                            type="button">
+                <ace:ajax execute="@none" render="@none"
+                          onStart="ice.ace.instance('#{dialogMaxRestore.clientId}').show(); return false;"/>
+            </ace:pushButton>
+        </h:panelGroup>
             
-            <ace:dialog id="dialog" binding="#{dialogMaxRestore}"
-                               header="Dialog maximize/restore example"
-                               showEffect="clip"
-                               hideEffect="fade"
-                               maximizableRestorable="#{dialogMaxRestoreBean.maximizableRestorable}">
-                 <h:form id="inputForm">    
-                    <h:panelGrid>
-                            <h:inputText id="valueIn" value="#{dialogMaxRestoreBean.value}" />	       	
-							<h:commandButton id="submitInput" value="Submit" onclick="ice.ace.instance('#{dialogMaxRestore.clientId}').hide();"/>							
-                    </h:panelGrid>
-                 </h:form>            
-            </ace:dialog>
+        <ace:dialog id="dialog"
+                    binding="#{dialogMaxRestore}"
+                    header="Dialog maximize/restore example"
+                    showEffect="clip"
+                    hideEffect="fade"
+                    maximizableRestorable="#{dialogMaxRestoreBean.maximizableRestorable}">
+            <h:form id="inputForm">
+                <h:panelGrid>
+                    <ace:textEntry id="valueIn"
+                                   label="Enter value: "
+                                   labelPosition="left"
+                                   value="#{dialogMaxRestoreBean.value}" />
+                    <ace:pushButton id="submitInput" value="Submit">
+                        <ace:ajax execute="@form" render="@all"
+                                  onComplete="ice.ace.instance('#{dialogMaxRestore.clientId}').hide();" />
+                    </ace:pushButton>
+                </h:panelGrid>
+            </h:form>
+        </ace:dialog>
         
-        	<h:form id="outputForm">
+        <h:form id="outputForm">
             <h:panelGrid id="outputPanel" columns="2">
                 <h:outputLabel value="Entered text: " for="enteredText"/>
                 <h:outputText id="enteredText" value="#{dialogMaxRestoreBean.value}"/>

@@ -16,21 +16,22 @@
 
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
-    xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
     xmlns:ace="http://www.icefaces.org/icefaces/components"
-    xmlns:icecore="http://www.icefaces.org/icefaces/core"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     template="/resources/templates/content-template.xhtml">
     <ui:param name="title" value="#{msgs['example.ace.dialog.title']}"/>
     <ui:param name="description" value="#{msgs['example.ace.dialog.description']}"/>
 
     <ui:define name="example">
-        
-            <center>
-                <h:commandButton id="show" value="Show Dialog" onclick="ice.ace.instance('#{dialog.clientId}').show();" type="button"/>
-            </center>
-            
+
+            <h:panelGroup style="display:block; text-align:center;">
+                <ace:pushButton id="show" value="Show Dialog"
+                                type="button">
+                    <ace:ajax execute="@none" render="@none"
+                              onStart="ice.ace.instance('#{dialog.clientId}').show(); return false;"/>
+                </ace:pushButton>
+            </h:panelGroup>
+
             <ace:dialog id="dialog" binding="#{dialog}"
                                header="A sample dialog overview example"
                                closable="false"
@@ -43,14 +44,20 @@
                 <h:form id="inputForm">
                     <h:panelGrid columns="2" width="100%">
                         <h:outputLabel id="firstNameLabel" for="firstNameInputField" value="First Name:"/>
-                        <h:inputText id="firstNameInputField" value="#{dialogBean.firstName}" />
+                        <ace:textEntry id="firstNameInputField"
+                                       value="#{dialogBean.firstName}" />
 
                         <h:outputLabel id="lastNameLabel" for="lastNameInputField" value="Last Name:"/>
-                        <h:inputText id="lastNameInputField" value="#{dialogBean.lastName}"/>
+                        <ace:textEntry id="lastNameInputField"
+                                       value="#{dialogBean.lastName}"/>
                     </h:panelGrid>
 
                     <h:panelGrid width="100%" style="text-align: center;">
-                        <h:commandButton id="submitBtn" value="Click me once done with input" onclick="ice.ace.instance('#{dialog.clientId}').hide();"/>
+                        <ace:pushButton id="submitBtn"
+                                        value="Click me once done with input">
+                            <ace:ajax execute="@form" render="@all"
+                                      onSuccess="ice.ace.instance('#{dialog.clientId}').hide(); "/>
+                        </ace:pushButton>
                     </h:panelGrid>
                 </h:form>
                 

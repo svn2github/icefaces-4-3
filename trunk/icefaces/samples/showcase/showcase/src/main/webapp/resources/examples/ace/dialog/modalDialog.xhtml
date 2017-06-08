@@ -17,9 +17,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
     xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
     xmlns:ace="http://www.icefaces.org/icefaces/components"
-    xmlns:icecore="http://www.icefaces.org/icefaces/core"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     template="/resources/templates/content-template.xhtml">
     <ui:param name="title" value="#{msgs['example.ace.dialog.modalDialog.title']}"/>
@@ -31,28 +29,32 @@
             <h:form id="inputForm">
 
             <h:panelGrid columns="2" width="100%">
-                <h:selectBooleanCheckbox id="draggableSelector" value="#{modalDialogBean.draggable}">
-                    <f:ajax execute="@this" render="@all"/>
-                </h:selectBooleanCheckbox>
+                <ace:checkboxButton id="draggableSelector" value="#{modalDialogBean.draggable}">
+                    <ace:ajax execute="@this" render="@all"/>
+                </ace:checkboxButton>
                 <h:outputLabel for="draggableSelector" value="select me if you want to drag the dialog window around"/>
-                <h:selectBooleanCheckbox id="modalSelector" value="#{modalDialogBean.modal}">
-                    <f:ajax execute="@this" render="@all"/>
-                </h:selectBooleanCheckbox>
+                <ace:checkboxButton id="modalSelector" value="#{modalDialogBean.modal}">
+                    <ace:ajax execute="@this" render="@all"/>
+                </ace:checkboxButton>
                 <h:outputLabel for="modalSelector" value="select me if you want to make the dialog modal"/>
             </h:panelGrid>
             </h:form>
-            <center>
-			<h:form id="bttnForm">
-                <h:commandButton id="show" value="Show Dialog"  onclick="ice.ace.instance('#{modalDialog.clientId}').show();return false;"/>
-			</h:form>
-            </center>
+            <h:panelGroup style="display:block; text-align: center;">
+			    <h:form id="bttnForm">
+                    <ace:pushButton id="show"
+                                    value="Show Dialog" >
+                        <ace:ajax onStart="ice.ace.instance('#{modalDialog.clientId}').show();return false;"/>
+			        </ace:pushButton>
+			     </h:form>
+            </h:panelGroup>
             
         </ace:panel>
 
-        <ace:dialog id="dialog" binding="#{modalDialog}"
-                           header="Dialog example"
-                           draggable="#{modalDialogBean.draggable}"
-                           modal="#{modalDialogBean.modal}">
+        <ace:dialog id="dialog"
+                    binding="#{modalDialog}"
+                    header="Dialog example"
+                    draggable="#{modalDialogBean.draggable}"
+                    modal="#{modalDialogBean.modal}">
 
             <h:panelGrid>
                 <h:outputText id="selectedDraggableOption" value="I am draggable" rendered="#{modalDialogBean.draggable}"/>

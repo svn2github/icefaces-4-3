@@ -16,10 +16,7 @@
 
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
-    xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
     xmlns:ace="http://www.icefaces.org/icefaces/components"
-    xmlns:icecore="http://www.icefaces.org/icefaces/core"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     template="/resources/templates/content-template.xhtml">
     <ui:param name="title" value="#{msgs['example.ace.dialog.serverDialog.title']}"/>
@@ -27,11 +24,14 @@
 
     <ui:define name="example">
         <h:form id="submitForm">
-            <center>
-                <h:commandButton id="show" value="#{'Show Dialog'}" actionListener="#{dialogServerBean.show}" type="button">
-                        <f:ajax execute="@this" render="@all"/>
-                </h:commandButton>
-            </center>
+            <h:panelGroup style="display:block; text-align:center;">
+                <ace:pushButton id="show"
+                                value="#{'Show Dialog'}"
+                                actionListener="#{dialogServerBean.show}"
+                                type="button">
+                    <ace:ajax execute="@this" render="@all"/>
+                </ace:pushButton>
+            </h:panelGroup>
         </h:form>
         <h:panelGroup>
             <ace:dialog id="dialogServer"
@@ -47,15 +47,19 @@
                 <h:form id="inputForm2">
                     <h:panelGrid columns="2" width="100%">
                         <h:outputLabel id="firstNameLabel" for="firstNameInputField" value="First Name:"/>
-                        <h:inputText id="firstNameInputField" value="#{dialogServerBean.firstName}" />
+                        <ace:textEntry id="firstNameInputField"
+                                       value="#{dialogServerBean.firstName}" />
 
                         <h:outputLabel id="lastNameLabel" for="lastNameInputField" value="Last Name:"/>
-                        <h:inputText id="lastNameInputField" value="#{dialogServerBean.lastName}"/>
+                        <ace:textEntry id="lastNameInputField"
+                                       value="#{dialogServerBean.lastName}"/>
                     </h:panelGrid>
 
                     <h:panelGrid width="100%" style="text-align: center;" columns="1">
-                        <h:commandButton id="submitServer" value="Server Submit" actionListener="#{dialogServerBean.hide}">
-                        </h:commandButton>
+                        <ace:pushButton id="submitServer"
+                                        value="Server Submit"
+                                        actionListener="#{dialogServerBean.hide}">
+                        </ace:pushButton>
                     </h:panelGrid>
                 </h:form>
                 
