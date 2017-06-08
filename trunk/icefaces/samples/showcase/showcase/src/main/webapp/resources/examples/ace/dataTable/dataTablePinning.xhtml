@@ -17,9 +17,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
     xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
     xmlns:ace="http://www.icefaces.org/icefaces/components"
-    xmlns:icecore="http://www.icefaces.org/icefaces/core"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     template="/resources/templates/content-template.xhtml">
     <ui:param name="title" value="#{msgs['example.ace.dataTable.pinning.title']}"/>
@@ -36,25 +34,39 @@
                            scrollable="true"
                            scrollHeight="200"
                            scrollWidthIE7="800">
-                <ace:column headerText="ID" footerText="ID" pinningOrder="#{dataTablePinning.pinOrder[0]}">
+                <ace:column headerText="ID"
+                            footerText="ID"
+                            pinningOrder="#{dataTablePinning.pinOrder[0]}">
                     <h:outputText  value="#{car.id}" />
                 </ace:column>
-                <ace:column headerText="Name" footerText="Name" pinningOrder="#{dataTablePinning.pinOrder[1]}">
+                <ace:column headerText="Name"
+                            footerText="Name"
+                            pinningOrder="#{dataTablePinning.pinOrder[1]}">
                     <h:outputText value="#{car.name}"/>
                 </ace:column>
-                <ace:column headerText="Chassis" footerText="Chassis" pinningOrder="#{dataTablePinning.pinOrder[2]}">
+                <ace:column headerText="Chassis"
+                            footerText="Chassis"
+                            pinningOrder="#{dataTablePinning.pinOrder[2]}">
                     <h:outputText value="#{car.chassis}"/>
                 </ace:column>
-                <ace:column headerText="Weight" footerText="Weight" pinningOrder="#{dataTablePinning.pinOrder[3]}">
+                <ace:column headerText="Weight"
+                            footerText="Weight"
+                            pinningOrder="#{dataTablePinning.pinOrder[3]}">
                     <h:outputText value="#{car.weight}lbs."/>
                 </ace:column>
-                <ace:column headerText="Accel" footerText="Accel" pinningOrder="#{dataTablePinning.pinOrder[4]}">
+                <ace:column headerText="Accel"
+                            footerText="Accel"
+                            pinningOrder="#{dataTablePinning.pinOrder[4]}">
                     <h:outputText value="#{car.acceleration}"/>
                 </ace:column>
-                <ace:column headerText="MPG" footerText="MPG" pinningOrder="#{dataTablePinning.pinOrder[5]}">
+                <ace:column headerText="MPG"
+                            footerText="MPG"
+                            pinningOrder="#{dataTablePinning.pinOrder[5]}">
                     <h:outputText  value="#{car.mpg}"/>
                 </ace:column>
-               <ace:column headerText="Cost" footerText="Cost" pinningOrder="#{dataTablePinning.pinOrder[6]}">
+                <ace:column headerText="Cost"
+                           footerText="Cost"
+                           pinningOrder="#{dataTablePinning.pinOrder[6]}">
                     <h:outputText id="costCell" value="#{car.cost}">
                         <f:convertNumber type="currency"
                                          currencySymbol="$"

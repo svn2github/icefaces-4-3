@@ -17,9 +17,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
     xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
     xmlns:ace="http://www.icefaces.org/icefaces/components"
-    xmlns:icecore="http://www.icefaces.org/icefaces/core"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     template="/resources/templates/content-template.xhtml">
     <ui:param name="title" value="#{msgs['example.ace.dataTable.scrolling.title']}"/>
@@ -29,31 +27,30 @@
         <h:form id="form">
             <h:panelGrid columns="3">
                 <h:outputLabel for="scrollingIn" value="Enable Scrolling:"/>
-                <h:selectBooleanCheckbox id="scrollingIn" value="#{dataTableScrolling.scrolling}">
-                    <f:ajax execute="@this" render="@all"/>
-                </h:selectBooleanCheckbox>
+                <ace:checkboxButton id="scrollingIn" value="#{dataTableScrolling.scrolling}">
+                    <ace:ajax execute="@this" render="@all"/>
+                </ace:checkboxButton>
                 <ace:message id="scrollMsg" for="scrollingIn"/>
                 
                 <h:outputLabel for="heightIn" value="Table Height (in pixels):"/>
-                <h:inputText id="heightIn" value="#{dataTableScrolling.height}"
+                <ace:textEntry id="heightIn" value="#{dataTableScrolling.height}"
                              required="true" size="3" maxlength="3"
                              disabled="#{!dataTableScrolling.scrolling}">
                     <f:validateLongRange minimum="60" maximum="500"/>
-                    <f:ajax execute="@this" render="@all"/>
-                </h:inputText>
+                    <ace:ajax execute="@this" render="@all"/>
+                </ace:textEntry>
                 <ace:message id="heightMsg" for="heightIn"/>
             </h:panelGrid>
         </h:form>
     
         <h:form id="form2">
-           <ace:dataTable id="carTable"
+            <ace:dataTable id="carTable"
                           value="#{dataTableScrolling.carsData}"
                           var="car"
                           scrollable="#{dataTableScrolling.scrolling}"
                           selectionMode="single"
-                          scrollHeight="#{dataTableScrolling.height}"
-                   >
-               <ace:ajax event="select" />
+                          scrollHeight="#{dataTableScrolling.height}">
+                <ace:ajax event="select" />
 
                 <ace:column headerText="ID" footerText="ID">
                     <h:outputText  value="#{car.id}"/>
@@ -106,7 +103,11 @@
         </h:form>
 
         <h:form id="form3" style="padding-top: 1em;">
-            <h:commandButton id="show" value="Show Table Popup" onclick="ice.ace.instance('#{dataTableScrollingDialogComponent.clientId}').show();" type="button"/>
+            <ace:pushButton id="show"
+                            value="Show Table Popup"
+                            type="button">
+                <ace:ajax execute="@form" render="@form" onStart="ice.ace.instance('#{dataTableScrollingDialogComponent.clientId}').show();"/>
+            </ace:pushButton>
 
             <ace:dialog id="dialog" binding="#{dataTableScrollingDialogComponent}"
                         header="Scrollable Table Sample"

@@ -17,9 +17,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
     xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
     xmlns:ace="http://www.icefaces.org/icefaces/components"
-    xmlns:icecore="http://www.icefaces.org/icefaces/core"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     template="/resources/templates/content-template.xhtml">
     <ui:param name="title" value="#{msgs['example.ace.dataTable.paginator.title']}"/>
@@ -29,18 +27,18 @@
         <h:form id="form">
             <h:panelGrid columns="3">
                 <h:outputLabel for="paginatorIn" value="Enable Paginator:"/>
-                <h:selectBooleanCheckbox id="paginatorIn" value="#{dataTablePaginator.paginator}">
-                    <f:ajax render="@form" execute="@this" />
-                </h:selectBooleanCheckbox>
+                <ace:checkboxButton id="paginatorIn" value="#{dataTablePaginator.paginator}">
+                    <ace:ajax render="@form" execute="@this" />
+                </ace:checkboxButton>
                 <ace:message id="pagMsg" for="paginatorIn"/>
                 
                 <h:outputLabel for="positionIn" value="Paginator Position:"/>
-                <h:selectOneRadio id="positionIn" value="#{dataTablePaginator.position}"
+                <ace:radioButtons id="positionIn" value="#{dataTablePaginator.position}"
                                   required="true"
                                   disabled="#{!dataTablePaginator.paginator}">
                     <f:selectItems value="#{dataTablePaginator.positionAvailable}"/>
-                    <f:ajax render="@this carTable" execute="@this" />
-                </h:selectOneRadio>
+                    <ace:ajax render="@this carTable" execute="@this" />
+                </ace:radioButtons>
                 <ace:message id="posMsg" for="positionIn"/>
 
                 <h:outputLabel for="fastControls" value="Enable Fast Forward and Fast Rewind:"/>

@@ -16,10 +16,8 @@
 
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html" 
-    xmlns:f="http://xmlns.jcp.org/jsf/core" 
-    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" 
-    xmlns:ace="http://www.icefaces.org/icefaces/components" 
-    xmlns:icecore="http://www.icefaces.org/icefaces/core"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:ace="http://www.icefaces.org/icefaces/components"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets" 
     template="/resources/templates/content-template.xhtml">
     <ui:param name="title" value="#{msgs['example.ace.dataTable.find.title']}"/>
@@ -28,36 +26,45 @@
     <ui:define name="example">
         <h:form id="form">
             <h:panelGroup styleClass="componentBox">
-                <h:panelGroup style="border: 1px solid #CDCDCD;" >
+                <h:panelGroup  >
                     <h:panelGrid columns="2" style="width:100%;">
-                            <h:panelGrid columns="2">
-                                <h:outputText value="Search Query:" />
-                                <h:inputText id="searchQuery" value="#{aceDataTableFind.searchQuery}" />
+                        <h:panelGrid columns="2">
+                            <h:outputLabel for="searchQuery" value="Search Query:" />
+                            <ace:textEntry id="searchQuery"
+                                           value="#{aceDataTableFind.searchQuery}" />
+                            <h:outputLabel for="caseSensitive" value="Case Sensitive:" />
+                            <ace:checkboxButton id="caseSensitive"
+                                                value="#{aceDataTableFind.caseSensitive}" />
 
-                                <h:outputText value="Case Sensitive:" />
-                                <h:selectBooleanCheckbox id="caseSensitive" value="#{aceDataTableFind.caseSensitive}" />
+                            <h:outputLabel for="selectedColumns" value="Columns To Search:" />
+                            <h:selectManyCheckbox id="selectedColumns"
+                                                  value="#{aceDataTableFind.selectedColumns}" >
+                                <f:selectItems value="#{aceDataTableFind.COLUMNS}"/>
+                            </h:selectManyCheckbox>
+                            <h:outputLabel for="selectedMode" value="Search Type:" />
+                            <ace:radioButtons id="selectedMode"
+                                              value="#{aceDataTableFind.selectedSearchMode}">
+                                <f:selectItems value="#{aceDataTableFind.SEARCH_MODES}"/>
+                            </ace:radioButtons>
 
-                                <h:outputText value="Columns To Search:" />
-                                <h:selectManyCheckbox id="selectedColumns" value="#{aceDataTableFind.selectedColumns}" >
-                                    <f:selectItems value="#{aceDataTableFind.COLUMNS}"/>
-                                </h:selectManyCheckbox>
-
-                                <h:outputText value="Search Type:" />
-                                <h:selectOneRadio id="selectedMode" value="#{aceDataTableFind.selectedSearchMode}">
-                                    <f:selectItems value="#{aceDataTableFind.SEARCH_MODES}"/>
-                                </h:selectOneRadio>
-
-                                <h:outputText value="Effect To Use:" />
-                                <h:selectOneRadio id="selectedType" value="#{aceDataTableFind.selectedEffectType}">
-                                    <f:selectItems value="#{aceDataTableFind.EFFECT_TYPES}"/>
-                                </h:selectOneRadio>
-                            </h:panelGrid>
-                            <h:panelGrid columns="1">
-                                <h:commandButton id="findNext" value="Find Next" actionListener="#{aceDataTableFind.find}" style="float:right;" />
-                                <h:commandButton id="reset" value="Reset" actionListener="#{aceDataTableFind.reset}" style="float:right;" />
-                            </h:panelGrid>
+                            <h:outputText value="Effect To Use:" />
+                            <ace:radioButtons id="selectedType"
+                                              value="#{aceDataTableFind.selectedEffectType}">
+                                <f:selectItems value="#{aceDataTableFind.EFFECT_TYPES}"/>
+                            </ace:radioButtons>
+                        </h:panelGrid>
+                        <h:panelGrid columns="1">
+                            <ace:pushButton id="findNext"
+                                            value="Find Next"
+                                            actionListener="#{aceDataTableFind.find}"
+                                            style="float:right;" />
+                            <ace:pushButton id="reset"
+                                            value="Reset"
+                                            actionListener="#{aceDataTableFind.reset}"
+                                            style="float:right;" />
+                        </h:panelGrid>
                     </h:panelGrid>
-                            <ace:messages id="msgs" for="@inView"/>
+                    <ace:messages id="msgs" for="@inView"/>
                 </h:panelGroup>
 
                 <h:panelGroup styleClass="exampleBox dataScrollingContainer" style="display: block;"  >

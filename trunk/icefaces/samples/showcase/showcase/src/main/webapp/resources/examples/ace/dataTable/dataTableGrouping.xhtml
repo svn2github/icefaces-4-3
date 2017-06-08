@@ -17,9 +17,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
                 xmlns:ace="http://www.icefaces.org/icefaces/components"
-                xmlns:icecore="http://www.icefaces.org/icefaces/core"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 template="/resources/templates/content-template.xhtml">
     <ui:param name="title" value="#{msgs['example.ace.dataTable.grouping.title']}"/>
@@ -46,13 +44,19 @@
                            scrollHeight="400"
                            rowIndexVar="index"
                            binding="#{dataTableBindings.tables[dataTableGrouping.clazz]}" >
-                <ace:row condition="group" groupBy="#{car.chassis}" pos="before" styleClass="group-header">
+                <ace:row condition="group"
+                         groupBy="#{car.chassis}"
+                         pos="before"
+                         styleClass="group-header">
                     <ace:column colspan="8">
                         #{car.chassis}
                     </ace:column>
                 </ace:row>
 
-                <ace:row condition="group" groupBy="#{car.chassis}" pos="after" styleClass="group-header">
+                <ace:row condition="group"
+                         groupBy="#{car.chassis}"
+                         pos="after"
+                         styleClass="group-header">
                     <ace:column colspan="6" style="text-align:right;">
                         <h:outputText value="MPG &amp; Cost Totals : " />
                     </ace:column>
@@ -86,19 +90,31 @@
                 <ace:column id="name" headerText="Name" sortBy="#{car.name}">
                     <h:outputText id="nameCell" value="#{car.name}"/>
                 </ace:column>
-                <ace:column id="chassis" headerText="Chassis" groupBy="#{car.chassis}" sortAscending="true">
+                <ace:column id="chassis"
+                            headerText="Chassis"
+                            groupBy="#{car.chassis}"
+                            sortAscending="true">
                     <h:outputText id="chassisCell" value="#{car.chassis}"/>
                 </ace:column>
-                <ace:column id="weight" headerText="Weight (lbs)" sortBy="#{car.weight}" filterBy="#{car.weight}">
+                <ace:column id="weight"
+                            headerText="Weight (lbs)"
+                            sortBy="#{car.weight}"
+                            filterBy="#{car.weight}">
                     <h:outputText id="weightCell" value="#{car.weight}"/>
                 </ace:column>
-                <ace:column id="accel" headerText="Accel" groupBy="#{car.acceleration}">
+                <ace:column id="accel"
+                            headerText="Accel"
+                            groupBy="#{car.acceleration}">
                     <h:outputText id="accelCell" value="#{car.acceleration}"/>
                 </ace:column>
-                <ace:column id="mpg" headerText="MPG" sortBy="#{car.mpg}">
+                <ace:column id="mpg"
+                            headerText="MPG"
+                            sortBy="#{car.mpg}">
                     <h:outputText id="mpgCell" value="#{car.mpg}"/>
                 </ace:column>
-                <ace:column id="cost" headerText="Cost" sortBy="#{car.cost}">
+                <ace:column id="cost"
+                            headerText="Cost"
+                            sortBy="#{car.cost}">
                     <h:outputText id="costCell" value="#{car.cost}">
                         <f:convertNumber type="currency"
                                          currencySymbol="$"
@@ -109,8 +125,10 @@
                 </ace:column>
 
                 <ace:panelExpansion>
-                    <h:outputText id="costPerLbTxt" value="Cost Per Pound: " />
-                    <h:outputText id="costPerLb" value="#{car.cost /  car.weight}">
+                    <h:outputText id="costPerLbTxt"
+                                  value="Cost Per Pound: " />
+                    <h:outputText id="costPerLb"
+                                  value="#{car.cost /  car.weight}">
                         <f:convertNumber     type="currency"
                                              currencySymbol="$"
                                              groupingUsed="true"

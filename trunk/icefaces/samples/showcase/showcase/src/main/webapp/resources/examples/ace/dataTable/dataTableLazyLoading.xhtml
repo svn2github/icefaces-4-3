@@ -14,14 +14,12 @@
   ~ governing permissions and limitations under the License.
   -->
 
-<ui:composition   xmlns="http://www.w3.org/1999/xhtml"
-                            xmlns:h="http://xmlns.jcp.org/jsf/html"
-                            xmlns:f="http://xmlns.jcp.org/jsf/core"
-                            xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
-                            xmlns:ace="http://www.icefaces.org/icefaces/components"
-                            xmlns:icecore="http://www.icefaces.org/icefaces/core"
-                            xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                            template="/resources/templates/content-template.xhtml">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ace="http://www.icefaces.org/icefaces/components"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/resources/templates/content-template.xhtml">
     <ui:param name="title" value="#{msgs['example.ace.dataTable.lazyLoading.title']}"/>
     <ui:param name="description" value="#{msgs['example.ace.dataTable.lazyLoading.description']}"/>
 
@@ -37,34 +35,56 @@
                                   pagesToSkip="10"
                                   pageCount="5"
                                   rowIndexVar="row">
-               <ace:column id="rowNumber" headerText="Row #" footerText="Row #">
-                    <h:outputText id="rowNumberCell" value="#{row}"/>
-                </ace:column>
-                <ace:column id="id" headerText="ID" footerText="ID">
-                    <h:outputText id="idCell" value="#{car.id}"/>
-                </ace:column>
-               <ace:column id="name" headerText="Name" footerText="Name"
-                           sortBy="#{car.name}" filterBy="#{car.name}">
+               <ace:column id="rowNumber"
+                           headerText="Row #"
+                           footerText="Row #">
+                   <h:outputText id="rowNumberCell" value="#{row}"/>
+               </ace:column>
+               <ace:column id="id"
+                           headerText="ID"
+                           footerText="ID">
+                   <h:outputText id="idCell" value="#{car.id}"/>
+               </ace:column>
+               <ace:column id="name"
+                           headerText="Name"
+                           footerText="Name"
+                           sortBy="#{car.name}"
+                           filterBy="#{car.name}">
                    <h:outputText id="nameCell" value="#{car.name}"/>
                </ace:column>
-               <ace:column id="chassis" headerText="Chassis" footerText="Chassis"
-                           sortBy="#{car.chassis}" filterBy="#{car.chassis}">
+               <ace:column id="chassis"
+                           headerText="Chassis"
+                           footerText="Chassis"
+                           sortBy="#{car.chassis}"
+                           filterBy="#{car.chassis}">
                    <h:outputText id="chassisCell" value="#{car.chassis}"/>
                </ace:column>
-                <ace:column id="year" headerText="Year" footerText="Year"
-                            sortBy="#{car.year}" filterBy="#{car.year}">
+                <ace:column id="year"
+                            headerText="Year"
+                            footerText="Year"
+                            sortBy="#{car.year}"
+                            filterBy="#{car.year}">
                     <h:outputText id="yearCell" value="#{car.year}"/>
                 </ace:column>
-                <ace:column id="color" headerText="Color" footerText="Color"
-                            sortBy="#{car.color}" filterBy="#{car.color}">
+                <ace:column id="color"
+                            headerText="Color"
+                            footerText="Color"
+                            sortBy="#{car.color}"
+                            filterBy="#{car.color}">
                     <h:outputText id="colorCell" value="#{car.color}"/>
                 </ace:column>
-                <ace:column id="mpg" headerText="MPG" footerText="MPG"
-                            sortBy="#{car.mpg}" filterBy="#{car.mpg}">
+                <ace:column id="mpg"
+                            headerText="MPG"
+                            footerText="MPG"
+                            sortBy="#{car.mpg}"
+                            filterBy="#{car.mpg}">
                     <h:outputText id="mpgCell" value="#{car.mpg}"/>
                 </ace:column>
-                <ace:column id="cost" headerText="Cost" footerText="Cost"
-                            sortBy="#{car.cost}" filterBy="#{car.cost}">
+                <ace:column id="cost"
+                            headerText="Cost"
+                            footerText="Cost"
+                            sortBy="#{car.cost}"
+                            filterBy="#{car.cost}">
                     <h:outputText id="costCell" value="#{car.cost}">
                         <f:convertNumber type="currency"
                                          currencySymbol="$"

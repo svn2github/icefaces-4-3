@@ -47,7 +47,7 @@
             <h:selectManyCheckbox id="checkbox" value="#{dataTableDynamicColumns.selectedCheckboxes}"
                                   valueChangeListener="#{dataTableDynamicColumns.checkboxChange}"
                                   styleClass="checkboxes">
-                <ace:ajax render="@form" execute="@this"/>
+                <f:ajax render="@form" execute="@this"/>
                 <f:selectItems value="#{dataTableDynamicColumns.checkboxes}"/>
             </h:selectManyCheckbox>
 

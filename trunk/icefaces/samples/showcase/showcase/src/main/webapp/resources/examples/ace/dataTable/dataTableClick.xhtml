@@ -17,9 +17,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
     xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
     xmlns:ace="http://www.icefaces.org/icefaces/components"
-    xmlns:icecore="http://www.icefaces.org/icefaces/core"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     template="/resources/templates/content-template.xhtml">
     <ui:param name="title" value="#{msgs['example.ace.dataTable.click.title']}"/>
@@ -46,16 +44,20 @@
                <ace:ajax event="cellClick" listener="#{dataTableClick.toggleSelect}" />
                <ace:ajax event="cellDblClick" listener="#{dataTableClick.toggleEditor}" />
 
-                <ace:column id="id" headerText="ID" sortBy="#{car.id}"
-                            filterBy="#{car.id}" filterMatchMode="contains">
+                <ace:column id="id" headerText="ID"
+                            sortBy="#{car.id}"
+                            filterBy="#{car.id}"
+                            filterMatchMode="contains">
                     <h:outputText id="idCell" value="#{car.id}"/>
                 </ace:column>
 
-                <ace:column id="name" headerText="Name" sortBy="#{car.name}"
-                            filterBy="#{car.name}" filterMatchMode="contains">
+                <ace:column id="name" headerText="Name"
+                            sortBy="#{car.name}"
+                            filterBy="#{car.name}"
+                            filterMatchMode="contains">
                     <ace:cellEditor>
                         <f:facet name="input">
-                            <h:inputText id="nameInput" value="#{car.name}"/>
+                            <ace:textEntry id="nameInput" value="#{car.name}"/>
                         </f:facet>
                         <f:facet name="output">
                             <h:outputText id="nameCell" value="#{car.name}"/>
@@ -63,11 +65,13 @@
                     </ace:cellEditor>
                 </ace:column>
 
-                <ace:column id="chassis" headerText="Chassis" sortBy="#{car.chassis}"
-                            filterBy="#{car.chassis}" filterMatchMode="contains">
+                <ace:column id="chassis" headerText="Chassis"
+                            sortBy="#{car.chassis}"
+                            filterBy="#{car.chassis}"
+                            filterMatchMode="contains">
                     <ace:cellEditor>
                         <f:facet name="input">
-                            <h:inputText id="chassisInput" value="#{car.chassis}"/>
+                            <ace:textEntry id="chassisInput" value="#{car.chassis}"/>
                         </f:facet>
                         <f:facet name="output">
                             <h:outputText id="chassisCell" value="#{car.chassis}"/>
@@ -75,11 +79,13 @@
                     </ace:cellEditor>
                 </ace:column>
 
-                <ace:column id="weight" headerText="Weight" sortBy="#{car.weight}"
-                            filterBy="#{car.weight}" filterMatchMode="contains">
+                <ace:column id="weight" headerText="Weight"
+                            sortBy="#{car.weight}"
+                            filterBy="#{car.weight}"
+                            filterMatchMode="contains">
                     <ace:cellEditor>
                         <f:facet name="input">
-                            <h:inputText id="weightInput" value="#{car.weight}"/>
+                            <ace:textEntry id="weightInput" value="#{car.weight}"/>
                         </f:facet>
                         <f:facet name="output">
                             <h:outputText id="weightCell" value="#{car.weight}lbs."/>
@@ -87,11 +93,13 @@
                     </ace:cellEditor>
                 </ace:column>
 
-                <ace:column id="accel" headerText="Accel" sortBy="#{car.acceleration}"
-                            filterBy="#{car.acceleration}" filterMatchMode="contains">
+                <ace:column id="accel" headerText="Accel"
+                            sortBy="#{car.acceleration}"
+                            filterBy="#{car.acceleration}"
+                            filterMatchMode="contains">
                     <ace:cellEditor>
                         <f:facet name="input">
-                            <h:inputText id="accelerationInput" value="#{car.acceleration}"/>
+                            <ace:textEntry id="accelerationInput" value="#{car.acceleration}"/>
                         </f:facet>
                         <f:facet name="output">
                             <h:outputText id="accelerationCell" value="#{car.acceleration}"/>
@@ -103,7 +111,7 @@
                             filterBy="#{car.mpg}" filterMatchMode="contains">
                     <ace:cellEditor>
                         <f:facet name="input">
-                            <h:inputText id="mpgInput" value="#{car.mpg}"/>
+                            <ace:textEntry id="mpgInput" value="#{car.mpg}"/>
                         </f:facet>
                         <f:facet name="output">
                             <h:outputText id="mpgCell" value="#{car.mpg}"/>
@@ -118,13 +126,13 @@
                     </f:facet>
                     <ace:cellEditor>
                         <f:facet name="input">
-                            <h:inputText id="costInput" value="#{car.cost}">
+                            <ace:textEntry id="costInput" value="#{car.cost}">
                                 <f:convertNumber type="currency"
                                                  currencySymbol="$"
                                                  groupingUsed="true"
                                                  minFractionDigits="2"
                                                  maxFractionDigits="2"/>
-                            </h:inputText>
+                            </ace:textEntry>
                         </f:facet>
                         <f:facet name="output">
                             <h:outputText id="costCell" value="#{car.cost}">

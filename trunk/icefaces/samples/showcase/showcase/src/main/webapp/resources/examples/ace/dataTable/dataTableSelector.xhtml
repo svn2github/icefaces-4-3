@@ -17,9 +17,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
     xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
     xmlns:ace="http://www.icefaces.org/icefaces/components"
-    xmlns:icecore="http://www.icefaces.org/icefaces/core"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     template="/resources/templates/content-template.xhtml">
     <ui:param name="title" value="#{msgs['example.ace.dataTable.selector.title']}"/>
@@ -30,37 +28,50 @@
     <h:form id="form">
         <h:panelGrid columns="3">
             <h:outputLabel for="modeIn" value="Selection Mode:"/>
-            <h:selectOneRadio id="modeIn" value="#{dataTableSelector.selectionMode}"
+            <ace:radioButtons id="modeIn" value="#{dataTableSelector.selectionMode}"
                               required="true"
+                              style="font-size: .9em;"
                               valueChangeListener="#{dataTableSelector.changedMode}">
                 <f:selectItems value="#{dataTableSelector.availableModes}"/>
-                <f:ajax render="@form" execute="@form" />
-            </h:selectOneRadio>
+                <ace:ajax render="@form" execute="@form" />
+            </ace:radioButtons>
             <ace:message id="modeInMsg" for="modeIn"/>
     
             <h:outputLabel for="clickIn" value="Double Click to Select:"/>
-            <h:selectBooleanCheckbox id="clickIn" value="#{dataTableSelector.dblClick}">
-                <f:ajax render="@form" execute="@form" />
-            </h:selectBooleanCheckbox>
+            <ace:checkboxButton id="clickIn" value="#{dataTableSelector.dblClick}">
+                <ace:ajax render="@form" execute="@form" />
+            </ace:checkboxButton>
             <ace:message id="clickInMsg" for="clickIn"/>
     
             <h:outputLabel for="instantIn" value="Instant Status Update via Ajax:"/>
-            <h:selectBooleanCheckbox id="instantIn" value="#{dataTableSelector.instantUpdate}">
-                <f:ajax render="@form" execute="@form" />
-            </h:selectBooleanCheckbox>
+            <ace:checkboxButton id="instantIn" value="#{dataTableSelector.instantUpdate}">
+                <ace:ajax render="@form" execute="@form" />
+            </ace:checkboxButton>
             <ace:message id="instantInMsg" for="instantIn"/>                
         </h:panelGrid>
         <br/>               
-        <h:panelGrid columns="4">         
-            <ace:pushButton id="selectAllRows" value="Select All" rendered="#{dataTableSelector.selectionMode=='multiple'}" 
-                            onclick="ice.ace.instance('#{dataTableBindings.tables[dataTableSelector.clazz].clientId}').selectAllRows();return false;" />        
-            <ace:pushButton id="selectAllCells" value="Select All" rendered="#{dataTableSelector.selectionMode=='multiplecell'}" 
-                            onclick="ice.ace.instance('#{dataTableBindings.tables[dataTableSelector.clazz].clientId}').selectAllCells();return false;" />                     
-            <ace:pushButton id="unselectAllRows" value="Unselect All" rendered="#{dataTableSelector.selectionMode=='multiple'}" 
-                            onclick="ice.ace.instance('#{dataTableBindings.tables[dataTableSelector.clazz].clientId}').deselectAllRows();return false;" />        
-            <ace:pushButton id="unselectAllCells" value="Unselect All" rendered="#{dataTableSelector.selectionMode=='multiplecell'}" 
-                            onclick="ice.ace.instance('#{dataTableBindings.tables[dataTableSelector.clazz].clientId}').deselectAllCells();return false;" />     
-        </h:panelGrid>     
+        <h:panelGrid columns="4" style="font-size: .9em;">
+            <ace:pushButton id="selectAllRows"
+                            value="Select All"
+                            rendered="#{dataTableSelector.selectionMode=='multiple'}" >
+                <ace:ajax execute="@none" render="@none" onStart="ice.ace.instance('#{dataTableBindings.tables[dataTableSelector.clazz].clientId}').selectAllRows();return false;" />
+            </ace:pushButton>
+            <ace:pushButton id="selectAllCells"
+                            value="Select All"
+                            rendered="#{dataTableSelector.selectionMode=='multiplecell'}" >
+                <ace:ajax execute="@none" render="@none" onStart="ice.ace.instance('#{dataTableBindings.tables[dataTableSelector.clazz].clientId}').selectAllCells();return false;" />
+            </ace:pushButton>
+            <ace:pushButton id="unselectAllRows"
+                            value="Unselect All"
+                            rendered="#{dataTableSelector.selectionMode=='multiple'}">
+            <ace:ajax execute="@none" render="@none" onStart="ice.ace.instance('#{dataTableBindings.tables[dataTableSelector.clazz].clientId}').deselectAllRows();return false;" />
+            </ace:pushButton>
+            <ace:pushButton id="unselectAllCells"
+                            value="Unselect All"
+                            rendered="#{dataTableSelector.selectionMode=='multiplecell'}" >
+                <ace:ajax execute="@none" render="@none" onStart="ice.ace.instance('#{dataTableBindings.tables[dataTableSelector.clazz].clientId}').deselectAllCells();return false;" />
+            </ace:pushButton>
+        </h:panelGrid>
         <ace:dataTable id="selectionTable"
                       binding="#{dataTableBindings.tables[dataTableSelector.clazz]}"
                       value="#{dataTableSelector.carsData}"

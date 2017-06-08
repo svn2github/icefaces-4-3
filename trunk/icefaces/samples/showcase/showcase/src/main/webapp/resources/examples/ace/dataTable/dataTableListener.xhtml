@@ -17,9 +17,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
     xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
     xmlns:ace="http://www.icefaces.org/icefaces/components"
-    xmlns:icecore="http://www.icefaces.org/icefaces/core"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     template="/resources/templates/content-template.xhtml">
     <ui:param name="title" value="#{msgs['example.ace.dataTable.listener.title']}"/>
@@ -69,8 +67,11 @@
             <h:dataTable id="eventLog"
                          value="#{dataTableListener.eventLog}"
                          var="event"
-                         style="border: 1px solid #CDCDCD; padding: 10px;"
-                         width="100%" cellspacing="0" cellpadding="2"
+                         style="border: 1px solid #CDCDCD;
+                         padding: 10px;"
+                         width="100%"
+                         cellspacing="0"
+                         cellpadding="2"
                          rows="#{dataTableListener.eventSize}">
                  <h:column id="event">
                      <f:facet name="header">

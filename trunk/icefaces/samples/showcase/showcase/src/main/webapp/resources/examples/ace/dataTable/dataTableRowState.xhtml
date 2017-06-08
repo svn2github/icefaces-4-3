@@ -17,9 +17,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
     xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
     xmlns:ace="http://www.icefaces.org/icefaces/components"
-    xmlns:icecore="http://www.icefaces.org/icefaces/core"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     template="/resources/templates/content-template.xhtml">
     <ui:param name="title" value="#{msgs['example.ace.dataTable.rowState.title']}"/>
@@ -27,75 +25,91 @@
 
     <ui:define name="example">
         <h:form id="controls">
-            <h:panelGroup id="selection" style="display:inline-block; vertical-align: top; margin: .5em .25em;">
+            <h:panelGroup id="selection"
+                          style="display:inline-block; font-size: .9em; vertical-align: top; margin: .5em .25em;">
                 Selection<br/>
-                <h:commandButton id="enableSelectAll" value="Enable Selection For All"
-                        actionListener="#{dataTableRowState.enableAllSelection}">
-                    <f:ajax execute="@this" render="@all"/>
-                </h:commandButton><br/>
-                <h:commandButton id="disableSelect" value="Disable Selection For Selected"
-                        actionListener="#{dataTableRowState.disableSelection}">
-                    <f:ajax execute="@this" render="@all"/>
-                </h:commandButton><br/>
-                <h:commandButton id="disableSelectAll" value="Disable Selection For All"
-                        actionListener="#{dataTableRowState.disableAllSelection}">
-                    <f:ajax execute="@this" render="@all"/>
-                </h:commandButton><br/>
+                <ace:pushButton id="enableSelectAll"
+                                value="Enable Selection For All"
+                                actionListener="#{dataTableRowState.enableAllSelection}">
+                    <ace:ajax execute="@this" render="@all"/>
+                </ace:pushButton><br/>
+                <ace:pushButton id="disableSelect"
+                                value="Disable Selection For Selected"
+                                actionListener="#{dataTableRowState.disableSelection}">
+                    <ace:ajax execute="@this" render="@all"/>
+                </ace:pushButton><br/>
+                <ace:pushButton id="disableSelectAll"
+                                value="Disable Selection For All"
+                                actionListener="#{dataTableRowState.disableAllSelection}">
+                    <ace:ajax execute="@this" render="@all"/>
+                </ace:pushButton><br/>
             </h:panelGroup>
-            <h:panelGroup id="visibility" style="display:inline-block; vertical-align: top; margin: .5em .25em;">
+            <h:panelGroup id="visibility" style="display:inline-block; font-size: .9em; vertical-align: top; margin: .5em .25em;">
                 Visibility<br/>
-                <h:commandButton id="enableVisAll" value="Enable Visibility For All"
-                        actionListener="#{dataTableRowState.enableAllVisibility}">
-                    <f:ajax execute="@this" render="@all"/>
-                        </h:commandButton><br/>
-                <h:commandButton id="disableVisAll" value="Disable Visibility For All"
-                        actionListener="#{dataTableRowState.disableAllVisibility}">
-                    <f:ajax execute="@this" render="@all"/>
-                        </h:commandButton><br/>
-                <h:commandButton id="disableVisSel" value="Disable Visibility For Selected"
-                        actionListener="#{dataTableRowState.disableVisibility}">
-                    <f:ajax execute="@this" render="@all"/>
-                        </h:commandButton><br/>
+                <ace:pushButton id="enableVisAll"
+                                value="Enable Visibility For All"
+                                actionListener="#{dataTableRowState.enableAllVisibility}">
+                    <ace:ajax execute="@this" render="@all"/>
+                        </ace:pushButton><br/>
+                <ace:pushButton id="disableVisAll"
+                                value="Disable Visibility For All"
+                                actionListener="#{dataTableRowState.disableAllVisibility}">
+                    <ace:ajax execute="@this" render="@all"/>
+                        </ace:pushButton><br/>
+                <ace:pushButton id="disableVisSel"
+                                value="Disable Visibility For Selected"
+                                actionListener="#{dataTableRowState.disableVisibility}">
+                    <ace:ajax execute="@this" render="@all"/>
+                        </ace:pushButton><br/>
             </h:panelGroup>
-            <h:panelGroup id="editability" style="display:inline-block; vertical-align: top; margin: .5em .25em;">
+            <h:panelGroup id="editability" style="display:inline-block; font-size: .9em; vertical-align: top; margin: .5em .25em;">
                 Editability<br/>
-                <h:commandButton id="enableEditAll" value="Enable Editing For All"
-                        actionListener="#{dataTableRowState.enableAllEditing}">
-                    <f:ajax execute="@this" render="@all"/>
-                        </h:commandButton><br/>
-                <h:commandButton id="enableEditSel" value="Enable Editing For Selected"
-                        actionListener="#{dataTableRowState.enableEditing}">
-                    <f:ajax execute="@this" render="@all"/>
-                        </h:commandButton><br/>
-                <h:commandButton id="disableEditAll" value="Disable Editing For All"
-                        actionListener="#{dataTableRowState.disableAllEditing}">
-                    <f:ajax execute="@this" render="@all"/>
-                        </h:commandButton><br/>
-                <h:commandButton id="disableEditSel" value="Disable Editing For Selected"
-                        actionListener="#{dataTableRowState.disableEditing}">
-                    <f:ajax execute="@this" render="@all"/>
-                        </h:commandButton><br/>
+                <ace:pushButton id="enableEditAll"
+                                value="Enable Editing For All"
+                                actionListener="#{dataTableRowState.enableAllEditing}">
+                    <ace:ajax execute="@this" render="@all"/>
+                </ace:pushButton><br/>
+                <ace:pushButton id="enableEditSel"
+                                value="Enable Editing For Selected"
+                                actionListener="#{dataTableRowState.enableEditing}">
+                    <ace:ajax execute="@this" render="@all"/>
+                </ace:pushButton><br/>
+                <ace:pushButton id="disableEditAll"
+                                value="Disable Editing For All"
+                                actionListener="#{dataTableRowState.disableAllEditing}">
+                    <ace:ajax execute="@this" render="@all"/>
+                </ace:pushButton><br/>
+                <ace:pushButton id="disableEditSel"
+                                value="Disable Editing For Selected"
+                                actionListener="#{dataTableRowState.disableEditing}">
+                    <ace:ajax execute="@this" render="@all"/>
+                </ace:pushButton><br/>
             </h:panelGroup>
-            <h:panelGroup id="editing" style="display:inline-block; vertical-align: top; margin: .5em .25em;">
+            <h:panelGroup id="editing"
+                          style="display:inline-block; font-size: .9em; vertical-align: top; margin: .5em .25em;">
                 Editing<br/>
-                <h:commandButton id="startEditAll" value="Start Editing For All"
-                                 actionListener="#{dataTableRowState.startAllEditing}">
-                    <f:ajax execute="@this" render="@all" onevent="removeAllInputNames"/>
-                                 </h:commandButton><br/>
-                <h:commandButton id="startEditSel" value="Start Editing For Selected"
-                                 actionListener="#{dataTableRowState.startEditing}">
-                    <f:ajax execute="@this" render="@all" onevent="removeAllInputNames"/>
-                                 </h:commandButton><br/>
-                <h:commandButton id="stopEditAll" value="Stop Editing For All"
-                                 actionListener="#{dataTableRowState.stopAllEditing}">
-                    <f:ajax execute="@this" render="@all"/>
-                                 </h:commandButton><br/>
-                <h:commandButton id="stopEditSel" value="Stop Editing For Selected"
+                <ace:pushButton id="startEditAll"
+                                value="Start Editing For All"
+                                actionListener="#{dataTableRowState.startAllEditing}">
+                    <ace:ajax execute="@this" render="@all" onSuccess="removeAllInputNames();"/>
+                </ace:pushButton><br/>
+                <ace:pushButton id="startEditSel"
+                                value="Start Editing For Selected"
+                                actionListener="#{dataTableRowState.startEditing}">
+                    <ace:ajax execute="@this" render="@all" onSuccess="removeAllInputNames();"/>
+                </ace:pushButton><br/>
+                <ace:pushButton id="stopEditAll"
+                                value="Stop Editing For All"
+                                actionListener="#{dataTableRowState.stopAllEditing}">
+                    <ace:ajax execute="@this" render="@all"/>
+                </ace:pushButton><br/>
+                <ace:pushButton id="stopEditSel" value="Stop Editing For Selected"
                                  actionListener="#{dataTableRowState.stopEditing}">
-                    <f:ajax execute="@this" render="@all"/>
-                                 </h:commandButton><br/>
+                    <ace:ajax execute="@this" render="@all"/>
+                </ace:pushButton><br/>
             </h:panelGroup>
-            <h:panelGroup id="selectedRows" style="display:inline-block; vertical-align: top; margin: .5em .25em;">
+            <h:panelGroup id="selectedRows"
+                          style="display:inline-block; vertical-align: top; margin: .5em .25em;">
                 Currently Selected Rows<br/>
                 <ui:repeat id="multiRowOut"
                            value="#{dataTableRowState.selection}" var="selCar">
@@ -105,7 +119,7 @@
         </h:form>
 
         <h:form id="form">
-           <ace:dataTable id="carTableRowExpansion"
+            <ace:dataTable id="carTableRowExpansion"
                           binding="#{dataTableBindings.tables[dataTableRowState.clazz]}"
                           stateMap="${dataTableRowState.stateMap}"
                           value="#{dataTableRowState.carsData}"
@@ -113,17 +127,25 @@
                           var="car"
                           rows="10"
                           styleClass="row-state-table">
-               <ace:ajax event="select" render="controls @this" execute="@this" />
-               <ace:ajax event="editSubmit" render="facesMsgs"/>
+                <ace:ajax event="select" render="controls @this" execute="@this" />
+                <ace:ajax event="editSubmit" render="facesMsgs"/>
 
-               <ace:column id="selectable" headerText="Selectable">
-                   <h:panelGroup id="selectableCheck" style="#{rowState.selectable ? '' : 'display:none'}" styleClass="ui-icon ui-icon-check"/>
-                   <h:panelGroup id="selectableClose" style="#{rowState.selectable ? 'display:none' : ''}" styleClass="ui-icon ui-icon-close"/>
-               </ace:column>
-               <ace:column id="editable" headerText="Editable">
-                   <h:panelGroup id="editableCheck" style="#{rowState.editable ? '' : 'display:none'}" styleClass="ui-icon ui-icon-check"/>
-                   <h:panelGroup id="editableClose" style="#{rowState.editable ? 'display:none' : ''}" styleClass="ui-icon ui-icon-close"/>
-               </ace:column>
+                <ace:column id="selectable" headerText="Selectable">
+                    <h:panelGroup id="selectableCheck"
+                                  style="#{rowState.selectable ? '' : 'display:none'}"
+                                  styleClass="ui-icon ui-icon-check"/>
+                    <h:panelGroup id="selectableClose"
+                                  style="#{rowState.selectable ? 'display:none' : ''}"
+                                  styleClass="ui-icon ui-icon-close"/>
+                </ace:column>
+                <ace:column id="editable" headerText="Editable">
+                    <h:panelGroup id="editableCheck"
+                                  style="#{rowState.editable ? '' : 'display:none'}"
+                                  styleClass="ui-icon ui-icon-check"/>
+                    <h:panelGroup id="editableClose"
+                                  style="#{rowState.editable ? 'display:none' : ''}"
+                                  styleClass="ui-icon ui-icon-close"/>
+                </ace:column>
                 <ace:column id="name">
                     <f:facet name="header">
                        Name
@@ -133,7 +155,7 @@
                             <h:outputText id="nameCell" value="#{car.name}"/>
                         </f:facet>
                         <f:facet name="input">
-                            <h:inputText id="nameInput" value="#{car.name}"/>
+                            <ace:textEntry id="nameInput" value="#{car.name}"/>
                         </f:facet>
                     </ace:cellEditor>
                 </ace:column>
@@ -146,7 +168,7 @@
                             <h:outputText id="weightCell" value="#{car.weight}"/>lbs.
                         </f:facet>
                         <f:facet name="input">
-                            <h:inputText id="weightInput" value="#{car.weight}"/>lbs.
+                            <ace:textEntry id="weightInput" value="#{car.weight}"/>lbs.
                         </f:facet>
                     </ace:cellEditor>
                 </ace:column>
@@ -159,7 +181,7 @@
                             <h:outputText id="accelCell" value="#{car.acceleration}"/>
                         </f:facet>
                         <f:facet name="input">
-                            <h:inputText id="accelInput" value="#{car.acceleration}"/>
+                            <ace:textEntry id="accelInput" value="#{car.acceleration}"/>
                         </f:facet>
                     </ace:cellEditor>
                 </ace:column>
@@ -172,7 +194,7 @@
                             <h:outputText id="mpgCell" value="#{car.mpg}"/>
                         </f:facet>
                         <f:facet name="input">
-                            <h:inputText id="mpgInput" value="#{car.mpg}"/>
+                            <ace:textEntry id="mpgInput" value="#{car.mpg}"/>
                         </f:facet>
                     </ace:cellEditor>
                 </ace:column>
@@ -191,26 +213,24 @@
                             </h:outputText>
                         </f:facet>
                         <f:facet name="input">
-                            <h:inputText id="costInput" value="#{car.cost}">
+                            <ace:textEntry id="costInput" value="#{car.cost}">
                                 <f:convertNumber type="currency"
                                                  currencySymbol="$"
                                                  groupingUsed="true"
                                                  minFractionDigits="2"
                                                  maxFractionDigits="2"/>
-                            </h:inputText>
+                            </ace:textEntry>
                         </f:facet>
                     </ace:cellEditor>
                 </ace:column>
                 <ace:column headerText="Edit">
                    <ace:rowEditor id="rowEdit"/>
                 </ace:column>
-           </ace:dataTable>
+            </ace:dataTable>
         </h:form>
 		<script type="text/javascript">
-			var removeAllInputNames = function(data) {
-				if (data.status == 'success') {
-					setTimeout(function() {ice.ace.DataTable.removeAllInputNames('#{dataTableBindings.tables[dataTableRowState.clazz].clientId}')},1500);
-				}
+			var removeAllInputNames = function() {
+                setTimeout(function() {ice.ace.DataTable.removeAllInputNames('#{dataTableBindings.tables[dataTableRowState.clazz].clientId}')},1500);
 			};
 			setTimeout(function() {ice.ace.DataTable.removeAllInputNames('#{dataTableBindings.tables[dataTableRowState.clazz].clientId}')},2000);
 		</script>
