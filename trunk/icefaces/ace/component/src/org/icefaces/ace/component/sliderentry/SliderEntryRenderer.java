@@ -123,7 +123,7 @@ public class SliderEntryRenderer extends InputRenderer{
 		renderResetSettings(context, slider);
 		String style = slider.getStyle();
 		style = style == null ? "" : style;
-		style += isInline ? ";display:table; " : "";
+		style += isInline ? ";display:table; border-spacing: 0;:" : "";
 		writer.writeAttribute("style", style, null);
 		String styleClass = slider.getStyleClass();
 		writer.writeAttribute("class", "ui-sliderentry " + (styleClass != null ? styleClass : ""), null);
@@ -138,7 +138,7 @@ public class SliderEntryRenderer extends InputRenderer{
 					writer.writeAttribute("style", "display:block; margin-bottom:3px;", null);
 					writer.writeAttribute("class", "ui-input-label", null);
 				} else {
-					writer.writeAttribute("style", "display:table-cell;vertical-align:top;", null);
+					writer.writeAttribute("style", "display:table-cell;padding-right:2px;vertical-align:top;", null);
 					writer.writeAttribute("class", "ui-input-label ui-input-label-left", null);
 				}
 				writer.write(label);
@@ -187,7 +187,7 @@ public class SliderEntryRenderer extends InputRenderer{
 		if (showLabels && !"y".equals(axis)) {
 			sliderStyle += "float:left;";
 		}
-		String inlineStyle = isInline ? "display:table-cell; float:left;" : "";
+		String inlineStyle = isInline ? "display:table-cell; float:left;margin-top:1em;" : "";
 		writer.writeAttribute("style", inlineStyle + sliderStyle, null);
 		writer.endElement("div");
 		
