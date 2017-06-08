@@ -687,6 +687,21 @@ public class DataTableHeadRenderer {
 		column.getFilterFacet().encodeAll(context);
 
 		writer.endElement("span");
+
+		// state holder
+        writer.startElement("input", null);
+        writer.writeAttribute(HTML.TYPE_ATTR, "hidden", null);
+        writer.writeAttribute(HTML.ID_ATTR, clientId + "_filterFacetOpen", null);
+        writer.writeAttribute(HTML.NAME_ATTR, clientId + "_filterFacetOpen", null);
+
+        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+		if ("true".equalsIgnoreCase(params.get(clientId + "_filterFacetOpen"))) {
+			writer.writeAttribute(HTML.VALUE_ATTR, "true", null);
+		} else {
+			writer.writeAttribute(HTML.VALUE_ATTR, "false", null);
+		}
+        writer.writeAttribute(HTML.AUTOCOMPLETE_ATTR, "off", null);
+		writer.endElement("input");
 	}
 
     protected static String getResourceRequestPath(FacesContext facesContext, String resourceName) {

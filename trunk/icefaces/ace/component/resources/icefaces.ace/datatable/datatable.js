@@ -441,6 +441,7 @@ ice.ace.DataTable.prototype.setupFilterFacetEvents = function () {
 						button.removeClass('fa-chevron-up');
 						button.addClass('fa-chevron-down');
 						button.next().hide();
+						ice.ace.jq(ice.ace.escapeClientId(id + 'FacetOpen')).val('false');
 						ice.ace.jq(window).off('click', ice.ace.DataTable.hideFilterFacetListeners[id]);
 						if (_self.delayedFilterCall)
 							clearTimeout(_self.delayedFilterCall);
@@ -462,6 +463,7 @@ ice.ace.DataTable.prototype.setupFilterFacetEvents = function () {
 			var position = button.position();
 			button.next().css({top: position.top + button.outerHeight() + 'px', left: position.left + 'px'});
 			button.next().show();
+			ice.ace.jq(ice.ace.escapeClientId(id + 'FacetOpen')).val('true');
 			setTimeout(function () {
 				ice.ace.jq(window).on('click', ice.ace.DataTable.hideFilterFacetListeners[id]);
 			}, 0);
@@ -470,6 +472,7 @@ ice.ace.DataTable.prototype.setupFilterFacetEvents = function () {
 			button.removeClass('fa-chevron-up');
 			button.addClass('fa-chevron-down');
 			button.next().hide();
+			ice.ace.jq(ice.ace.escapeClientId(id + 'FacetOpen')).val('false');
 			ice.ace.jq(window).off('click', ice.ace.DataTable.hideFilterFacetListeners[id]);
 			if (_self.delayedFilterCall)
 				clearTimeout(_self.delayedFilterCall);
@@ -478,6 +481,11 @@ ice.ace.DataTable.prototype.setupFilterFacetEvents = function () {
 				_self.filter(_event);
 			}, 400);
 		}
+	});
+
+	this.element.find(this.filterButtonSelector).each(function () {
+		var state = ice.ace.jq(ice.ace.escapeClientId(this.id + 'FacetOpen')).val();
+		if (state == 'true') ice.ace.jq(this).trigger('click');
 	});
 };
 
