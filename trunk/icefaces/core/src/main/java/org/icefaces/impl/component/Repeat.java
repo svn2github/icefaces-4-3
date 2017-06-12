@@ -151,12 +151,22 @@ public class Repeat extends UIData {
     }
 
     private void populateVar(Map<String, Object> requestMap, String var, String varStatus, int first, int last, int index) {
-        final DataModel model = getDataModel();
-        final Object item = model.getRowData();
+        final Object item = getRowData();
         requestMap.put(var, item);
         if (varStatus != null) {
             requestMap.put(varStatus, new VarStatus(first, last, index));
         }
+    }
+
+    public Object getRowData() {
+        final DataModel model = getDataModel();
+        Object data;
+        try {
+            data = model.getRowData();
+        } catch (Throwable t) {
+            data = null;
+        }
+        return data;
     }
 
     private void unpopulateVar(Map<String, Object> requestMap, String var, String varStatus) {
@@ -165,8 +175,7 @@ public class Repeat extends UIData {
     }
 
     public Runnable capturePreviousIndexAndVar(final Map<String, Object> requestMap, final String var, final String varStatus, final int first, final int last) {
-        final DataModel model = getDataModel();
-        final Object previousItem = model.getRowData();
+        final Object previousItem = getRowData();
         final int previousIndex = getRowIndex();
         return new Runnable() {
             public void run() {
