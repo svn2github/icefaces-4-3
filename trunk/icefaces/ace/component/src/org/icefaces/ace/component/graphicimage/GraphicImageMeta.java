@@ -69,6 +69,9 @@ public class GraphicImageMeta {
     @Property(tlddoc = "Name of resource object stored when image is specified with a dynamic data value.")
     private String name;
 
+    @Property(tlddoc = "Library name of resource object stored when image is specified with a dynamic data value.")
+    private String library;
+
     @Property(tlddoc = "Space-separated list of CSS style class(es) to be applied when this element is rendered.")
     private String styleClass;
 }

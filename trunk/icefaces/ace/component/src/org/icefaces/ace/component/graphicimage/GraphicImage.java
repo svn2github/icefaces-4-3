@@ -17,17 +17,14 @@
 package org.icefaces.ace.component.graphicimage;
 
 
-import org.icefaces.application.ResourceRegistry;
-import org.icefaces.ace.util.Attribute;
 import org.icefaces.ace.util.IceOutputResource;
+import org.icefaces.application.ResourceRegistry;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.application.ProjectStage;
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -36,7 +33,7 @@ public class GraphicImage extends GraphicImageBase {
     private static final Logger logger =
             Logger.getLogger(GraphicImage.class.toString());
 
-    public String processSrcAttribute(FacesContext facesContext, Object o, String name, String mimeType, String scope) {
+    public String processSrcAttribute(FacesContext facesContext, Object o, String name, String library, String scope, String mimeType) {
         if (o instanceof IceOutputResource) {
             //register resource..
             IceOutputResource iceResource = (IceOutputResource) o;
@@ -47,18 +44,35 @@ public class GraphicImage extends GraphicImageBase {
         if (o instanceof byte[]) {
             // have to create the resource first and cache it in ResourceRegistry
             //create IceOutputResource
-            IceOutputResource ior = new IceOutputResource(name, o, mimeType);
+            IceOutputResource ior = new IceOutputResource(name, library, o, mimeType);
             String registeredPath = registerAndGetPath(scope, ior);
             if (logger.isLoggable(Level.FINE)) {
                 logger.fine("Returning path=" + registeredPath + " FOR SCOPE+" + scope);
             }
             return registeredPath;
         } else {
-            // just do default from compat ImageRenderer as it's a static file
-            if (logger.isLoggable(Level.FINE)) {
-                logger.fine("just getting the string representation");
+            String value = (String) super.getValue();
+            // support url as an alias for value
+            if (value == null) {
+                value = super.getUrl();
             }
-            return processStaticImage(facesContext);
+            if (value == null) {
+                //assume that a resource is referenced
+                ResourceHandler handler = facesContext.getApplication().getResourceHandler();
+                Resource res = handler.createResource(name, library);
+                if (res == null) {
+                    if (facesContext.isProjectStage(ProjectStage.Development)) {
+                        String msg = "Unable to find resource " + (library == null ? "" : library + ", ") + name;
+                        facesContext.addMessage(getClientId(facesContext), new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
+                    }
+                    return "RES_NOT_FOUND";
+                } else {
+                    String requestPath = res.getRequestPath();
+                    return facesContext.getExternalContext().encodeResourceURL(requestPath);
+                }
+            } else {
+                return facesContext.getApplication().getViewHandler().getResourceURL(facesContext, value);
+            }
         }
     }
 
@@ -75,19 +89,5 @@ public class GraphicImage extends GraphicImageBase {
         else if (scope.equals("session"))
             registeredPath = ResourceRegistry.addSessionResource(iceResource);
         return registeredPath;
-    }
-
-
-    protected String processStaticImage(FacesContext facesContext) {
-        String value = (String) super.getValue();
-        // support url as an alias for value
-        if (value == null) {
-            value = super.getUrl();
-        }
-        if (value != null) {
-            return facesContext.getApplication().getViewHandler().getResourceURL(facesContext, value);
-        } else {
-            return "";
-        }
     }
 }

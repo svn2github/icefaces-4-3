@@ -35,9 +35,6 @@ import java.util.logging.Logger;
 public class IceOutputResource extends Resource implements Serializable {
     private final static Logger logger = Logger.getLogger(IceOutputResource.class.getName());
 
-    protected String compId;
-    //just use the default one from ResourceRegistry
-    public static final String ICE_COMPS_LIBRARY = "javax.faces.resource";
     protected final static Map<String, String> supportedMimeTypes = new HashMap<String, String>();
     // HTTP Date format required by the HTTP/1.1 RFC
     private static final String LAST_MODIFIED_PATTERN = "EEE, dd MMM yyyy HH:mm:ss zzz";
@@ -46,12 +43,16 @@ public class IceOutputResource extends Resource implements Serializable {
     protected String scope;
     private Object content;
 
+    public IceOutputResource(String name, Object o, String mimeType) {
+        this(name, "", o, mimeType);
+    }
 
-    public IceOutputResource(String compId, Object o, String mimeType) {
-        this.name = compId;
+    public IceOutputResource(String name, String libraryName, Object o, String mimeType) {
+        this.name = name;
+        this.libraryName = libraryName;
         super.setResourceName(name);
+        super.setLibraryName(libraryName);
         this.content = o;
-        this.libraryName = ICE_COMPS_LIBRARY;
         super.setLibraryName(libraryName);
         super.setContentType(mimeType);
     }
@@ -62,7 +63,7 @@ public class IceOutputResource extends Resource implements Serializable {
         // TODO Auto-generated method stub
         InputStream inStream = null;
         if (logger.isLoggable(Level.FINER)) {
-            logger.fine("for name=" + super.getResourceName() + ".......getINputStream with type=" + super.getContentType());
+            logger.fine("for name=" + super.getResourceName() + ".......getInputStream with type=" + super.getContentType());
         }
         if (null != content) {
             if (content instanceof byte[]) {

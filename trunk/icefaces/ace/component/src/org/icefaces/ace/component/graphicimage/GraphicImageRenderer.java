@@ -69,9 +69,10 @@ public class GraphicImageRenderer extends Renderer {
             }
         }
         String name = uiGraphic.getName();
+        String library = uiGraphic.getLibrary();
         if (null == name || name.equals("")) name = "image" + clientId;
         Object value = uiGraphic.getValue();
-        String srcAttribute = uiGraphic.processSrcAttribute(facesContext, value, name, mimeType, scope);
+        String srcAttribute = uiGraphic.processSrcAttribute(facesContext, value, name, library, scope, mimeType);
         writer.writeAttribute("src", srcAttribute, null);
         writer.endElement("img");
     }
