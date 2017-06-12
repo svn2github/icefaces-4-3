@@ -81,6 +81,7 @@ public class CheckboxButtonsRenderer extends CheckboxButtonRenderer {
         String style = (style = checkboxButtons.getStyle()) == null ? "" : style.trim();
         String styleClass = (styleClass = checkboxButtons.getStyleClass()) == null ? "" : styleClass.trim();
         styleClass += (styleClass.length() > 0 ? " " : "") + "ice-ace-checkboxbuttons ui-widget ui-widget-content ui-corner-all " +getStateStyleClasses(checkboxButtons);
+		styleClass += "pageDirection".equalsIgnoreCase(checkboxButtons.getLayout()) ? " ice-ace-checkboxbuttons-vertical" : "";
 
         writer.startElement("div", component);
         writer.writeAttribute("id", component.getClientId(context), "id");

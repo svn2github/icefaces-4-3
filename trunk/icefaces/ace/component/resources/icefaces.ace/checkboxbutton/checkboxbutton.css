@@ -52,3 +52,17 @@
 .ice-ace-checkboxbuttons .ice-checkboxbutton {
 	margin-right: 10px;
 }
+
+.ice-ace-checkboxbuttons.ice-ace-checkboxbuttons-vertical {
+	text-align: left;
+}
+
+.ice-ace-checkboxbuttons.ice-ace-checkboxbuttons-vertical .ice-checkboxbutton {
+	display: block;
+	margin-right: 0;
+	margin-left: 5px;
+}
+
+.ice-ace-checkboxbuttons.ice-ace-checkboxbuttons-vertical .ui-widget-header {
+	text-align: center;
+}

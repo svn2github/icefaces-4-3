@@ -48,6 +48,7 @@ public class ButtonGroupRenderer extends CoreRenderer {
         String style = (style = buttonGroup.getStyle()) == null ? "" : style.trim();
         String styleClass = (styleClass = buttonGroup.getStyleClass()) == null ? "" : styleClass.trim();
         styleClass += (styleClass.length() > 0 ? " " : "") + "ui-widget ui-widget-content ui-corner-all";
+		styleClass += "pageDirection".equalsIgnoreCase(buttonGroup.getLayout()) ? " ice-ace-buttongroup-vertical" : "";
         String clientId = component.getClientId(context);
         writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");

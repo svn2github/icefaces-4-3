@@ -86,6 +86,7 @@ public class RadioButtonsRenderer extends RadioButtonRenderer {
         String style = (style = radioButtons.getStyle()) == null ? "" : style.trim();
         String styleClass = (styleClass = radioButtons.getStyleClass()) == null ? "" : styleClass.trim();
         styleClass += (styleClass.length() > 0 ? " " : "") + "ice-ace-radiobuttons ui-widget ui-widget-content ui-corner-all " +getStateStyleClasses(radioButtons);
+		styleClass += "pageDirection".equalsIgnoreCase(radioButtons.getLayout()) ? " ice-ace-radiobuttons-vertical" : "";
 
         writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");

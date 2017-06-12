@@ -51,4 +51,7 @@ public class ButtonGroupMeta extends UIComponentBaseMeta {
 
     @Property(tlddoc = "Style class of the container element.")
     private String styleClass;
+
+    @Property(tlddoc = "Orientation of the options list to be created. Valid values are \"pageDirection\" (list is laid out vertically), or \"lineDirection\" (list is laid out horizontally). If not specified, the default value is \"lineDirection\".", defaultValue="lineDirection")
+    private String layout;
 }

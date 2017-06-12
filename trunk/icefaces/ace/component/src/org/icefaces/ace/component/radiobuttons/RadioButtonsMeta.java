@@ -73,4 +73,6 @@ public class RadioButtonsMeta extends UISelectOneMeta {
     @Property(tlddoc = "Position of the individual radio button labels relative to their input fields. Supported values are \"left/right/top/bottom/none\".", defaultValue="right")
     private String labelPosition;
 
+    @Property(tlddoc = "Orientation of the options list to be created. Valid values are \"pageDirection\" (list is laid out vertically), or \"lineDirection\" (list is laid out horizontally). If not specified, the default value is \"lineDirection\".", defaultValue="lineDirection")
+    private String layout;
 }

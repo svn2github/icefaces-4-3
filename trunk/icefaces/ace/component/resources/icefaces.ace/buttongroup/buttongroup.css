@@ -14,46 +14,17 @@
  * governing permissions and limitations under the License.
  */
 
-
-.ice-ace-radiobutton {
-	display:inline;
-}
-
-.ice-ace-radiobutton .ui-label {
-    padding: 0.2em;
-}
-
-.ice-ace-radiobutton > span > span > button {
-    /* IE7 hacks */
-    *padding: 0px 6px 0px;
-    *font-size: small;
-}
-
-.ice-ace-radiobutton .ice-ace-radiobutton-main button {
-	border:0;
-	padding: 0.2em;
-	background-color:transparent;
-}
-
-.ice-ace-radiobuttons {
-	text-align: center;
-}
-
-.ice-ace-radiobuttons .ice-ace-radiobutton {
-	display: inline-block;
-	margin-right: 10px;
-	margin-left: 5px;
-}
-
-.ice-ace-radiobuttons.ice-ace-radiobuttons-vertical {
+.ice-ace-buttongroup-vertical {
 	text-align: left;
 }
 
-.ice-ace-radiobuttons.ice-ace-radiobuttons-vertical .ice-ace-radiobutton {
+.ice-ace-buttongroup-vertical .ice-checkboxbutton,
+.ice-ace-buttongroup-vertical .ice-ace-radiobutton {
 	display: block;
 	margin-right: 0;
+	margin-left: 5px;
 }
 
-.ice-ace-radiobuttons.ice-ace-radiobuttons-vertical .ui-widget-header {
+.ice-ace-buttongroup-vertical .ui-widget-header {
 	text-align: center;
 }
