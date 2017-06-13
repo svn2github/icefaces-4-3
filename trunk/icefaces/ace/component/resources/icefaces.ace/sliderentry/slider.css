@@ -14,18 +14,18 @@
  * governing permissions and limitations under the License.
  */
  
-.ice-ace-slider-label-top {
+.ui-sliderentry .ui-input-label-top {
 	padding-bottom: 8px;
 }
 
-.ice-ace-slider-label-bottom {
+.ui-sliderentry .ui-input-label-bottom {
 	padding-top: 8px;
 }
 
-.ice-ace-slider-label-left {
+.ui-sliderentry .ui-input-label-left {
 	padding-right: 12px;
 }
 
-.ice-ace-slider-label-right {
+.ui-sliderentry .ui-input-label-right {
 	padding-left: 12px;
 }
