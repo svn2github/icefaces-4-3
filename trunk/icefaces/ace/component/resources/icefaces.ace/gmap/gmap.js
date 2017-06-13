@@ -653,10 +653,15 @@ ice.ace.gMap.addMarkerCallback = function(id, callback){
         }
     }
 
-    ice.ace.gMap.gService = function (ele, name, locationList, options, div) {
+    ice.ace.gMap.gService = function (ele, id, name, locationList, options, div) {
         var wrapper = ice.ace.gMap.getGMapWrapper(ele);
         var map = ice.ace.gMap.getGMapWrapper(ele).getRealGMap();
         var service;
+		var previousRenderer = ice.ace.gMap.gService.instances[id];
+		if (previousRenderer) {
+			previousRenderer.setMap(null);
+			previousRenderer.setPanel(null);
+		}
         var points = locationList.split(":");
         switch (name.toLowerCase()) {
             case "direction":
@@ -686,6 +691,7 @@ ice.ace.gMap.addMarkerCallback = function(id, callback){
                     renderer.setMap(map);
                     renderer.setDirections(response);
                     renderer.setPanel(document.getElementById(div));
+					ice.ace.gMap.gService.instances[id] = renderer;
                 }
             }
 
@@ -755,7 +761,9 @@ ice.ace.gMap.addMarkerCallback = function(id, callback){
                 }
                 return;
         }// end switch
-    }
+    };
+
+	ice.ace.gMap.gService.instances = {};
 
     ice.ace.gMap.removeGOverlay = function (ele, overlayID) {
         var wrapper = ice.ace.gMap.getGMapWrapper(ele);

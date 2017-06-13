@@ -43,6 +43,7 @@ public class GMapServicesRenderer extends CoreRenderer {
 			JSONBuilder jb = JSONBuilder.create();
 			jb.beginFunction("ice.ace.gMap.gService")
 				.item(GMapRenderer.getMapClientId(context, service))
+				.item(clientId)
 				.item(service.getName())
 				.item(service.getPoints())
 				.item(service.getOptions())
