@@ -1,0 +1,123 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+    xmlns:ace="http://www.icefaces.org/icefaces/components"
+    xmlns:icecore="http://www.icefaces.org/icefaces/core"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    template="/resources/templates/content-template.xhtml">
+
+    <ui:define name="example">
+		<style type="text/css">
+			/* Custom style classes */
+
+			/* custom highlight colour on the sidebar */
+			.ice-ace-schedule .schedule-list-event.ui-state-highlight {
+				background-image: none;
+				background-color: #efefff;
+			}
+		</style>
+        <h:form id="form">
+			<ace:panel header="Configuration">
+				<h:panelGrid width="100%" columns="1" cellpadding="6" cellspacing="6">
+						<ace:radioButtons id="viewMode" header="View Mode" value="#{scheduleExporterConfigurationBean.viewMode}" labelPosition="top">
+							<ace:ajax render="@all" />
+							<f:selectItem itemValue="month" itemLabel="Month" />
+							<f:selectItem itemValue="week" itemLabel="Week" />
+							<f:selectItem itemValue="day" itemLabel="Day" />
+						</ace:radioButtons>
+				</h:panelGrid>
+				<h:panelGrid columns="2" cellpadding="6" cellspacing="6">
+						<h:outputLabel for="fieldsToExport" value="Fields to export: "/>
+						<ace:selectMenu id="fieldsToExport" value="#{scheduleExporterConfigurationBean.fieldsToExport}">
+							<ace:ajax render="@all"/>
+							<f:selectItem itemValue="title,startdate,enddate,location,notes"
+										  itemLabel="Title, Start Date, End Date, Location, Notes" />
+							<f:selectItem itemValue="title,startdate,location"
+										  itemLabel="Title, Start Date, Location" />
+							<f:selectItem itemValue="startdate,title,location,enddate"
+										  itemLabel="Start Date, Title, Location, End Date" />
+						</ace:selectMenu>
+						<h:outputLabel for="datePattern" value="Date Pattern: "/>
+						<ace:selectMenu id="datePattern" value="#{scheduleExporterConfigurationBean.datePattern}">
+							<ace:ajax render="@all"/>
+							<f:selectItem itemValue="yyyy-MM-dd HH:mm" itemLabel="yyyy-MM-dd HH:mm" />
+							<f:selectItem itemValue="MM/dd/yyyy hh:mm a" itemLabel="MM/dd/yyyy hh:mm a" />
+							<f:selectItem itemValue="EEE, d MMM yyyy HH:mm" itemLabel="EEE, d MMM yyyy HH:mm" />
+						</ace:selectMenu>
+						<h:outputLabel for="sortBy" value="Sort by: "/>
+						<ace:selectMenu id="sortBy" value="#{scheduleExporterConfigurationBean.sortBy}">
+							<ace:ajax render="@all"/>
+							<f:selectItem itemValue="startdate" itemLabel="Start Date" />
+							<f:selectItem itemValue="enddate" itemLabel="End Date" />
+							<f:selectItem itemValue="title" itemLabel="Title" />
+							<f:selectItem itemValue="location" itemLabel="Location" />
+							<f:selectItem itemValue="notes" itemLabel="Notes" />
+						</ace:selectMenu>
+						<h:outputLabel for="sortAscending" value="Sort in ascending order: "/>
+						<ace:checkboxButton id="sortAscending" value="#{scheduleExporterConfigurationBean.sortAscending}">
+							<ace:ajax render="@all"/>
+						</ace:checkboxButton>
+						<h:outputLabel for="exportAllEvents" value="Export all events: "/>
+						<ace:checkboxButton id="exportAllEvents" value="#{scheduleExporterConfigurationBean.exportAllEvents}">
+							<ace:ajax render="@all"/>
+						</ace:checkboxButton>
+				</h:panelGrid>
+
+				<div style="height:20px;"> </div>
+				<h:panelGrid columns="2" styleClass="centeredPanelGrid">
+						<h:outputLabel for="type" value="Export As:"/>
+						<h:selectOneRadio id="type" value="#{scheduleExporterConfigurationBean.type}">
+							<f:ajax render="@all" />
+                            <f:selectItem itemValue="csv" itemLabel="CSV"/>
+                            <f:selectItem itemValue="pdf" itemLabel="PDF"/>
+                            <f:selectItem itemValue="xls" itemLabel="XLS"/>
+                            <f:selectItem itemValue="xlsx" itemLabel="XLSX"/>
+                            <f:selectItem itemValue="xml" itemLabel="XML"/>
+						</h:selectOneRadio>
+				</h:panelGrid>
+				<div style="text-align:center;">
+					<ace:scheduleExporter	
+										label="Export File"
+										type="#{scheduleExporterConfigurationBean.type}"
+										target="schedule"
+										fileName="events"
+										exportAllEvents="#{scheduleExporterConfigurationBean.exportAllEvents}"
+										fieldsToExport="#{scheduleExporterConfigurationBean.fieldsToExport}"
+										datePattern="#{scheduleExporterConfigurationBean.datePattern}"
+										sortBy="#{scheduleExporterConfigurationBean.sortBy}"
+										sortAscending="#{scheduleExporterConfigurationBean.sortAscending}"/>
+				</div>
+				<div style="height:20px;"> </div>
+			</ace:panel>
+			<ace:schedule 	id="schedule"
+							value="#{scheduleExporterConfigurationBean.events}"
+							showEventDetails="disabled"
+							showTooltip="true"
+							scrollable="true"
+							scrollHeight="400"
+							sideBar="hidden"
+							addEvents="true"
+							editEvents="true"
+							deleteEvents="true"
+							timeZone="UTC"
+							viewMode="#{scheduleExporterConfigurationBean.viewMode}" />
+        </h:form>
+    </ui:define>
+</ui:composition>

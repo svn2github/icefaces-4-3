@@ -843,9 +843,9 @@ public class CentralDataList {
 								new DemoSource(DemoSource.Type.JAVA, "DefaultDistributionEventGenerator.java", "schedule") })),
 				new ComponentGroup("ace:scheduleExporter", "Schedule Exporter", "scheduleExporter.html",
 						new Demo(msgs("overview"), msgs("example.ace.scheduleExporter.description"),
-								 "scheduleExporter", "scheduleExporter.xhtml", "scheduleExporterBean.java"),
+								 "scheduleexporter", "scheduleExporter.xhtml", "ScheduleExporterBean.java"),
 						new Demo(msgs("menu.ace.scheduleExporter.subMenu.config"), msgs("example.ace.scheduleExporter.config.description"),
-								 "scheduleExporter", "scheduleExporterConfiguration.xhtml", "scheduleExporterConfigurationBean.java"))
+								 "scheduleexporter", "scheduleExporterConfiguration.xhtml", "ScheduleExporterConfigurationBean.java"))
 		));
 	
 		toReturn.add(new CategoryGroup(msgs("menu.ace.group.validator.title"),
