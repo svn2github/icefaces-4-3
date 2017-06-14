@@ -30,33 +30,33 @@
             <ace:panel id="audioPlayerPanel" header="Audio Player" style="width: 100%;">
                 <h:panelGrid width="60%" columns="2" cellpadding="20" cellspacing="20">
                     <h:outputLabel for="value" value="Bird sound: "/>
-                    <h:selectOneMenu id="value" value="#{audioPlayerBean.value}">
-						<f:ajax render="audioPlayer" />
+                    <ace:simpleSelectOneMenu id="value" value="#{audioPlayerBean.value}">
+						<ace:ajax render="audioPlayer" />
                         <f:selectItem itemLabel="Canary" itemValue="./resources/media/canary.mp3"/>
                         <f:selectItem itemLabel="Crow" itemValue="./resources/media/crow.mp3"/>
                         <f:selectItem itemLabel="Duck" itemValue="./resources/media/duck.mp3"/>
                         <f:selectItem itemLabel="Owl" itemValue="./resources/media/owl.mp3"/>
                         <f:selectItem itemLabel="Seagull" itemValue="./resources/media/seagull.mp3"/>
-                    </h:selectOneMenu>
+                    </ace:simpleSelectOneMenu>
 
                     <h:outputLabel for="autoplay" value="Autoplay: "/>
                     <ace:checkboxButton id="autoplay" value="#{audioPlayerBean.autoplay}">
-						<f:ajax render="audioPlayer" />
+						<ace:ajax render="audioPlayer" />
                     </ace:checkboxButton>
 
                     <h:outputLabel for="loop" value="Loop: "/>
                     <ace:checkboxButton id="loop" value="#{audioPlayerBean.loop}">
-						<f:ajax render="audioPlayer" />
+						<ace:ajax render="audioPlayer" />
                     </ace:checkboxButton>
 
                     <h:outputLabel for="muted" value="Muted: "/>
                     <ace:checkboxButton id="muted" value="#{audioPlayerBean.muted}">
-						<f:ajax render="audioPlayer" />
+						<ace:ajax render="audioPlayer" />
                     </ace:checkboxButton>
 
                     <h:outputLabel for="newwindow" value="Play in new window: "/>
                     <ace:checkboxButton id="newwindow" value="#{audioPlayerBean.newWindow}">
-						<f:ajax render="audioPlayer" />
+						<ace:ajax render="audioPlayer" />
                     </ace:checkboxButton>
 				</h:panelGrid>
 
