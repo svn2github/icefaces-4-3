@@ -25,21 +25,24 @@
 
     <ui:define name="example">
         <h:form id="form">
-            <h:panelGrid styleClass="centeredPanelGrid">
-                <ace:pushButton id="save" value="Save" type="button">
+            <h:panelGrid styleClass="centeredPanelGrid" >
+                <ace:pushButton id="save"
+                                value="Save"
+                                type="button">
                         <ace:ajax execute="@none" render="@none" onStart="ice.ace.instance('#{confirmDialog.clientId}').show();return false;"/>
                 </ace:pushButton>
                 <h:outputText id="outcome" value="#{confirmationDialogBean.outcome}" rendered="#{confirmationDialogBean.outcome != null}"/>
             </h:panelGrid>
 
             <ace:confirmationDialog id="confirmDialog" binding="#{confirmDialog}"
+                                    style="font-size: .9em;"
 								    message="Are you sure about this?"
 								    header="Confirmation"
 								    width="250"
 								    height="100"
 								    closable="true"
 								    position="center">
-                <h:panelGrid columns="2" styleClass="centeredPanelGrid">
+                <h:panelGrid columns="2" styleClass="centeredPanelGrid" >
                     <ace:pushButton id="yes" value="Yes" onclick="ice.ace.instance('#{confirmDialog.clientId}').hide();" actionListener="#{confirmationDialogBean.yes}">
                         <ace:ajax execute="@this" render="@all" />
                     </ace:pushButton>
