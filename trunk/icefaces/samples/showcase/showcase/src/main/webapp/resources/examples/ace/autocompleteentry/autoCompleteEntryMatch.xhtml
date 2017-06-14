@@ -38,7 +38,7 @@
                 
                 <h:outputLabel for="caseIn" value="Case Sensitive:"/>
                 <ace:checkboxButton id="caseIn" value="#{autoCompleteEntryMatchBean.caseSensitive}">
-                    <ace:ajax event="valueChange" render="@this autoComplete"/>
+                    <ace:ajax execute="@this" render="@this autoComplete"/>
                 </ace:checkboxButton>
                 
                 <h:outputLabel for="autoComplete" value="Cities of the World:"/>
