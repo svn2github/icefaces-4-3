@@ -413,7 +413,12 @@ ice.ace.DataTable.prototype.setupFilterEvents = function () {
 	this.element.off('input', this.filterSelector);
     this.element.on('input', this.filterSelector, function (event) {
         if ((event.target || event.srcElement).value == '') {
-            _self.filter(event);
+			if (_self.delayedFilterCall)
+				clearTimeout(_self.delayedFilterCall);
+
+			_self.delayedFilterCall = setTimeout(function () {
+				_self.filter(_event);
+			}, 400);
         }
     });
 };
