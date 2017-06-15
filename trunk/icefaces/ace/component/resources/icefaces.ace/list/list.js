@@ -440,10 +440,20 @@ ice.ace.List.prototype.filter = function (evn) {
 	}, 200);
 };
 
+ice.ace.List.prototype.sortHeaderSelector = ' > div.if-list-sort';
 ice.ace.List.prototype.sortControlSelector = ' > div.if-list-sort > span.ui-sortable-control';
 
 ice.ace.List.prototype.setupSortEvents = function () {
     var _self = this;
+
+    this.element.find(this.sortHeaderSelector)
+        .unbind('click').bind("click", function (event) {
+            var $this = ice.ace.jq(this);
+
+			var ascending = $this.find(".ui-icon-triangle-1-n").hasClass('ui-toggled');
+			_self.setupSortRequest(_self, ice.ace.jq(this), event, '', !ascending);
+			event.stopPropagation();
+        });
 
     // Bind clickable control events
     this.element.find(this.sortControlSelector)
@@ -498,17 +508,12 @@ ice.ace.List.prototype.setupSortEvents = function () {
         .unbind('keypress').bind('keypress', function (event) {
             if (event.which == 32 || event.which == 13) {
                 var $currentTarget = ice.ace.jq(event.currentTarget);
-                $currentTarget.closest('.ui-sortable-control')
-                    .trigger('click', [$currentTarget.offset().top, event.metaKey]);
-                return false;
-            }
-        })
-        .unbind('keypress').bind('keypress', function (event) {
-            if (event.which == 32 || event.which == 13) {
-                var $currentTarget = ice.ace.jq(event.currentTarget);
-                $currentTarget.closest('.ui-sortable-control')
-                    .trigger('click', [$currentTarget.offset().top + 6, event.metaKey]);
-                return false;
+				var $this = $currentTarget.closest('.if-list-sort');
+
+				var ascending = $this.find(".ui-icon-triangle-1-n").hasClass('ui-toggled');
+				_self.setupSortRequest(_self, ice.ace.jq(this), event, '', !ascending);
+				event.stopPropagation();
+				return false;
             }
         }).each(function () {
             // Prefade sort controls
@@ -521,19 +526,21 @@ ice.ace.List.prototype.setupSortEvents = function () {
         });
 };
 
-ice.ace.List.prototype.setupSortRequest = function (_self, $this, event, altY, altMeta) {
+ice.ace.List.prototype.setupSortRequest = function (_self, $this, event, altY, ascending) {
     var topCarat = $this.find(".ui-icon-triangle-1-n")[0],
         bottomCarat = $this.find(".ui-icon-triangle-1-s")[0],
         controlOffset = $this.offset(),
         controlHeight = 22,
         descending = false,
         ieOffset = ice.ace.jq.browser.msie ? 7 : 0,
-        // altY and altMeta allow these event parameters to be optionally passed in
+        // altY allow this event parameters to be optionally passed in
         // from an event triggering this event artificially
         eventY = (altY == undefined) ? event.pageY : altY,
         isAscending = ice.ace.jq(topCarat).hasClass('ui-toggled');
 
-    if (eventY > (controlOffset.top + (controlHeight / 2) - ieOffset))
+	if (ascending != undefined)
+		descending = !ascending;
+    else if (eventY > (controlOffset.top + (controlHeight / 2) - ieOffset))
         descending = true;
 
 	if (descending) {

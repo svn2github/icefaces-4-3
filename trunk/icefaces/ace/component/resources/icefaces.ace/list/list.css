@@ -188,3 +188,6 @@
     -khtml-opacity: 1;
     opacity: 1;
 }
+.if-list input.if-list-filter {
+	margin-top: 0.5em;
+}
