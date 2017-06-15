@@ -17,9 +17,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
     xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
     xmlns:ace="http://www.icefaces.org/icefaces/components"
-    xmlns:icecore="http://www.icefaces.org/icefaces/core"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     template="/resources/templates/content-template.xhtml">
 
@@ -28,24 +26,25 @@
 		<h:form id="form">
 
             <ace:panel id="dynamicResourceAdvancedPanel" header="Dynamic Resource" style="width: 100%;">
-				<h:panelGrid width="60%" columns="2" cellpadding="20" cellspacing="20">
+				<h:panelGrid width="70%" columns="2" cellpadding="15" cellspacing="15">
 					<h:outputLabel for="attachment" value="Download as attachment? " />
-					<h:selectBooleanCheckbox id="attachment" value="#{dynamicResourceAdvancedBean.attachment}">
-						<f:ajax render="@form" />
-					</h:selectBooleanCheckbox>
+					<ace:checkboxButton id="attachment" value="#{dynamicResourceAdvancedBean.attachment}">
+						<ace:ajax render="@form" />
+					</ace:checkboxButton>
 
 					<h:outputLabel for="fileName" value="Enter file name: " />
-					<h:inputText id="fileName" value="#{dynamicResourceAdvancedBean.fileName}" disabled="#{!dynamicResourceAdvancedBean.attachment}">
-						<f:ajax render="@form" />
-						<f:ajax render="dynamicResource" event="keyup" />
-					</h:inputText>
+					<ace:textEntry id="fileName" value="#{dynamicResourceAdvancedBean.fileName}" disabled="#{!dynamicResourceAdvancedBean.attachment}">
+						<ace:ajax render="@form" />
+						<ace:ajax render="dynamicResource" event="valueChange" />
+					</ace:textEntry>
 
 					<h:outputLabel for="target" value="Open in... " />
-					<h:selectOneRadio id="target" value="#{dynamicResourceAdvancedBean.target}">
-						<f:ajax render="@form" />
+					<ace:radioButtons id="target"
+									  value="#{dynamicResourceAdvancedBean.target}">
+						<ace:ajax render="@form" />
 						<f:selectItem itemValue="_blank" itemLabel="new window" />
 						<f:selectItem itemValue="_self" itemLabel="same window" />
-					</h:selectOneRadio>
+					</ace:radioButtons>
 
 					<ace:dynamicResource id="dynamicResource"
 						resource="#{dynamicResourceBean.resource}" 
