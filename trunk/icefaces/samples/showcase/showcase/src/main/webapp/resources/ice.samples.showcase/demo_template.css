@@ -43,7 +43,6 @@ p {
     font-weight: bold;
 }
 
-table { font-size: 1.0em; }
 .full-width { width:100%; }
 .text-center { text-align:center; }
 span.hide * {
@@ -293,7 +292,7 @@ div .resources { font-size: 10pt;}
 	padding-top: 8px;
 }
 .example .instance {
-                font-size: 10pt;
+    font-size: 10pt;
 	padding: 8px 6px 6px 12px;    
 	margin: 8px;
 	line-height: 1.5; /* Double spaced inline elements */
@@ -365,82 +364,11 @@ div .resources { font-size: 10pt;}
 
 
 /* Component Styles */
-.yui-log {
-     padding:10px;
-     width:460px;
-     max-height:80%;
-     top:47px;
-     left:50%;
-     margin-left:-485px;
-     padding-bottom:55px;
-     border:1px solid black;
-     position:fixed;
-     z-index:5;
-     background:white;
-     overflow-y:auto;
-     overflow-x:hidden;
-}
-.yui-log:first-child {
-    margin-left:8px;
-    left:50%;
-    position:fixed;
-}
-.yui-log .yui-log-hd .yui-log-button {
-    z-index:5;
-    position:absolute;
-    top:0px;
-    right:0px;
-}
-.yui-log .yui-log-hd h4 {
-    position:absolute;
-    display:block;
-    width:100%;
-    text-align:center;
-    top:0px;
-}
-.yui-log .yui-log-ft .yui-log-btns {
-    position:absolute;
-    top:0px;
-    left:0px;
-}
-.yui-log .yui-log-categoryfilters {
-    width:100%;
-    position:absolute;
-    top:18px;
-    left:0px;
-}
-.yui-log .yui-log-sourcefilters {
-    width:100%;
-    position:absolute;
-    top:36px;
-    left:0px;
-}
-.yui-log-sourcefilters::before {content:"Source Filters: ";}
-.yui-log-categoryfilters::before {content:"Category Filters: ";}
-.yui-log .yui-log-filtergrp {padding:0px 3px;}
-.yui-log-bd {
-    z-index:6;
-    position:relative;
-    top:50px;
-    word-wrap:break-word;
-    text-align:left;
-}
-.yui-log-bd pre p:first-child { text-decoration:underline; font-weight:600; }
-.loggerCloseButton {
-    position:absolute;
-    top:14px;
-    left:50%;
-    width:400px;
-    margin-left:-200px;
-}
 
-.ice-skin-rime .yui-calendar .calnavleft { left:-2px; top:0px; } /* Fix nav arrows rendering on the borders of the cal */
-.ice-skin-rime .yui-calendar .calnavright { right:-2px; top:0px; } /* Observed in FF/Safari */
 
 .ace-inline .ice-checkboxbutton { display:inline; }
 .ace-inline .ice-pushbutton { display:inline; }
 .ace-inline .ice-linkbutton { display:inline; position:relative; top:1px; line-height:28px;}
-
 
 
 
