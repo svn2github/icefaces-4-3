@@ -377,8 +377,15 @@ ice.ace.ContextMenu = function(id, cfg) {
             ice.ace.ContextMenu.event = e;
         });
     }
-	
-	if (!cfg.forDelegate) {
+
+    ice.ace.jq(document).bind("touchstart", function(e){
+        ice.ace.ContextMenu.pageX = e.pageX;
+        ice.ace.ContextMenu.pageY = e.pageY;
+        ice.ace.ContextMenu.event = e.originalEvent;
+    });
+
+
+    if (!cfg.forDelegate) {
 		this.initialize(id, cfg);
 	} else {
 		var delegateContainer = ice.ace.jq(ice.ace.escapeClientId(cfg.forDelegate));
