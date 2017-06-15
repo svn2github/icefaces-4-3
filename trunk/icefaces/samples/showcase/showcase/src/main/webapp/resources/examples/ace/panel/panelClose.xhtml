@@ -17,9 +17,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
     xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
     xmlns:ace="http://www.icefaces.org/icefaces/components"
-    xmlns:icecore="http://www.icefaces.org/icefaces/core"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     template="/resources/templates/content-template.xhtml">
     <ui:param name="title" value="#{msgs['example.ace.panel.close.title']}"/>
@@ -31,18 +29,18 @@
             
             <h:panelGrid columns="3">
                 <h:outputLabel for="closeIn" value="Closable?"/>
-                <h:selectBooleanCheckbox id="closeIn" value="#{panelClose.closable}">
-                    <f:ajax execute="@this" render="@all"/>
-                </h:selectBooleanCheckbox>
+                <ace:checkboxButton id="closeIn" value="#{panelClose.closable}">
+                    <ace:ajax execute="@this" render="@all"/>
+                </ace:checkboxButton>
                 <ace:message for="closeIn"/>
                 
                 <h:outputLabel for="closeSpeed" value="Close Speed (milliseconds):"/>
-                <h:inputText id="closeSpeed" value="#{panelClose.speed}"
+                <ace:textEntry id="closeSpeed" value="#{panelClose.speed}"
                              required="true" size="4" maxlength="4"
                              disabled="#{!panelClose.closable}">
                     <f:validateLongRange minimum="100" maximum="5000"/>
-                    <f:ajax execute="@this" render="@all"/>
-                </h:inputText>
+                    <ace:ajax execute="@this" render="@all"/>
+                </ace:textEntry>
                 <ace:message id="closeSpeedMsg" for="closeSpeed"/>
             </h:panelGrid>
         </h:form>

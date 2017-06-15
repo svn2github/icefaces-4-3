@@ -17,9 +17,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
     xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
     xmlns:ace="http://www.icefaces.org/icefaces/components"
-    xmlns:icecore="http://www.icefaces.org/icefaces/core"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     template="/resources/templates/content-template.xhtml">
     <ui:param name="title" value="#{msgs['example.ace.panel.toggle.title']}"/>
@@ -27,22 +25,23 @@
 
     <ui:define name="example">
         <h:form id="form">
-
-            
             <h:panelGrid columns="3">
                 <h:outputLabel for="toggleIn" value="Toggleable?"/>
-                <h:selectBooleanCheckbox id="toggleIn" value="#{panelToggle.toggleable}">
-                    <f:ajax execute="@this" render="@all"/>
-                </h:selectBooleanCheckbox>
+                <ace:checkboxButton id="toggleIn" value="#{panelToggle.toggleable}">
+                    <ace:ajax execute="@this" render="@all"/>
+                </ace:checkboxButton>
                 <ace:message for="toggleIn"/>
                 
                 <h:outputLabel for="toggleSpeed" value="Toggle Speed (milliseconds):"/>
-                <h:inputText id="toggleSpeed" value="#{panelToggle.speed}"
-                             required="true" size="4" maxlength="4"
-                             disabled="#{!panelToggle.toggleable}">
+                <ace:textEntry id="toggleSpeed"
+                               value="#{panelToggle.speed}"
+                               required="true"
+                               size="4"
+                               maxlength="4"
+                               disabled="#{!panelToggle.toggleable}">
                     <f:validateLongRange minimum="100" maximum="5000"/>
-                    <f:ajax execute="@this" render="@all"/>
-                </h:inputText>
+                    <ace:ajax execute="@this" render="@all"/>
+                </ace:textEntry>
                 <ace:message id="toggleSpeedMsg" for="toggleSpeed"/>
             </h:panelGrid>
         </h:form>
