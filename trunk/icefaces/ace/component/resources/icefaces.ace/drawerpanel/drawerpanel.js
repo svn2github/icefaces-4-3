@@ -123,20 +123,52 @@ ice.ace.DrawerPanel = function(parentID, cfg) {
 
 	if (this.cfg.drawerPosition == 'right') {
 		this.cfg.position = {my: 'right', at: 'right', of: this.cfg.container, collision: 'none'};
-		this.cfg.show = {effect: 'slide', duration: 1000, direction: 'right'};
-		this.cfg.hide = {effect: 'slide', duration: 1000, direction: 'right'};
+		if (this.cfg.effect == 'drop') {
+			this.cfg.show = {effect: 'drop', duration: 500, direction: 'right'};
+			this.cfg.hide = {effect: 'drop', duration: 500, direction: 'right'};
+		} else if (this.cfg.effect == 'fade') {
+			this.cfg.show = {effect: 'fade', duration: 500};
+			this.cfg.hide = {effect: 'fade', duration: 500};
+		} else {
+			this.cfg.show = {effect: 'slide', duration: 500, direction: 'right'};
+			this.cfg.hide = {effect: 'slide', duration: 500, direction: 'right'};
+		}
 	} else if (this.cfg.drawerPosition == 'bottom') {
 		this.cfg.position = {my: 'bottom', at: 'bottom', of: this.cfg.container, collision: 'none'};
-		this.cfg.show = {effect: 'slide', duration: 1000, direction: 'down'};
-		this.cfg.hide = {effect: 'slide', duration: 1000, direction: 'down'};
+		if (this.cfg.effect == 'drop') {
+			this.cfg.show = {effect: 'drop', duration: 500, direction: 'down'};
+			this.cfg.hide = {effect: 'drop', duration: 500, direction: 'down'};
+		} else if (this.cfg.effect == 'fade') {
+			this.cfg.show = {effect: 'fade', duration: 500};
+			this.cfg.hide = {effect: 'fade', duration: 500};
+		} else {
+			this.cfg.show = {effect: 'slide', duration: 500, direction: 'down'};
+			this.cfg.hide = {effect: 'slide', duration: 500, direction: 'down'};
+		}
 	} else if (this.cfg.drawerPosition == 'top') {
 		this.cfg.position = {my: 'top', at: 'top', of: this.cfg.container, collision: 'none'};
-		this.cfg.show = {effect: 'slide', duration: 1000, direction: 'up'};
-		this.cfg.hide = {effect: 'slide', duration: 1000, direction: 'up'};
+		if (this.cfg.effect == 'drop') {
+			this.cfg.show = {effect: 'drop', duration: 500, direction: 'up'};
+			this.cfg.hide = {effect: 'drop', duration: 500, direction: 'up'};
+		} else if (this.cfg.effect == 'fade') {
+			this.cfg.show = {effect: 'fade', duration: 500};
+			this.cfg.hide = {effect: 'fade', duration: 500};
+		} else {
+			this.cfg.show = {effect: 'slide', duration: 500, direction: 'up'};
+			this.cfg.hide = {effect: 'slide', duration: 500, direction: 'up'};
+		}
 	} else { // left
 		this.cfg.position = {my: 'left', at: 'left', of: this.cfg.container, collision: 'none'};
-		this.cfg.show = {effect: 'slide', duration: 1000, direction: 'left'};
-		this.cfg.hide = {effect: 'slide', duration: 1000, direction: 'left'};
+		if (this.cfg.effect == 'drop') {
+			this.cfg.show = {effect: 'drop', duration: 500, direction: 'left'};
+			this.cfg.hide = {effect: 'drop', duration: 500, direction: 'left'};
+		} else if (this.cfg.effect == 'fade') {
+			this.cfg.show = {effect: 'fade', duration: 500};
+			this.cfg.hide = {effect: 'fade', duration: 500};
+		} else {
+			this.cfg.show = {effect: 'slide', duration: 500, direction: 'left'};
+			this.cfg.hide = {effect: 'slide', duration: 500, direction: 'left'};
+		}
 	}
 
 

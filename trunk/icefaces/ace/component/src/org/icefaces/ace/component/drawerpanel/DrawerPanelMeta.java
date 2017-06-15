@@ -77,11 +77,8 @@ public class DrawerPanelMeta extends UIPanelMeta {
 	@Property(tlddoc="Style to apply to the container element.")
 	private String style;
 	
-	@Property(tlddoc="Effect to use when showing the drawer. Possible values are 'blind', 'clip', 'drop', 'explode, 'fade', 'fold', 'puff', 'slide', 'scale', 'bounce', 'highlight', 'pulsate', and 'shake' (Some effects are not supported in IE7, see wiki page for more information).")
-	private String showEffect;
-	
-	@Property(tlddoc="Effect to use when hiding the drawer. Possible values are 'blind', 'clip', 'drop', 'explode, 'fade', 'fold', 'puff', 'slide', 'scale', 'bounce', 'highlight', and 'shake' (Some effects are not supported in IE browsers, see wiki page for more information).")
-	private String hideEffect;
+	@Property(tlddoc="Effect to use when showing and hiding the drawer. Possible values are 'drop', 'fade', and 'slide'. The default effect is 'slide'.", defaultValue="slide")
+	private String effect;
 	
 	@Property(tlddoc="Specifies the side on which the drawer should be displayed. Possible values are 'left', 'right', 'top', 'bottom'", defaultValue="left")
 	private String position;
@@ -101,7 +98,7 @@ public class DrawerPanelMeta extends UIPanelMeta {
     @Property(tlddoc = "Specifies the ID of the component that should receive focus when the drawer is opened.")
     String setFocus;
 
-	@Property(tlddoc="Boolean value that specifies whether to display a three-horizontal-bars icon to open the drawer. This handle will appear at the upper left corner of the viewport if the 'position' is 'left' or 'top', at the uper right corner of the viewport if the 'position' is 'right', and at the lower left corner of the viewport if the 'position' is 'bottom'. This handle will only be displayed if the 'container' is set to 'window'.", defaultValue="true")
+	@Property(tlddoc="Boolean value that specifies whether to display a three-horizontal-bars icon to open the drawer. This handle will appear at the upper left corner of the viewport if the 'position' is 'left' or 'top', at the uper right corner of the viewport if the 'position' is 'right', and at the lower left corner of the viewport if the 'position' is 'bottom'. This handle will only be displayed if the 'container' is set to 'window'. If a handle is desired when applying the drawer to a specific container, it has to be done manually; please consult the wiki page for this component for guidelines and sample markup.", defaultValue="true")
 	private boolean showHandleOpen;
 
 	@Property(tlddoc="Boolean value that specifies whether to display a three-horizontal-bars icon inside the drawer to close it. This handle will appear at the opper left corner of the drawer, inside the drawer's header.", defaultValue="true")

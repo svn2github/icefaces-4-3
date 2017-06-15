@@ -139,8 +139,8 @@ public class DrawerPanelRenderer extends CoreRenderer {
         }
         String styleClass = baseclass;
 		String style = drawerPanel.getStyle();
-        String showEffect = drawerPanel.getShowEffect();
-        String hideEffect = drawerPanel.getHideEffect();
+        String effect = drawerPanel.getEffect();
+		if (effect != null) effect = effect.toLowerCase();
         String headerText = drawerPanel.getHeader();
         String drawerPosition = drawerPanel.getPosition();
 		String container = drawerPanel.getContainer();
@@ -159,8 +159,7 @@ public class DrawerPanelRenderer extends CoreRenderer {
         if (height > 0) jb.entry("height", height);
         if (drawerPanel.isModal()) jb.entry("modal", true);
         if (zIndex != 1000) jb.entry("zIndex", zIndex);
-        if (showEffect != null) jb.entry("show", showEffect);
-        if (hideEffect != null) jb.entry("hide", hideEffect);
+        if (effect != null) jb.entry("effect", effect);
         if (!drawerPanel.isCloseOnEscape()) jb.entry("closeOnEscape", false);
         if (!drawerPanel.isShowHeader()) jb.entry("showHeader", false);
         if (onShow != null) jb.entry("onShow", "function(event, ui) {" + onShow + "}", true);
