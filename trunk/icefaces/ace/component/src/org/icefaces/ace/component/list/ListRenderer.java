@@ -159,7 +159,9 @@ public class ListRenderer extends CoreRenderer {
 		if (list.getValueExpression("filterBy") != null) {
 			writer.startElement(HTML.DIV_ELEM, null);
 			writer.writeAttribute(HTML.CLASS_ATTR, "if-list-filter", null);
+			writer.startElement(HTML.DIV_ELEM, null);
 			encodeFilter(context, list);
+			writer.endElement(HTML.DIV_ELEM);
 			writer.endElement(HTML.DIV_ELEM);
 		}
 
