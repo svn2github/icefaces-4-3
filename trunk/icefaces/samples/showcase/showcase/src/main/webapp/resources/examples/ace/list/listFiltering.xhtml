@@ -28,7 +28,7 @@
 
     <ui:define name="example">
         <h:form id="form">
-            <h:panelGroup style="padding: 0.5em;" layout="block">
+            <h:panelGroup style="padding: 0.5em; width:100%;" layout="block">
                 <style type="text/css">
                     .blockList {
                         padding:.5em;
@@ -58,7 +58,7 @@
 
                 <ace:list id="firstCarList" value="#{backing.carList}"
                           var="car" filterBy="#{car.chassis}"
-                          bodyClass="blockList"
+                          bodyClass="blockList" style="width:170px; height: 600px; margin: 0 auto; text-align:center; overflow:auto;"
                           dropGroup="blockGroup">
                     <h:panelGrid columns="2" id="hurf">
                         <f:facet name="header">

@@ -39,7 +39,7 @@ public class ListFilteringBean implements Serializable {
         }
     }};
 
-    List<Car> carList = new ArrayList(DataTableData.getDefaultData().subList(0,10));
+    List<Car> carList = new ArrayList(DataTableData.getDefaultData());
 
     public List<SelectItem> getStringList() {
         return stringList;
