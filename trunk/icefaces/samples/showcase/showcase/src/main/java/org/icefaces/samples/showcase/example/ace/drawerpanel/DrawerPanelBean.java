@@ -22,6 +22,7 @@ import org.icefaces.ace.model.schedule.LazyScheduleEventList;
 
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.event.AjaxBehaviorEvent;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -60,5 +61,13 @@ public class DrawerPanelBean implements Serializable {
 	public String getContainer() {
 		if (divContainer) return "div";
 		else return "window";
+	}
+
+	private boolean visible = false;
+	public boolean isVisible() { return visible; }
+	public void setVisible(boolean visible) { this.visible = visible; }
+
+	public void toggle(AjaxBehaviorEvent e) {System.out.println("toggle");
+		this.visible = !this.visible;
 	}
 }

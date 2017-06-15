@@ -17,7 +17,9 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
     xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
     xmlns:ace="http://www.icefaces.org/icefaces/components"
+    xmlns:icecore="http://www.icefaces.org/icefaces/core"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     template="/resources/templates/content-template.xhtml">
 
@@ -25,10 +27,7 @@
         <h:form id="form">
 			<ace:panel header="Configuration">
 				<h:panelGrid width="100%" columns="1" cellpadding="6" cellspacing="6">
-					<ace:radioButtons id="position"
-									  header="position"
-									  value="#{drawerPanelBean.position}"
-									  labelPosition="top">
+					<ace:radioButtons id="position" header="position" value="#{drawerPanelBean.position}" labelPosition="top">
 						<ace:ajax render="@all" />
 						<f:selectItem itemValue="left" itemLabel="Left" />
 						<f:selectItem itemValue="right" itemLabel="Right" />
@@ -38,41 +37,59 @@
 				</h:panelGrid>
 				<h:panelGrid columns="2" cellpadding="6" cellspacing="6">
 						<h:outputLabel for="showHandleOpen" value="Show handle to open: "/>
-						<ace:checkboxButton id="showHandleOpen"
-											value="#{drawerPanelBean.showHandleOpen}">
+						<ace:checkboxButton id="showHandleOpen" value="#{drawerPanelBean.showHandleOpen}">
 							<ace:ajax render="@all"/>
 						</ace:checkboxButton>
 						<h:outputLabel for="showHandleClose" value="Show handle to close: "/>
-						<ace:checkboxButton id="showHandleClose"
-											value="#{drawerPanelBean.showHandleClose}">
+						<ace:checkboxButton id="showHandleClose" value="#{drawerPanelBean.showHandleClose}">
 							<ace:ajax render="@all"/>
 						</ace:checkboxButton>
-						<h:outputLabel for="divContainer"
-									   value="Display inside div element: "/>
+						<h:outputLabel for="divContainer" value="Display inside div element: "/>
 						<ace:checkboxButton id="divContainer" value="#{drawerPanelBean.divContainer}">
 							<ace:ajax render="@all"/>
 						</ace:checkboxButton>
 				</h:panelGrid>
 			</ace:panel>
-            <div style="text-align:center;">
-                <ace:pushButton id="show"
-                                value="Show">
-                    <ace:ajax execute="@none" render="@none"
-                                  onStart="ice.ace.instance('#{drawer.clientId}').show();return false;"/>
-                </ace:pushButton>
-                <ace:pushButton id="hide"
-                                value="Hide">
-                    <ace:ajax execute="@none"
-                              render="@none"
-                              onStart="ice.ace.instance('#{drawer.clientId}').hide();return false;"/>
-                </ace:pushButton>
-            </div>
-            <div style="height:20px;"></div>
-			<div id="div" style="width: 600px; height: 500px; border: 1px solid #000;">
-				The drawer panel can be set to appear inside this container.
+			<h:panelGroup id="buttons" layout="block" style="text-align:center; margin-top:20px;">
+				<ace:pushButton id="show" value="Show" onclick="ice.ace.instance('form:drawer').show();" rendered="#{!drawerPanelBean.visible}">
+					<ace:ajax execute="buttons" render="buttons" listener="#{drawerPanelBean.toggle}"/>
+				</ace:pushButton>
+				<ace:pushButton id="hide" value="Hide" onclick="ice.ace.instance('form:drawer').hide();" rendered="#{drawerPanelBean.visible}">
+					<ace:ajax execute="buttons" render="buttons" listener="#{drawerPanelBean.toggle}"/>
+				</ace:pushButton>
+			</h:panelGroup>
+			<div id="div" style="width: 100%; height: 200px; margin-top:20px; text-align:center; display:table; position:relative;" class="ui-widget-content">
+				<span style="display:table-cell;vertical-align:middle;">The drawer panel can be set to appear inside this container.</span>
+				<h:panelGroup rendered="#{drawerPanelBean.showHandleOpen and drawerPanelBean.container == 'div' and drawerPanelBean.position == 'left'}"
+								styleClass="ice-ace-drawer-handle-show ice-ace-drawer-handle-upper-left ui-state-active"
+								style="position:absolute;"
+								layout="block"
+								onclick="ice.ace.instance('form:drawer').show();">
+					<span class="fa fa-bars fa-lg"></span>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{drawerPanelBean.showHandleOpen and drawerPanelBean.container == 'div' and drawerPanelBean.position == 'right'}"
+								styleClass="ice-ace-drawer-handle-show ice-ace-drawer-handle-upper-right ui-state-active"
+								style="position:absolute;"
+								layout="block"
+								onclick="ice.ace.instance('form:drawer').show();">
+					<span class="fa fa-bars fa-lg"></span>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{drawerPanelBean.showHandleOpen and drawerPanelBean.container == 'div' and drawerPanelBean.position == 'top'}"
+								styleClass="ice-ace-drawer-handle-show ice-ace-drawer-handle-upper-left ui-state-active"
+								style="position:absolute;"
+								layout="block"
+								onclick="ice.ace.instance('form:drawer').show();">
+					<span class="fa fa-bars fa-lg"></span>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{drawerPanelBean.showHandleOpen and drawerPanelBean.container == 'div' and drawerPanelBean.position == 'bottom'}"
+								styleClass="ice-ace-drawer-handle-show ice-ace-drawer-handle-lower-left ui-state-active"
+								style="position:absolute;"
+								layout="block"
+								onclick="ice.ace.instance('form:drawer').show();">
+					<span class="fa fa-bars fa-lg"></span>
+				</h:panelGroup>
 			</div>
 			<ace:drawerPanel 	id="drawer"
-                                binding="#{drawer}"
 								position="#{drawerPanelBean.position}"
 								showHandleOpen="#{drawerPanelBean.showHandleOpen}"
 								showHandleClose="#{drawerPanelBean.showHandleClose}"
