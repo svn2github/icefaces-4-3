@@ -33,32 +33,37 @@
                 <ace:message id="pagMsg" for="paginatorIn"/>
                 
                 <h:outputLabel for="positionIn" value="Paginator Position:"/>
-                <ace:radioButtons id="positionIn" value="#{dataTablePaginator.position}"
+                <h:selectOneRadio id="positionIn" value="#{dataTablePaginator.position}"
                                   required="true"
                                   disabled="#{!dataTablePaginator.paginator}">
                     <f:selectItems value="#{dataTablePaginator.positionAvailable}"/>
                     <ace:ajax render="@this carTable" execute="@this" />
-                </ace:radioButtons>
+                </h:selectOneRadio>
                 <ace:message id="posMsg" for="positionIn"/>
 
                 <h:outputLabel for="fastControls" value="Enable Fast Forward and Fast Rewind:"/>
-                <h:selectBooleanCheckbox id="fastControls" value="#{dataTablePaginator.fastControls}"
+                <h:selectBooleanCheckbox id="fastControls"
+                                         value="#{dataTablePaginator.fastControls}"
                                          disabled="#{!dataTablePaginator.paginator}">
                     <f:ajax render="@form" execute="@this" />
                 </h:selectBooleanCheckbox>
                 <ace:message id="fastMsg" for="fastControls"/>
 
                 <h:outputLabel for="pagesToSkip" value="Pages to skip with Fast Forward and Fast Rewind:"/>
-                <h:inputText id="pagesToSkip" value="#{dataTablePaginator.pagesToSkip}"
-                             required="true" size="2" maxlength="2"
-                             disabled="#{!(dataTablePaginator.paginator and dataTablePaginator.fastControls)}">
-                    <f:ajax render="@form" execute="@this" />
+                <ace:textEntry id="pagesToSkip"
+                               value="#{dataTablePaginator.pagesToSkip}"
+                               required="true"
+                               size="2"
+                               maxlength="2"
+                               disabled="#{!(dataTablePaginator.paginator and dataTablePaginator.fastControls)}">
+                    <ace:ajax render="@form" execute="@this" />
                     <f:validateLongRange minimum="1" maximum="30"/>
-                </h:inputText>
+                </ace:textEntry>
                 <ace:message id="pagesToSkipMsg" for="pagesToSkip"/>
                 
                 <h:outputLabel for="rowsIn" value="Table Rows (1-30):"/>
-                <ace:textEntry id="rowsIn" value="#{dataTablePaginator.rows}"
+                <ace:textEntry id="rowsIn"
+                               value="#{dataTablePaginator.rows}"
                                required="true"
                                size="2"
                                maxlength="2"
