@@ -3663,6 +3663,24 @@ function wijmoASPNetParseOptions(o) {
 							self._registerDocumentClickHandler(); // ICE-8699
 							e.preventDefault();
 						});
+
+                        var touchEnd;
+                        $(document).off("touchstart" + namespace, o.trigger).on("touchstart" + namespace, o.trigger, function (e) {
+                            touchEnd = false;
+                            e.preventDefault();
+                            setTimeout(function () {
+                                if (!touchEnd) {
+                                    menuContainer.hide();
+                                    self._displaySubmenu(e, triggerEle, menuContainer);
+                                    self._registerDocumentClickHandler();
+                                }
+                            }, 1250);
+                        });
+
+                        $(document).off("touchend" + namespace, o.trigger).on("touchend" + namespace, o.trigger, function (e) {
+                            touchEnd = true;
+                        });
+
 						break;
 					}			
 			} else {
@@ -3699,6 +3717,7 @@ function wijmoASPNetParseOptions(o) {
 						var touchEnd;
                         triggerEle.bind("touchstart" + namespace, function (e) {
                             touchEnd = false;
+                            e.preventDefault();
                             setTimeout(function() {
                                 if (!touchEnd) {
                                     menuContainer.hide();
