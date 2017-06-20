@@ -188,8 +188,9 @@ public class RadioButtonsRenderer extends RadioButtonRenderer {
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
 		renderResetSettings(facesContext, clientId, radioButtons);
 
-        writer.writeAttribute(HTML.CLASS_ATTR, "ice-ace-radiobutton", null);
-		String script = getScript(facesContext, writer, radioButtons, clientId, item.isDisabled());
+		boolean disabled = item.isDisabled() || radioButtons.isDisabled();
+        writer.writeAttribute(HTML.CLASS_ATTR, "ice-ace-radiobutton" + (disabled ? " ui-state-disabled" : ""), null);
+		String script = getScript(facesContext, writer, radioButtons, clientId, disabled);
 		writer.writeAttribute("data-init", "if (!document.getElementById('" + clientId + "').widget) " + script, null);
         encodeScript(writer, EventType.HOVER);
 
@@ -211,7 +212,7 @@ public class RadioButtonsRenderer extends RadioButtonRenderer {
         encodeButtonWrappers(writer, firstWrapperClass);
 
         if (ariaEnabled) {
-			encodeAriaEnabled(writer, item.isDisabled());
+			encodeAriaEnabled(writer, disabled);
 		}
 
         // Button Element
@@ -221,7 +222,7 @@ public class RadioButtonsRenderer extends RadioButtonRenderer {
 		writer.writeAttribute(HTML.CLASS_ATTR, "ui-corner-all ui-widget-content" + selectedClass, null);
 
 		if (ariaEnabled) writer.writeAttribute(HTML.TABINDEX_ATTR, "0", null);
-        encodeButtonStyle(writer, item.isDisabled());
+        encodeButtonStyle(writer, disabled);
 		encodeScript(writer, EventType.FOCUS);
 
         if (label != null && "inField".equalsIgnoreCase(radioButtons.getLabelPosition())) {

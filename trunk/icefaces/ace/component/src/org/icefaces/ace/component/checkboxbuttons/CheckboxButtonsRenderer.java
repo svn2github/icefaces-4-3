@@ -206,8 +206,8 @@ public class CheckboxButtonsRenderer extends CheckboxButtonRenderer {
 		renderResetSettings(facesContext, (UIComponent)checkboxButtons);
 //        ComponentUtils.enableOnElementUpdateNotify(writer, clientId);
 
-        writer.writeAttribute(HTML.CLASS_ATTR, "ice-checkboxbutton", null);
-        boolean disabled = item.isDisabled();
+        boolean disabled = item.isDisabled() || checkboxButtons.isDisabled();
+        writer.writeAttribute(HTML.CLASS_ATTR, "ice-checkboxbutton" + (disabled ? " ui-state-disabled" : ""), null);
         String script = getScript(facesContext, writer, checkboxButtons, clientId, disabled);
 		writer.writeAttribute("data-init", "if (!document.getElementById('" + clientId + "').widget) " + script, null);
         encodeScript(writer, EventType.HOVER);

@@ -75,4 +75,8 @@ public class RadioButtonsMeta extends UISelectOneMeta {
 
     @Property(tlddoc = "Orientation of the options list to be created. Valid values are \"pageDirection\" (list is laid out vertically), or \"lineDirection\" (list is laid out horizontally). If not specified, the default value is \"lineDirection\".", defaultValue="lineDirection")
     private String layout;
+
+    @Property (defaultValue="false",
+    		tlddoc="If true all radio buttons are disabled and no input may be submitted via this component.")
+    private boolean disabled;
 }
