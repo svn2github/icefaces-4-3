@@ -27,7 +27,7 @@
         <h:form id="form">
 			<ace:panel header="Configuration">
 				<h:panelGrid width="100%" columns="1" cellpadding="6" cellspacing="6">
-					<ace:radioButtons id="position" header="position" value="#{drawerPanelBean.position}" labelPosition="top">
+					<ace:radioButtons id="position" header="Position" value="#{drawerPanelBean.position}" labelPosition="top">
 						<ace:ajax render="@all" />
 						<f:selectItem itemValue="left" itemLabel="Left" />
 						<f:selectItem itemValue="right" itemLabel="Right" />
@@ -51,11 +51,11 @@
 				</h:panelGrid>
 			</ace:panel>
 			<h:panelGroup id="buttons" layout="block" style="text-align:center; margin-top:20px;">
-				<ace:pushButton id="show" value="Show" onclick="ice.ace.instance('form:drawer').show();" rendered="#{!drawerPanelBean.visible}">
-					<ace:ajax execute="buttons" render="buttons"/>
+				<ace:pushButton id="open" value="Open" onclick="ice.ace.instance('form:drawer').show();" rendered="#{!drawerPanelBean.visible}">
+					<ace:ajax onStart="return false;"/>
 				</ace:pushButton>
-				<ace:pushButton id="hide" value="Hide" onclick="ice.ace.instance('form:drawer').hide();" rendered="#{drawerPanelBean.visible}">
-					<ace:ajax execute="buttons" render="buttons"/>
+				<ace:pushButton id="close" value="Close" onclick="ice.ace.instance('form:drawer').hide();" rendered="#{drawerPanelBean.visible}">
+					<ace:ajax onStart="return false;"/>
 				</ace:pushButton>
 			</h:panelGroup>
 			<div id="div" style="width: 100%; height: 200px; margin-top:20px; text-align:center; display:table; position:relative;" class="ui-widget-content">
@@ -94,8 +94,8 @@
 								showHandleOpen="#{drawerPanelBean.showHandleOpen}"
 								showHandleClose="#{drawerPanelBean.showHandleClose}"
 								container="#{drawerPanelBean.container}">
-				<ace:ajax event="open" execute="@this" render="@none" />
-				<ace:ajax event="close" execute="@this" render="@none" />
+				<ace:ajax event="open" execute="@this" render="buttons" />
+				<ace:ajax event="close" execute="@this" render="buttons" />
 				<ace:linkButton value="Menu item 1"/><br/><br />
 				<ace:linkButton value="Menu item 2"/><br/><br />
 				<ace:linkButton value="Menu item 3"/><br/><br />
