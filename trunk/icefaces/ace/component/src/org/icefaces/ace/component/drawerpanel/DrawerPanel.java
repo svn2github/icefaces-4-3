@@ -27,6 +27,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import org.icefaces.ace.event.CloseEvent;
+import org.icefaces.ace.event.OpenEvent;
 import org.icefaces.ace.util.Constants;
 
 import javax.faces.event.AjaxBehaviorEvent;
@@ -43,7 +44,12 @@ public class DrawerPanel extends DrawerPanelBase {
         FacesContext context = FacesContext.getCurrentInstance();
         String eventName = context.getExternalContext().getRequestParameterMap().get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
-        if(eventName != null && eventName.equals("close") && event instanceof AjaxBehaviorEvent) {
+        if (eventName != null && eventName.equals("open") && event instanceof AjaxBehaviorEvent) {
+            setVisible(true);
+            OpenEvent openEvent = new OpenEvent(this, ((AjaxBehaviorEvent) event).getBehavior());
+            openEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
+            super.queueEvent(openEvent);
+        } else if (eventName != null && eventName.equals("close") && event instanceof AjaxBehaviorEvent) {
             setVisible(false);
             CloseEvent closeEvent = new CloseEvent(this, ((AjaxBehaviorEvent) event).getBehavior());
             closeEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);

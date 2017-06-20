@@ -179,7 +179,7 @@ public class DrawerPanelRenderer extends CoreRenderer {
 		jb.item(clientId); // root id
 		jb.endFunction();
 		writer.write("ice.ace.lazy.registry['"+clientId+"'] = function(){ return "+jb.toString()+"};");
-		if (drawerPanel.isVisible()) writer.write("ice.ace.instance('"+clientId+"').show();");
+		if (drawerPanel.isVisible()) writer.write("ice.ace.instance('"+clientId+"').show(true);");
 
         writer.endElement("script");
     }

@@ -182,7 +182,7 @@ ice.ace.DrawerPanel = function(parentID, cfg) {
 
     ice.onElementUpdate(parentID, function() {
         if (_self.cfg.isVisible){
-            _self.hide();
+            _self.hide(true);
         }  else {
             _self.jq.dialog('close');
         }
@@ -216,10 +216,10 @@ ice.ace.DrawerPanel = function(parentID, cfg) {
 		});
 	}
     if (this.cfg.isVisible){
-        this.show();
+        this.show(true);
     }
     if (this.cfg.isVisible==false){
-        this.hide();
+        this.hide(true);
     }
     callee[id] = this;
 };
@@ -236,7 +236,7 @@ ice.ace.DrawerPanel.prototype.setupEventHandlers = function(id){
     }
 };
 
-ice.ace.DrawerPanel.prototype.show = function() {
+ice.ace.DrawerPanel.prototype.show = function(synthetic) {
 	var self = this;
     var focusOn = this.cfg.setFocus;
     setTimeout(function() {
@@ -261,13 +261,19 @@ ice.ace.DrawerPanel.prototype.show = function() {
             self.focusInput(focusOn);
         }
         ice.ace.jq(window).on('resize', self.positionOnWindowResize);
+		if (!synthetic && self.cfg.behaviors) {
+			var openBehavior = self.cfg.behaviors['open'];
+			if (openBehavior) {
+				ice.ace.ab(openBehavior);
+			}
+		}
     }, 1);
     setTimeout(function() {
 		self.recreateChildEditors();
     }, 1);
 };
 
-ice.ace.DrawerPanel.prototype.hide = function() {
+ice.ace.DrawerPanel.prototype.hide = function(synthetic) {
 	var self = this;
     setTimeout(function(){
         if (self.cfg.isVisible){
@@ -276,6 +282,12 @@ ice.ace.DrawerPanel.prototype.hide = function() {
             var oldClass = self.jq.dialogClass;
             self.cfg.isVisible=false;
             var dialogParent = self.jq.parent();
+			if (!synthetic && self.cfg.behaviors) {
+				var closeBehavior = self.cfg.behaviors['close'];
+				if (closeBehavior) {
+					ice.ace.ab(closeBehavior);
+				}
+			}
 /*
             if (dialogParent.hasClass("ice-ace-drawer")) {
                 dialogParent.removeClass("ice-ace-drawer");
@@ -290,6 +302,12 @@ ice.ace.DrawerPanel.prototype.hide = function() {
  * Invokes user provided callback
  */
 ice.ace.DrawerPanel.prototype.onShow = function(event, ui) {
+    if (typeof event.originalEvent != 'undefined') {
+        if (event.originalEvent.synthetic) return;
+    } else {
+        if (event.synthetic) return;
+    }
+
     if (this.cfg.onShow) {
         this.cfg.onShow.call(this, event, ui);
     }
@@ -300,7 +318,6 @@ ice.ace.DrawerPanel.prototype.onShow = function(event, ui) {
  */
 ice.ace.DrawerPanel.prototype.onHide = function(event, ui) {
     if (typeof event.originalEvent != 'undefined') {
-        this.ajaxHide();
         if (event.originalEvent.synthetic) return;
     } else {
         if (event.synthetic) return;
@@ -310,16 +327,6 @@ ice.ace.DrawerPanel.prototype.onHide = function(event, ui) {
         this.cfg.onHide.call(this, event, ui);
     }
 };
-
-ice.ace.DrawerPanel.prototype.ajaxHide = function() {
-    if (this.cfg.behaviors) {
-        var closeBehavior = this.cfg.behaviors['close'];
-        if (closeBehavior) {
-            ice.ace.ab(closeBehavior);
-        }
-    }
-}
-
 
 ice.ace.DrawerPanel.prototype.focusInput = function(id) {
 	var self = this;

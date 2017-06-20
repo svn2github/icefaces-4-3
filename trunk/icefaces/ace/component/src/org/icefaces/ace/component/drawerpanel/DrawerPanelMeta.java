@@ -48,24 +48,25 @@ import org.icefaces.resources.ICEResourceLibrary;
 	@ICEResourceDependency(name = "drawerpanel/drawerpanel.js")
 })
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="close", javadoc="Fired when the panel is closed (default event).", tlddoc="Fired when the panel is closed (default event).", defaultRender="@all", defaultExecute="@this", argumentClass="org.icefaces.ace.event.CloseEvent")
-}, defaultEvent="close")
+	@ClientEvent(name="open", javadoc="Fired when the drawer panel is opened (default event).", tlddoc="Fired when the drawer panel is opened (default event).", defaultRender="@all", defaultExecute="@this", argumentClass="org.icefaces.ace.event.OpenEvent"),
+	@ClientEvent(name="close", javadoc="Fired when the drawer panel is closed.", tlddoc="Fired when the drawer panel is closed.", defaultRender="@all", defaultExecute="@this", argumentClass="org.icefaces.ace.event.CloseEvent")
+}, defaultEvent="open")
 
 public class DrawerPanelMeta extends UIPanelMeta {
 	
 	@Property(tlddoc="Text that will appear in the header of the drawer.")
 	private String header;
 	
-	@Property(tlddoc="Boolean value that specifies whether the document should be shielded with a partially transparent mask to require the user to close the Panel before being able to activate any elements in the document.", defaultValue="false")
+	@Property(tlddoc="Boolean value that specifies whether the document should be shielded with a partially transparent mask to require the user to close the panel before being able to activate any elements in the document.", defaultValue="false")
 	private boolean modal;
 
 	@Property(tlddoc="This attribute can be used to toggle visibility on the server, rendered should not be used that way, setting rendered=false on a visible modal drawer will not remove the modality layer, visible=false must be set first (or client-side JS function called).", defaultValue="false")
 	private boolean visible;
 
-	@Property(tlddoc="Width of the element in pixels. Default (not specified or value <= 0) is auto. If auto, resizable should be false, or resizing may hehave erratically. If auto, IE7 may not size or position properly. This attribute only applies when the 'position' is 'left' or 'right'.", defaultValue="Integer.MIN_VALUE")
+	@Property(tlddoc="Width of the element in pixels. Default (not specified or value <= 0) is auto. If auto, IE7 may not size or position properly. This attribute only applies when the 'position' is 'left' or 'right'.", defaultValue="Integer.MIN_VALUE")
 	private int width;
 
-	@Property(tlddoc="Height of the element in pixels. Default (not specified or value <= 0) is auto. If auto, resizable should be false, or resizing may hehave erratically. If auto, IE7 may not size or position properly. This attribute only applies if the 'position' is 'top' or 'bottom'.", defaultValue="Integer.MIN_VALUE")
+	@Property(tlddoc="Height of the element in pixels. Default (not specified or value <= 0) is auto. If auto, IE7 may not size or position properly. This attribute only applies if the 'position' is 'top' or 'bottom'.", defaultValue="Integer.MIN_VALUE")
 	private int height;
 
 	@Property(tlddoc="z-index property to control overlapping with other elements.", defaultValue="1000")
