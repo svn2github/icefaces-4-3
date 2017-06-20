@@ -52,10 +52,10 @@
 			</ace:panel>
 			<h:panelGroup id="buttons" layout="block" style="text-align:center; margin-top:20px;">
 				<ace:pushButton id="show" value="Show" onclick="ice.ace.instance('form:drawer').show();" rendered="#{!drawerPanelBean.visible}">
-					<ace:ajax execute="buttons" render="buttons" listener="#{drawerPanelBean.toggle}"/>
+					<ace:ajax execute="buttons" render="buttons"/>
 				</ace:pushButton>
 				<ace:pushButton id="hide" value="Hide" onclick="ice.ace.instance('form:drawer').hide();" rendered="#{drawerPanelBean.visible}">
-					<ace:ajax execute="buttons" render="buttons" listener="#{drawerPanelBean.toggle}"/>
+					<ace:ajax execute="buttons" render="buttons"/>
 				</ace:pushButton>
 			</h:panelGroup>
 			<div id="div" style="width: 100%; height: 200px; margin-top:20px; text-align:center; display:table; position:relative;" class="ui-widget-content">
@@ -89,11 +89,13 @@
 					<span class="fa fa-bars fa-lg"></span>
 				</h:panelGroup>
 			</div>
-			<ace:drawerPanel 	id="drawer"
+			<ace:drawerPanel 	id="drawer" visible="#{drawerPanelBean.visible}"
 								position="#{drawerPanelBean.position}"
 								showHandleOpen="#{drawerPanelBean.showHandleOpen}"
 								showHandleClose="#{drawerPanelBean.showHandleClose}"
 								container="#{drawerPanelBean.container}">
+				<ace:ajax event="open" execute="@this" render="@none" />
+				<ace:ajax event="close" execute="@this" render="@none" />
 				<ace:linkButton value="Menu item 1"/><br/><br />
 				<ace:linkButton value="Menu item 2"/><br/><br />
 				<ace:linkButton value="Menu item 3"/><br/><br />

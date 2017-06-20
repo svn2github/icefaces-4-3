@@ -66,8 +66,4 @@ public class DrawerPanelBean implements Serializable {
 	private boolean visible = false;
 	public boolean isVisible() { return visible; }
 	public void setVisible(boolean visible) { this.visible = visible; }
-
-	public void toggle(AjaxBehaviorEvent e) {System.out.println("toggle");
-		this.visible = !this.visible;
-	}
 }
