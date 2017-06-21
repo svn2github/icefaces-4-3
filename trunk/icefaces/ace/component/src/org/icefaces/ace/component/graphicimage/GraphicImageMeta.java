@@ -66,7 +66,7 @@ public class GraphicImageMeta {
     @Property(defaultValue = "session", tlddoc = "Scope of Resource or byte[] when image is specified with a dynamic data value.")
     private String scope;
 
-    @Property(tlddoc = "Name of resource object stored when image is specified with a dynamic data value. whenever the 'value', 'url' or 'src' attributes are not defined the 'name' and the 'library' attributes are used for looking up a JSF resource.")
+    @Property(tlddoc = "If the 'value', 'url' or 'src' attributes are defined the 'name' attribute defines the file name for the graphic image. Alternatively, a value can be specified to reference a JSF resource (also requires the 'library' attribute to be specified).")
     private String name;
 
     @Property(tlddoc = "Library name of resource object stored when image is specified with a dynamic data value.")
