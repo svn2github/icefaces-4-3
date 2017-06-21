@@ -3667,7 +3667,6 @@ function wijmoASPNetParseOptions(o) {
                         var touchEnd;
                         $(document).off("touchstart" + namespace, o.trigger).on("touchstart" + namespace, o.trigger, function (e) {
                             touchEnd = false;
-                            e.preventDefault();
                             setTimeout(function () {
                                 if (!touchEnd) {
                                     menuContainer.hide();
@@ -3717,7 +3716,6 @@ function wijmoASPNetParseOptions(o) {
 						var touchEnd;
                         triggerEle.bind("touchstart" + namespace, function (e) {
                             touchEnd = false;
-                            e.preventDefault();
                             setTimeout(function() {
                                 if (!touchEnd) {
                                     menuContainer.hide();
