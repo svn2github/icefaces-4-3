@@ -181,7 +181,7 @@ ice.ace.DrawerPanel = function(parentID, cfg) {
 
     //Hide header if showHeader is false
     if (this.cfg.showHeader == false && this.cfg.showHandleClose == false) {
-        this.jq.parent().children('.ui-dialog-titlebar').close();
+        this.jq.parent().children('.ui-dialog-titlebar').hide();
     } else {
 		var headerText = '';
 		if (this.cfg.showHandleClose == true) {

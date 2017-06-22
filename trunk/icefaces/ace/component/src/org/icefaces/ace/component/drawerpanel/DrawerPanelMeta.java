@@ -96,7 +96,7 @@ public class DrawerPanelMeta extends UIPanelMeta {
 	@Property(tlddoc="Javascript code to be executed when closing the drawer.")
 	private String onClose;
 	
-	@Property(tlddoc="Boolean value that specifies whether the drawer should have a header (default true). If 'showHandleOpen' is set to true, a header will be shown regardless of the value of this attribute.", defaultValue="true")
+	@Property(tlddoc="Boolean value that specifies whether the drawer should have a header (default true). If 'showHandleClose' is set to true, a header will be shown regardless of the value of this attribute.", defaultValue="true")
 	private boolean showHeader;
 
     @Property(tlddoc = "Specifies the ID of the component that should receive focus when the drawer is opened.")
