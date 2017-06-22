@@ -51,10 +51,10 @@
 				</h:panelGrid>
 			</ace:panel>
 			<h:panelGroup id="buttons" layout="block" style="text-align:center; margin-top:20px;">
-				<ace:pushButton id="open" value="Open" onclick="ice.ace.instance('form:drawer').show();" rendered="#{!drawerPanelBean.visible}">
+				<ace:pushButton id="open" value="Open" onclick="ice.ace.instance('form:drawer').open();" rendered="#{!drawerPanelBean.visible}">
 					<ace:ajax onStart="return false;"/>
 				</ace:pushButton>
-				<ace:pushButton id="close" value="Close" onclick="ice.ace.instance('form:drawer').hide();" rendered="#{drawerPanelBean.visible}">
+				<ace:pushButton id="close" value="Close" onclick="ice.ace.instance('form:drawer').close();" rendered="#{drawerPanelBean.visible}">
 					<ace:ajax onStart="return false;"/>
 				</ace:pushButton>
 			</h:panelGroup>
@@ -64,32 +64,32 @@
 								styleClass="ice-ace-drawer-handle-show ice-ace-drawer-handle-upper-left ui-state-active"
 								style="position:absolute;"
 								layout="block"
-								onclick="ice.ace.instance('form:drawer').show();">
+								onclick="ice.ace.instance('form:drawer').open();">
 					<span class="fa fa-bars fa-lg"></span>
 				</h:panelGroup>
 				<h:panelGroup rendered="#{drawerPanelBean.showHandleOpen and drawerPanelBean.container == 'div' and drawerPanelBean.position == 'right'}"
 								styleClass="ice-ace-drawer-handle-show ice-ace-drawer-handle-upper-right ui-state-active"
 								style="position:absolute;"
 								layout="block"
-								onclick="ice.ace.instance('form:drawer').show();">
+								onclick="ice.ace.instance('form:drawer').open();">
 					<span class="fa fa-bars fa-lg"></span>
 				</h:panelGroup>
 				<h:panelGroup rendered="#{drawerPanelBean.showHandleOpen and drawerPanelBean.container == 'div' and drawerPanelBean.position == 'top'}"
 								styleClass="ice-ace-drawer-handle-show ice-ace-drawer-handle-upper-left ui-state-active"
 								style="position:absolute;"
 								layout="block"
-								onclick="ice.ace.instance('form:drawer').show();">
+								onclick="ice.ace.instance('form:drawer').open();">
 					<span class="fa fa-bars fa-lg"></span>
 				</h:panelGroup>
 				<h:panelGroup rendered="#{drawerPanelBean.showHandleOpen and drawerPanelBean.container == 'div' and drawerPanelBean.position == 'bottom'}"
 								styleClass="ice-ace-drawer-handle-show ice-ace-drawer-handle-lower-left ui-state-active"
 								style="position:absolute;"
 								layout="block"
-								onclick="ice.ace.instance('form:drawer').show();">
+								onclick="ice.ace.instance('form:drawer').open();">
 					<span class="fa fa-bars fa-lg"></span>
 				</h:panelGroup>
 			</div>
-			<ace:drawerPanel 	id="drawer" visible="#{drawerPanelBean.visible}"
+			<ace:drawerPanel 	id="drawer" visible="#{drawerPanelBean.visible}" showHeader="false"
 								position="#{drawerPanelBean.position}"
 								showHandleOpen="#{drawerPanelBean.showHandleOpen}"
 								showHandleClose="#{drawerPanelBean.showHandleClose}"
