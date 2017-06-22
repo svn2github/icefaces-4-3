@@ -60,6 +60,9 @@
                           var="car" filterBy="#{car.chassis}"
                           bodyClass="blockList" style="width:170px; height: 600px; margin: 0 auto; text-align:center; overflow:auto;"
                           dropGroup="blockGroup">
+					<f:facet name="header">
+						Cars
+					</f:facet>
                     <h:panelGrid columns="2" id="hurf">
                         <f:facet name="header">
                             <h:outputText value="#{car.name}" /><hr/>

@@ -31,10 +31,14 @@
             <ace:panel header="Sortable List">
                 <h:panelGrid id="panelGrid" columns="3" style="margin-left:auto; margin-right:auto;" cellspacing="30">
                     <h:panelGroup id="panelGroup1">
-                        <ace:list id="list" value="#{backing.stringList}" var="car"
+                        <ace:list id="list" value="#{backing.stringList}" var="car" headerStyle="text-align:center;"
                                   selections="#{backing.selections}" sortBy="#{car.label}"
                                   selectionMode="multiple"
-                                  dragging="true" />
+                                  dragging="true">
+							<f:facet name="header">
+								Cars
+							</f:facet>
+						</ace:list>
                     </h:panelGroup>
 
                     <h:panelGroup id="panelGroup2">
@@ -43,7 +47,12 @@
                     
                     <h:panelGroup id="panelGroup3">
                         <ace:list id="selected" value="#{backing.selectionList}" dragging="true"
-                                  rendered="#{!empty backing.selections}" var="car" sortBy="#{car.label}" />
+									headerStyle="text-align:center;"
+									rendered="#{!empty backing.selections}" var="car" sortBy="#{car.label}">
+							<f:facet name="header">
+								Selected Cars
+							</f:facet>
+						</ace:list>
                     </h:panelGroup>
                 </h:panelGrid>
             </ace:panel>
