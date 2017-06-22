@@ -43,6 +43,7 @@ ice.ace.DrawerPanel = function(parentID, cfg) {
         }
     }
     this.id = id;
+	this.parentID = parentID;
     this.cfg = cfg;
     this.jqId = ice.ace.escapeClientId(id);
     this.jq = ice.ace.jq(this.jqId);
@@ -73,38 +74,18 @@ ice.ace.DrawerPanel = function(parentID, cfg) {
 		}
 	}
 
-/*
-    // disable unsupported effects
-    if (this.cfg.hide == 'pulsate') {
-        this.cfg.hide = null;
-    } else {
-        var browser = ice.ace.Dialog.browser();
-        if (browser == 'ie7' || browser == 'ie8') {
-            var hide = this.cfg.hide;
-            if (hide) {
-                if (hide == 'highlight' || hide == 'bounce')
-                    this.cfg.hide = null;
-            }
-        }
-    }
-	if (this.cfg.show == 'explode') {
-        var browser = ice.ace.Dialog.browser();
-        if (browser == 'ie7' || browser == 'ie8') {
-			this.cfg.show = null;
-		}
-	}
-*/
-
     //Remove scripts to prevent duplicate widget issues
     this.jq.find("script").remove();
 
-/*
     this.positionOnWindowResize = function() {
-        _self.jq.dialog({
-            position: _self.cfg.position
-        })
+		if (_self.cfg.drawerPosition == 'top' || _self.cfg.drawerPosition == 'bottom') {
+			var width = ice.ace.jq(_self.cfg.container).width();
+			_self.jq.dialog({width: width});
+		} else {
+			var height = ice.ace.jq(_self.cfg.container).height();
+			_self.jq.dialog({height: height});
+		}
     };
-*/
 
     //Create the dialog
     this.cfg.autoOpen = false;
@@ -182,7 +163,7 @@ ice.ace.DrawerPanel = function(parentID, cfg) {
 
     ice.onElementUpdate(parentID, function() {
         if (_self.cfg.isVisible){
-            _self.hide(true);
+            _self.close(true);
         }  else {
             _self.jq.dialog('close');
         }
@@ -190,17 +171,17 @@ ice.ace.DrawerPanel = function(parentID, cfg) {
     });
   //Event handlers
     this.jq.bind('dialogclose', function(event, ui) {
-        _self.onHide(event, ui);
+        _self.onClose(event, ui);
     });
     this.jq.bind('dialogopen', function(event, ui) {
-        _self.onShow(event, ui);
+        _self.onOpen(event, ui);
     });
 
 	this.jq.parent().children('.ui-dialog-titlebar').removeClass('ui-corner-all').addClass('ui-state-active');
 
     //Hide header if showHeader is false
     if (this.cfg.showHeader == false && this.cfg.showHandleClose == false) {
-        this.jq.parent().children('.ui-dialog-titlebar').hide();
+        this.jq.parent().children('.ui-dialog-titlebar').close();
     } else {
 		var headerText = '';
 		if (this.cfg.showHandleClose == true) {
@@ -212,14 +193,14 @@ ice.ace.DrawerPanel = function(parentID, cfg) {
 		var titlebar = this.jq.parent().children('.ui-dialog-titlebar').children('.ui-dialog-title');
 		titlebar.html(headerText);
 		titlebar.children('span.fa-bars').on('click', function() {
-			ice.ace.instance(parentID).hide();
+			ice.ace.instance(parentID).close();
 		});
 	}
     if (this.cfg.isVisible){
-        this.show(true);
+        this.open(true);
     }
     if (this.cfg.isVisible==false){
-        this.hide(true);
+        this.close(true);
     }
     callee[id] = this;
 };
@@ -228,15 +209,15 @@ ice.ace.DrawerPanel.prototype.setupEventHandlers = function(id){
     //Event handlers
     if (ice.ace.DrawerPanels && ice.ace.DrawerPanels[id]) {
         this.jq.bind('dialogclose', function(event, ui) {
-            ice.ace.DrawerPanels[id].onHide(event, ui);
+            ice.ace.DrawerPanels[id].onClose(event, ui);
         });
         this.jq.bind('dialogopen', function(event, ui) {
-            ice.ace.DrawerPanels[id].onShow(event, ui);
+            ice.ace.DrawerPanels[id].onOpen(event, ui);
         });
     }
 };
 
-ice.ace.DrawerPanel.prototype.show = function(synthetic) {
+ice.ace.DrawerPanel.prototype.open = function(synthetic) {
 	var self = this;
     var focusOn = this.cfg.setFocus;
     setTimeout(function() {
@@ -261,6 +242,28 @@ ice.ace.DrawerPanel.prototype.show = function(synthetic) {
             self.focusInput(focusOn);
         }
         ice.ace.jq(window).on('resize', self.positionOnWindowResize);
+
+		if (self.cfg.closeOnOutsideClick) {
+			if (!ice.ace.DrawerPanel.closeListeners) {
+				ice.ace.DrawerPanel.closeListeners = {};
+			}
+			if (!ice.ace.DrawerPanel.closeListeners[self.parentID]) {
+				ice.ace.DrawerPanel.closeListeners[self.parentID] = function(e) {
+					var target = ice.ace.jq(e.target);
+					var drawer = target.closest(ice.ace.escapeClientId(self.parentID));
+					if (e.target.id == self.parentID || drawer.size() > 0) {
+						return;
+					} else {
+						self.close();
+					}
+				};
+			}
+			setTimeout(function () {
+				ice.ace.jq(window).on('click', ice.ace.DrawerPanel.closeListeners[self.parentID]);
+				ice.ace.jq(window).on('touchstart', ice.ace.DrawerPanel.closeListeners[self.parentID]);
+			}, 0);
+		}
+
 		if (!synthetic && self.cfg.behaviors) {
 			var openBehavior = self.cfg.behaviors['open'];
 			if (openBehavior) {
@@ -273,11 +276,15 @@ ice.ace.DrawerPanel.prototype.show = function(synthetic) {
     }, 1);
 };
 
-ice.ace.DrawerPanel.prototype.hide = function(synthetic) {
+ice.ace.DrawerPanel.prototype.close = function(synthetic) {
 	var self = this;
     setTimeout(function(){
         if (self.cfg.isVisible){
             ice.ace.jq(window).off('resize', self.positionOnWindowResize);
+			if (self.cfg.closeOnOutsideClick) {
+				ice.ace.jq(window).off('click', ice.ace.DrawerPanel.closeListeners[self.parentID]);
+				ice.ace.jq(window).off('touchstart', ice.ace.DrawerPanel.closeListeners[self.parentID]);
+			}
             self.jq.dialog('close');
             var oldClass = self.jq.dialogClass;
             self.cfg.isVisible=false;
@@ -288,12 +295,6 @@ ice.ace.DrawerPanel.prototype.hide = function(synthetic) {
 					ice.ace.ab(closeBehavior);
 				}
 			}
-/*
-            if (dialogParent.hasClass("ice-ace-drawer")) {
-                dialogParent.removeClass("ice-ace-drawer");
-                dialogParent.addClass("ice-ace-drawer-hidden");
-            }
-*/
         }
     },1);
 };
@@ -301,30 +302,30 @@ ice.ace.DrawerPanel.prototype.hide = function(synthetic) {
 /**
  * Invokes user provided callback
  */
-ice.ace.DrawerPanel.prototype.onShow = function(event, ui) {
+ice.ace.DrawerPanel.prototype.onOpen = function(event, ui) {
     if (typeof event.originalEvent != 'undefined') {
         if (event.originalEvent.synthetic) return;
     } else {
         if (event.synthetic) return;
     }
 
-    if (this.cfg.onShow) {
-        this.cfg.onShow.call(this, event, ui);
+    if (this.cfg.onOpen) {
+        this.cfg.onOpen.call(this, event, ui);
     }
 };
 
 /**
  * Fires an ajax request to invoke a closeListener passing a CloseEvent
  */
-ice.ace.DrawerPanel.prototype.onHide = function(event, ui) {
+ice.ace.DrawerPanel.prototype.onClose = function(event, ui) {
     if (typeof event.originalEvent != 'undefined') {
         if (event.originalEvent.synthetic) return;
     } else {
         if (event.synthetic) return;
     }
 
-    if (this.cfg.onHide) {
-        this.cfg.onHide.call(this, event, ui);
+    if (this.cfg.onClose) {
+        this.cfg.onClose.call(this, event, ui);
     }
 };
 

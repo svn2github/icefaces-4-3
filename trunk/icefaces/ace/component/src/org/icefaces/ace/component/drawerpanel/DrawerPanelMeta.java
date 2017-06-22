@@ -78,20 +78,23 @@ public class DrawerPanelMeta extends UIPanelMeta {
 	@Property(tlddoc="Style to apply to the container element.")
 	private String style;
 	
-	@Property(tlddoc="Effect to use when showing and hiding the drawer. Possible values are 'drop', 'fade', and 'slide'. The default effect is 'slide'.", defaultValue="slide")
+	@Property(tlddoc="Effect to use when opening and closing the drawer. Possible values are 'drop', 'fade', and 'slide'. The default effect is 'slide'.", defaultValue="slide")
 	private String effect;
 	
 	@Property(tlddoc="Specifies the side on which the drawer should be displayed. Possible values are 'left', 'right', 'top', 'bottom'", defaultValue="left")
 	private String position;
 	
-	@Property(tlddoc="Boolean value that Specifies whether the drawer should close when it has focus and the user presses the escape (ESC) key.", defaultValue="true")
+	@Property(tlddoc="Boolean value that specifies whether the drawer should be closed when it has focus and the user presses the escape (ESC) key.", defaultValue="true")
 	private boolean closeOnEscape;
+
+	@Property(tlddoc="Boolean value that specifies whether the drawer should be closed when the user clicks (or touches) any part of the page outside the drawer.", defaultValue="true")
+	private boolean closeOnOutsideClick;
 	
-	@Property(tlddoc="Javascript code to be executed when showing the drawer.")
-	private String onShow;
+	@Property(tlddoc="Javascript code to be executed when opening the drawer.")
+	private String onOpen;
 	
-	@Property(tlddoc="Javascript code to be executed when hiding the drawer.")
-	private String onHide;
+	@Property(tlddoc="Javascript code to be executed when closing the drawer.")
+	private String onClose;
 	
 	@Property(tlddoc="Boolean value that specifies whether the drawer should have a header (default true). If 'showHandleOpen' is set to true, a header will be shown regardless of the value of this attribute.", defaultValue="true")
 	private boolean showHeader;

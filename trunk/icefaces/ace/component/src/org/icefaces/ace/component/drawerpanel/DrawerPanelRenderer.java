@@ -89,7 +89,7 @@ public class DrawerPanelRenderer extends CoreRenderer {
 				positionClass = "ice-ace-drawer-handle-upper-left";
 			}
 			writer.writeAttribute("class", "ice-ace-drawer-handle-show " + positionClass + " ui-state-active", null);
-			writer.writeAttribute("onclick", "ice.ace.instance('" + clientId + "').show();", null);
+			writer.writeAttribute("onclick", "ice.ace.instance('" + clientId + "').open();", null);
 			writer.startElement("span", component);
 			writer.writeAttribute("class", "fa fa-bars fa-lg", null);
 			writer.endElement("span");
@@ -150,8 +150,8 @@ public class DrawerPanelRenderer extends CoreRenderer {
         int width = drawerPanel.getWidth();
         int height = drawerPanel.getHeight();
         int zIndex = drawerPanel.getZindex();
-        String onShow = drawerPanel.getOnShow();
-        String onHide = drawerPanel.getOnHide();
+        String onOpen = drawerPanel.getOnOpen();
+        String onClose = drawerPanel.getOnClose();
 
         if (styleClass != null) jb.entry("dialogClass", styleClass);
 		if (style != null) jb.entry("dialogStyle", style);
@@ -161,9 +161,10 @@ public class DrawerPanelRenderer extends CoreRenderer {
         if (zIndex != 1000) jb.entry("zIndex", zIndex);
         if (effect != null) jb.entry("effect", effect);
         if (!drawerPanel.isCloseOnEscape()) jb.entry("closeOnEscape", false);
+        jb.entry("closeOnOutsideClick", drawerPanel.isCloseOnOutsideClick());
         if (!drawerPanel.isShowHeader()) jb.entry("showHeader", false);
-        if (onShow != null) jb.entry("onShow", "function(event, ui) {" + onShow + "}", true);
-        if (onHide != null) jb.entry("onHide", "function(event, ui) {" + onHide + "}", true);
+        if (onOpen != null) jb.entry("onOpen", "function(event, ui) {" + onOpen + "}", true);
+        if (onClose != null) jb.entry("onClose", "function(event, ui) {" + onClose + "}", true);
 		jb.entry("showHandleOpen", drawerPanel.isShowHandleOpen());
 		jb.entry("showHandleClose", drawerPanel.isShowHandleClose());
 		jb.entry("drawerPosition", drawerPosition != null ? drawerPosition.toLowerCase() : "left");
@@ -179,7 +180,7 @@ public class DrawerPanelRenderer extends CoreRenderer {
 		jb.item(clientId); // root id
 		jb.endFunction();
 		writer.write("ice.ace.lazy.registry['"+clientId+"'] = function(){ return "+jb.toString()+"};");
-		if (drawerPanel.isVisible()) writer.write("ice.ace.instance('"+clientId+"').show(true);");
+		if (drawerPanel.isVisible()) writer.write("ice.ace.instance('"+clientId+"').open(true);");
 
         writer.endElement("script");
     }
