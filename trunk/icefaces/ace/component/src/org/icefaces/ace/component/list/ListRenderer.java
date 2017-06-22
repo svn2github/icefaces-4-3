@@ -357,7 +357,7 @@ public class ListRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         ACEList list = (ACEList) component;
 
-        if (component.getFacet("header") != null)
+        if (component.getFacet("footer") != null)
             encodeFooter(context, writer, list);
 
         encodeHiddenFields(context, writer, list);

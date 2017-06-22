@@ -287,6 +287,10 @@ public class ListMeta extends UIDataMeta {
     class FacetsMeta {
         @Facet(tlddoc = "An optional facet that is rendered in place of the built-in filtering inputs to provide more flexibility when filtering values. This facet is rendered as a simple popup dialog. When using this facet, the 'filterValue' property has to be set as well (or 'filterValueMin' and 'filterValueMax' if working with ranges).")
         UIComponent filter;
+        @Facet
+        UIComponent header;
+        @Facet
+        UIComponent footer;
     }
 
     @Field(defaultValue = "false", defaultValueIsStringLiteral = false)
