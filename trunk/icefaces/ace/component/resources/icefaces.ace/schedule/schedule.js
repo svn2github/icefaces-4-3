@@ -38,9 +38,9 @@ ice.ace.Schedule = function(id, cfg) {
 		this.eventsMap[''+event.index] = event;
 	}
 
-	this.cfg.currentYear = parseInt(document.getElementById(this.id + '_currentYear').getAttribute('value'));
-	this.cfg.currentMonth = parseInt(document.getElementById(this.id + '_currentMonth').getAttribute('value'));
-	this.cfg.currentDay = parseInt(document.getElementById(this.id + '_currentDay').getAttribute('value'));
+	this.cfg.currentYear = parseInt(document.getElementById(this.id + '_currentYear').getAttribute('value'), 10);
+	this.cfg.currentMonth = parseInt(document.getElementById(this.id + '_currentMonth').getAttribute('value'), 10);
+	this.cfg.currentDay = parseInt(document.getElementById(this.id + '_currentDay').getAttribute('value'), 10);
 	
 	this.renderConfiguration = {};
 	if (this.cfg.viewMode == 'week') {
@@ -156,7 +156,7 @@ ice.ace.Schedule = function(id, cfg) {
 			this.jqRoot.delegate('.schedule-dow-header', 'dblclick', function(event) {
 				event.stopPropagation();
 				var node = ice.ace.jq(event['target']);
-				var dow = parseInt(self.extractDayOfWeek(node.get(0)));
+				var dow = parseInt(self.extractDayOfWeek(node.get(0)), 10);
 
 				var currentDate = new Date();
 				currentDate.setFullYear(self.cfg.currentYear);
@@ -237,7 +237,7 @@ ice.ace.Schedule = function(id, cfg) {
 			var node = ice.ace.jq(event['target']);
 			// add selected styling
 			self.jqRoot.find('.schedule-selected').removeClass('schedule-selected');
-			var dow = parseInt(self.extractDayOfWeek(node.get(0)));
+			var dow = parseInt(self.extractDayOfWeek(node.get(0)), 10);
 			self.jqRoot.find('.schedule-dow-header.schedule-dow-' + dow).addClass('schedule-selected');
 
 			var currentDate = new Date();
@@ -478,8 +478,8 @@ ice.ace.Schedule.prototype.addDefaultDurationFunctionality = function() {
 					endDateValue.setFullYear(startDateValue.getFullYear());
 					endDateValue.setMonth(startDateValue.getMonth());
 					endDateValue.setDate(startDateValue.getDate());
-					endDateValue.setHours(parseInt(startHour.value));
-					endDateValue.setMinutes(parseInt(startMinute.value) + self.cfg.defaultDuration);
+					endDateValue.setHours(parseInt(startHour.value, 10));
+					endDateValue.setMinutes(parseInt(startMinute.value, 10) + self.cfg.defaultDuration);
 
 					if (endHour.value == 'hh' && endMinute.value == 'mm') {
 						endDate.datepicker('setDate', endDateValue.getFullYear() + '-'
@@ -573,10 +573,10 @@ ice.ace.Schedule.prototype.validateInputs = function() {
 		if (valid) {
 			var timeInputs = ice.ace.jq(this.jqId).find('.schedule-details-'+displayLocation+'content').find('select');
 			if (timeInputs.size() >= 4) {
-				var startHour = parseInt(ice.ace.jq(timeInputs.get(0)).val());
-				var startMinute = parseInt(ice.ace.jq(timeInputs.get(1)).val());
-				var endHour = parseInt(ice.ace.jq(timeInputs.get(2)).val());
-				var endMinute = parseInt(ice.ace.jq(timeInputs.get(3)).val());
+				var startHour = parseInt(ice.ace.jq(timeInputs.get(0)).val(), 10);
+				var startMinute = parseInt(ice.ace.jq(timeInputs.get(1)).val(), 10);
+				var endHour = parseInt(ice.ace.jq(timeInputs.get(2)).val(), 10);
+				var endMinute = parseInt(ice.ace.jq(timeInputs.get(3)).val(), 10);
 
 				var startHour = isNaN(startHour) ? 0 : startHour;
 				var startMinute = isNaN(startMinute) ? 0 : startMinute;
@@ -584,12 +584,12 @@ ice.ace.Schedule.prototype.validateInputs = function() {
 				var endMinute = isNaN(endMinute) ? 0 : endMinute;
 
 				var startYear = startDateInput.value.substring(0,4);
-				var startMonth = parseInt(startDateInput.value.substring(5,7)) - 1;
+				var startMonth = parseInt(startDateInput.value.substring(5,7), 10) - 1;
 				var startDay = startDateInput.value.substring(8,10);
 				var startDate = new Date(startYear, startMonth, startDay, startHour, startMinute, 0, 0);
 
 				var endYear = endDateInput.value.substring(0,4);
-				var endMonth = parseInt(endDateInput.value.substring(5,7)) - 1;
+				var endMonth = parseInt(endDateInput.value.substring(5,7), 10) - 1;
 				var endDay = endDateInput.value.substring(8,10);
 				var endDate = new Date(endYear, endMonth, endDay, endHour, endMinute, 0, 0);
 
@@ -831,12 +831,12 @@ ice.ace.Schedule.prototype.renderMonthEvents = function(data) {
 	for (i = 0; i < this.events.length; i++) {
 		var event = this.events[i];
 		var eventStartYear = event.startDate.substring(0,4);
-		var eventStartMonth = parseInt(event.startDate.substring(5,7)) - 1;
-		var eventStartDay = parseInt(event.startDate.substring(8,10));
+		var eventStartMonth = parseInt(event.startDate.substring(5,7), 10) - 1;
+		var eventStartDay = parseInt(event.startDate.substring(8,10), 10);
 		var eventStartDate = new Date(eventStartYear, eventStartMonth, eventStartDay, 0, 0, 0, 0);
 		var eventEndYear = event.endDate.substring(0,4);
-		var eventEndMonth = parseInt(event.endDate.substring(5,7)) - 1;
-		var eventEndDay = parseInt(event.endDate.substring(8,10));
+		var eventEndMonth = parseInt(event.endDate.substring(5,7), 10) - 1;
+		var eventEndDay = parseInt(event.endDate.substring(8,10), 10);
 		var eventEndDate = new Date(eventEndYear, eventEndMonth, eventEndDay, 23, 59, 59, 999);
 		var customStyleClass = event.styleClass ? ' ' + event.styleClass : '';
 		if (currentYear == eventStartYear && currentMonth == eventStartMonth) {
@@ -848,7 +848,7 @@ ice.ace.Schedule.prototype.renderMonthEvents = function(data) {
 			if (event.isAllDay) {
 				startTime = 'ALL DAY'
 			} else if (this.cfg.isTwelveHourClock) {
-				var hour = parseInt(event.startTime.substring(0,2));
+				var hour = parseInt(event.startTime.substring(0,2), 10);
 				var minutes = event.startTime.substring(3,5);
 				startTime = hour < 13 ? (hour == 12 ? '12:' + minutes + 'p' : hour + ':' + minutes + 'a') : hour - 12 + ':' + minutes + 'p';
 			} else {
@@ -1076,14 +1076,14 @@ ice.ace.Schedule.prototype.renderWeekEvents = function() {
 		var event = this.events[i];
 		var eventStartDate = new Date();
 		var startYear = event.startDate.substring(0,4);
-		var startMonth = parseInt(event.startDate.substring(5,7) - 1);
+		var startMonth = parseInt(event.startDate.substring(5,7) - 1, 10);
 		var startDay = event.startDate.substring(8,10);
 		eventStartDate.setFullYear(startYear);
 		eventStartDate.setMonth(startMonth);
 		eventStartDate.setDate(startDay);
 		var eventEndDate = new Date();
 		var endYear = event.endDate.substring(0,4);
-		var endMonth = parseInt(event.endDate.substring(5,7) - 1);
+		var endMonth = parseInt(event.endDate.substring(5,7) - 1, 10);
 		var endDay = event.endDate.substring(8,10);
 		eventEndDate.setFullYear(endYear);
 		eventEndDate.setMonth(endMonth);
@@ -1170,14 +1170,14 @@ ice.ace.Schedule.prototype.renderWeekEvents = function() {
 		if (event.isAllDay) continue;
 		var eventStartDate = new Date();
 		var startYear = event.startDate.substring(0,4);
-		var startMonth = parseInt(event.startDate.substring(5,7) - 1);
+		var startMonth = parseInt(event.startDate.substring(5,7) - 1, 10);
 		var startDay = event.startDate.substring(8,10);
 		eventStartDate.setFullYear(startYear);
 		eventStartDate.setMonth(startMonth);
 		eventStartDate.setDate(startDay);
 		var eventEndDate = new Date();
 		var endYear = event.endDate.substring(0,4);
-		var endMonth = parseInt(event.endDate.substring(5,7) - 1);
+		var endMonth = parseInt(event.endDate.substring(5,7) - 1, 10);
 		var endDay = event.endDate.substring(8,10);
 		eventEndDate.setFullYear(endYear);
 		eventEndDate.setMonth(endMonth);
@@ -1191,7 +1191,7 @@ ice.ace.Schedule.prototype.renderWeekEvents = function() {
 			var dow = Math.floor(millisDelta / 86400000);
 
 			var hour = event.startTime.substring(0,2);
-			var minutes = parseInt(event.startTime.substring(3,5));
+			var minutes = parseInt(event.startTime.substring(3,5), 10);
 			var startingTimeSlot = hour+(minutes >= 30 ? '30' : '00');
 			var selector = '.schedule-dow-'+dow+'.schedule-time-'+startingTimeSlot;
 			var timeCell = this.jq.find(selector);
@@ -1199,7 +1199,7 @@ ice.ace.Schedule.prototype.renderWeekEvents = function() {
 			var width = timeCell.outerWidth() - 1;
 			var spansMultipleDays = !(startYear == endYear && startMonth == endMonth && startDay == endDay);
 			var endHour = spansMultipleDays ? '24' : event.endTime.substring(0,2);
-			var endMinutes = spansMultipleDays ? '00' : parseInt(event.endTime.substring(3,5));
+			var endMinutes = spansMultipleDays ? '00' : parseInt(event.endTime.substring(3,5), 10);
 			var endingTimeSlot = this.determinePreviousTimeCell(endHour, endMinutes);
 			var endSelector = '.schedule-dow-'+dow+'.schedule-time-'+endingTimeSlot;
 			var endTimeCell = this.jq.find(endSelector);
@@ -1237,7 +1237,7 @@ ice.ace.Schedule.prototype.renderWeekEvents = function() {
 								&& eventStartDate.getDate() == eventEndDate.getDate();
 						if (isLastDay && event.endTime == '00:00') break; // ends previous day at midnight
 						var endHour = isLastDay ? event.endTime.substring(0,2) : '24';
-						var endMinutes = isLastDay ? parseInt(event.endTime.substring(3,5)) : '00';
+						var endMinutes = isLastDay ? parseInt(event.endTime.substring(3,5), 10) : '00';
 						var endingTimeSlot = this.determinePreviousTimeCell(endHour, endMinutes);
 						var endSelector = '.schedule-dow-'+dow+'.schedule-time-'+endingTimeSlot;
 						var endTimeCell = this.jq.find(endSelector);
@@ -1281,7 +1281,7 @@ ice.ace.Schedule.prototype.renderWeekEvents = function() {
 							&& date.getDate() == eventEndDate.getDate();
 					if (isLastDay && event.endTime == '00:00') break; // ends previous day at midnight
 					var endHour = isLastDay ? event.endTime.substring(0,2) : '24';
-					var endMinutes = isLastDay ? parseInt(event.endTime.substring(3,5)) : '00';
+					var endMinutes = isLastDay ? parseInt(event.endTime.substring(3,5), 10) : '00';
 					var endingTimeSlot = this.determinePreviousTimeCell(endHour, endMinutes);
 					var endSelector = '.schedule-dow-'+dow+'.schedule-time-'+endingTimeSlot;
 					var endTimeCell = this.jq.find(endSelector);
@@ -1439,7 +1439,7 @@ ice.ace.Schedule.prototype.renderDayEvents = function() {
 		var event = this.events[i];
 		var eventStartDate = new Date();
 		var startYear = event.startDate.substring(0,4);
-		var startMonth = parseInt(event.startDate.substring(5,7) - 1);
+		var startMonth = parseInt(event.startDate.substring(5,7) - 1, 10);
 		var startDay = event.startDate.substring(8,10);
 		eventStartDate.setFullYear(startYear);
 		eventStartDate.setMonth(startMonth);
@@ -1491,7 +1491,7 @@ ice.ace.Schedule.prototype.renderDayEvents = function() {
 		if (eventStartDate.getFullYear() == currentYear 
 			&& eventStartDate.getMonth() == currentMonth && eventStartDate.getDate() == currentDay) {
 			var hour = event.startTime.substring(0,2);
-			var minutes = parseInt(event.startTime.substring(3,5));
+			var minutes = parseInt(event.startTime.substring(3,5), 10);
 			var startingTimeSlot = hour+(minutes >= 30 ? '30' : '00');
 			var selector = '.schedule-dow-single.schedule-time-'+startingTimeSlot;
 			var timeCell = this.jq.find(selector);
@@ -1499,7 +1499,7 @@ ice.ace.Schedule.prototype.renderDayEvents = function() {
 			var width = timeCell.outerWidth() - 1;
 			var spansMultipleDays = !(startYear == endYear && startMonth == endMonth && startDay == endDay);
 			var endHour = spansMultipleDays ? '24' : event.endTime.substring(0,2);
-			var endMinutes = spansMultipleDays ? '00' : parseInt(event.endTime.substring(3,5));
+			var endMinutes = spansMultipleDays ? '00' : parseInt(event.endTime.substring(3,5), 10);
 			var endingTimeSlot = this.determinePreviousTimeCell(endHour, endMinutes);
 			var endSelector = '.schedule-dow-single.schedule-time-'+endingTimeSlot;
 			var endTimeCell = this.jq.find(endSelector);
@@ -1533,7 +1533,7 @@ ice.ace.Schedule.prototype.renderDayEvents = function() {
 			var position = timeCell.position();
 			var width = timeCell.outerWidth() - 1;
 			var endHour = event.endTime.substring(0,2);
-			var endMinutes = parseInt(event.endTime.substring(3,5));
+			var endMinutes = parseInt(event.endTime.substring(3,5), 10);
 			var endingTimeSlot = this.determinePreviousTimeCell(endHour, endMinutes);
 			var endSelector = '.schedule-dow-single.schedule-time-'+endingTimeSlot;
 			var endTimeCell = this.jq.find(endSelector);
@@ -1618,7 +1618,7 @@ ice.ace.Schedule.prototype.getEventDivMarkup = function(startHour, startMinutes,
 	if (startHour == endHour) { // only one line of text
 		// only possible case start time is at 00 minutes, end time is at 30 minutes
 		lines = 1;
-	} else if ((parseInt(endHour) - parseInt(startHour)) == 1) {
+	} else if ((parseInt(endHour, 10) - parseInt(startHour, 10)) == 1) {
 		// case when start time is previous hour at 30 minutes and end time is this hour at 00 minutes (1 line)
 		if (startMinutes == '30' && endMinutes == '00') lines = 1;
 		// case when start time is previous hour at 30 minutes and end time is this hour at 30 minutes (2 lines)
@@ -1637,7 +1637,7 @@ ice.ace.Schedule.prototype.getEventDivMarkup = function(startHour, startMinutes,
 		if (continued) {
 			startTime = '(cont.)';
 		} else if (this.cfg.isTwelveHourClock) {
-			var hour = parseInt(startHour);
+			var hour = parseInt(startHour, 10);
 			var minutes = this.addLeadingZero(startMinutes);
 			startTime = hour < 13 ? (hour == 12 ? '12:' + minutes + ' pm' : hour + ':' + minutes + ' am') : hour - 12 + ':' + minutes + ' pm';
 		} else {
@@ -1956,7 +1956,7 @@ ice.ace.Schedule.prototype.addResizeListeners = function() {
 						var eventIndex = self.extractEventIndex(this);
 						var eventData = self.eventsMap[''+eventIndex];
 						var hour = eventData.startTime.substring(0,2);
-						var minutes = parseInt(eventData.startTime.substring(3,5));
+						var minutes = parseInt(eventData.startTime.substring(3,5), 10);
 						var startingTimeSlot = hour+(minutes >= 30 ? '30' : '00');
 						var timeSlotMultiplicity = self.extractOverlappingLevel(this);
 						timeSlotMultiplicity = timeSlotMultiplicity < 4 ? timeSlotMultiplicity : 4;
@@ -1975,7 +1975,7 @@ ice.ace.Schedule.prototype.addResizeListeners = function() {
 							var eventIndex = self.extractEventIndex(this);
 							var eventData = self.eventsMap[''+eventIndex];
 							var hour = eventData.startTime.substring(0,2);
-							var minutes = parseInt(eventData.startTime.substring(3,5));
+							var minutes = parseInt(eventData.startTime.substring(3,5), 10);
 							var startingTimeSlot = hour+(minutes >= 30 ? '30' : '00');
 							var timeSlotMultiplicity = self.extractOverlappingLevel(this);
 							timeSlotMultiplicity = timeSlotMultiplicity < 4 ? timeSlotMultiplicity : 4;
@@ -2010,7 +2010,7 @@ ice.ace.Schedule.prototype.addResizeListeners = function() {
 				var eventIndex = self.extractEventIndex(this);
 				var eventData = self.eventsMap[''+eventIndex];
 				var hour = eventData.startTime.substring(0,2);
-				var minutes = parseInt(eventData.startTime.substring(3,5));
+				var minutes = parseInt(eventData.startTime.substring(3,5), 10);
 				var startingTimeSlot = hour+(minutes >= 30 ? '30' : '00');
 				var timeSlotMultiplicity = self.extractOverlappingLevel(this);
 				timeSlotMultiplicity = timeSlotMultiplicity < 4 ? timeSlotMultiplicity : 4;
@@ -2029,7 +2029,7 @@ ice.ace.Schedule.prototype.addResizeListeners = function() {
 					var eventIndex = self.extractEventIndex(this);
 					var eventData = self.eventsMap[''+eventIndex];
 					var hour = eventData.startTime.substring(0,2);
-					var minutes = parseInt(eventData.startTime.substring(3,5));
+					var minutes = parseInt(eventData.startTime.substring(3,5), 10);
 					var startingTimeSlot = hour+(minutes >= 30 ? '30' : '00');
 					var timeSlotMultiplicity = self.extractOverlappingLevel(this);
 					timeSlotMultiplicity = timeSlotMultiplicity < 4 ? timeSlotMultiplicity : 4;
@@ -2109,7 +2109,7 @@ ice.ace.Schedule.prototype.determineLastDayOfMonth = function(currentYear, curre
 
 ice.ace.Schedule.prototype.determinePreviousTimeCell = function(hour, minutes) {
 	var previousHour, previousMinutes;
-	if (parseInt(minutes) >= 30) {
+	if (parseInt(minutes, 10) >= 30) {
 		previousMinutes = '00';
 		previousHour = hour;
 	} else {
@@ -2118,7 +2118,7 @@ ice.ace.Schedule.prototype.determinePreviousTimeCell = function(hour, minutes) {
 			previousHour = '00';
 		} else {
 			previousMinutes = '30';
-			previousHour = parseInt(hour) - 1;
+			previousHour = parseInt(hour, 10) - 1;
 			previousHour = previousHour < 10 ? '0' + previousHour : previousHour;
 		}
 	}
