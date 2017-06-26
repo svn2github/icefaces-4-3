@@ -390,56 +390,70 @@ ice.ace.ContextMenu = function(id, cfg) {
 	} else {
 		var delegateContainer = ice.ace.jq(ice.ace.escapeClientId(cfg.forDelegate));
 		var delegateNode = delegateContainer.children().get(0);
-		delegateContainer.undelegate('*', 'contextmenu').delegate('*', 'contextmenu', function(event, ignoreEvent) {
-			// 'this' in this scope refers to the current DOM node in the event bubble
-			if (this === delegateNode && !ignoreEvent) { // event bubbled to the highest point, we can now begin
-				var findTargetComponent = function(node) {
-					if (node) {
-						if (node.id) {
-							var endsWithId = false;
-							if (cfg.forComponents) {
-								var forComponents = cfg.forComponents;
-								var i;
-								for (i = 0; i < forComponents.length; i++) {
-									if (ice.ace.ContextMenu.endsWith(node.id, forComponents[i])) {
-										endsWithId = true;
-										break;
-									}
-								}
-							} else {
-								endsWithId = ice.ace.ContextMenu.endsWith(node.id, cfg.forComponent);
-							}
-							if (endsWithId) {
-								return node.id;
-							} else {
-								return findTargetComponent(node.parentNode);
-							}
-						} else {
-							return findTargetComponent(node.parentNode);
-						}
-					}
-					return '';
-				}
-				var targetComponent = findTargetComponent(event.target);
-				if (targetComponent) {
-					event.preventDefault();
-					var formId = ice.ace.jq(ice.ace.escapeClientId(id)).parents('form:first').attr('id');
-					var options = {
-						source: id,
-						execute: id,
-						formId: formId,
-						async: true
-					};
+        var callback = function(event, ignoreEvent) {
+            // 'this' in this scope refers to the current DOM node in the event bubble
+            if (this === delegateNode && !ignoreEvent) { // event bubbled to the highest point, we can now begin
+                var findTargetComponent = function(node) {
+                    if (node) {
+                        if (node.id) {
+                            var endsWithId = false;
+                            if (cfg.forComponents) {
+                                var forComponents = cfg.forComponents;
+                                var i;
+                                for (i = 0; i < forComponents.length; i++) {
+                                    if (ice.ace.ContextMenu.endsWith(node.id, forComponents[i])) {
+                                        endsWithId = true;
+                                        break;
+                                    }
+                                }
+                            } else {
+                                endsWithId = ice.ace.ContextMenu.endsWith(node.id, cfg.forComponent);
+                            }
+                            if (endsWithId) {
+                                return node.id;
+                            } else {
+                                return findTargetComponent(node.parentNode);
+                            }
+                        } else {
+                            return findTargetComponent(node.parentNode);
+                        }
+                    }
+                    return '';
+                }
+                var targetComponent = findTargetComponent(event.target);
+                if (targetComponent) {
+                    event.preventDefault();
+                    var formId = ice.ace.jq(ice.ace.escapeClientId(id)).parents('form:first').attr('id');
+                    var options = {
+                        source: id,
+                        execute: id,
+                        formId: formId,
+                        async: true
+                    };
 
-					var params = {};
-					params[id + '_activeComponent'] = targetComponent;
+                    var params = {};
+                    params[id + '_activeComponent'] = targetComponent;
 
-					options.params = params;
-					
-					ice.ace.AjaxRequest(options);
-				}
-			}
-		});
+                    options.params = params;
+
+                    ice.ace.AjaxRequest(options);
+                }
+            }
+        };
+        delegateContainer.undelegate('*', 'contextmenu').delegate('*', 'contextmenu', callback);
+
+        var touchEnd;
+        delegateContainer.undelegate('*', 'touchend').delegate('*', 'touchend', function(event, ignoreEvent) {
+            touchEnd = true;
+        });
+        delegateContainer.undelegate('*', 'touchstart').delegate('*', 'touchstart', function(event, ignoreEvent) {
+            touchEnd = false;
+            setTimeout(function() {
+                if (!touchEnd) {
+                    callback.apply(delegateNode, [event, ignoreEvent]);
+                }
+            }, 1250)
+        });
 		if (cfg.showNow) {
 			this.initialize(id, cfg);
 			ice.ace.jq(this.cfg.trigger).trigger('contextmenu', [true]); // flag for delegate node to ignore this simulated event
