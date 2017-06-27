@@ -69,6 +69,7 @@ public class AceSymbolicResourceHandler extends ResourceHandlerWrapper {
                                 resourceName.equals("datetimeentry/jquery-ui-timepicker-addon.js") ||
                                 resourceName.equals("dialog/dialog.js") ||
                                 resourceName.equals("dnd/dragdrop.js") ||
+                                resourceName.equals("drawerpanel/drawerpanel.js") ||
                                 resourceName.equals("fileEntry/fileEntry.js") ||
                                 resourceName.equals("gmap/gmap.js") ||
                                 resourceName.equals("growlmessages/growlmessages.js") ||
