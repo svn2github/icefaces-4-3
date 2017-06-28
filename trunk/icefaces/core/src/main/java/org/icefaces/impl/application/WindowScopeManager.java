@@ -420,7 +420,7 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
 
         private void disactivateIfUnused(FacesContext facesContext) {
             final UIViewRoot viewRoot = facesContext.getViewRoot();
-            if (!EnvUtils.containsBeans(this) && (viewRoot == null || !EnvUtils.containsDisposedBeans(viewRoot.getViewMap()))) {
+            if (EnvUtils.isLazyWindowScope(facesContext) && !EnvUtils.containsBeans(this) && (viewRoot == null || !EnvUtils.containsDisposedBeans(viewRoot.getViewMap()))) {
                 //the map *does not* contain objects (most probably beans) other than the ones inserted by the framework
                 disactivate(getState(facesContext));
             }
