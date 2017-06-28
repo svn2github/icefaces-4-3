@@ -14,15 +14,6 @@
  * governing permissions and limitations under the License.
  */
 
-.auctionMonitorContainer {
-    background-color: #FFFFFF;
-    border: 1px solid #A6A6A6;
-    padding: 3px;
-    margin: 15px;
-    margin-bottom:5px;
-    margin-top: 45px;
-    position: relative;
-}
 
 .headerFontStyle
 {
@@ -49,42 +40,6 @@
     font-size:smaller;
     color: #808080;
     margin-left:15px;
-}
-
-.auctionMontiorTable {
-    width: 100%;
-    padding: 1px;
-}
-
-.auctionMontiorTable thead th, .auctionMontiorTable tbody td {
-    padding: 4px;
-}
-
-.auctionMontiorTable thead {
-    background-color: #A6A6A6;
-    color: white;
-}
-
-.auctionMontiorTable thead tr th a, .auctionMontiorTable thead tr th a:visited {
-    text-decoration: none;
-    color: white;
-    font-weight: normal;
-}
-
-.auctionMontiorTable thead th.sorted_true {
-    background-color: #717171;
-}
-
-.auctionMontiorTable tbody tr.odd td {
-    background-color: #EEEEEE;
-}
-
-.auctionMontiorTable tbody tr.expanded td {
-    background-color: #DDEEFF;
-}
-
-.auctionMontiorTable tbody tr.description td {
-    border-bottom: 1px solid white;
 }
 
 .centeredPanelGrid
@@ -194,9 +149,6 @@ div.ui-widget.ui-widget-content.wijmo-wijmenu.ui-corner-all.ui-helper-clearfix.w
     width: auto;
 }
 
-.newBid {
-    background-color: yellow;
-}
 
 .spacerColumn {
     width: 2%
@@ -395,21 +347,6 @@ div.ui-widget.ui-widget-content.wijmo-wijmenu.ui-corner-all.ui-helper-clearfix.w
     height: 40px;
 }
 
-.iceOutProgFill.progressPurpleTxt {
-    font-size: 14px;
-    font-family: monospace;
-    color: white;
-}
-
-.iceOutProgFill.progressPurpleBg {
-    background-color: #673C83;
-    border: 2px outset #864BB9;
-}
-
-.iceOutProgFill.progressPurpleFill {
-    background: url("#{resource['css/images/purple-progress-slice.jpg']}") repeat-x scroll left top transparent;
-    background-color: #864BB9;
-}
 
 .dragContainer {
     float: left;
