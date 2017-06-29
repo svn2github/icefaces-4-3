@@ -48,6 +48,12 @@ ice.ace.Resizable = function(id, cfg) {
         }
     };
 
+    if (cfg.height && cfg.width) {
+        var t = ice.ace.jq(this.target);
+        t.width(cfg.width);
+        t.height(cfg.height);
+    }
+
     ice.ace.jq(this.target).resizable(this.cfg);
     
 };

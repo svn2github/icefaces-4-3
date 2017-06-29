@@ -65,13 +65,13 @@ public class Resizable extends ResizableBase {
         final UIComponent target = findTarget(resizable);
 
         UIOutput out = new Setup(target, resizable);
-        target.setInView(false);
         out.setTransient(true);
         UIComponent parent = target.getParent();
+        parent.setInView(false);
         List<UIComponent> siblings = parent.getChildren();
         int index = siblings.indexOf(target);
         siblings.add(index + 1, out);
-        target.setInView(true);
+        parent.setInView(true);
     }
 
     private UIComponent findTarget(Resizable resizable) {
@@ -127,13 +127,19 @@ public class Resizable extends ResizableBase {
             //Boundaries
             int minWidth = resizable.getMinWidth();
             int maxWidth = resizable.getMaxWidth();
+            int width = resizable.getWidth();
             int minHeight = resizable.getMinHeight();
             int maxHeight = resizable.getMaxHeight();
+            int height = resizable.getHeight();
 
             if (minWidth != Integer.MIN_VALUE) jb.entry("minWidth", minWidth);
             if (maxWidth != Integer.MAX_VALUE) jb.entry("maxWidth", maxWidth);
             if (minHeight != Integer.MIN_VALUE) jb.entry("minHeight", minHeight);
             if (maxHeight != Integer.MAX_VALUE) jb.entry("maxHeight", maxHeight);
+
+            if (height != Integer.MIN_VALUE) jb.entry("height", height);
+            if (width != Integer.MIN_VALUE) jb.entry("width", width);
+
 
             //Animation
             if(resizable.isAnimate()) {

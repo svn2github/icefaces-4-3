@@ -46,9 +46,11 @@ public class ResizableRenderer extends CoreRenderer {
         String clientId = resizable.getClientId(context);
 
         if(params.containsKey(clientId + "_ajaxResize")) {
-            int width = (new Double(params.get(clientId + "_width"))).intValue();;
-            int height = (new Double(params.get(clientId + "_height"))).intValue();;
+            int width = (new Double(params.get(clientId + "_width"))).intValue();
+            int height = (new Double(params.get(clientId + "_height"))).intValue();
 
+            resizable.setWidth(width);
+            resizable.setHeight(height);
             resizable.queueEvent(new ResizeEvent(resizable, width, height));
         }
         decodeBehaviors(context, resizable);

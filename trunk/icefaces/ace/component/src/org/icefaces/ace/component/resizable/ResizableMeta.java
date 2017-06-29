@@ -93,7 +93,13 @@ public class ResizableMeta extends UIComponentBaseMeta {
 	
 	@Property(tlddoc="Minimum height of the resizable in pixels.", defaultValue="Integer.MIN_VALUE")
 	private int minHeight;
-	
+
+    @Property(tlddoc = "Current width of the resizable in pixels.", defaultValue = "Integer.MIN_VALUE")
+    private int width;
+
+    @Property(tlddoc = "Current height of the resizable in pixels.", defaultValue = "Integer.MIN_VALUE")
+    private int height;
+
 	@Property(tlddoc="Boolean value that specifies whether the resizable should be restricted to its parent's boundaries.", defaultValue="false")
 	private boolean containment;
 	
