@@ -64,3 +64,7 @@ This also overrides the indeterminate progress imagery. But the themes don't sup
 .ice-ace-radiobuttons.ui-widget {
 	font-size: 0.9em;
 }
+
+.ice-ace-checkboxbuttons.ui-widget {
+	font-size: 0.9em;
+}
