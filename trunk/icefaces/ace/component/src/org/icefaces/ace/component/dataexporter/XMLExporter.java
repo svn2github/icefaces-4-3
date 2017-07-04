@@ -300,7 +300,7 @@ public class XMLExporter extends Exporter {
 			}
 		}
 
-		builder.append(builder1.toString());
+		builder.append(encloseInCDATASection(builder1.toString()));
 		
 		builder.append("</" + tag + ">\n");
 	}
@@ -309,7 +309,7 @@ public class XMLExporter extends Exporter {
 		String tag = header.toLowerCase();
 		builder.append("\t\t<" + tag + ">");
 
-		builder.append(footer.toLowerCase());
+		builder.append(encloseInCDATASection(footer.toLowerCase()));
 		
 		builder.append("</" + tag + ">\n");
 	}
@@ -329,5 +329,13 @@ public class XMLExporter extends Exporter {
 		else if (!XMLChar.isNameStart(sanitized.codePointAt(0))) // case where tag has invalid start character
 			return ("_" + sanitized);
 		else return sanitized;
+	}
+
+	protected String encloseInCDATASection(String string) {
+		if (string.indexOf("<") > -1 || string.indexOf(">") > -1) {
+			return "<![CDATA[" + string + "]]>";
+		} else {
+			return string;
+		}
 	}
 }

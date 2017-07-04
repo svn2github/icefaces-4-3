@@ -16,54 +16,13 @@
 
 package org.icefaces.ace.component.scheduleexporter;
 
-import javax.faces.application.Resource;
-import java.io.InputStream;
-import java.io.ByteArrayInputStream;
-import java.util.Map;
-import java.util.HashMap;
-import java.net.URL;
-import javax.faces.context.FacesContext;
-	
-public class ExporterResource extends Resource implements java.io.Serializable {
+public class ExporterResource extends org.icefaces.ace.util.ExporterResource implements java.io.Serializable {
 
-	private InputStream in;
-	private String path = "";
-	private HashMap<String, String> headers;
-	private byte[] bytes;
-	
-	public ExporterResource(InputStream in) {
-		this.in = in;
-		this.headers = new HashMap<String, String>();
+	public ExporterResource(java.io.InputStream in) {
+		super(in);
 	}
 	
 	public ExporterResource(byte[] bytes) {
-		this.bytes = bytes;
-		this.headers = new HashMap<String, String>();
-	}
-	
-	public InputStream getInputStream() {
-		byte[] returnBytes = this.bytes;
-		this.bytes = null;
-		return new ByteArrayInputStream(returnBytes);
-	}
-
-	public String getRequestPath() {
-		return path;
-	}
-	
-	public void setRequestPath(String path) {
-		this.path = path;
-	}
-
-	public Map<String, String> getResponseHeaders() {
-		return headers;
-	}
-
-	public URL	getURL() {
-		return null;
-	}
-
-	public boolean userAgentNeedsUpdate(FacesContext context) {
-		return false;
+		super(bytes);
 	}
 }
