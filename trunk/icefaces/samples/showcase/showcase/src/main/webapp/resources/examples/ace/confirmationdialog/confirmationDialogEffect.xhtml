@@ -65,10 +65,10 @@
 								    hideEffect="#{confirmationDialogEffectBean.hideEffect}"
 								    header="Confirmation Dialog"
 								    message="Confirm?"
-								    width="200" height="200"
+								    width="250" height="200"
 								    closable="true">
 
-                <h:panelGrid width="100%" style="text-align: center;" columns="2" cellspacing="30">
+                <h:panelGrid width="100%" style="text-align: center;" columns="2" cellspacing="20">
                     <ace:pushButton id="yes" value="Yes" >
                         <ace:ajax execute="@none" render="@none" onStart="ice.ace.instance('#{confirmDialogEffect.clientId}').hide();return false;"/>
                     </ace:pushButton>
