@@ -469,13 +469,6 @@ public class Utils {
                 + httpRequest.getContextPath() + "/";
     }
 
-    public static String getCloudPushId(HttpServletRequest request) {
-        String cloudPushId = null;
-        cloudPushId = (String) EnvUtils.getSafeSession(FacesContext.getCurrentInstance()).getAttribute(
-                Constants.CLOUD_PUSH_KEY);
-        return cloudPushId;
-    }
-
     public static String getAcceptHeader(HttpServletRequest request) {
         String accept = request.getHeader(Constants.HEADER_ACCEPT);
         return accept == null ? accept : accept.toLowerCase();

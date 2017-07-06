@@ -73,8 +73,4 @@ public class AuxUploadSetup {
     public boolean getEnabled()  {
         return EnvUtils.isAuxUploadBrowser(FacesContext.getCurrentInstance());
     }
-    
-    public String getCloudPushId()  {
-        return auxHandler.getCloudPushId();
-    }
 }

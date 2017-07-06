@@ -241,18 +241,6 @@ public class BridgeSetup implements SystemEventListener {
                         writer.write("ice.push.configuration.addGroupMemberURI=\"" + addGroupMemberResource.getRequestPath() + "\";");
                         writer.write("ice.push.configuration.removeGroupMemberURI=\"" + removeGroupMemberResource.getRequestPath() + "\";");
                         writer.write("ice.push.configuration.parameterPrefix=\"" + EnvUtils.getParameterNamespace(context) + "\";");
-                        boolean isAuxUpload =
-                                EnvUtils.isAuxUploadBrowser(context);
-                        if (isAuxUpload) {
-                            AuxUploadSetup auxUpload =
-                                    AuxUploadSetup.getInstance();
-                            String cloudPushId = auxUpload.getCloudPushId();
-                            if (null != cloudPushId) {
-                                writer.write(
-                                        "window.addEventListener('load', function() { ice.push.parkInactivePushIds('"
-                                                + cloudPushId + "'); }, false);");
-                            }
-                        }
                         writer.endElement("script");
                         writer.endElement("span");
                     }

@@ -16,30 +16,21 @@
 
 package org.icefaces.impl.application;
 
-import org.icefaces.util.EnvUtils;
 import org.icefaces.impl.util.Util;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Part;
-import javax.servlet.http.HttpSession;
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
 import javax.faces.application.ResourceHandlerWrapper;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.util.UUID;
-import java.util.Collection;
-import java.util.Map;
-import java.util.HashMap;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -47,8 +38,6 @@ public class AuxUploadResourceHandler extends ResourceHandlerWrapper  {
     private static Logger log = Logger.getLogger(AuxUploadResourceHandler.class.getName());
     public static String AUX_REQ_MAP_KEY = 
             "iceAuxRequestMap";
-    public static String CLOUD_PUSH_KEY = 
-            "iceCloudPushId";
     private ResourceHandler wrapped;
     private Resource tokenResource = null;
 
@@ -167,10 +156,6 @@ public class AuxUploadResourceHandler extends ResourceHandlerWrapper  {
                         externalContext.getRequestParameterMap();
                 for (Object key : requestParameterMap.keySet())  {
                     auxRequestMap.put(key, requestParameterMap.get(key) );
-                    if (CLOUD_PUSH_KEY.equals(key))  {
-                        session.setAttribute(CLOUD_PUSH_KEY,
-                                requestParameterMap.get(key));
-                    }
                 }
             
             }
@@ -181,9 +166,6 @@ public class AuxUploadResourceHandler extends ResourceHandlerWrapper  {
                 Object partParameter = request.getParameter(partName);
                 if (null != partParameter)  {
                     auxRequestMap.put(partName, partParameter );
-                    if (CLOUD_PUSH_KEY.equals(partName))  {
-                        session.setAttribute(CLOUD_PUSH_KEY, partParameter);
-                    }
                 } else {
                     auxRequestMap.put(partName,
                             new PersistentPart(externalContext, part));
@@ -209,13 +191,6 @@ public class AuxUploadResourceHandler extends ResourceHandlerWrapper  {
         }
         return (externalContext.getRequestContextPath() + path);
     }
-
-    public String getCloudPushId()  {
-        String cloudPushId = (String) FacesContext.getCurrentInstance()
-                .getExternalContext().getSessionMap().get(CLOUD_PUSH_KEY);
-        return cloudPushId;
-    }
-
 }
 
 class PersistentPart implements Part  {

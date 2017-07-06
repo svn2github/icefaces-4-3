@@ -143,11 +143,6 @@ public class SXUtils {
                 Boolean.TRUE);
         EnvUtils.getSafeSession(FacesContext.getCurrentInstance()).setAttribute(Constants.USER_AGENT_COOKIE,
                 USER_AGENT_SX_FULL);
-        String cloudPushId = request.getParameter(Constants.CLOUD_PUSH_KEY);
-        if (cloudPushId != null) {//TODO should cloudPushId be reset on uploads?
-            EnvUtils.getSafeSession(FacesContext.getCurrentInstance()).setAttribute(Constants.CLOUD_PUSH_KEY,
-                    cloudPushId);
-        }
     }
 
     /**
