@@ -22,7 +22,6 @@ import org.icefaces.impl.push.SessionViewManager;
 import org.icefaces.util.EnvUtils;
 import org.icepush.PushConfiguration;
 import org.icepush.PushContext;
-import org.icepush.PushNotification;
 
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
@@ -371,13 +370,8 @@ class PushIsolator {
         if (pushContext == null) {
             log.fine("PushContext not initialized yet.");
         } else {
-            if (options instanceof PushMessage) {
-                pushContext.push(group,
-                        new PushNotification(options.getAttributes()));
-            } else {
-                pushContext.push(group,
-                        new PushConfiguration(options.getAttributes()));
-            }
+            pushContext.push(group,
+                new PushConfiguration(options.getAttributes()));
         }
     }
 
@@ -386,11 +380,7 @@ class PushIsolator {
         if (pushContext == null) {
             log.fine("PushContext not initialized yet.");
         } else {
-            if (options instanceof PushMessage) {
-                pushContext.push(group, new PushNotification(options.getAttributes()));
-            } else {
-                pushContext.push(group, new PushConfiguration(options.getAttributes()));
-            }
+            pushContext.push(group, new PushConfiguration(options.getAttributes()));
         }
     }
 }
