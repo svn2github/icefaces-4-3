@@ -101,9 +101,16 @@ public class DateTimeBean implements Serializable {
 			Date oldDate = (Date) event.getOldValue();
 			Date newDate = (Date) event.getNewValue();
 			if ("time".equals(timeType)) {
+				int hours = newDate.getHours();
+				int minutes = newDate.getMinutes();
+				int seconds = newDate.getSeconds();
 				newDate.setYear(oldDate.getYear());
 				newDate.setMonth(oldDate.getMonth());
 				newDate.setDate(oldDate.getDate());
+				// re-set time parameters, in case they changed due to setting date parameters
+				newDate.setHours(hours);
+				newDate.setMinutes(minutes);
+				newDate.setSeconds(seconds);
 			} else if ("date".equals(timeType)) {
 				newDate.setHours(oldDate.getHours());
 				newDate.setMinutes(oldDate.getMinutes());
