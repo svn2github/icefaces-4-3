@@ -60,6 +60,11 @@
 			</h:panelGroup>
 			<div id="div" style="width: 100%; height: 200px; margin-top:20px; text-align:center; display:table; position:relative;" class="ui-widget-content">
 				<span style="display:table-cell;vertical-align:middle;">The drawer panel can be set to appear inside this container.</span>
+				<!-- Opening handles for containers have to be coded manueally because of possible issues with positioning -->
+				<!-- However, coding them is very straight-forward, as seen below for each position. -->
+				<!-- The code is basically the same for all positions. The only thing that changes are the style classes -->
+
+				<!-- opening handle for container, left position -->
 				<h:panelGroup rendered="#{drawerPanelBean.showHandleOpen and drawerPanelBean.container == 'div' and drawerPanelBean.position == 'left'}"
 								styleClass="ice-ace-drawer-handle-show ice-ace-drawer-handle-upper-left ui-state-active"
 								style="position:absolute;"
@@ -67,6 +72,7 @@
 								onclick="ice.ace.instance('form:drawer').open();">
 					<span class="fa fa-bars fa-lg"></span>
 				</h:panelGroup>
+				<!-- opening handle for container, right position -->
 				<h:panelGroup rendered="#{drawerPanelBean.showHandleOpen and drawerPanelBean.container == 'div' and drawerPanelBean.position == 'right'}"
 								styleClass="ice-ace-drawer-handle-show ice-ace-drawer-handle-upper-right ui-state-active"
 								style="position:absolute;"
@@ -74,6 +80,7 @@
 								onclick="ice.ace.instance('form:drawer').open();">
 					<span class="fa fa-bars fa-lg"></span>
 				</h:panelGroup>
+				<!-- opening handle for container, top position -->
 				<h:panelGroup rendered="#{drawerPanelBean.showHandleOpen and drawerPanelBean.container == 'div' and drawerPanelBean.position == 'top'}"
 								styleClass="ice-ace-drawer-handle-show ice-ace-drawer-handle-upper-left ui-state-active"
 								style="position:absolute;"
@@ -81,6 +88,7 @@
 								onclick="ice.ace.instance('form:drawer').open();">
 					<span class="fa fa-bars fa-lg"></span>
 				</h:panelGroup>
+				<!-- opening handle for container, bottom position -->
 				<h:panelGroup rendered="#{drawerPanelBean.showHandleOpen and drawerPanelBean.container == 'div' and drawerPanelBean.position == 'bottom'}"
 								styleClass="ice-ace-drawer-handle-show ice-ace-drawer-handle-lower-left ui-state-active"
 								style="position:absolute;"
