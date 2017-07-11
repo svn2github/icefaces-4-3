@@ -16,7 +16,6 @@
 
 package org.icefaces.ace.component.list;
 
-import org.icefaces.ace.context.RequestContext;
 import org.icefaces.ace.json.JSONArray;
 
 import javax.faces.FacesException;

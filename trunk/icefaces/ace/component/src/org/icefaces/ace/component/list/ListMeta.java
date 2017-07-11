@@ -77,7 +77,7 @@ import java.util.Set;
 	@ClientEvent(name="filter",
 			javadoc="Fired when a change to the current filters occurs on the list.",
 			tlddoc="Fired when a change to the current filters occurs on the list.",
-			defaultRender="@all", defaultExecute="@this"),
+			defaultRender="@all", defaultExecute="@this")
     },
     defaultEvent = "select"
 )

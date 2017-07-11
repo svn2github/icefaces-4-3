@@ -42,9 +42,6 @@ import org.icefaces.resources.ICEResourceLibrary;
 @ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
 	@ICEResourceDependency(name = "fontawesome/font-awesome.css"),
-	@ICEResourceDependency(name = "util/ace-core.js"),
-	@ICEResourceDependency(name = "jquery/jquery.js"),
-	@ICEResourceDependency(name = "util/ace-jquery-ui.js"),
 	@ICEResourceDependency(name = "drawerpanel/drawerpanel.js")
 })
 @ClientBehaviorHolder(events = {
@@ -81,7 +78,7 @@ public class DrawerPanelMeta extends UIPanelMeta {
 	@Property(tlddoc="Effect to use when opening and closing the drawer. Possible values are 'drop', 'fade', and 'slide'. The default effect is 'slide'.", defaultValue="slide")
 	private String effect;
 	
-	@Property(tlddoc="Specifies the side on which the drawer should be displayed. Possible values are 'left', 'right', 'top', 'bottom'", defaultValue="left")
+	@Property(tlddoc="Specifies the side on which the drawer should be displayed. Possible values are 'left', 'right', 'top', and 'bottom'.", defaultValue="left")
 	private String position;
 	
 	@Property(tlddoc="Boolean value that specifies whether the drawer should be closed when it has focus and the user presses the escape (ESC) key.", defaultValue="true")
@@ -105,7 +102,7 @@ public class DrawerPanelMeta extends UIPanelMeta {
 	@Property(tlddoc="Boolean value that specifies whether to display a three-horizontal-bars icon to open the drawer. This handle will appear at the upper left corner of the viewport if the 'position' is 'left' or 'top', at the uper right corner of the viewport if the 'position' is 'right', and at the lower left corner of the viewport if the 'position' is 'bottom'. This handle will only be displayed if the 'container' is set to 'window'. If a handle is desired when applying the drawer to a specific container, it has to be done manually; please consult the wiki page for this component for guidelines and sample markup.", defaultValue="true")
 	private boolean showHandleOpen;
 
-	@Property(tlddoc="Boolean value that specifies whether to display a three-horizontal-bars icon inside the drawer to close it. This handle will appear at the opper left corner of the drawer, inside the drawer's header.", defaultValue="true")
+	@Property(tlddoc="Boolean value that specifies whether to display a three-horizontal-bars icon inside the drawer to close it. This handle will appear at the upper left corner of the drawer, inside the drawer's header.", defaultValue="true")
 	private boolean showHandleClose;
 
 	@Property(tlddoc="Specify the container whose edges the drawer will appear from. The default mode is the entire window, but it's possible to specify a client id of an element on the page to have the drawer.", defaultValue="window")

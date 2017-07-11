@@ -19,7 +19,6 @@ package org.icefaces.ace.component.list;
 import org.icefaces.ace.event.ListSelectEvent;
 import org.icefaces.ace.model.filter.*;
 import org.icefaces.ace.util.collections.*;
-import org.icefaces.ace.util.collections.*;
 
 import javax.el.ELContext;
 import javax.el.MethodExpression;
