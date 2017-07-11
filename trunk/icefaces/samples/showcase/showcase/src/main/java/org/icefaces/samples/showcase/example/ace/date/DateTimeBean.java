@@ -101,20 +101,33 @@ public class DateTimeBean implements Serializable {
 			Date oldDate = (Date) event.getOldValue();
 			Date newDate = (Date) event.getNewValue();
 			if ("time".equals(timeType)) {
-				int hours = newDate.getHours();
-				int minutes = newDate.getMinutes();
-				int seconds = newDate.getSeconds();
-				newDate.setYear(oldDate.getYear());
-				newDate.setMonth(oldDate.getMonth());
-				newDate.setDate(oldDate.getDate());
-				// re-set time parameters, in case they changed due to setting date parameters
-				newDate.setHours(hours);
-				newDate.setMinutes(minutes);
-				newDate.setSeconds(seconds);
+				Calendar oldDateCalendar = Calendar.getInstance();
+				oldDateCalendar.setTime(oldDate);
+				Calendar newDateCalendar = Calendar.getInstance();
+				newDateCalendar.setTime(newDate);
+				int year = oldDateCalendar.get(Calendar.YEAR);
+				int month = oldDateCalendar.get(Calendar.MONTH);
+				int day = oldDateCalendar.get(Calendar.DATE);
+				int hours = newDateCalendar.get(Calendar.HOUR_OF_DAY);
+				int minutes = newDateCalendar.get(Calendar.MINUTE);
+				int seconds = newDateCalendar.get(Calendar.SECOND);
+				Calendar result = Calendar.getInstance();
+				result.set(year, month, day, hours, minutes, seconds);
+				newDate.setTime(result.getTimeInMillis());
 			} else if ("date".equals(timeType)) {
-				newDate.setHours(oldDate.getHours());
-				newDate.setMinutes(oldDate.getMinutes());
-				newDate.setSeconds(oldDate.getSeconds());
+				Calendar oldDateCalendar = Calendar.getInstance();
+				oldDateCalendar.setTime(oldDate);
+				Calendar newDateCalendar = Calendar.getInstance();
+				newDateCalendar.setTime(newDate);
+				int year = newDateCalendar.get(Calendar.YEAR);
+				int month = newDateCalendar.get(Calendar.MONTH);
+				int day = newDateCalendar.get(Calendar.DATE);
+				int hours = oldDateCalendar.get(Calendar.HOUR_OF_DAY);
+				int minutes = oldDateCalendar.get(Calendar.MINUTE);
+				int seconds = oldDateCalendar.get(Calendar.SECOND);
+				Calendar result = Calendar.getInstance();
+				result.set(year, month, day+1, hours, minutes, seconds);
+				newDate.setTime(result.getTimeInMillis());
 			}			
 		}
 	}
