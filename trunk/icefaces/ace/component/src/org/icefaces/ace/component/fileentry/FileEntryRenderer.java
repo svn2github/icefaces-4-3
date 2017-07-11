@@ -178,7 +178,9 @@ public class FileEntryRenderer extends Renderer {
                     item(autoUpload).
                 endFunction().toString();
             writer.writeAttribute("onchange", onchange, null);
-        }
+        } else {
+            writer.writeAttribute("onchange", "this.parentNode.setAttribute('title', this.value);", null);
+		}
         writer.endElement("input");
         if (multiple) {
             writer.endElement("span");  // add-files ...
