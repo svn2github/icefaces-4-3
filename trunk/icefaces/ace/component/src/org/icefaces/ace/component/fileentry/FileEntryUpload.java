@@ -18,11 +18,9 @@ package org.icefaces.ace.component.fileentry;
 
 import org.icefaces.ace.util.ComponentUtils;
 import org.icefaces.apache.commons.fileupload.*;
-import org.icefaces.apache.commons.io.IOUtils;
 import org.icefaces.impl.application.WindowScopeManager;
 import org.icefaces.impl.context.DOMPartialViewContext;
 import org.icefaces.impl.util.CoreUtils;
-import org.icefaces.impl.util.Util;
 import org.icefaces.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.icefaces.apache.commons.fileupload.util.Streams;
 import org.icefaces.util.EnvUtils;
@@ -38,7 +36,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.Part;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.util.*;
 import java.io.InputStream;
 import java.io.File;
@@ -97,13 +94,13 @@ public class FileEntryUpload implements PhaseListener {
             long requestContentLength = (long) request.getContentLength();
             String reqCharEnc = request.getCharacterEncoding();
             String extCharEnc = externalContext.getRequestCharacterEncoding();
-            String iceHandlerCharEnc = org.icefaces.impl.util.CharacterEncodingHandler.calculateCharacterEncoding(facesContext);
+            String iceHandlerCharEnc = EnvUtils.calculateCharacterEncoding(facesContext);
             String resolvedCharacterEncoding = (reqCharEnc != null) ? reqCharEnc : ((extCharEnc != null) ? extCharEnc : (iceHandlerCharEnc));
             log.finer("FileEntryUpload\n" +
                 "  requestContentLength: " + requestContentLength + "\n" +
                 "  request.getCharacterEncoding: " + reqCharEnc + "\n" +
                 "  externalContext.getRequestCharacterEncoding: " + extCharEnc + "\n" +
-                "  CharacterEncodingHandler.calculateCharacterEncoding: " + iceHandlerCharEnc + "\n" +
+                    "  EnvUtils.calculateCharacterEncoding: " + iceHandlerCharEnc + "\n" +
                 "  resolvedCharacterEncoding: " + resolvedCharacterEncoding + "\n" +
                 "  Charset.defaultCharset().displayName(): " + java.nio.charset.Charset.defaultCharset().displayName());
 
