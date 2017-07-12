@@ -17,6 +17,7 @@
 package org.icefaces.util;
 
 
+import javax.faces.application.ViewHandler;
 import javax.faces.component.UINamingContainer;
 import javax.servlet.http.HttpServletRequest;
 
@@ -1202,6 +1203,42 @@ public class EnvUtils {
         }
 
         return null;
+    }
+
+    public static String calculateCharacterEncoding(FacesContext context) {
+        ExternalContext extContext = context.getExternalContext();
+        Map<String, String> headerMap = extContext.getRequestHeaderMap();
+        String contentType = headerMap.get("Content-Type");
+        String charEnc = null;
+
+        if (null == contentType) {
+            contentType = headerMap.get("content-type");
+        }
+
+        // look for a charset in the Content-Type header first.
+        if (null != contentType) {
+            // see if this header had a charset
+            String charsetStr = "charset=";
+            int len = charsetStr.length();
+
+            //It's possible for Content-Type header to have multiple charset entries
+            int idx = contentType.lastIndexOf(charsetStr);
+
+            // if we have a charset in this Content-Type header AND it
+            // has a non-zero length.
+            if (idx != -1 && idx + len < contentType.length()) {
+                charEnc = contentType.substring(idx + len);
+            }
+        }
+
+        // failing that, look in the session for a previously saved one
+        if (null == charEnc) {
+            if (null != extContext.getSession(false)) {
+                charEnc = (String) extContext.getSessionMap().get(ViewHandler.CHARACTER_ENCODING_KEY);
+            }
+        }
+
+        return charEnc;
     }
 
     public static long getWarnBeforeExpiryInterval(FacesContext context) {
