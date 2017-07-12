@@ -62,7 +62,7 @@ public class ColorEntrySwatchesBean implements Serializable
 
      private ColorFormat colorFormatName = ColorFormat.NAME;
      private String title;
-     private List<String> colorList ;
+    private List<Slot> colorList;
 
      public String getTitle() {
          return title;
@@ -114,14 +114,14 @@ public class ColorEntrySwatchesBean implements Serializable
      }
 
      private void resetColorList() {
-         colorList = new ArrayList<String>();
+         colorList = new ArrayList<Slot>();
          for (int i=0; i < 4; i++){
-            colorList.add("");
+             colorList.add(new Slot());
          }
      }
 
      public boolean isHaveValues() {
-         return (colorList.get(1).length()>0 || colorList.get(2).length()>0 || colorList.get(3).length()>0  || colorList.get(0).length()>0 );
+         return (colorList.get(1).getValue().length() > 0 || colorList.get(2).getValue().length() > 0 || colorList.get(3).getValue().length() > 0 || colorList.get(0).getValue().length() > 0);
      }
 
      public void reset(ActionEvent event){
@@ -134,9 +134,9 @@ public class ColorEntrySwatchesBean implements Serializable
           //update the swatches list of colors--only 4 so do this each time.
          swatchEntries = new ArrayList<SwatchEntry>();
          for (int i=0; i< 4; i++){
-             if (colorList.get(i).length()>0){
+             if (colorList.get(i).getValue().length() > 0) {
                  Pattern pattern = Pattern.compile("rgb *\\( *([0-9]+), *([0-9]+), *([0-9]+) *\\)");
-                 Matcher matcher = pattern.matcher(colorList.get(i));
+                 Matcher matcher = pattern.matcher(colorList.get(i).getValue());
                  if (matcher.matches()) {
                      Double r =  (Double.valueOf(matcher.group(1)));
                      Double g =  (Double.valueOf(matcher.group(2)));
@@ -266,11 +266,11 @@ public class ColorEntrySwatchesBean implements Serializable
            this.color = color;
        }
 
-    public List<String> getColorList() {
+    public List<Slot> getColorList() {
            return colorList;
        }
 
-    public void setColorList(List<String> colorList) {
+    public void setColorList(List<Slot> colorList) {
            this.colorList = colorList;
        }
 
@@ -280,5 +280,21 @@ public class ColorEntrySwatchesBean implements Serializable
 
     public void setHexcolorFormat(ColorFormat hexcolorFormat) {
         this.hexcolorFormat = hexcolorFormat;
+    }
+
+    public class Slot {
+        private String value = "";
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
+
+        public String toString() {
+            return value.toString();
+        }
     }
 }

@@ -97,7 +97,7 @@
                              <h:panelGrid columns="1">
                                  <c:forEach items="#{colorEntrySwatchesBean.colorList}" var="entry" varStatus="status" >
                                       <ace:colorEntry id="ce_#{status.index}"
-                                                      value="#{entry}"
+                                                      value="#{entry.value}"
                                                       title="Choose A Color for A Swatch"
                                                       swatchesName="html"
                                                       renderAsPopup="true"
