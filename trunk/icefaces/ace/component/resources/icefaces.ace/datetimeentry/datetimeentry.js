@@ -228,6 +228,7 @@ ice.ace.CalendarInit = function(options) {
             ice.onElementUpdate(id, function () {
                 widget.destroy();
                 initEltSet.remove();
+				input.parent().find('.'+ triggerClass).show();
             });
 			ice.ace.Calendar.instances[id] = true;
             return widget;
@@ -238,6 +239,7 @@ ice.ace.CalendarInit = function(options) {
 				return;
 			}
             if (trigger) trigger.remove();
+			input.parent().find('.'+ triggerClass).show();
             create();
             if (!ice.ace.instance(id).pickerFn) return;
             ice.ace.instance(id).jq[ice.ace.instance(id).pickerFn]("show");
@@ -265,12 +267,18 @@ ice.ace.CalendarInit = function(options) {
 
 		ice.ace.lazy.registry[id] = function() {
 			if (trigger) trigger.remove();
+			input.parent().find('.'+ triggerClass).show();
 			return create();
 		};
 
         initEltSet = initEltSet.add(input);
 
         if (ice.ace.jq.inArray(showOn, ["button","both"]) >= 0) {
+			// hide trigger added by jquery ui
+			if (!trigger) {
+				input.parent().find('.'+ triggerClass).hide();
+			}
+
             trigger = buttonImageOnly ?
                 ice.ace.jq('<img/>').addClass(triggerClass).
                     attr({ src: buttonImage, alt: buttonText, title: buttonText }) :
@@ -291,6 +299,7 @@ ice.ace.CalendarInit = function(options) {
         ice.onElementUpdate(id, function() {
             // .remove cleans jQuery state unlike .unbind
             initEltSet.remove();
+			input.parent().find('.'+ triggerClass).show();
         });
     });
 };
