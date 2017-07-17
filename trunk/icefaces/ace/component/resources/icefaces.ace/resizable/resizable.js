@@ -36,8 +36,9 @@ ice.ace.Resizable = function(id, cfg) {
     if (listener) {
         this.cfg.ajaxResize = true;
     }
+    var jqTarget = ice.ace.jq(this.target);
     if(this.cfg.ajaxResize) {
-        this.cfg.formId = ice.ace.jq(this.target).parents('form:first').attr('id');
+        this.cfg.formId = jqTarget.parents('form:first').attr('id');
     }
 
     var _self = this;
@@ -49,13 +50,13 @@ ice.ace.Resizable = function(id, cfg) {
     };
 
     if (cfg.height && cfg.width) {
-        var t = ice.ace.jq(this.target);
+        var t = jqTarget;
         t.width(cfg.width);
         t.height(cfg.height);
     }
 
-    ice.ace.jq(this.target).resizable(this.cfg);
-    
+    jqTarget.resizable('destroy');
+    jqTarget.resizable(this.cfg);
 };
 
 ice.ace.Resizable.prototype.fireAjaxResizeEvent = function(event, ui) {
