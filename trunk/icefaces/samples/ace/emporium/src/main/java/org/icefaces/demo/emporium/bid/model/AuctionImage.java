@@ -31,6 +31,7 @@ import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 
 import org.icefaces.demo.emporium.util.FacesUtils;
 import org.icefaces.demo.emporium.util.StringUtil;
@@ -74,8 +75,8 @@ public class AuctionImage implements Serializable {
         return parentDir != null;
     }
 
-	public static String staticConvertNameToImageName(String name) {
-		// First of all we won't assign any images until we know we have a valid parentDir (ideally resources/items/) to pull from
+    public static String staticConvertNameToImageName(ServletContext servletContext, String name) {
+        // First of all we won't assign any images until we know we have a valid parentDir (ideally resources/items/) to pull from
 		// The image name format is all lowercase, spaces replaced with underscores
         if (StringUtil.validString(name)) {
             String imageName = name.toLowerCase();
@@ -85,17 +86,19 @@ public class AuctionImage implements Serializable {
 
             // Next we have to check that the image actually exists
             // Use classloader to find the image (FacesContext instance is available only on request threads)
-            URL toCheck = StringUtil.class.getResource("/../../" + IMAGE_DIR + "/" + imageName + EXTENSION);
+            URL toCheck;
+            try {
+                toCheck = servletContext.getResource(IMAGE_DIR + "/" + imageName + EXTENSION);
+            } catch (MalformedURLException e) {
+                return DEFAULT_NAME;
+            }
+
             if (toCheck != null) {
                 return imageName;
             }
         }
 
 		return DEFAULT_NAME;
-	}
-
-	public String convertNameToImageName(String name) {
-		return staticConvertNameToImageName(name);
 	}
 
 	public String[] getImagesList() {

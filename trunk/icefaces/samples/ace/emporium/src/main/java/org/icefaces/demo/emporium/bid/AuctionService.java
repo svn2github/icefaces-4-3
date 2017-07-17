@@ -28,6 +28,8 @@ import javax.annotation.PreDestroy;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 
 import org.icefaces.application.ProductInfo;
 import org.icefaces.demo.emporium.bid.model.AuctionItem;
@@ -55,12 +57,14 @@ public class AuctionService implements Serializable {
 	
 	@ManagedProperty(value="#{" + GlobalMessageBean.BEAN_NAME + "}")
 	private GlobalMessageBean globalMessage;
-	
-	@PostConstruct
-	public void initAuctionService() {
+    private ServletContext servletContext;
+
+    @PostConstruct
+    public void initAuctionService() {
 		log.info(TestFlags.getLogStatus());
 		log.info("Starting up AuctionService, generating " + MINIMUM_ITEMS + " auction items.");
-		
+        servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+
 		generateDefaultData();
 		
 		renderer.start(this);
@@ -82,15 +86,15 @@ public class AuctionService implements Serializable {
 	public void generateDefaultData() {
 		auctions.clear();
 		for (int i = 0; i < MINIMUM_ITEMS; i++) {
-			addAuction(AuctionItemGenerator.makeUniqueItem(auctions), true);
-		}
+            addAuction(AuctionItemGenerator.makeUniqueItem(servletContext, auctions), true);
+        }
 	}
 	
 	public void checkAuctionExpiry() {
 		// Start adding items to get above our minimum as needed
 		if (auctions.size() < MINIMUM_ITEMS) {
-			addAuction(AuctionItemGenerator.makeUniqueItem(auctions));
-		}
+            addAuction(AuctionItemGenerator.makeUniqueItem(servletContext, auctions));
+        }
 		
 		// Loop through all items looking for anything that is expired, which we will remove
 		for (AuctionItem currentItem : auctions) {

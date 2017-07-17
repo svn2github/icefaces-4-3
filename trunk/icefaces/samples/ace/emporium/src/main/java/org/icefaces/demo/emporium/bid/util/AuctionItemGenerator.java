@@ -27,6 +27,8 @@ import org.icefaces.demo.emporium.bid.model.AuctionItem;
 import org.icefaces.demo.emporium.test.TestFlags;
 import org.icefaces.demo.emporium.util.ListData;
 
+import javax.servlet.ServletContext;
+
 public class AuctionItemGenerator {
 	private static final Random random = new SecureRandom();
 	
@@ -35,12 +37,12 @@ public class AuctionItemGenerator {
 	private static final int MAX_FAKE_BIDS = TestFlags.TEST_MANY_PAST_BIDS ? 1000 : 10;
 	
 	private static int uniqueCountSuffix = random.nextInt(100);
-	
-	public static AuctionItem makeItem() {
-		AuctionItem toReturn = new AuctionItem();
+
+    public static AuctionItem makeItem(ServletContext servletContext) {
+        AuctionItem toReturn = new AuctionItem();
 		toReturn.setName(generateName());
-		toReturn.setImageName(generateImageName(toReturn.getName()));
-		toReturn.setPrice(generatePrice());
+        toReturn.setImageName(generateImageName(servletContext, toReturn.getName()));
+        toReturn.setPrice(generatePrice());
 		toReturn.setExpiryDate(generateExpiryDate());
 		toReturn.setShippingCost(generateShippingCost());
 		toReturn.setSellerName(generatePersonName());
@@ -57,19 +59,19 @@ public class AuctionItemGenerator {
 		
 		return toReturn;
 	}
-	
-	public static AuctionItem makeUniqueItem(List<AuctionItem> toCheck) {
-		AuctionItem toReturn = makeItem();
-		
-		if ((toCheck == null) || (toCheck.isEmpty())) {
+
+    public static AuctionItem makeUniqueItem(ServletContext servletContext, List<AuctionItem> toCheck) {
+        AuctionItem toReturn = makeItem(servletContext);
+
+        if ((toCheck == null) || (toCheck.isEmpty())) {
 			return toReturn;
 		}
-		
-		return checkUniqueName(toReturn, toCheck, 0);
-	}
-	
-	private static AuctionItem checkUniqueName(AuctionItem item, List<AuctionItem> toCheck, int iteration) {
-		boolean nameChanged = false;
+
+        return checkUniqueName(servletContext, toReturn, toCheck, 0);
+    }
+
+    private static AuctionItem checkUniqueName(ServletContext servletContext, AuctionItem item, List<AuctionItem> toCheck, int iteration) {
+        boolean nameChanged = false;
 		for (AuctionItem loopCheck : toCheck) {
 			// If we have a matching name regenerate one
 			if (loopCheck.getName().equalsIgnoreCase(item.getName())) {
@@ -79,9 +81,9 @@ public class AuctionItemGenerator {
 				// Similarly we regenerate the image name for the same reason
 				// Note we use the base name without any unique count suffix, to make it more readable
 				item.setDescription(generateDescription(item.getName()));
-				item.setImageName(generateImageName(item.getName()));
-				
-				// It's possible to reach our max unique name checks
+                item.setImageName(generateImageName(servletContext, item.getName()));
+
+                // It's possible to reach our max unique name checks
 				// This would happen if our requested auction list size is bigger than ListData.ITEMS
 				// In such a case we want to append a random unique string and just return to stop recursively checking
 				if (iteration > UNIQUE_NAME_MAX_CHECKS) {
@@ -98,8 +100,8 @@ public class AuctionItemGenerator {
 		
 		if (nameChanged) {
 			// If our name changed we need to recursively recheck it
-			return checkUniqueName(item, toCheck, iteration+1);
-		}
+            return checkUniqueName(servletContext, item, toCheck, iteration + 1);
+        }
 		
 		return item;
 	}
@@ -115,11 +117,11 @@ public class AuctionItemGenerator {
 	public static String generateName() {
 		return ListData.ITEMS[random.nextInt(ListData.ITEMS.length)];
 	}
-	
-	public static String generateImageName(String name) {
-		// Need to use a static approach here instead of a bean lookup to be threadsafe
-		return AuctionImage.staticConvertNameToImageName(name);
-	}
+
+    public static String generateImageName(ServletContext servletContext, String name) {
+        // Need to use a static approach here instead of a bean lookup to be threadsafe
+        return AuctionImage.staticConvertNameToImageName(servletContext, name);
+    }
 	
 	public static double generatePrice() {
 		// Figure out if we're doing a cheap, normal, big, or huge size price

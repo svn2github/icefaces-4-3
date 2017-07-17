@@ -22,6 +22,8 @@ import java.util.Date;
 
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 
 import org.icefaces.demo.emporium.bid.model.AuctionItem;
 import org.icefaces.demo.emporium.bid.util.AuctionItemGenerator;
@@ -43,9 +45,14 @@ public class PostBean implements Serializable {
 	private boolean showItemImageDialog = false;
 	private boolean hasLoadedImages = false;
 	private String clickedImage;
-	
-	public void clear() {
-		setToAdd(null);
+    private ServletContext servletContext;
+
+    public PostBean() {
+        servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+    }
+
+    public void clear() {
+        setToAdd(null);
 		setExpiryDate(null);
 	}
 	
@@ -63,8 +70,8 @@ public class PostBean implements Serializable {
 			
 			// Set some defaults
 			toAdd.setName(AuctionItemGenerator.generateName());
-			toAdd.setImageName(AuctionItemGenerator.generateImageName(toAdd.getName()));
-			toAdd.setPrice(0.1);
+            toAdd.setImageName(AuctionItemGenerator.generateImageName(servletContext, toAdd.getName()));
+            toAdd.setPrice(0.1);
 			toAdd.setShippingCost(1.0);
 			
 			Calendar cal = Calendar.getInstance();
