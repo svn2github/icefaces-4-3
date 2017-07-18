@@ -50,6 +50,7 @@ public class RefreshHandler extends TagHandler {
                 viewMap.put(DURATION, getDuration(ctx));
                 UIOutput refreshSetup = new RefreshSetupOutput();
                 refreshSetup.setId("refreshSetup");
+                refreshSetup.setTransient(true);
                 parent.setInView(false);
                 parent.getChildren().add(0, refreshSetup);
                 parent.setInView(true);
@@ -84,16 +85,11 @@ public class RefreshHandler extends TagHandler {
 
 
     public static class RefreshSetupOutput extends UIOutput {
-        private Long interval;
-        private Long duration;
-
-        public RefreshSetupOutput()  {
-            Map<String, Object> viewMap = FacesContext.getCurrentInstance().getViewRoot().getViewMap();
-            this.interval = (Long) viewMap.get(INTERVAL);
-            this.duration = (Long) viewMap.get(DURATION);
-        }
-
         public void encodeBegin(FacesContext context) throws IOException {
+            Map<String, Object> viewMap = FacesContext.getCurrentInstance().getViewRoot().getViewMap();
+            Long interval = (Long) viewMap.get(INTERVAL);
+            Long duration = (Long) viewMap.get(DURATION);
+
             ResponseWriter writer = context.getResponseWriter();
             writer.startElement("span", this);
             String clientId = getClientId(context);
