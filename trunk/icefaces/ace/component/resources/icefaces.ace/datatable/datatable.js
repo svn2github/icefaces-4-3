@@ -412,6 +412,7 @@ ice.ace.DataTable.prototype.setupFilterEvents = function () {
 
 	this.element.off('input', this.filterSelector);
     this.element.on('input', this.filterSelector, function (event) {
+        var _event = event;
         if ((event.target || event.srcElement).value == '') {
 			if (_self.delayedFilterCall)
 				clearTimeout(_self.delayedFilterCall);
