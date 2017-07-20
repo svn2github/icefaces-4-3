@@ -46,13 +46,9 @@
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
                 <mobi:camera id="cam" value="#{cameraBean.cameraImage}" rendered="#{(cameraBean.outputResource == null) and (cameraBean.useImages) == false}"
-                        buttonLabel="Camera" captureMessageLabel="Image captured"
-                        maxwidth="#{cameraBean.maxWidth}"
-                        maxheight="#{cameraBean.maxHeight}"/>
+                        buttonLabel="Camera" captureMessageLabel="Image captured"/>
                 <mobi:camera id="cam2" value="#{cameraBean.cameraImage}" rendered="#{(cameraBean.outputResource == null) and (cameraBean.useImages == true)}"
-                        buttonImage="/resources/css/images/camera.png" captureButtonImage="/resources/css/images/photos.png"
-                        maxwidth="#{cameraBean.maxWidth}"
-                        maxheight="#{cameraBean.maxHeight}"/>
+                        buttonImage="/resources/css/images/camera.png" captureButtonImage="/resources/css/images/photos.png"/>
 				<ace:pushButton id="cameraReset" rendered="#{cameraBean.outputResource != null}"
 									 styleClass="submit"
 									 actionListener="#{cameraBean.reset}"
@@ -84,33 +80,6 @@
 		</h:panelGroup>
         
         <h:outputText value="#{cameraBean.uploadMessage}" style="margin-left:10px"/>
-
-    </h:form>
-
-    <h:form id="dimensionsForm" prependId="false" style="display:block">
-
-        <h3>Image Dimension Settings</h3>
-        
-        <mobi:fieldsetGroup>
-            <mobi:fieldsetRow style="text-align:left">
-                Set the maximum width and height dimensions for the image (on supported devices). A value of zero uses the whole width and/or height of the captured image. Changes will be applied to the next captured image.
-            </mobi:fieldsetRow>
-            <mobi:fieldsetRow>
-				<h:outputLabel value="Max width:" for="maxWidth" />
-                <ace:textEntry id="maxWidth" type="number" value="#{cameraBean.maxWidth}">
-					<ace:ajax execute="@form" render="@all" />
-				</ace:textEntry>
-            </mobi:fieldsetRow>
-            <mobi:fieldsetRow>
-				<h:outputLabel value="Max height:" for="maxHeight" />
-                <ace:textEntry id="maxHeight" type="number" value="#{cameraBean.maxHeight}">
-					<ace:ajax execute="@form" render="@all" />
-				</ace:textEntry>
-            </mobi:fieldsetRow>
-            <mobi:fieldsetRow>
-				<ace:pushButton value="Set Dimensions" styleClass="submit"/>
-            </mobi:fieldsetRow>
-        </mobi:fieldsetGroup>
 
     </h:form>
 
