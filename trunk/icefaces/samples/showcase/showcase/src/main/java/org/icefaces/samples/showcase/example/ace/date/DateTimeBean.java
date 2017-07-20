@@ -100,10 +100,11 @@ public class DateTimeBean implements Serializable {
 		if (timeType != null) {
 			Date oldDate = (Date) event.getOldValue();
 			Date newDate = (Date) event.getNewValue();
+			TimeZone timeZone = TimeZone.getTimeZone("Canada/Mountain");
 			if ("time".equals(timeType)) {
-				Calendar oldDateCalendar = Calendar.getInstance();
+				Calendar oldDateCalendar = Calendar.getInstance(timeZone);
 				oldDateCalendar.setTime(oldDate);
-				Calendar newDateCalendar = Calendar.getInstance();
+				Calendar newDateCalendar = Calendar.getInstance(timeZone);
 				newDateCalendar.setTime(newDate);
 				int year = oldDateCalendar.get(Calendar.YEAR);
 				int month = oldDateCalendar.get(Calendar.MONTH);
@@ -111,13 +112,13 @@ public class DateTimeBean implements Serializable {
 				int hours = newDateCalendar.get(Calendar.HOUR_OF_DAY);
 				int minutes = newDateCalendar.get(Calendar.MINUTE);
 				int seconds = newDateCalendar.get(Calendar.SECOND);
-				Calendar result = Calendar.getInstance();
+				Calendar result = Calendar.getInstance(timeZone);
 				result.set(year, month, day, hours, minutes, seconds);
 				newDate.setTime(result.getTimeInMillis());
 			} else if ("date".equals(timeType)) {
-				Calendar oldDateCalendar = Calendar.getInstance();
+				Calendar oldDateCalendar = Calendar.getInstance(timeZone);
 				oldDateCalendar.setTime(oldDate);
-				Calendar newDateCalendar = Calendar.getInstance();
+				Calendar newDateCalendar = Calendar.getInstance(timeZone);
 				newDateCalendar.setTime(newDate);
 				int year = newDateCalendar.get(Calendar.YEAR);
 				int month = newDateCalendar.get(Calendar.MONTH);
@@ -125,8 +126,8 @@ public class DateTimeBean implements Serializable {
 				int hours = oldDateCalendar.get(Calendar.HOUR_OF_DAY);
 				int minutes = oldDateCalendar.get(Calendar.MINUTE);
 				int seconds = oldDateCalendar.get(Calendar.SECOND);
-				Calendar result = Calendar.getInstance();
-				result.set(year, month, day+1, hours, minutes, seconds);
+				Calendar result = Calendar.getInstance(timeZone);
+				result.set(year, month, day, hours, minutes, seconds);
 				newDate.setTime(result.getTimeInMillis());
 			}			
 		}
