@@ -104,9 +104,9 @@
 								container="#{drawerPanelBean.container}">
 				<ace:ajax event="open" execute="@this" render="buttons" />
 				<ace:ajax event="close" execute="@this" render="buttons" />
-				<ace:linkButton value="Menu item 1"/><br/><br />
-				<ace:linkButton value="Menu item 2"/><br/><br />
-				<ace:linkButton value="Menu item 3"/><br/><br />
+				<ace:linkButton value="Menu item 1"><ace:ajax execute="@none" render="@none"/></ace:linkButton><br/><br />
+				<ace:linkButton value="Menu item 2"><ace:ajax execute="@none" render="@none"/></ace:linkButton><br/><br />
+				<ace:linkButton value="Menu item 3"><ace:ajax execute="@none" render="@none"/></ace:linkButton><br/><br />
 			</ace:drawerPanel>
         </h:form>
     </ui:define>
