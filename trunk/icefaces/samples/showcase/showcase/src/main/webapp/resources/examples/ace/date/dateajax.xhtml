@@ -62,8 +62,8 @@
 								   styleClass="long-text-input">
 					<ace:ajax event="dateSelect"
                               listener="#{dateAjax.dateSelectListener}"
-                              render="selectedDate"/>
-                    <ace:ajax event="dateTextChange @this"
+                              render="selectedDate @this"/>
+                    <ace:ajax event="dateTextChange"
                               listener="#{dateAjax.dateTextChangeListener}"
                               render="selectedDate @this" />
 				</ace:dateTimeEntry>
