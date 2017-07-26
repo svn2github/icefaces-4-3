@@ -142,6 +142,7 @@
 			                    <c:forEach items="#{auctionImage.imagesList}" var="image">
 			                        <h:commandLink action="#{auctionController.clickItemImage}" onclick="ice.ace.instance('ip:imagePopup').hide();">
 			                            <f:setPropertyActionListener target="#{postBean.clickedImage}" value="#{image}"/>
+                                        <f:ajax execute="@form" render="@all"/>
 			                            <h:graphicImage library="#{auctionImage.imageLibrary}" name="#{image}"
 			                                            alt="#{image}" title="#{image}"
 			                                            styleClass="iil"/>
