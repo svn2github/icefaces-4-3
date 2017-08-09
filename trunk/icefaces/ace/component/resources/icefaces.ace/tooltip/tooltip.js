@@ -16,6 +16,7 @@
 
 if (!ice.ace.Tooltips) ice.ace.Tooltips = {};
 if (!ice.ace.DelegateTooltips) ice.ace.DelegateTooltips = {};
+if (!ice.ace.DelegateTooltipObservers) ice.ace.DelegateTooltipObservers = [];
 /*
  *  Tooltip Widget
  */
@@ -166,7 +167,10 @@ ice.ace.Tooltip = function(id, cfg) {
 						openInstances[id].qtip('hide');
 					}
 					ice.ace.DelegateTooltips[self.cfg.id][instanceId] = jqTargetComponent;
-					setTimeout(function(){
+					while (ice.ace.DelegateTooltipObservers.length > 0) {
+						clearTimeout(ice.ace.DelegateTooltipObservers.shift());
+					}
+					ice.ace.DelegateTooltipObservers.push(setTimeout(function(){
 						self.activeComponent = targetComponent;
 						self.currentTooltip = instanceId;
 						self.triggerDisplayListener(function() {
@@ -175,7 +179,11 @@ ice.ace.Tooltip = function(id, cfg) {
 							if (instance && self.currentTooltip == instanceId) instance.qtip('show');
 						});
 						self.activeComponent = '';
-					}, self.cfg.show.delay);
+					}, self.cfg.show.delay));
+				} else {
+					while (ice.ace.DelegateTooltipObservers.length > 0) {
+						clearTimeout(ice.ace.DelegateTooltipObservers.shift());
+					}
 				}
 			}
 		});
