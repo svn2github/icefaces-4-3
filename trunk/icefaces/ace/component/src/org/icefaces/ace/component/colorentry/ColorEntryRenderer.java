@@ -37,7 +37,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 
-@MandatoryResourceComponent(tagName="colorEntry", value="ColorEntry")
+@MandatoryResourceComponent(tagName="colorEntry", value="org.icefaces.ace.component.colorentry.ColorEntry")
 public class ColorEntryRenderer extends InputRenderer {
     private static final String ACE_MESSAGES_BUNDLE = "org.icefaces.ace.resources.messages";
     private static final String COLOR_ENTRY_LOOKUP_KEY = "org.icefaces.ace.component.colorentry.regional.";
