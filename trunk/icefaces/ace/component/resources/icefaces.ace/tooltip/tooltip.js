@@ -180,12 +180,13 @@ ice.ace.Tooltip = function(id, cfg) {
 						});
 						self.activeComponent = '';
 					}, self.cfg.show.delay));
-				} else {
-					while (ice.ace.DelegateTooltipObservers.length > 0) {
-						clearTimeout(ice.ace.DelegateTooltipObservers.shift());
-					}
 				}
 			}
+		});
+		this.jq.delegate('*', 'mouseout', function(event) {
+			while (ice.ace.DelegateTooltipObservers.length > 0) {
+				clearTimeout(ice.ace.DelegateTooltipObservers.shift());
+			}			
 		});
 	}
     callee[id] = this;
