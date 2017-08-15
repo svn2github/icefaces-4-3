@@ -121,6 +121,9 @@ public class ScheduleMeta extends UIDataMeta {
     @Property(tlddoc = "Enabling renders the time grid of the week and day views in a container that overflows the fixed height and adds a scrollbar.")
     private boolean scrollable;
 
+    @Property(tlddoc = "Enabling allows the sidebar to be resizable.", defaultValue = "true")
+    private boolean resizableSidebar;
+
 	@Property(tlddoc = "The inline style of the component, rendered on the root div of the component.")
 	private String style;
 
@@ -138,6 +141,9 @@ public class ScheduleMeta extends UIDataMeta {
 
     @Property(tlddoc = "Enabling applies an original styling to the day and time girds and to the events rendered on them in the month, week, and day views. This original styling makes it easier to read the information contained in the schedule by styling the contents in additional ways not covered by Themeroller themes. This styling is always the same, regardless of the theme being applied. Other parts of the schedule such as the title, sidebar and event details dialog are not affected by this styling. Setting this attribute to false prevents this original styling from being applied, leaving only the theme styling.", defaultValue = "true")
     private boolean enhancedStyling;
+
+    @Property(tlddoc = "Specifies the tabindex attribute for the navigation controls ('previous' and 'next' buttons). A  value of '0' enables focusing these buttons by pressing the tab key. A value of '-1' disables this behaviour. A value greater than '0' determines a specific order.", defaultValue = "0", defaultValueType = DefaultValueType.EXPRESSION)
+	private int tabindex;
 
 	@Field(defaultValue="-1")
 	private Integer currentYear;

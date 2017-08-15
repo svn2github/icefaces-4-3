@@ -214,6 +214,8 @@ public class ScheduleRenderer extends CoreRenderer {
 		} else {
 			eventDetails = "sidebar";
 		}
+		boolean resizableSidebar = schedule.isResizableSidebar();
+		int tabindex = schedule.getTabindex();
 		boolean displayTooltip = schedule.isShowTooltip();
 		String tooltipClass = displayTooltip ? "schedule-config-details-tooltip" : "";
 		String scrollableClass = schedule.isScrollable() ? "schedule-config-scrollable" : "";
@@ -242,6 +244,8 @@ public class ScheduleRenderer extends CoreRenderer {
 				.beginMap()
 					.entry("viewMode", viewMode)
 					.entry("eventDetails", eventDetails)
+					.entry("resizableSidebar", resizableSidebar)
+					.entry("tabindex", tabindex)
 					.entry("displayTooltip", displayTooltip)
 					.entry("defaultDuration", schedule.getDefaultDuration())
 					.entry("isEventAddition", schedule.isAddEvents())
