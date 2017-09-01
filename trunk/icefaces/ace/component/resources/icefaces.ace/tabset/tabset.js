@@ -141,6 +141,7 @@ ice.ace.tabset = {
 				}
 				ice.ace.tabset.resizeMaps(contentParent);
 				ice.ace.tabset.resizeTables(contentParent);
+				ice.ace.tabset.resizeSchedules(contentParent);
                 cachedNewTab = null;
                 ice.ace.tabset.consoleLog(false, 'tabSet.tabChange.doOnSuccess  EXIT');
             };
@@ -171,6 +172,7 @@ ice.ace.tabset = {
 				}
 				ice.ace.tabset.resizeMaps(contentParent);
 				ice.ace.tabset.resizeTables(contentParent);
+				ice.ace.tabset.resizeSchedules(contentParent);
             } else {
                 var targetElement = ice.ace.tabset.getTabIndexField(rootElem, true);
                 if(targetElement) {
@@ -358,6 +360,7 @@ ice.ace.tabset = {
 				.on('keydown', ice.ace.tabset.focusActiveTab);
 		}
 		ice.ace.tabset.resizeTables(initElem);
+		ice.ace.tabset.resizeSchedules(initElem);
 
        ice.ace.tabset.consoleLog(true, "ace:tabSet - ID: " + clientId + " - initialize - " + (new Date().getTime() - initializeStartTime) + "ms");
    },
@@ -838,6 +841,21 @@ ice.ace.tabset = {
 				map.setCenter(center);
 			}
 		});
+	},
+
+	resizeSchedules : function(root) {
+		var schedules = ice.ace.jq(root).find('.ice-ace-schedule');
+		setTimeout(function(){
+			schedules.each(function(){
+				var id = this.id;
+				if (id) {
+					var schedule = ice.ace.instance(id);
+					if (schedule) {
+						schedule.render();
+					}
+				}
+			});
+		}, 1);
 	},
 
 	clearSelectedIndexState: function(clientId) {

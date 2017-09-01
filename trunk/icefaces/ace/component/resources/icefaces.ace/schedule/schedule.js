@@ -482,7 +482,7 @@ ice.ace.Schedule.prototype.addDefaultDurationFunctionality = function() {
 					endDateValue.setHours(parseInt(startHour.value, 10));
 					endDateValue.setMinutes(parseInt(startMinute.value, 10) + self.cfg.defaultDuration);
 
-					if (endHour.value == 'hh' && endMinute.value == 'mm') {
+					if (endHour.value == 'hh' && endMinute.value == 'mm' && (endDate.val() == startDate.val())) {
 						endDate.datepicker('setDate', endDateValue.getFullYear() + '-'
 							+ (endDateValue.getMonth() + 1) + '-'
 							+ endDateValue.getDate());
