@@ -159,13 +159,13 @@ public class ScheduleRenderer extends CoreRenderer {
 		String previousViewMode = params.get(clientId + "_viewMode");
 		String selectedDateString = params.get(clientId + "_selectedDate");
 		boolean selectCurrentDate = false;
-		boolean viewChange = false;
+		boolean selectedDateOnViewChange = false;
 		if (!isCurrentDateProgrammaticallySet) {
 			if (previousViewMode != null && !viewMode.equalsIgnoreCase(previousViewMode)) {
-				viewChange = true;
 				if (selectedDateString != null && !"".equals(selectedDateString)) {
 					Date selectedDate = ScheduleUtils.convertDateTimeToServerFormat(selectedDateString, "00:00");
 					if (selectedDate != null) {
+						selectedDateOnViewChange = true;
 						Calendar cal = Calendar.getInstance();
 						cal.setTime(selectedDate);
 						schedule.setCurrentYear(cal.get(Calendar.YEAR));
@@ -179,7 +179,7 @@ public class ScheduleRenderer extends CoreRenderer {
 		}
 
 		// normalize current date values
-		int[] currentDateValues = schedule.getCurrentDateValues();
+		int[] currentDateValues = schedule.getCurrentDateValues(selectedDateOnViewChange);
 
 		// set normalized current date values
 		schedule.setCurrentYear(currentDateValues[0]);
@@ -333,7 +333,7 @@ public class ScheduleRenderer extends CoreRenderer {
 		writer.writeAttribute("id", clientId + "_selectedDate", null);
 		writer.writeAttribute("name", clientId + "_selectedDate", null);
 		writer.writeAttribute("type", "hidden", null);
-		if (!viewChange && (selectedDateString != null && !"".equals(selectedDateString) && !selectCurrentDate)) {
+		if (selectedDateString != null && !"".equals(selectedDateString) && !selectCurrentDate) {
 			writer.writeAttribute("value", selectedDateString, null);
 		} else {
 			writer.writeAttribute("value", currentDateValues[0]

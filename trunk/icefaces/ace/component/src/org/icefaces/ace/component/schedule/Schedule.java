@@ -173,19 +173,25 @@ public class Schedule extends ScheduleBase implements Serializable {
 	}
 
 	public int[] getCurrentDateValues() {
-		// update current date values if they were submitted
-		FacesContext context = FacesContext.getCurrentInstance();
-		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-		String clientId = getClientId(context);
-		String currentYearStr = params.get(clientId + "_currentYear");
-		String currentMonthStr = params.get(clientId + "_currentMonth");
-		String currentDayStr = params.get(clientId + "_currentDay");
-		if ((currentYearStr != null && !"".equals(currentYearStr.trim()))
-			&& (currentMonthStr != null && !"".equals(currentMonthStr.trim()))
-			&& (currentDayStr != null && !"".equals(currentDayStr.trim()))) {
-				setCurrentYear(new Integer(currentYearStr));
-				setCurrentMonth(new Integer(currentMonthStr));
-				setCurrentDay(new Integer(currentDayStr));
+		return getCurrentDateValues(false);
+	}
+
+	public int[] getCurrentDateValues(boolean selectedDateOnViewChange) {
+		if (!selectedDateOnViewChange) {
+			// update current date values if they were submitted
+			FacesContext context = FacesContext.getCurrentInstance();
+			Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+			String clientId = getClientId(context);
+			String currentYearStr = params.get(clientId + "_currentYear");
+			String currentMonthStr = params.get(clientId + "_currentMonth");
+			String currentDayStr = params.get(clientId + "_currentDay");
+			if ((currentYearStr != null && !"".equals(currentYearStr.trim()))
+				&& (currentMonthStr != null && !"".equals(currentMonthStr.trim()))
+				&& (currentDayStr != null && !"".equals(currentDayStr.trim()))) {
+					setCurrentYear(new Integer(currentYearStr));
+					setCurrentMonth(new Integer(currentMonthStr));
+					setCurrentDay(new Integer(currentDayStr));
+			}
 		}
 		int currentYear = getCurrentYear();
 		int currentMonth = getCurrentMonth();
