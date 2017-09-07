@@ -35,7 +35,9 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.TimeZone;
 
 public class ScheduleRenderer extends CoreRenderer {
@@ -257,8 +259,83 @@ public class ScheduleRenderer extends CoreRenderer {
 
 					if (schedule.isLazy()) jb.entry("isLazy", true);
 
+					// localised messages
+					Locale locale = context.getViewRoot().getLocale();
+					String bundleName = context.getApplication().getMessageBundle();
+					ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+					if (bundleName == null) bundleName = "org.icefaces.ace.resources.messages";
+					if (classLoader == null) classLoader = bundleName.getClass().getClassLoader();
+					ResourceBundle bundle = ResourceBundle.getBundle(bundleName, locale, classLoader);
+					final String MESSAGES_PREFIX = "org.icefaces.ace.component.schedule.";
+
+					jb.beginMap("messages")
+						.entry("January", bundle.getString(MESSAGES_PREFIX + "January"))
+						.entry("February", bundle.getString(MESSAGES_PREFIX + "February"))
+						.entry("March", bundle.getString(MESSAGES_PREFIX + "March"))
+						.entry("April", bundle.getString(MESSAGES_PREFIX + "April"))
+						.entry("May", bundle.getString(MESSAGES_PREFIX + "May"))
+						.entry("June", bundle.getString(MESSAGES_PREFIX + "June"))
+						.entry("July", bundle.getString(MESSAGES_PREFIX + "July"))
+						.entry("August", bundle.getString(MESSAGES_PREFIX + "August"))
+						.entry("September", bundle.getString(MESSAGES_PREFIX + "September"))
+						.entry("October", bundle.getString(MESSAGES_PREFIX + "October"))
+						.entry("November", bundle.getString(MESSAGES_PREFIX + "November"))
+						.entry("December", bundle.getString(MESSAGES_PREFIX + "December"))
+						.entry("Jan", bundle.getString(MESSAGES_PREFIX + "Jan"))
+						.entry("Feb", bundle.getString(MESSAGES_PREFIX + "Feb"))
+						.entry("Mar", bundle.getString(MESSAGES_PREFIX + "Mar"))
+						.entry("Apr", bundle.getString(MESSAGES_PREFIX + "Apr"))
+						.entry("May", bundle.getString(MESSAGES_PREFIX + "May"))
+						.entry("Jun", bundle.getString(MESSAGES_PREFIX + "Jun"))
+						.entry("Jul", bundle.getString(MESSAGES_PREFIX + "Jul"))
+						.entry("Aug", bundle.getString(MESSAGES_PREFIX + "Aug"))
+						.entry("Sep", bundle.getString(MESSAGES_PREFIX + "Sep"))
+						.entry("Oct", bundle.getString(MESSAGES_PREFIX + "Oct"))
+						.entry("Nov", bundle.getString(MESSAGES_PREFIX + "Nov"))
+						.entry("Dec", bundle.getString(MESSAGES_PREFIX + "Dec"))
+						.entry("Sunday", bundle.getString(MESSAGES_PREFIX + "Sunday"))
+						.entry("Monday", bundle.getString(MESSAGES_PREFIX + "Monday"))
+						.entry("Tuesday", bundle.getString(MESSAGES_PREFIX + "Tuesday"))
+						.entry("Wednesday", bundle.getString(MESSAGES_PREFIX + "Wednesday"))
+						.entry("Thursday", bundle.getString(MESSAGES_PREFIX + "Thursday"))
+						.entry("Friday", bundle.getString(MESSAGES_PREFIX + "Friday"))
+						.entry("Saturday", bundle.getString(MESSAGES_PREFIX + "Saturday"))
+						.entry("Sun", bundle.getString(MESSAGES_PREFIX + "Sun"))
+						.entry("Mon", bundle.getString(MESSAGES_PREFIX + "Mon"))
+						.entry("Tue", bundle.getString(MESSAGES_PREFIX + "Tue"))
+						.entry("Wed", bundle.getString(MESSAGES_PREFIX + "Wed"))
+						.entry("Thu", bundle.getString(MESSAGES_PREFIX + "Thu"))
+						.entry("Fri", bundle.getString(MESSAGES_PREFIX + "Fri"))
+						.entry("Sat", bundle.getString(MESSAGES_PREFIX + "Sat"))
+						.entry("EventsThisMonth", bundle.getString(MESSAGES_PREFIX + "EventsThisMonth"))
+						.entry("EventsThisWeek", bundle.getString(MESSAGES_PREFIX + "EventsThisWeek"))
+						.entry("EventsThisDay", bundle.getString(MESSAGES_PREFIX + "EventsThisDay"))
+						.entry("ALLDAY", bundle.getString(MESSAGES_PREFIX + "ALLDAY"))
+						.entry("Time", bundle.getString(MESSAGES_PREFIX + "Time"))
+						.entry("EventDetails", bundle.getString(MESSAGES_PREFIX + "EventDetails"))
+						.entry("Title", bundle.getString(MESSAGES_PREFIX + "Title"))
+						.entry("StartDate", bundle.getString(MESSAGES_PREFIX + "StartDate"))
+						.entry("StartTime", bundle.getString(MESSAGES_PREFIX + "StartTime"))
+						.entry("EndDate", bundle.getString(MESSAGES_PREFIX + "EndDate"))
+						.entry("EndTime", bundle.getString(MESSAGES_PREFIX + "EndTime"))
+						.entry("AllDayEvent", bundle.getString(MESSAGES_PREFIX + "AllDayEvent"))
+						.entry("Location", bundle.getString(MESSAGES_PREFIX + "Location"))
+						.entry("Notes", bundle.getString(MESSAGES_PREFIX + "Notes"))
+						.entry("Add", bundle.getString(MESSAGES_PREFIX + "Add"))
+						.entry("Save", bundle.getString(MESSAGES_PREFIX + "Save"))
+						.entry("Delete", bundle.getString(MESSAGES_PREFIX + "Delete"))
+						.entry("AreYouSure", bundle.getString(MESSAGES_PREFIX + "AreYouSure"))
+						.entry("Yes", bundle.getString(MESSAGES_PREFIX + "Yes"))
+						.entry("No", bundle.getString(MESSAGES_PREFIX + "No"))
+						.entry("ERROR1", bundle.getString(MESSAGES_PREFIX + "ERROR1"))
+						.entry("ERROR2", bundle.getString(MESSAGES_PREFIX + "ERROR2"))
+						.entry("ERROR3", bundle.getString(MESSAGES_PREFIX + "ERROR3"))
+					.endMap();
+
+					// behaviors
 					encodeClientBehaviors(context, schedule, jb);
 
+					// events
 					jb.beginArray("events");
 
 					ArrayList<ScheduleUtils.ScheduleEventDecorator> sortedEvents = 
