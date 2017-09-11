@@ -415,10 +415,34 @@ ice.ace.fileentry = {
             if (!contentAsText) {
                 return;
             }
-            var progressInfo = eval("(" + contentAsText + ")");
-            var percent = progressInfo['percent'];
+			// parse progress data to avoid using eval
+			// percent
+			var percent = 1;
+			var percentIndex = contentAsText.indexOf('percent')
+			if (percentIndex > -1) {
+				var percentValueIndex = percentIndex + 9;
+				var firstCommaIndex = contentAsText.indexOf(',', percentValueIndex);
+				if (firstCommaIndex > -1) {
+					percent = contentAsText.substr(percentValueIndex, firstCommaIndex-percentValueIndex);
+				}
+			}
             var percentStr = percent + "%";
-            var results = progressInfo['results'];
+			// results
+			var results = [];
+			var resultsIndex = contentAsText.indexOf('results')
+			if (resultsIndex > -1) {
+				var resultsValueIndex = resultsIndex + 9;
+				var closingBracketIndex = contentAsText.indexOf('}', resultsValueIndex);
+				if (closingBracketIndex > -1) {
+					var resultsString = contentAsText.substr(resultsValueIndex, closingBracketIndex-resultsValueIndex);
+					resultsString = resultsString.substr(1,resultsString.length-2);
+					var resultsSplit = resultsString.split(',');
+					var i;
+					for (i = 0; i < resultsSplit.length; i++) {
+						results.push(resultsSplit[i].replace(/'/g, ""));
+					}
+				}
+			}
             var res;
             for (res in results) {
                 var fileDiv = document.getElementById(results[res] + '_container');
