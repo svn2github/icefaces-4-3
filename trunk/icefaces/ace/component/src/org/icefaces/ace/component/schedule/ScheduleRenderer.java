@@ -227,6 +227,8 @@ public class ScheduleRenderer extends CoreRenderer {
 		ComponentUtils.enableOnElementUpdateNotify(writer, clientId);
 		writer.writeAttribute("class", "ice-ace-schedule", null);
 		writer.writeAttribute("tabindex", "0", null);
+		writer.writeAttribute("role", "widget", null);
+		writer.writeAttribute("aria-label", "schedule", null);
 
 		writer.startElement("div", null);
 		writer.writeAttribute("class", "schedule-details-popup-content", null);

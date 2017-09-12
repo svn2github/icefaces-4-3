@@ -355,11 +355,12 @@ ice.ace.Schedule.prototype.getEventDetailsMarkup = function(data, isEventAdditio
 	if (data) {
 		var markup = '';
 		var msgs = this.messages;
+		var id = this.id;
 		if (isEventAddition || isEventEditing) {
 			markup += '<div class="ui-state-error ui-corner-all" style="display:none;">' + msgs.ERROR1 + '</div>';
 			markup += '<div class="ui-state-error ui-corner-all" style="display:none;">' + msgs.ERROR2 + '</div>';
 			markup += '<div class="ui-state-error ui-corner-all" style="display:none;">' + msgs.ERROR3 + '</div>';
-			markup += '<table><tr><td>' + msgs.Title + ':</td><td><input type="text" name="'+this.id+'_title" value="'+this.escapeHtml(data.title)+'"/></td></tr><tr><td>' + msgs.StartDate + ':</td><td><input type="text" name="'+this.id+'_date" value="'+data.startDate+'"/></td></tr><tr><td>' + msgs.StartTime + ':</td><td>'+this.getHourSelectionMarkup(data.startTime, data.isAllDay)+'&nbsp;:&nbsp;'+this.getMinuteSelectionMarkup(data.startTime, data.isAllDay)+'</td></tr><tr><td>' + msgs.EndDate + ':</td><td><input type="text" name="'+this.id+'_endDate" value="'+data.endDate+'"/></td></tr><tr><td>' + msgs.EndTime + ':</td><td>'+this.getHourSelectionMarkup(data.endTime, data.isAllDay)+'&nbsp;:&nbsp;'+this.getMinuteSelectionMarkup(data.endTime, data.isAllDay)+'</td></tr><tr><td>' + msgs.AllDayEvent + ': </td><td><input type="checkbox" name="'+this.id+'_allDay" '+(data.isAllDay?'checked':'')+'/></td></tr><tr><td>' + msgs.Location + ':</td><td><input type="text" name="'+this.id+'_location" value="'+this.escapeHtml(data.location)+'"/></td></tr><tr><td>' + msgs.Notes + ':</td><td><textarea name="'+this.id+'_notes">'+this.escapeHtml(data.notes)+'</textarea></td></tr></table><input type="hidden" name="'+this.id+'_index" value="'+data.index+'"/>';
+			markup += '<table><tr><td><label for="' + id + '_title">' + msgs.Title + ':</label></td><td><input type="text" name="'+id+'_title" id="'+id+'_title" value="'+this.escapeHtml(data.title)+'"/></td></tr><tr><td><label for="' + id + '_date">' + msgs.StartDate + ':</label></td><td><input type="text" name="'+id+'_date" id="'+id+'_date" value="'+data.startDate+'"/></td></tr><tr><td>' + msgs.StartTime + ':</td><td>'+this.getHourSelectionMarkup(data.startTime, data.isAllDay)+'&nbsp;:&nbsp;'+this.getMinuteSelectionMarkup(data.startTime, data.isAllDay)+'</td></tr><tr><td><label for="' + id + '_endDate">' + msgs.EndDate + ':</label></td><td><input type="text" name="'+id+'_endDate" id="'+id+'_endDate" value="'+data.endDate+'"/></td></tr><tr><td>' + msgs.EndTime + ':</td><td>'+this.getHourSelectionMarkup(data.endTime, data.isAllDay)+'&nbsp;:&nbsp;'+this.getMinuteSelectionMarkup(data.endTime, data.isAllDay)+'</td></tr><tr><td><label for="' + id + '_allDay">' + msgs.AllDayEvent + ':</label></td><td><input type="checkbox" name="'+id+'_allDay" id="'+id+'_allDay" '+(data.isAllDay?'checked':'')+'/></td></tr><tr><td><label for="' + id + '_location">' + msgs.Location + ':</label></td><td><input type="text" name="'+id+'_location" id="'+id+'_location" value="'+this.escapeHtml(data.location)+'"/></td></tr><tr><td><label for="' + id + '_notes">' + msgs.Notes + ':</label></td><td><textarea name="'+id+'_notes" id="'+id+'_notes">'+this.escapeHtml(data.notes)+'</textarea></td></tr></table><input type="hidden" name="'+this.id+'_index" value="'+data.index+'"/>';
 			if (isEventEditing) {
 				markup += '<input type="hidden" name="'+this.id+'_old_startDate" value="'+data.startDate+'"/><input type="hidden" name="'+this.id+'_old_startTime" value="'+data.startTime+'"/><input type="hidden" name="'+this.id+'_old_endDate" value="'+data.endDate+'"/><input type="hidden" name="'+this.id+'_old_endTime" value="'+data.endTime+'"/><input type="hidden" name="'+this.id+'_old_allDay" value="'+data.isAllDay+'"/><input type="hidden" name="'+this.id+'_old_title" value="'+this.escapeHtml(data.title)+'"/><input type="hidden" name="'+this.id+'_old_location" value="'+this.escapeHtml(data.location)+'"/><input type="hidden" name="'+this.id+'_old_notes" value="'+this.escapeHtml(data.notes)+'"/>';
 			}
@@ -382,7 +383,7 @@ ice.ace.Schedule.prototype.getEventDetailsMarkup = function(data, isEventAdditio
 					+ 'if (s.validateInputs()) { s.sendEditRequest(event, \'edit\');'
 					+ closeDetailsMarkup + '} return false;">' + msgs.Save + '</button> ';
 			}
-			if (isEventDeletion) markup += '<span><button onclick="ice.ace.instance(\''+this.id+'\').confirmDeletion(this);return false;">' + msgs.Delete + '</button><span style="display:none;"><span>' + msgs.AreYouSure + ' </span><button onclick="ice.ace.instance(\''+this.id+'\').sendEditRequest(event, \'delete\');return false;">' + msgs.Yes + '</button> <button onclick="ice.ace.instance(\''+this.id+'\').cancelDeletion(this);return false;">' + msgs.No + '</button></span></span>';
+			if (isEventDeletion) markup += '<span><button onclick="ice.ace.instance(\''+this.id+'\').confirmDeletion(this);return false;">' + msgs.Delete + '</button><span role="alert" style="display:none;"><span>' + msgs.AreYouSure + ' </span><button onclick="ice.ace.instance(\''+this.id+'\').sendEditRequest(event, \'delete\');return false;">' + msgs.Yes + '</button> <button onclick="ice.ace.instance(\''+this.id+'\').cancelDeletion(this);return false;">' + msgs.No + '</button></span></span>';
 		}
 		return markup;
 	} else {
@@ -392,7 +393,7 @@ ice.ace.Schedule.prototype.getEventDetailsMarkup = function(data, isEventAdditio
 
 ice.ace.Schedule.prototype.getHourSelectionMarkup = function(time, isAllDay) {
 	var hour = time.substring(0,2);
-	var markup = '<select><option value="hh">hh</option>';
+	var markup = '<select aria-label="select hour"><option value="hh">hh</option>';
 	var i;
 	for (i = 0; i < 24; i++) {
 		var value = ( i < 10 ? '0' : '') + i;
@@ -405,7 +406,7 @@ ice.ace.Schedule.prototype.getHourSelectionMarkup = function(time, isAllDay) {
 
 ice.ace.Schedule.prototype.getMinuteSelectionMarkup = function(time, isAllDay) {
 	var minute = time.substring(3);
-	var markup = '<select><option value="mm">mm</option>';
+	var markup = '<select aria-label="select minute"><option value="mm">mm</option>';
 	var i;
 	for (i = 0; i < 60; i = i + 5) {
 		var value = ( i < 10 ? '0' : '') + i;
@@ -454,6 +455,12 @@ ice.ace.Schedule.prototype.displayEventDetailsPopup = function(markup, event) {
 	eventDetails.find('*').off(); // remove previous event handlers
 	eventDetails.html(markup);
 	eventDetails.dialog({dialogClass: 'schedule-details-popup', resizable: false, width: 320});
+	var root = ice.ace.jq(this.jqId);
+	root.find('.schedule-details-popup .ui-dialog-titlebar').attr('id', this.id + '_detailsPopupTitle');
+	root.find('.schedule-details-popup .ui-dialog-content').attr('id', this.id + '_detailsPopupContent');
+	root.find('.schedule-details-popup').attr('role', 'dialog')
+		.attr('aria-labelledby', this.id + '_detailsPopupTitle')
+		.attr('aria-describedby', this.id + '_detailsPopupContent');
 	eventDetails.find('input[type="text"]:eq(1),input[type="text"]:eq(2)').datepicker({dateFormat: 'yy-mm-dd'});
 	eventDetails.find('button').button();
 	if (!event.isAllDay) this.addDefaultDurationFunctionality();
@@ -538,6 +545,7 @@ ice.ace.Schedule.prototype.addAllDayFunctionality = function() {
 
 ice.ace.Schedule.prototype.displayEventDetailsSidebar = function(markup, event) {
 	var eventDetails = ice.ace.jq(this.jqId).find('.schedule-details-sidebar-content');
+	eventDetails.attr('role', 'dialog').attr('aria-labelledby', this.id + '_detailsSidebarTitle');
 	eventDetails.find('*').off(); // remove previous event handlers
 	eventDetails.html(markup);
 	this.expandEventDetails();
@@ -619,7 +627,7 @@ ice.ace.Schedule.prototype.displayEventDetailsTooltip = function(markup, node) {
 	eventDetails.html(markup);
 	eventDetails.dialog({resizable: false, draggable: false, dialogClass: 'schedule-details-tooltip', 
 		position: { my: "left top", at: "right top", of: node }});
-	ice.ace.jq(this.jqId).find('.schedule-details-tooltip').show();
+	ice.ace.jq(this.jqId).find('.schedule-details-tooltip').attr('role', 'tooltip').show();
 };
 
 ice.ace.Schedule.prototype.hideEventDetailsTooltip = function() {
@@ -752,9 +760,9 @@ ice.ace.Schedule.prototype.renderMonthView = function(data) {
 	var i, j;
 	var markup =
 	"<div class=\"schedule-title ui-state-active\">"
-		+"<div class=\"schedule-button-previous\"><i class=\"fa fa-arrow-left\"></i></div>"
-		+"<div class=\"schedule-button-next\"><i class=\"fa fa-arrow-right\"></i></div>"
-		+"<div class=\"schedule-showing\">" + this.getMonthName(currentMonth) + " " + currentYear + "</div>"
+		+"<div class=\"schedule-button-previous\" role=\"button\" aria-label=\"previous month\"><i class=\"fa fa-arrow-left\"></i></div>"
+		+"<div class=\"schedule-button-next\" role=\"button\" aria-label=\"next month\"><i class=\"fa fa-arrow-right\"></i></div>"
+		+"<div class=\"schedule-showing\" aria-label=\"current month\">" + this.getMonthName(currentMonth) + " " + currentYear + "</div>"
 	+"</div>"
 
 	+"<div class=\"schedule-content\">"
@@ -801,11 +809,11 @@ ice.ace.Schedule.prototype.renderMonthView = function(data) {
 		+"<div class=\"schedule-sidebar ui-widget-content\">"
 
 			+"<div class=\"schedule-list-title ui-state-default\">" + this.messages.EventsThisMonth + "</div>"
-			+"<div class=\"schedule-list-content\">";
+			+"<div class=\"schedule-list-content\" role=\"list\">";
 
 			markup += "</div>"
 
-			+"<div class=\"schedule-details-sidebar-title ui-state-default\">" + this.messages.EventDetails + "</div>"
+			+"<div id=\"" + this.id + "_detailsSidebarTitle\" class=\"schedule-details-sidebar-title ui-state-default\">" + this.messages.EventDetails + "</div>"
 			+"<div class=\"schedule-details-sidebar-content\"></div>"
 
 		+"</div>"
@@ -868,7 +876,7 @@ ice.ace.Schedule.prototype.renderMonthEvents = function(data) {
 				eventElement.appendTo(dayDiv);
 			}
 			var highlightClass = listing % 2 == 1 ? ' ui-state-highlight' : '';
-			ice.ace.jq('<div class="schedule-list-event schedule-event-' + event.index + highlightClass + '"><span class="schedule-list-event-day">'+event.startDate.substring(8,10)+'</span><span class="schedule-list-event-name">'+this.getTitle(event)+'</span><span class="schedule-list-event-location">'+this.escapeHtml(event.location)+'</span></div>').appendTo(sidebarEventsContainer);
+			ice.ace.jq('<div aria-role="listitem" class="schedule-list-event schedule-event-' + event.index + highlightClass + '"><span class="schedule-list-event-day">'+event.startDate.substring(8,10)+'</span><span class="schedule-list-event-name">'+this.getTitle(event)+'</span><span class="schedule-list-event-location">'+this.escapeHtml(event.location)+'</span></div>').appendTo(sidebarEventsContainer);
 			listing++;
 			// spans multiple days
 			if (eventStartYear == eventEndYear && eventStartMonth == eventEndMonth && eventEndDay > eventStartDay) {
@@ -960,9 +968,9 @@ ice.ace.Schedule.prototype.renderWeekView = function() {
 	var i, j;
 	var markup =
 	"<div class=\"schedule-title ui-state-active\">"
-		+"<div class=\"schedule-button-previous\"><i class=\"fa fa-arrow-left\"></i></div>"
-		+"<div class=\"schedule-button-next\"><i class=\"fa fa-arrow-right\"></i></div>"
-		+"<div class=\"schedule-showing\"></div>"
+		+"<div class=\"schedule-button-previous\" role=\"button\" aria-label=\"previous week\"><i class=\"fa fa-arrow-left\"></i></div>"
+		+"<div class=\"schedule-button-next\" role=\"button\" aria-label=\"next week\"><i class=\"fa fa-arrow-right\"></i></div>"
+		+"<div class=\"schedule-showing\" aria-label=\"current week\"></div>"
 	+"</div>"
 
 	+"<div class=\"schedule-content\">"
@@ -1025,9 +1033,9 @@ ice.ace.Schedule.prototype.renderWeekView = function() {
 		markup += "<div class=\"schedule-sidebar ui-widget-content\">"
 
 		+"<div class=\"schedule-list-title ui-state-default\">" + this.messages.EventsThisWeek + "</div>"
-		+"<div class=\"schedule-list-content\"></div>"
+		+"<div class=\"schedule-list-content\" role=\"list\"></div>"
 
-		+"<div class=\"schedule-details-sidebar-title ui-state-default\">" + this.messages.EventDetails + "</div>"
+		+"<div id=\"" + this.id + "_detailsSidebarTitle\" class=\"schedule-details-sidebar-title ui-state-default\">" + this.messages.EventDetails + "</div>"
 		+"<div class=\"schedule-details-sidebar-content\"></div>"
 
 		+"</div>"
@@ -1224,7 +1232,7 @@ ice.ace.Schedule.prototype.renderWeekEvents = function() {
 				width: (width - multiplicityAdjustment) + 'px', 
 				height: (endPosition.top - position.top + height) + 'px'}).appendTo(eventsContainer);
 			var highlightClass = listing % 2 == 1 ? ' ui-state-highlight' : '';
-			ice.ace.jq('<div class="schedule-list-event schedule-event-' + event.index + highlightClass + '"><span class="schedule-list-event-day">'+this.getDayOfTheWeekName(dow)+', '+this.getMonthNameShort(eventStartDate.getMonth())+' '+event.startDate.substring(8)+'</span><span class="schedule-list-event-name">'+this.getTitle(event)+'</span><span class="schedule-list-event-location">'+this.escapeHtml(event.location)+'</span></div>').appendTo(sidebarEventsContainer);
+			ice.ace.jq('<div role="listitem" class="schedule-list-event schedule-event-' + event.index + highlightClass + '"><span class="schedule-list-event-day">'+this.getDayOfTheWeekName(dow)+', '+this.getMonthNameShort(eventStartDate.getMonth())+' '+event.startDate.substring(8)+'</span><span class="schedule-list-event-name">'+this.getTitle(event)+'</span><span class="schedule-list-event-location">'+this.escapeHtml(event.location)+'</span></div>').appendTo(sidebarEventsContainer);
 			this.markUsedTimeSlots(this.weekTimeSlots[dow], startingTimeSlot, endingTimeSlot);
 			listing++;
 			if (spansMultipleDays) {
@@ -1353,9 +1361,9 @@ ice.ace.Schedule.prototype.renderDayView = function() {
 	var i, j;
 	var markup =
 	"<div class=\"schedule-title ui-state-active\">"
-		+"<div class=\"schedule-button-previous\"><i class=\"fa fa-arrow-left\"></i></div>"
-		+"<div class=\"schedule-button-next\"><i class=\"fa fa-arrow-right\"></i></div>"
-		+"<div class=\"schedule-showing\"></div>"
+		+"<div class=\"schedule-button-previous\" role=\"button\" aria-label=\"previous day\"><i class=\"fa fa-arrow-left\"></i></div>"
+		+"<div class=\"schedule-button-next\" role=\"button\" aria-label=\"next day\"><i class=\"fa fa-arrow-right\"></i></div>"
+		+"<div class=\"schedule-showing\" aria-label=\"current day\"></div>"
 	+"</div>"
 
 	+"<div class=\"schedule-content\">"
@@ -1402,9 +1410,9 @@ ice.ace.Schedule.prototype.renderDayView = function() {
 		markup += "<div class=\"schedule-sidebar ui-widget-content\">"
 
 			+"<div class=\"schedule-list-title ui-state-default\">" + this.messages.EventsThisDay + "</div>"
-			+"<div class=\"schedule-list-content\"></div>"
+			+"<div class=\"schedule-list-content\" role=\"list\"></div>"
 
-			+"<div class=\"schedule-details-sidebar-title ui-state-default\">" + this.messages.EventDetails + "</div>"
+			+"<div id=\"" + this.id + "_detailsSidebarTitle\" class=\"schedule-details-sidebar-title ui-state-default\">" + this.messages.EventDetails + "</div>"
 			+"<div class=\"schedule-details-sidebar-content\"></div>"
 
 		+"</div>"
@@ -1524,7 +1532,7 @@ ice.ace.Schedule.prototype.renderDayEvents = function() {
 				width: (width - multiplicityAdjustment) + 'px',
 				height: (endPosition.top - position.top + height) + 'px'}).appendTo(eventsContainer);
 			var highlightClass = listing % 2 == 1 ? ' ui-state-highlight' : '';
-			ice.ace.jq('<div class="schedule-list-event schedule-event-' + event.index + highlightClass + '"><span class="schedule-list-event-day">'+event.startTime+'</span><span class="schedule-list-event-name">'+this.getTitle(event)+'</span><span class="schedule-list-event-location">'+this.escapeHtml(event.location)+'</span></div>').appendTo(sidebarEventsContainer);
+			ice.ace.jq('<div role="listitem" class="schedule-list-event schedule-event-' + event.index + highlightClass + '"><span class="schedule-list-event-day">'+event.startTime+'</span><span class="schedule-list-event-name">'+this.getTitle(event)+'</span><span class="schedule-list-event-location">'+this.escapeHtml(event.location)+'</span></div>').appendTo(sidebarEventsContainer);
 			this.markUsedTimeSlots(this.dayTimeSlots, startingTimeSlot, endingTimeSlot);
 			listing++;
 		// events that don't start on this day but end on this day
