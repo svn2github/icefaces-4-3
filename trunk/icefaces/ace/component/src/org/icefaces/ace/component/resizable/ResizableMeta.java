@@ -108,5 +108,7 @@ public class ResizableMeta extends UIComponentBaseMeta {
 	
 	@Property(expression= Expression.METHOD_EXPRESSION, methodExpressionArgument="org.icefaces.ace.event.ResizeEvent", tlddoc="Listener for the end of resize event.")
 	private MethodExpression resizeListener;
-    
+
+    @Property(tlddoc = "Boolean value that specifies whether the resizable feature should be disabled for the targeted component.", defaultValue = "false")
+    private boolean disabled;
 }

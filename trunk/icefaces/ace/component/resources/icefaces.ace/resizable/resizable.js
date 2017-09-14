@@ -82,3 +82,8 @@ ice.ace.Resizable.prototype.fireAjaxResizeEvent = function(event, ui) {
         );
     } else ice.ace.AjaxRequest(options);
 };
+
+ice.ace.Resizable.destroy = function (target) {
+    var jqTarget = ice.ace.jq(ice.ace.escapeClientId(target));
+    jqTarget.resizable('destroy');
+};
