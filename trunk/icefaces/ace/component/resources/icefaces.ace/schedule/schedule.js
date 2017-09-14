@@ -356,16 +356,18 @@ ice.ace.Schedule.prototype.getEventDetailsMarkup = function(data, isEventAdditio
 		var markup = '';
 		var msgs = this.messages;
 		var id = this.id;
+		var replaceSpaces = this.replaceSpaces;
+		var escapeHtml = this.escapeHtml;
 		if (isEventAddition || isEventEditing) {
 			markup += '<div class="ui-state-error ui-corner-all" style="display:none;">' + msgs.ERROR1 + '</div>';
 			markup += '<div class="ui-state-error ui-corner-all" style="display:none;">' + msgs.ERROR2 + '</div>';
 			markup += '<div class="ui-state-error ui-corner-all" style="display:none;">' + msgs.ERROR3 + '</div>';
-			markup += '<table><tr><td><label for="' + id + '_title">' + msgs.Title + ':</label></td><td><input type="text" name="'+id+'_title" id="'+id+'_title" value="'+this.escapeHtml(data.title)+'"/></td></tr><tr><td><label for="' + id + '_date">' + msgs.StartDate + ':</label></td><td><input type="text" name="'+id+'_date" id="'+id+'_date" value="'+data.startDate+'"/></td></tr><tr><td>' + msgs.StartTime + ':</td><td>'+this.getHourSelectionMarkup(data.startTime, data.isAllDay)+'&nbsp;:&nbsp;'+this.getMinuteSelectionMarkup(data.startTime, data.isAllDay)+'</td></tr><tr><td><label for="' + id + '_endDate">' + msgs.EndDate + ':</label></td><td><input type="text" name="'+id+'_endDate" id="'+id+'_endDate" value="'+data.endDate+'"/></td></tr><tr><td>' + msgs.EndTime + ':</td><td>'+this.getHourSelectionMarkup(data.endTime, data.isAllDay)+'&nbsp;:&nbsp;'+this.getMinuteSelectionMarkup(data.endTime, data.isAllDay)+'</td></tr><tr><td><label for="' + id + '_allDay">' + msgs.AllDayEvent + ':</label></td><td><input type="checkbox" name="'+id+'_allDay" id="'+id+'_allDay" '+(data.isAllDay?'checked':'')+'/></td></tr><tr><td><label for="' + id + '_location">' + msgs.Location + ':</label></td><td><input type="text" name="'+id+'_location" id="'+id+'_location" value="'+this.escapeHtml(data.location)+'"/></td></tr><tr><td><label for="' + id + '_notes">' + msgs.Notes + ':</label></td><td><textarea name="'+id+'_notes" id="'+id+'_notes">'+this.escapeHtml(data.notes)+'</textarea></td></tr></table><input type="hidden" name="'+this.id+'_index" value="'+data.index+'"/>';
+			markup += '<table><tr><td><label for="' + id + '_title">' + msgs.Title + ':</label></td><td><input type="text" name="'+id+'_title" id="'+id+'_title" value="'+ escapeHtml(data.title)+'"/></td></tr><tr><td><label for="' + id + '_date">' + replaceSpaces(msgs.StartDate) + ':</label></td><td><input type="text" name="'+id+'_date" id="'+id+'_date" value="'+data.startDate+'"/></td></tr><tr><td>' + replaceSpaces(msgs.StartTime) + ':</td><td>'+this.getHourSelectionMarkup(data.startTime, data.isAllDay)+'&nbsp;:&nbsp;'+this.getMinuteSelectionMarkup(data.startTime, data.isAllDay)+'</td></tr><tr><td><label for="' + id + '_endDate">' + replaceSpaces(msgs.EndDate) + ':</label></td><td><input type="text" name="'+id+'_endDate" id="'+id+'_endDate" value="'+data.endDate+'"/></td></tr><tr><td>' + replaceSpaces(msgs.EndTime) + ':</td><td>'+this.getHourSelectionMarkup(data.endTime, data.isAllDay)+'&nbsp;:&nbsp;'+this.getMinuteSelectionMarkup(data.endTime, data.isAllDay)+'</td></tr><tr><td><label for="' + id + '_allDay">' + msgs.AllDayEvent + ':</label></td><td><input type="checkbox" name="'+id+'_allDay" id="'+id+'_allDay" '+(data.isAllDay?'checked':'')+'/></td></tr><tr><td><label for="' + id + '_location">' + msgs.Location + ':</label></td><td><input type="text" name="'+id+'_location" id="'+id+'_location" value="'+escapeHtml(data.location)+'"/></td></tr><tr><td><label for="' + id + '_notes">' + msgs.Notes + ':</label></td><td><textarea name="'+id+'_notes" id="'+id+'_notes">'+escapeHtml(data.notes)+'</textarea></td></tr></table><input type="hidden" name="'+this.id+'_index" value="'+data.index+'"/>';
 			if (isEventEditing) {
-				markup += '<input type="hidden" name="'+this.id+'_old_startDate" value="'+data.startDate+'"/><input type="hidden" name="'+this.id+'_old_startTime" value="'+data.startTime+'"/><input type="hidden" name="'+this.id+'_old_endDate" value="'+data.endDate+'"/><input type="hidden" name="'+this.id+'_old_endTime" value="'+data.endTime+'"/><input type="hidden" name="'+this.id+'_old_allDay" value="'+data.isAllDay+'"/><input type="hidden" name="'+this.id+'_old_title" value="'+this.escapeHtml(data.title)+'"/><input type="hidden" name="'+this.id+'_old_location" value="'+this.escapeHtml(data.location)+'"/><input type="hidden" name="'+this.id+'_old_notes" value="'+this.escapeHtml(data.notes)+'"/>';
+				markup += '<input type="hidden" name="'+this.id+'_old_startDate" value="'+data.startDate+'"/><input type="hidden" name="'+this.id+'_old_startTime" value="'+data.startTime+'"/><input type="hidden" name="'+this.id+'_old_endDate" value="'+data.endDate+'"/><input type="hidden" name="'+this.id+'_old_endTime" value="'+data.endTime+'"/><input type="hidden" name="'+this.id+'_old_allDay" value="'+data.isAllDay+'"/><input type="hidden" name="'+this.id+'_old_title" value="'+escapeHtml(data.title)+'"/><input type="hidden" name="'+this.id+'_old_location" value="'+escapeHtml(data.location)+'"/><input type="hidden" name="'+this.id+'_old_notes" value="'+escapeHtml(data.notes)+'"/>';
 			}
 		} else {
-			markup = '<table><tr><td>' + msgs.StartDate + ':</td><td>'+data.startDate+'</td></tr><tr><td>' + msgs.StartTime + ':</td><td>'+(data.isAllDay ? msgs.ALLDAY : data.startTime)+'</td></tr><tr><td>' + msgs.EndDate + ':</td><td>'+data.endDate+'</td></tr><tr><td>' + msgs.EndTime + ':</td><td>'+(data.isAllDay ? msgs.ALLDAY : data.endTime)+'</td></tr><tr><td>' + msgs.Title + ':</td><td>'+this.escapeHtml(data.title)+'</td></tr><tr><td>' + msgs.Location + ':</td><td>'+this.escapeHtml(data.location)+'</td></tr><tr><td>' + msgs.Notes + ':</td><td>'+this.escapeHtml(data.notes)+'</td></tr></table>';
+			markup = '<table><tr><td>' + msgs.Title + ':</td><td>'+escapeHtml(data.title)+'</td></tr><tr><td>' + replaceSpaces(msgs.StartDate) + ':</td><td>'+data.startDate+'</td></tr><tr><td>' + replaceSpaces(msgs.StartTime) + ':</td><td>'+(data.isAllDay ? msgs.ALLDAY : data.startTime)+'</td></tr><tr><td>' + replaceSpaces(msgs.EndDate) + ':</td><td>'+data.endDate+'</td></tr><tr><td>' + replaceSpaces(msgs.EndTime) + ':</td><td>'+(data.isAllDay ? msgs.ALLDAY : data.endTime)+'</td></tr><tr><td>' + msgs.Location + ':</td><td>'+escapeHtml(data.location)+'</td></tr><tr><td>' + msgs.Notes + ':</td><td>'+escapeHtml(data.notes)+'</td></tr></table>';
 		}
 		if (data.styleClass) markup += '<input type="hidden" name="'+this.id+'_styleClass" value="'+data.styleClass+'"/>';
 		if (data.id) markup += '<input type="hidden" name="'+this.id+'_id" value="'+data.id+'"/>';
@@ -383,7 +385,7 @@ ice.ace.Schedule.prototype.getEventDetailsMarkup = function(data, isEventAdditio
 					+ 'if (s.validateInputs()) { s.sendEditRequest(event, \'edit\');'
 					+ closeDetailsMarkup + '} return false;">' + msgs.Save + '</button> ';
 			}
-			if (isEventDeletion) markup += '<span><button onclick="ice.ace.instance(\''+this.id+'\').confirmDeletion(this);return false;">' + msgs.Delete + '</button><span role="alert" style="display:none;"><span>' + msgs.AreYouSure + ' </span><button onclick="ice.ace.instance(\''+this.id+'\').sendEditRequest(event, \'delete\');return false;">' + msgs.Yes + '</button> <button onclick="ice.ace.instance(\''+this.id+'\').cancelDeletion(this);return false;">' + msgs.No + '</button></span></span>';
+			if (isEventDeletion) markup += '<span><button onclick="ice.ace.instance(\''+this.id+'\').confirmDeletion(this);return false;">' + msgs.Delete + '</button><span role="alert" style="display:none;"><span>' + msgs.AreYouSure + ' </span><br/><button onclick="ice.ace.instance(\''+this.id+'\').sendEditRequest(event, \'delete\');return false;">' + msgs.Yes + '</button> <button onclick="ice.ace.instance(\''+this.id+'\').cancelDeletion(this);return false;">' + msgs.No + '</button></span></span>';
 		}
 		return markup;
 	} else {
@@ -393,7 +395,7 @@ ice.ace.Schedule.prototype.getEventDetailsMarkup = function(data, isEventAdditio
 
 ice.ace.Schedule.prototype.getHourSelectionMarkup = function(time, isAllDay) {
 	var hour = time.substring(0,2);
-	var markup = '<select aria-label="select hour"><option value="hh">hh</option>';
+	var markup = '<select aria-label="' + this.messages.AriaSelectHour + '"><option value="hh">hh</option>';
 	var i;
 	for (i = 0; i < 24; i++) {
 		var value = ( i < 10 ? '0' : '') + i;
@@ -406,7 +408,7 @@ ice.ace.Schedule.prototype.getHourSelectionMarkup = function(time, isAllDay) {
 
 ice.ace.Schedule.prototype.getMinuteSelectionMarkup = function(time, isAllDay) {
 	var minute = time.substring(3);
-	var markup = '<select aria-label="select minute"><option value="mm">mm</option>';
+	var markup = '<select aria-label="' + this.messages.AriaSelectMinute + '"><option value="mm">mm</option>';
 	var i;
 	for (i = 0; i < 60; i = i + 5) {
 		var value = ( i < 10 ? '0' : '') + i;
@@ -760,9 +762,9 @@ ice.ace.Schedule.prototype.renderMonthView = function(data) {
 	var i, j;
 	var markup =
 	"<div class=\"schedule-title ui-state-active\">"
-		+"<div class=\"schedule-button-previous\" role=\"button\" aria-label=\"previous month\"><i class=\"fa fa-arrow-left\"></i></div>"
-		+"<div class=\"schedule-button-next\" role=\"button\" aria-label=\"next month\"><i class=\"fa fa-arrow-right\"></i></div>"
-		+"<div class=\"schedule-showing\" aria-label=\"current month\">" + this.getMonthName(currentMonth) + " " + currentYear + "</div>"
+		+"<div class=\"schedule-button-previous\" role=\"button\" aria-label=\"" + this.messages.AriaPreviousMonth + "\"><i class=\"fa fa-arrow-left\"></i></div>"
+		+"<div class=\"schedule-button-next\" role=\"button\" aria-label=\"" + this.messages.AriaNextMonth + "\"><i class=\"fa fa-arrow-right\"></i></div>"
+		+"<div class=\"schedule-showing\" aria-label=\"" + this.messages.AriaCurrentMonth + "\">" + this.getMonthName(currentMonth) + " " + currentYear + "</div>"
 	+"</div>"
 
 	+"<div class=\"schedule-content\">"
@@ -968,9 +970,9 @@ ice.ace.Schedule.prototype.renderWeekView = function() {
 	var i, j;
 	var markup =
 	"<div class=\"schedule-title ui-state-active\">"
-		+"<div class=\"schedule-button-previous\" role=\"button\" aria-label=\"previous week\"><i class=\"fa fa-arrow-left\"></i></div>"
-		+"<div class=\"schedule-button-next\" role=\"button\" aria-label=\"next week\"><i class=\"fa fa-arrow-right\"></i></div>"
-		+"<div class=\"schedule-showing\" aria-label=\"current week\"></div>"
+		+"<div class=\"schedule-button-previous\" role=\"button\" aria-label=\"" + this.messages.AriaPreviousWeek + "\"><i class=\"fa fa-arrow-left\"></i></div>"
+		+"<div class=\"schedule-button-next\" role=\"button\" aria-label=\"" + this.messages.AriaNextWeek + "\"><i class=\"fa fa-arrow-right\"></i></div>"
+		+"<div class=\"schedule-showing\" aria-label=\"" + this.messages.AriaCurrentWeek + "\"></div>"
 	+"</div>"
 
 	+"<div class=\"schedule-content\">"
@@ -1361,9 +1363,9 @@ ice.ace.Schedule.prototype.renderDayView = function() {
 	var i, j;
 	var markup =
 	"<div class=\"schedule-title ui-state-active\">"
-		+"<div class=\"schedule-button-previous\" role=\"button\" aria-label=\"previous day\"><i class=\"fa fa-arrow-left\"></i></div>"
-		+"<div class=\"schedule-button-next\" role=\"button\" aria-label=\"next day\"><i class=\"fa fa-arrow-right\"></i></div>"
-		+"<div class=\"schedule-showing\" aria-label=\"current day\"></div>"
+		+"<div class=\"schedule-button-previous\" role=\"button\" aria-label=\"" + this.messages.AriaPreviousDay + "\"><i class=\"fa fa-arrow-left\"></i></div>"
+		+"<div class=\"schedule-button-next\" role=\"button\" aria-label=\"" + this.messages.AriaNextDay + "\"><i class=\"fa fa-arrow-right\"></i></div>"
+		+"<div class=\"schedule-showing\" aria-label=\"" + this.messages.AriaCurrentDay + "\"></div>"
 	+"</div>"
 
 	+"<div class=\"schedule-content\">"
@@ -2222,6 +2224,11 @@ ice.ace.Schedule.prototype.getTitle = function(event) {
 	if (title) title = this.escapeHtml(title);
 	else title = '(no title)';
 	return title;
+};
+
+// replace spaces for non-breaking spaces
+ice.ace.Schedule.prototype.replaceSpaces = function(str) {
+	return str.replace(/ /g, '&nbsp;');
 };
 
 ice.ace.Schedule.prototype.unload = function() {

@@ -332,6 +332,17 @@ public class ScheduleRenderer extends CoreRenderer {
 						.entry("ERROR1", bundle.getString(MESSAGES_PREFIX + "ERROR1"))
 						.entry("ERROR2", bundle.getString(MESSAGES_PREFIX + "ERROR2"))
 						.entry("ERROR3", bundle.getString(MESSAGES_PREFIX + "ERROR3"))
+						.entry("AriaSelectHour", bundle.getString(MESSAGES_PREFIX + "AriaSelectHour"))
+						.entry("AriaSelectMinute", bundle.getString(MESSAGES_PREFIX + "AriaSelectMinute"))
+						.entry("AriaPreviousMonth", bundle.getString(MESSAGES_PREFIX + "AriaPreviousMonth"))
+						.entry("AriaNextMonth", bundle.getString(MESSAGES_PREFIX + "AriaNextMonth"))
+						.entry("AriaCurrentMonth", bundle.getString(MESSAGES_PREFIX + "AriaCurrentMonth"))
+						.entry("AriaPreviousWeek", bundle.getString(MESSAGES_PREFIX + "AriaPreviousWeek"))
+						.entry("AriaNextWeek", bundle.getString(MESSAGES_PREFIX + "AriaNextWeek"))
+						.entry("AriaCurrentWeek", bundle.getString(MESSAGES_PREFIX + "AriaCurrentWeek"))
+						.entry("AriaPreviousDay", bundle.getString(MESSAGES_PREFIX + "AriaPreviousDay"))
+						.entry("AriaNextDay", bundle.getString(MESSAGES_PREFIX + "AriaNextDay"))
+						.entry("AriaCurrentDay", bundle.getString(MESSAGES_PREFIX + "AriaCurrentDay"))
 					.endMap();
 
 					// behaviors
