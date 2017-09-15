@@ -59,17 +59,6 @@ ice.ace.Schedule = function(id, cfg) {
 
 	this.render();
 
-	var selectedDate = document.getElementById(this.id + '_selectedDate').getAttribute('value');
-	// add selected styling
-	if (self.cfg.viewMode == 'week') {
-		self.jqRoot.find('.schedule-selected').removeClass('schedule-selected');
-		var dow = self.extractDayOfWeek(self.jqRoot.find('.schedule-calendar-day-' + selectedDate).get(0));
-		self.jqRoot.find('.schedule-dow-header.schedule-dow-' + dow).addClass('schedule-selected');
-	} else {
-		self.jqRoot.find('.schedule-selected').removeClass('schedule-selected');
-		self.jqRoot.find('.schedule-calendar-day-' + selectedDate + ' .schedule-state').addClass('schedule-selected');
-	}
-
 	var behaviors = self.cfg.behaviors;
 	this.jqRoot.delegate('.schedule-event', 'click', function(event) {
 		event.stopPropagation();
@@ -640,9 +629,12 @@ ice.ace.Schedule.prototype.sendNavigationRequest = function(event, year, month, 
     var options = {};
 	var behaviors = this.cfg.behaviors || {};
 
-	document.getElementById(this.id + '_selectedDate').setAttribute('value', ''); // clear selected date
+	if (type != 'selection') { // clear selected date
+		document.getElementById(this.id + '_selectedDate').setAttribute('value', '');
+	}
 
-	if ((type == 'next' && !behaviors.navNext) || (type == 'previous' && !behaviors.navPrevious)) {
+	if ((type == 'next' && !behaviors.navNext) || (type == 'previous' && !behaviors.navPrevious) || 
+			(type == 'selection' && !behaviors.navSelection)) {
 		if (!this.cfg.isLazy) return;
 		options = {
 			source: this.id,
@@ -679,6 +671,33 @@ ice.ace.Schedule.prototype.sendNavigationRequest = function(event, year, month, 
 		ice.ace.AjaxRequest(ice.ace.extendAjaxArgs(behaviors.navNext, options));
 	} else if (type == 'previous' && behaviors && behaviors.navPrevious) {
 		ice.ace.AjaxRequest(ice.ace.extendAjaxArgs(behaviors.navPrevious, options));
+	} else if (type == 'selection' && behaviors && behaviors.navSelection) {
+		ice.ace.AjaxRequest(ice.ace.extendAjaxArgs(behaviors.navSelection, options));
+	} else {
+		ice.ace.AjaxRequest(options);
+	}
+};
+
+ice.ace.Schedule.prototype.sendSelectionRequest = function(event) {
+    var options = {};
+	var behaviors = this.cfg.behaviors || {};
+
+	if (!(behaviors && behaviors.selection)) {
+		if (!this.cfg.isLazy) return;
+		options = {
+			source: this.id,
+			render: this.id,
+			execute: this.id
+		};
+	}
+
+    var params = {};
+	params[this.id + "_navigation"] = true;
+
+    options.params = params;
+
+	if (behaviors && behaviors.selection) {
+		ice.ace.AjaxRequest(ice.ace.extendAjaxArgs(behaviors.selection, options));
 	} else {
 		ice.ace.AjaxRequest(options);
 	}
@@ -964,6 +983,11 @@ ice.ace.Schedule.prototype.renderMonthEvents = function(data) {
 	}
 
 	this.expandEventList();
+
+	// add selected styling
+	var selectedDate = document.getElementById(this.id + '_selectedDate').getAttribute('value');
+	this.jqRoot.find('.schedule-selected').removeClass('schedule-selected');
+	this.jqRoot.find('.schedule-calendar-day-' + selectedDate + ' .schedule-state').addClass('schedule-selected');
 };
 
 ice.ace.Schedule.prototype.renderWeekView = function() {
@@ -1357,6 +1381,12 @@ ice.ace.Schedule.prototype.renderWeekEvents = function() {
 		}
 		window[this.id + '_lastScrollTop'] = 0;
 	}
+
+	// add selected styling
+	var selectedDate = document.getElementById(this.id + '_selectedDate').getAttribute('value');
+	this.jqRoot.find('.schedule-selected').removeClass('schedule-selected');
+	var dow = this.extractDayOfWeek(this.jqRoot.find('.schedule-calendar-day-' + selectedDate).get(0));
+	this.jqRoot.find('.schedule-dow-header.schedule-dow-' + dow).addClass('schedule-selected');
 };
 
 ice.ace.Schedule.prototype.renderDayView = function() {
@@ -1948,6 +1978,55 @@ ice.ace.Schedule.prototype.addNavigationListeners = function() {
 			e.preventDefault();
 			e.stopPropagation();
 		}
+	});
+	// set up navigation dialog
+	var currentDateNode = ice.ace.jq(this.jqId).find('.schedule-showing');
+	currentDateNode.on('click', function() {
+		var navigationDialog = ice.ace.jq(self.jqId).find('.schedule-navigation-dialog-content');
+		navigationDialog.html('<div></div>');
+		navigationDialog.dialog({resizable: false, draggable: false, dialogClass: 'schedule-navigation-dialog', 
+			position: { my: "center top", at: "center top", of: currentDateNode.get(0) }});
+		ice.ace.jq(self.jqId).find('.schedule-navigation-dialog').attr('role', 'dialog').attr('aria-label', 'navigation dialog').css('width', '').show();
+		navigationDialog.children().first().datepicker({dateFormat: 'yy-mm-dd', onSelect: function(date) {
+			ice.ace.jq(self.jqId).find('.schedule-navigation-dialog').hide();
+			document.getElementById(self.id + '_selectedDate').setAttribute('value', date);
+			var currentYear = date.substring(0, 4);
+			var currentMonth = date.substring(5, date.indexOf('-', 5));
+			currentMonth = parseInt(currentMonth, 10) - 1;
+			var currentDay;
+			if (view == 'month') {
+				currentDay = 1;
+			} else {
+				currentDay = date.substring(date.indexOf('-', 5) + 1);
+				currentDay = parseInt(currentDay, 10);
+			}
+			if (view != 'day') { // set to previous Sunday
+				var dateObject = new Date(currentYear, currentMonth, currentDay, 0, 0, 0, 0);
+				dateObject.setDate(dateObject.getDate() - dateObject.getDay());
+				currentYear = dateObject.getFullYear()
+				currentMonth = dateObject.getMonth();
+				currentDay = dateObject.getDate();
+			}
+			var oldYear = self.cfg.currentYear;
+			var oldMonth = self.cfg.currentMonth;
+			var oldDay = self.cfg.currentDay;
+			self.cfg.currentYear = currentYear;
+			self.cfg.currentMonth = currentMonth;
+			self.cfg.currentDay = currentDay;
+			document.getElementById(self.id + '_currentYear').setAttribute('value', currentYear);
+			document.getElementById(self.id + '_currentMonth').setAttribute('value', currentMonth);
+			document.getElementById(self.id + '_currentDay').setAttribute('value', currentDay);
+			// save scroll position
+			window[self.id + '_lastScrollTop'] = self.jqRoot.find('.schedule-days').get(0).scrollTop;
+			if (!self.cfg.isLazy) {
+				self.render();
+			}
+			self.sendSelectionRequest();
+			//self.sendNavigationRequest(e, currentYear, currentMonth, currentDay, oldYear, oldMonth, oldDay, 'selection');
+		}});
+		navigationDialog.on('mouseleave', function(event) {
+			ice.ace.jq(self.jqId).find('.schedule-navigation-dialog').hide();
+		});
 	});
 };
 

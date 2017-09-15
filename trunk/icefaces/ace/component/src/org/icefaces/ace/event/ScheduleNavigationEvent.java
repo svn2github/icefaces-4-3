@@ -22,6 +22,7 @@ public class ScheduleNavigationEvent extends AjaxBehaviorEvent {
 
 	private boolean next = false;
 	private boolean previous = false;
+	private boolean selection = false;
 
 	private String startDate = "";
 	private String endDate = "";
@@ -31,6 +32,7 @@ public class ScheduleNavigationEvent extends AjaxBehaviorEvent {
 		if (type != null) {
 			if ("next".equals(type)) this.next = true;
 			else if ("previous".equals(type)) this.previous = true;
+			else if ("selection".equals(type)) this.selection = true;
 		}
 		this.startDate = startDate;
 		this.endDate = endDate;
@@ -64,4 +66,5 @@ public class ScheduleNavigationEvent extends AjaxBehaviorEvent {
 
 	public boolean isNext() { return next; }
 	public boolean isPrevious() { return previous; }
+	public boolean isSelection() { return selection; }
 }

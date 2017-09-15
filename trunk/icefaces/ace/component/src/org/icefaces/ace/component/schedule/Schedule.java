@@ -83,6 +83,10 @@ public class Schedule extends ScheduleBase implements Serializable {
 				String startDate = params.get(clientId + "_startDate");
 				String endDate = params.get(clientId + "_endDate");
                 event = new ScheduleNavigationEvent((AjaxBehaviorEvent) event, "previous", startDate, endDate);
+            } else if (eventName.equals("navSelection")) {
+				String startDate = params.get(clientId + "_startDate");
+				String endDate = params.get(clientId + "_endDate");
+                event = new ScheduleNavigationEvent((AjaxBehaviorEvent) event, "selection", startDate, endDate);
             }
         }
 

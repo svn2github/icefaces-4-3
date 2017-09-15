@@ -239,6 +239,10 @@ public class ScheduleRenderer extends CoreRenderer {
 		writer.writeAttribute("class", "schedule-details-tooltip-content", null);
 		writer.endElement("div");
 
+		writer.startElement("div", null);
+		writer.writeAttribute("class", "schedule-navigation-dialog-content", null);
+		writer.endElement("div");
+
 		// render configuration and event data
 		JSONBuilder jb = JSONBuilder.create();
 		jb.beginFunction("ice.ace.create")

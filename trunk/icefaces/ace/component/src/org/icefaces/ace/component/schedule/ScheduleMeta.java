@@ -83,6 +83,10 @@ import java.util.Date;
 	@ClientEvent( name="navPrevious",
 		javadoc="Fired when the user clicks on the left arrow of the schedule viewer to navigate to the previous month, week or day. The listener method for this event can take an event object of the type org.icefaces.ace.event.ScheduleNavigationEvent.",
 		tlddoc="Fired when the user clicks on the left arrow of the schedule viewer to navigate to the previous month, week or day. The listener method for this event can take an event object of the type org.icefaces.ace.event.ScheduleNavigationEvent.",
+		defaultRender="@this", defaultExecute="@this" ),
+	@ClientEvent( name="navSelection",
+		javadoc="Fired when the user clicks on the header of the schedule viewer to select a specific date to navigate to. The listener method for this event can take an event object of the type org.icefaces.ace.event.ScheduleNavigationEvent.",
+		tlddoc="Fired when the user clicks on the header of the schedule viewer to select a specific date to navigate to. The listener method for this event can take an event object of the type org.icefaces.ace.event.ScheduleNavigationEvent.",
 		defaultRender="@this", defaultExecute="@this" )},
 	defaultEvent="eventClick" )
 public class ScheduleMeta extends UIDataMeta {
