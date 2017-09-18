@@ -137,9 +137,11 @@ public class PanelRenderer extends CoreRenderer {
         ComponentUtils.renderPassThroughAttributes(writer, panel, PASSTHROUGH_ATTRIBUTES);
         ComponentUtils.renderExternalPassThroughAttributes(writer, panel);
 
+        writer.startElement("table", null);
         encodeHeader(context, panel, domUpdateMap);
         encodeContent(context, panel);
         encodeFooter(context, panel);
+        writer.endElement("table");
 
         if(panel.isToggleable()) {
             encodeStateHolder(context, panel, clientId + "_collapsed", String.valueOf(panel.isCollapsed()));
@@ -222,7 +224,8 @@ public class PanelRenderer extends CoreRenderer {
 
 		boolean isHeaderText = header == null;
 
-        writer.startElement("div", null);
+        writer.startElement("tr", null);
+        writer.startElement("th", null);
         writer.writeAttribute("id", clientId + "_header", null);
         writer.writeAttribute("class", Panel.PANEL_TITLEBAR_CLASS + (isHeaderText ? "" : " header-facet"), null);
 
@@ -278,13 +281,15 @@ public class PanelRenderer extends CoreRenderer {
 			writer.endElement("div");
 		}
 
-        writer.endElement("div");
+        writer.endElement("th");
+        writer.endElement("tr");
     }
 
     protected void encodeContent(FacesContext facesContext, Panel panel) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
 
-        writer.startElement("div", null);
+        writer.startElement("tr", null);
+        writer.startElement("td", null);
         writer.writeAttribute("id", panel.getClientId() + "_content", null);
         writer.writeAttribute("class", Panel.PANEL_CONTENT_CLASS, null);
         if (panel.isCollapsed()) {
@@ -293,7 +298,8 @@ public class PanelRenderer extends CoreRenderer {
 
         renderChildren(facesContext, panel);
 
-        writer.endElement("div");
+        writer.endElement("td");
+        writer.endElement("tr");
     }
 
     protected void encodeFooter(FacesContext facesContext, Panel panel) throws IOException {
@@ -302,7 +308,8 @@ public class PanelRenderer extends CoreRenderer {
         String footerText = panel.getFooter();
 
         if (footer != null || footerText != null) {
-            writer.startElement("div", null);
+            writer.startElement("tr", null);
+            writer.startElement("td", null);
             writer.writeAttribute("id", panel.getClientId(facesContext) + "_footer", null);
             writer.writeAttribute("class", Panel.PANEL_FOOTER_CLASS, null);
 
@@ -312,7 +319,8 @@ public class PanelRenderer extends CoreRenderer {
                 writer.write(footerText);
             }
 
-            writer.endElement("div");
+            writer.endElement("td");
+            writer.endElement("tr");
         }
     }
 
