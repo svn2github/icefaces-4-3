@@ -23,7 +23,7 @@ function interpretLocations(locationList) {
     var locations = [];
     for (var i = 0, l = locationDescriptions.length; i < l; i++) {
         var locationDescription = locationDescriptions[i];
-        var pair = locationDescription.match(/([0-9]+)\\,([0-9]+)/g);
+        var pair = locationDescription.match(/[+-]?([0-9]*[.])?[0-9]+/g);
         if (pair != null) {
             var x = Number(pair[0]);
             var y = Number(pair[1]);
