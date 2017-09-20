@@ -444,7 +444,7 @@ ice.ace.gMap.addMarkerCallback = function(id, callback){
 					} else {
 						map.setCenter(place.geometry.location);
 					}
-					map.panBy(eval(xOffset),eval(yOffset));
+                    map.panBy(Number(xOffset), Number(yOffset));
 					if(windowRender){
 					marker.setPosition(place.geometry.location);
 					infowindow.setContent("<a href='"+place.url+"' target='_blank'>" + place.formatted_address + "</a>");
@@ -470,7 +470,7 @@ ice.ace.gMap.addMarkerCallback = function(id, callback){
 							input.value = result.formatted_address;
 							
 							var url = 'https://maps.google.com/maps/place?q=' + encodeURIComponent(result.formatted_address);
-							map.panBy(eval(xOffset),eval(yOffset));
+                            map.panBy(Number(xOffset), Number(yOffset));
 							if(windowRender){
 								marker.setPosition(result.geometry.location);
 								infowindow.setContent("<a href='"+url+"' target='_blank'>" + result.formatted_address + "</a>");
@@ -502,7 +502,7 @@ ice.ace.gMap.addMarkerCallback = function(id, callback){
 						var initSplitOffset = offset.split(",");
 						var initXOffset = initSplitOffset[0];
 						var initYOffset = initSplitOffset[1];
-						map.panBy(eval(initXOffset),eval(initYOffset));
+                        map.panBy(Number(initXOffset), Number(initYOffset));
 					}
 				});
 			}
