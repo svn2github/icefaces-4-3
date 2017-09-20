@@ -17,6 +17,25 @@
 /**
  *  gMap Widget
  */
+
+function interpretLocations(locationList) {
+    var locationDescriptions = locationList.split(":");
+    var locations = [];
+    for (var i = 0, l = locationDescriptions.length; i < l; i++) {
+        var locationDescription = locationDescriptions[i];
+        var pair = locationDescription.match(/([0-9]+)\\,([0-9]+)/g);
+        if (pair != null) {
+            var x = Number(pair[0]);
+            var y = Number(pair[1]);
+            var coordinates = new google.maps.LatLng(x, y);
+            locations.push(coordinates);
+        } else {
+            locations.push(locationDescription);
+        }
+    }
+    return locations;
+}
+
 ice.ace.gMap = function (id, cfg) {
     this.id = id;
     this.cfg = cfg;
@@ -654,7 +673,6 @@ ice.ace.gMap.addMarkerCallback = function(id, callback){
     }
 
     ice.ace.gMap.gService = function (ele, id, name, locationList, options, div) {
-        var wrapper = ice.ace.gMap.getGMapWrapper(ele);
         var map = ice.ace.gMap.getGMapWrapper(ele).getRealGMap();
         var service;
 		var previousRenderer = ice.ace.gMap.gService.instances[id];
@@ -662,26 +680,26 @@ ice.ace.gMap.addMarkerCallback = function(id, callback){
 			previousRenderer.setMap(null);
 			previousRenderer.setPanel(null);
 		}
-        var points = locationList.split(":");
+        var points = interpretLocations(locationList);
+
         switch (name.toLowerCase()) {
             case "direction":
             case "directions":
             case "directionsservice":
                 //Required options: travelMode, 2 points/addresses (First=origin, last=dest, others=waypoints
                 service = new google.maps.DirectionsService();
-                var origin = (points[0].charAt(0) == "(") ? "origin: new google.maps.LatLng" + points[0] + ", " : "origin: \"" + points[0] + "\", ";
                 var lastElement = points.length - 1;
-                var destination = (points[lastElement].charAt(0) == "(") ? "destination: new google.maps.LatLng" + points[lastElement] + ", " : "destination: \"" + points[lastElement] + "\", ";
+                var request = eval('({' + options + '})');
+                request.origin = points[0];
+                request.destination = points[lastElement];
                 if (points.length >= 3) {
                     var waypoints = [];
                     for (var i = 1; i < points.length - 1; i++) {
-                        var point = (points[i].charAt(0) == "(") ? "{location:new google.maps.LatLng" + points[i] + "}" : "{location:\"" + points[i] + "\"}";
-                        waypoints[i - 1] = point;
+                        waypoints.push({
+                            'location': points[i]
+                        });
                     }
-                    var waypointsString = "waypoints: [" + waypoints + "], ";
-                    var request = "({" + origin + destination + waypointsString + options + "})";
-                } else {
-                    var request = "({" + origin + destination + options + "})";
+                    request.waypoints = waypoints;
                 }
             function directionsCallback(response, status) {
                 if (status != google.maps.DirectionsStatus.OK) {
@@ -691,22 +709,18 @@ ice.ace.gMap.addMarkerCallback = function(id, callback){
                     renderer.setMap(map);
                     renderer.setDirections(response);
                     renderer.setPanel(document.getElementById(div));
-					ice.ace.gMap.gService.instances[id] = renderer;
+                    ice.ace.gMap.gService.instances[id] = renderer;
                 }
             }
 
-                service.route(eval(request), directionsCallback);
+                service.route(request, directionsCallback);
                 break;
             case "elevation":
             case "elevationservice":
                 service = new google.maps.ElevationService();
-                var waypoints = [];
-                for (var i = 0; i < points.length; i++) {
-                    var point = "new google.maps.LatLng" + points[i];
-                    waypoints[i] = point;
-                }
-                var waypointsString = "locations: [" + waypoints + "]";
-                var request = "({" + waypointsString + "})";
+                var request = {
+                    'locations': points
+                };
 
             function elevationCallback(response, status) {
                 if (status != google.maps.ElevationStatus.OK) {
@@ -718,12 +732,12 @@ ice.ace.gMap.addMarkerCallback = function(id, callback){
                 }
             }
 
-                service.getElevationForLocations(eval(request), elevationCallback);
+                service.getElevationForLocations(request, elevationCallback);
                 break;
             case "maxzoom":
             case "maxzoomservice":
                 service = new google.maps.MaxZoomService();
-                var point = eval("new google.maps.LatLng" + points[0]);
+                var point = points[0];
 
             function maxZoomCallback(response) {
                 if (response.status != google.maps.MaxZoomStatus.OK) {
@@ -741,9 +755,9 @@ ice.ace.gMap.addMarkerCallback = function(id, callback){
                 //Required options: travelMode, 2 points/addresses
 				if (!points[1]) break;
                 service = new google.maps.DistanceMatrixService();
-                var origin = (points[0].charAt(0) == "(") ? "origins: [new google.maps.LatLng" + points[0] + "], " : "origins: [\"" + points[0] + "\"], ";
-                var destination = (points[1].charAt(0) == "(") ? "destinations: [new google.maps.LatLng" + points[1] + "], " : "destinations: [\"" + points[1] + "\"], ";
-                var request = "({" + origin + destination + options + "})";
+                var request = eval('({' + options + '})');
+                request.origins = points[0];
+                request.destinations = points[1];
 
             function distanceCallback(response, status) {
                 if (status != google.maps.DistanceMatrixStatus.OK) {
@@ -753,7 +767,7 @@ ice.ace.gMap.addMarkerCallback = function(id, callback){
                 }
             }
 
-                service.getDistanceMatrix(eval(request), distanceCallback);
+                service.getDistanceMatrix(request, distanceCallback);
                 break;
             default:
                 if (window.console) {
@@ -781,16 +795,13 @@ ice.ace.gMap.addMarkerCallback = function(id, callback){
             }
         }
         wrapper.overlays = newOverlayArray;
-    }
+    };
 
     ice.ace.gMap.gOverlay = function (ele, overlayID, shape, locationList, options) {
         var wrapper = ice.ace.gMap.getGMapWrapper(ele);
         var map = ice.ace.gMap.getGMapWrapper(ele).getRealGMap();
         var overlay;
-        var points = locationList.split(":");
-        for (var i = 0; i < points.length; i++) {
-            points[i] = eval("new google.maps.LatLng" + points[i]);
-        }
+        var points = interpretLocations(locationList);
         switch (shape.toLowerCase()) {
             case "line":
             case "polyline":
@@ -826,7 +837,7 @@ ice.ace.gMap.addMarkerCallback = function(id, callback){
                 return;
         }//switch
         ice.ace.gMap.getGMapWrapper(ele).overlays[overlayID] = overlay;
-    }
+    };
 
     ice.ace.gMap.addGWindow = function (ele, winId, content, position,options,markerId,showOnClick,startOpen, addressBasedMarker) {
 		var init = function() {
@@ -870,7 +881,7 @@ ice.ace.gMap.addMarkerCallback = function(id, callback){
 		};
 		if (addressBasedMarker) ice.ace.gMap.addMarkerCallback(markerId, init);
 		else init();
-    }
+    };
 
     ice.ace.gMap.removeGWindow = function(mapId,winId){
         var wrapper = ice.ace.gMap.getGMapWrapper(mapId);
@@ -887,7 +898,7 @@ ice.ace.gMap.addMarkerCallback = function(id, callback){
         var newFreeWindowArray = new Object();
         if(wrapper.freeWindows[winId]!=null)
             delete(wrapper.freeWindows[winId]);
-    }
+    };
 
     ice.ace.gMap.setMapType = function (ele, type) {
         var gmapWrapper = ice.ace.gMap.getGMapWrapper(ele);
