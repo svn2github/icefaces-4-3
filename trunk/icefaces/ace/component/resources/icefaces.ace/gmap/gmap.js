@@ -52,21 +52,21 @@ ice.ace.gMap = function (id, cfg) {
     }
 };
 
-if (!GMapRepository) var GMapRepository = new Array();
+if (!GMapRepository) var GMapRepository = [];
 
 
 function GMapWrapper(eleId, realGMap) {
     this.eleId = eleId;
     this.realGMap = realGMap;
-    this.overlays = new Object();
-    this.markers = new Object();
-    this.freeWindows = new Object();
-    this.infoWindows = new Object();
-    this.directions = new Object();
+    this.overlays = {};
+    this.markers = {};
+    this.freeWindows = {};
+    this.infoWindows = {};
+    this.directions = {};
     var options = "";
-    this.services = new Object();
-	this.events = new Object();
-	this.eventModels = new Object();
+    this.services = {};
+    this.events = {};
+    this.eventModels = {};
     this.layer = {};
     this.getElementId = ice.ace.gMap.getElementId;
     this.getRealGMap = ice.ace.gMap.getRealGMap;
@@ -221,7 +221,7 @@ ice.ace.gMap.addMapLayer = function (ele, layerId, layerType, options, url) {
 			}
 			previousVisible = currentVisible;
 		}, 1000);
-        initializing = false;
+        var initializing = false;
         GMapRepository[ele] = gmapWrapper;
 
         //if IE8 or less apply ICE-10375 fix for Element.getBoundingClientRect
@@ -265,26 +265,26 @@ ice.ace.gMap.addMapLayer = function (ele, layerId, layerType, options, url) {
         map = gmapWrapper.getRealGMap();
         map.setOptions(options);
         gmapWrapper.options = options;
-        for (marker in markers) {
+        for (var marker in markers) {
             if (gmapWrapper.markers[marker] == null) {
                 markers[marker].setMap(map);
                 gmapWrapper.markers[marker]=markers[marker];
             }
         }
-        for (freeWin in freeWindows) {
+        for (var freeWin in freeWindows) {
             if (gmapWrapper.freeWindows[freeWin] == null) {
                 freeWindows[freeWin].open(map);
                 gmapWrapper.freeWindows[freeWin]=freeWindows[freeWin];
             }
         }
-        for (win in infoWindows) {
+        for (var win in infoWindows) {
 
             if (gmapWrapper.infoWindows[win] == null) {
                 gmapWrapper.infoWindows[win]=infoWindows[win];
             }
 
         }
-        for (overlay in overlays){
+        for (var overlay in overlays) {
             if (gmapWrapper.overlays[overlay] == null){
                 overlays[overlay].setMap(map);
                 gmapWrapper.overlays[overlay]=overlays[overlay];
@@ -308,8 +308,8 @@ ice.ace.gMap.addMapLayer = function (ele, layerId, layerType, options, url) {
     };
 
     ice.ace.gMap.remove = function (ele) {
-        var newRepository = new Array();
-        for (map in GMapRepository) {
+        var newRepository = [];
+        for (var map in GMapRepository) {
             if (map != ele) {
                 newRepository[map] = GMapRepository[map];
             }
@@ -368,7 +368,7 @@ ice.ace.gMap.addMapLayer = function (ele, layerId, layerType, options, url) {
 if (!ice.ace.gMap.markerCallbacks) ice.ace.gMap.markerCallbacks = {};
 
 ice.ace.gMap.addMarkerCallback = function(id, callback){
-	if (!ice.ace.gMap.markerCallbacks[id]) ice.ace.gMap.markerCallbacks[id] = new Array();
+    if (!ice.ace.gMap.markerCallbacks[id]) ice.ace.gMap.markerCallbacks[id] = [];
 	ice.ace.gMap.markerCallbacks[id].push(callback);
 };
 
@@ -381,8 +381,8 @@ ice.ace.gMap.addMarkerCallback = function(id, callback){
             //nothing found just return
             return;
         }
-        var newMarkerArray = new Object();
-        for (markerObj in gmapWrapper.markers) {
+        var newMarkerArray = {};
+        for (var markerObj in gmapWrapper.markers) {
             if (marker != markerObj) {
                 newMarkerArray[markerObj] = gmapWrapper.markers[markerObj];
             }
@@ -766,8 +766,8 @@ ice.ace.gMap.addMarkerCallback = function(id, callback){
             //nothing found just return
             return;
         }
-        var newOverlayArray = new Object();
-        for (overlayObj in wrapper.overlays) {
+        var newOverlayArray = {};
+        for (var overlayObj in wrapper.overlays) {
             if (overlay != overlayObj) {
                 newOverlayArray[overlayObj] = wrapper.overlays[overlayObj];
             }
@@ -866,9 +866,9 @@ ice.ace.gMap.gOverlay = function (ele, overlayID, shape, locationList, overlayOp
         } else {
             return;
         }
-        var newWindowArray = new Object();
+        var newWindowArray = {};
         delete(wrapper.infoWindows[winId]);
-        var newFreeWindowArray = new Object();
+        var newFreeWindowArray = {};
         if(wrapper.freeWindows[winId]!=null)
             delete(wrapper.freeWindows[winId]);
     };
