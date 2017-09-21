@@ -86,8 +86,8 @@ public class GMapEventRenderer extends CoreRenderer {
 				.item(gMapComponentParent.getClass().getName())
 				.item(gMapEvent.getEventType())
 				.item(gMapEvent.getRendererType())
-				.item(gMapEvent.getScriptToUse())
-				.item((gMapEvent.getListener() != null))
+                    .item("function(map, component) {" + gMapEvent.getScriptToUse() + "}", false)
+                    .item((gMapEvent.getListener() != null))
 				.item(addressBasedMarker)
 			.endFunction();
 		} else {

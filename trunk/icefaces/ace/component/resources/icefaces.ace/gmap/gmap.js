@@ -895,60 +895,66 @@ ice.ace.gMap.gOverlay = function (ele, overlayID, shape, locationList, overlayOp
         }
     }
 
-    ice.ace.gMap.addEvent = function (mapId,parentId,eventId,parentName,eventType,rendererType,script,listener,addressBasedMarker){
-        var wrapper = ice.ace.gMap.getGMapWrapper(mapId);
-
+ice.ace.gMap.addEvent = function (mapId, parentId, eventId, parentName, eventType, rendererType, callback, listener, addressBasedMarker) {
         var componentToUse;
         var parent;
         //TODO: Update Autocomplete to work with this.
         if (parentName.indexOf("gmap.GMapAutocomplete") != -1){
             parent = wrapper.infoWindows[parentId];
-            componentToUse = "ice.ace.gMap.getGMapWrapper('" + mapId + "').infoWindows['"+parentId+"']";
+            componentToUse = ice.ace.gMap.getGMapWrapper(mapId).infoWindows[parentId];
         }
         else if (parentName.indexOf("gmap.GMapInfoWindow") != -1){
             parent = wrapper.infoWindows[parentId];
-            componentToUse = "ice.ace.gMap.getGMapWrapper('" + mapId + "').infoWindows['"+parentId+"']";
+            componentToUse = ice.ace.gMap.getGMapWrapper(mapId).infoWindows[parentId];
         }
         else if (parentName.indexOf("gmap.GMapLayer") != -1){
             parent = wrapper.layer;
-            componentToUse = "ice.ace.gMap.getGMapWrapper('" + mapId + "').layer";
+            componentToUse = ice.ace.gMap.getGMapWrapper(mapId).layer;
         }
         else if (parentName.indexOf("gmap.GMapMarker") != -1){
             parent = wrapper.markers[parentId];
-            componentToUse = "ice.ace.gMap.getGMapWrapper('" + mapId + "').markers['"+parentId+"']";
+            componentToUse = ice.ace.gMap.getGMapWrapper(mapId).markers[parentId];
         }
         else if (parentName.indexOf("gmap.GMapOverlay") != -1){
             parent = wrapper.overlays[parentId];
-            componentToUse = "ice.ace.gMap.getGMapWrapper('" + mapId + "').overlays['"+parentId+"']";
+            componentToUse = ice.ace.gMap.getGMapWrapper(mapId).overlays[parentId];
         }
         else if(parentName.indexOf("gmap.GMap") != -1){
             parent = wrapper.getRealGMap();
-            componentToUse = "ice.ace.gMap.getGMapWrapper('" + mapId + "').getRealGMap()";
+            componentToUse = ice.ace.gMap.getGMapWrapper(mapId).getRealGMap();
         }
         var event = wrapper.events[eventId];
 		if (event) {
 			google.maps.event.removeListener(event);
 		}
-		var eventRequest = listener ? ";ice.se(null, document.getElementById('"+mapId+"'), function(p) {p('"+eventId+"','true');});" : "";
-        if (parent) wrapper.events[eventId] = google.maps.event.addDomListener(parent,eventType,function(){
-            eval(
-                "var map = ice.ace.gMap.getGMapWrapper('" + mapId + "').getRealGMap();" +
-                "var component = " + componentToUse + ";" +
-                script + eventRequest
-            );
-        });
-		else if (addressBasedMarker) {
+
+    function eventHandler() {
+        var map = ice.ace.gMap.getGMapWrapper(mapId).getRealGMap();
+        callback(map, componentToUse);
+        if (listener) {
+            ice.se(null, document.getElementById(mapId), function (p) {
+                p(eventId, true);
+            });
+        }
+    }
+
+    if (parent) {
+        wrapper.events[eventId] = google.maps.event.addDomListener(parent, eventType, eventHandler);
+    } else if (addressBasedMarker) {
 			ice.ace.gMap.addMarkerCallback(parentId, function() {
-					wrapper.events[eventId] = google.maps.event.addDomListener(wrapper.markers[parentId],eventType,function(){
-					eval(
-						"var map = ice.ace.gMap.getGMapWrapper('" + mapId + "').getRealGMap();" +
-						"var component = " + componentToUse + ";" +
-						script + eventRequest
-					);
-				});
-			});
-		}
-		wrapper.eventModels[eventId] = {mapId:''+mapId,parentId:''+parentId,eventId:''+eventId,parentName:''+parentName,eventType:''+eventType,rendererType:''+rendererType,script:''+script,listener:''+listener};
+                wrapper.events[eventId] = google.maps.event.addDomListener(wrapper.markers[parentId], eventType, eventHandler);
+            });
+    }
+    wrapper.eventModels[eventId] = {
+        mapId: '' + mapId,
+        parentId: '' + parentId,
+        eventId: '' + eventId,
+        parentName: '' + parentName,
+        eventType: '' + eventType,
+        rendererType: '' + rendererType,
+        script: '' + callback,
+        listener: '' + listener
+    };
     };
 
 	ice.ace.gMap.removeEvent = function (mapId,eventId) {
