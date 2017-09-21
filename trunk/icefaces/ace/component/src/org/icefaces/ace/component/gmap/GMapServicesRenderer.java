@@ -16,6 +16,8 @@
 
 package org.icefaces.ace.component.gmap;
 
+import org.icefaces.ace.json.JSONException;
+import org.icefaces.ace.json.JSONObject;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
@@ -40,14 +42,20 @@ public class GMapServicesRenderer extends CoreRenderer {
         writer.writeAttribute("type", "text/javascript", null);
         writer.write("ice.ace.jq(function() {");
         if (service.getPoints() != null && service.getName() != null) {
-			JSONBuilder jb = JSONBuilder.create();
+            String options;
+            try {
+                options = (new JSONObject("{" + service.getOptions() + "}")).toString();
+            } catch (JSONException e) {
+                options = "{}";
+            }
+            JSONBuilder jb = JSONBuilder.create();
 			jb.beginFunction("ice.ace.gMap.gService")
 				.item(GMapRenderer.getMapClientId(context, service))
 				.item(clientId)
 				.item(service.getName())
 				.item(service.getPoints())
-				.item(service.getOptions())
-				.item(service.getDiv())
+                    .item(options, false)
+                    .item(service.getDiv())
 			.endFunction();
 			writer.write(jb.toString());
         }

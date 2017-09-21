@@ -16,6 +16,8 @@
 
 package org.icefaces.ace.component.gmap;
 
+import org.icefaces.ace.json.JSONException;
+import org.icefaces.ace.json.JSONObject;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
@@ -51,15 +53,20 @@ public class GMapOverlayRenderer extends CoreRenderer {
             writer.write(jb.toString());
 			String shape = overlay.getShape();
 			String points = overlay.getPoints();
-			String options = overlay.getOptions();
-			jb = JSONBuilder.create();
+            String options;
+            try {
+                options = (new JSONObject("{" + overlay.getOptions() + "}")).toString();
+            } catch (JSONException e) {
+                options = "{}";
+            }
+            jb = JSONBuilder.create();
 			jb.beginFunction("ice.ace.gMap.gOverlay")
 				.item(mapClientId)
 				.item(clientId)
 				.item(shape == null ? "" : shape)
 				.item(points == null ? "" : points)
-				.item(options == null ? "" : options)
-			.endFunction();
+                    .item(options, false)
+                    .endFunction();
             writer.write(jb.toString());
         }
         writer.write("});");

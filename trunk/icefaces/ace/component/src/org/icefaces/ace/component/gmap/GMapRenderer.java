@@ -16,6 +16,8 @@
 
 package org.icefaces.ace.component.gmap;
 
+import org.icefaces.ace.json.JSONException;
+import org.icefaces.ace.json.JSONObject;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.HTML;
 import org.icefaces.ace.util.JSONBuilder;
@@ -95,8 +97,14 @@ public class GMapRenderer extends CoreRenderer {
 		jb.beginFunction("ice.ace.gMap.setMapType").item(clientId).item(gmap.getType().toUpperCase()).endFunction();
         writer.write(jb.toString());
         if (gmap.getOptions() != null && gmap.getOptions().length() > 1) {
-			jb = JSONBuilder.create();
-			jb.beginFunction("ice.ace.gMap.addOptions").item(clientId).item(gmap.getOptions()).endFunction();
+            String options;
+            try {
+                options = (new JSONObject("{" + gmap.getOptions() + "}")).toString();
+            } catch (JSONException e) {
+                options = "{}";
+            }
+            jb = JSONBuilder.create();
+            jb.beginFunction("ice.ace.gMap.addOptions").item(clientId).item(options, false).endFunction();
             writer.write(jb.toString());
 		}
         if (gmap.getParent().getClass().getSimpleName().equalsIgnoreCase("HtmlPanelGrid")) {

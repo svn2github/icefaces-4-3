@@ -96,13 +96,9 @@ ice.ace.gMap.getGMapWrapper = function (id) {
     return gmapWrapper;
 }
 
-    ice.ace.gMap.addMapLayer = function (ele, layerId, layerType, sentOptions, url) {
+ice.ace.gMap.addMapLayer = function (ele, layerId, layerType, options, url) {
         var gmapWrapper = ice.ace.gMap.getGMapWrapper(ele);
         var layer = gmapWrapper.layer;
-        if (sentOptions == "Skip")
-            var options = "";
-        else
-            var options = sentOptions;
         switch (layerType.toLowerCase()) {
             case "bicycling":
             case "bicyclinglayer":
@@ -115,14 +111,12 @@ ice.ace.gMap.getGMapWrapper = function (id) {
             case "fusiontables":
                 //This is still in it's experimental stage, and I can't get access to the API to make my own fusion table yet. (Google Trusted Testers Only)
                 //So I cannot verify if it works. Double check when Fusion Tables is properly released.
-                var markerOps = "({" + options + "})";
-                layer[layerId] = new google.maps.FusionTablesLayer(eval(options));
+                layer[layerId] = new google.maps.FusionTablesLayer(options);
                 layer[layerId].setMap(gmapWrapper.getRealGMap());
                 break;
             case "kml":
             case "kmllayer":
-                var markerOps = "({" + options + "})";
-                layer[layerId] = new google.maps.KmlLayer(url, eval(options));
+                layer[layerId] = new google.maps.KmlLayer(url, options);
                 layer[layerId].setMap(gmapWrapper.getRealGMap());
                 break;
             case "traffic":
@@ -269,8 +263,7 @@ ice.ace.gMap.getGMapWrapper = function (id) {
         ice.ace.gMap.remove(ele);
         gmapWrapper = ice.ace.gMap.create(ele,lat,lng,zoom,type);
         map = gmapWrapper.getRealGMap();
-        if(options != undefined)
-            map.setOptions(eval("({"+options+"})"));
+        map.setOptions(options);
         gmapWrapper.options = options;
         for (marker in markers) {
             if (gmapWrapper.markers[marker] == null) {
@@ -341,11 +334,7 @@ ice.ace.gMap.getGMapWrapper = function (id) {
         var marker = wrapper.markers[markerID];
         if (marker == null || marker.getMap() == null) {
             var markerOps;
-            if (options) {
-                markerOps = eval("({" + options + "})");
-            } else {
-                markerOps = {};
-            }
+            markerOps = options;
             markerOps.map = wrapper.getRealGMap();
 			if (address) {
 				markerOps.position = new google.maps.LatLng(0, 0);
@@ -417,8 +406,7 @@ ice.ace.gMap.addMarkerCallback = function(id, callback){
     ice.ace.gMap.addOptions = function (ele, options) {
         var map = ice.ace.gMap.getGMapWrapper(ele).getRealGMap();
         ice.ace.gMap.getGMapWrapper(ele).options = options;
-        var fullOps = "({" + options + "})";
-        map.setOptions(eval(fullOps));
+        map.setOptions(options);
     }
 
     ice.ace.gMap.addAutoComplete = function(mapId, autoId, windowOptions, offset, windowRender,focus){
@@ -467,8 +455,7 @@ ice.ace.gMap.addMarkerCallback = function(id, callback){
 					if(windowRender){
 					marker.setPosition(place.geometry.location);
 					infowindow.setContent("<a href='"+place.url+"' target='_blank'>" + place.formatted_address + "</a>");
-					if(windowOptions!=null&&windowOptions!="none")
-						infowindow.setOptions(eval("({" + windowOptions + "})"));
+                        infowindow.setOptions(windowOptions);
 					infowindow.open(map,marker);
 					}
 					document.getElementById(autoId+"_latLng").value = place.geometry.location.toString();
@@ -493,8 +480,7 @@ ice.ace.gMap.addMarkerCallback = function(id, callback){
 							if(windowRender){
 								marker.setPosition(result.geometry.location);
 								infowindow.setContent("<a href='"+url+"' target='_blank'>" + result.formatted_address + "</a>");
-								if(windowOptions!=null&&windowOptions!="none")
-									infowindow.setOptions(eval("({" + windowOptions + "})"));
+                                infowindow.setOptions(windowOptions);
 								infowindow.open(map,marker);
 							}
 							
@@ -536,52 +522,44 @@ ice.ace.gMap.addMarkerCallback = function(id, callback){
     ice.ace.gMap.addControl = function (ele, name, givenPosition, style) {
         var wrapper = ice.ace.gMap.getGMapWrapper(ele);
         var map = wrapper.getRealGMap();
-        var option;
+        var option = {};
         if (name == "all")
-            option = "disableDefaultUI:false";
+            option.disableDefaultUI = false;
         else {
-            control = ice.ace.gMap.nameToControl(name);
+            var control = ice.ace.gMap.nameToControl(name);
+            option[control] = true;
             if (givenPosition != "none" || style != "none") {
                 if (givenPosition != "none" && style == "none") {
                     var position = ice.ace.gMap.textToPosition(givenPosition);
-                    option = control + ":true," + control + "Options:{position:" + position + "}";
+                    option[control + "Options"] = {'position': position};
                 }
                 else if (givenPosition == "none" && style != "none") {
                     var fullStyle = ice.ace.gMap.textToStyle(name, style);
-                    option = control + ":true," + control + "Options:{style:" + fullStyle + "}";
+                    option[control + "Options"] = {'style': fullStyle};
                 }
                 else if (givenPosition != "none" && style != "none") {
                     var position = ice.ace.gMap.textToPosition(givenPosition);
                     var fullStyle = ice.ace.gMap.textToStyle(name, style);
-                    option = control + ":true," + control + "Options:{position:" + position + ", style:" + fullStyle + "}";
+                    option[control + "Options"] = {'position': position, 'style': fullStyle};
                 }
-
             }
-            else
-                option = control + ":true";
         }
-        if(wrapper.options == undefined)
-            wrapper.options=option;
-        else
-            wrapper.options+=", " + option;
-        map.setOptions(eval("({"+ option +"})"));
+        wrapper.options = option;
+        map.setOptions(option);
     }
 
     ice.ace.gMap.removeControl = function (ele, name) {
         var wrapper = ice.ace.gMap.getGMapWrapper(ele);
         var map = wrapper.getRealGMap();
-        var option;
+        var option = {};
         if (name == "all")
-            option = "disableDefaultUI:true";
+            option.disableDefaultUI = true;
         else {
-            control = ice.ace.gMap.nameToControl(name);
-            option = control + ":false";
+            var control = ice.ace.gMap.nameToControl(name);
+            option[control] = false;
         }
-        if(wrapper.options == undefined)
-            wrapper.options=option;
-        else
-            wrapper.options+=", " + option;
-        map.setOptions(eval("({"+ option +"})"));
+        wrapper.options = option;
+        map.setOptions(option);
     }
 
     ice.ace.gMap.nameToControl = function (name) {
@@ -689,7 +667,7 @@ ice.ace.gMap.addMarkerCallback = function(id, callback){
                 //Required options: travelMode, 2 points/addresses (First=origin, last=dest, others=waypoints
                 service = new google.maps.DirectionsService();
                 var lastElement = points.length - 1;
-                var request = eval('({' + options + '})');
+                var request = options;
                 request.origin = points[0];
                 request.destination = points[lastElement];
                 if (points.length >= 3) {
@@ -755,7 +733,7 @@ ice.ace.gMap.addMarkerCallback = function(id, callback){
                 //Required options: travelMode, 2 points/addresses
 				if (!points[1]) break;
                 service = new google.maps.DistanceMatrixService();
-                var request = eval('({' + options + '})');
+                var request = options;
                 request.origins = points[0];
                 request.destinations = points[1];
 
@@ -797,7 +775,7 @@ ice.ace.gMap.addMarkerCallback = function(id, callback){
         wrapper.overlays = newOverlayArray;
     };
 
-    ice.ace.gMap.gOverlay = function (ele, overlayID, shape, locationList, options) {
+ice.ace.gMap.gOverlay = function (ele, overlayID, shape, locationList, overlayOptions) {
         var wrapper = ice.ace.gMap.getGMapWrapper(ele);
         var map = ice.ace.gMap.getGMapWrapper(ele).getRealGMap();
         var overlay;
@@ -805,27 +783,23 @@ ice.ace.gMap.addMarkerCallback = function(id, callback){
         switch (shape.toLowerCase()) {
             case "line":
             case "polyline":
-                var overlayOptions = (options != null && options.length > 0) ? eval("({" + options + "})") : {};
                 overlayOptions.map = map;
                 overlayOptions.path = points;
                 overlay = new google.maps.Polyline(overlayOptions);
                 break;
             case "polygon":
-                var overlayOptions = (options != null && options.length > 0) ? eval("({" + options + "})") : {};
                 overlayOptions.map = map;
                 overlayOptions.paths = points;
                 overlay = new google.maps.Polygon(overlayOptions);
                 break;
             case "rectangle":
                 //needs SW corner in first point, NE in second
-                var overlayOptions = (options != null && options.length > 0) ? eval("({" + options + "})") : {};
                 overlayOptions.map = map;
                 overlayOptions.bounds = new google.maps.LatLngBounds(points[0], points[1]);
                 overlay = new google.maps.Rectangle(overlayOptions);
                 break;
             case "circle":
                 //Requires radius option
-                var overlayOptions = (options != null && options.length > 0) ? eval("({" + options + "})") : {};
                 overlayOptions.map = map;
                 overlayOptions.center = points[0];
                 overlay = new google.maps.Circle(overlayOptions);
@@ -849,10 +823,9 @@ ice.ace.gMap.addMarkerCallback = function(id, callback){
 			win = new google.maps.InfoWindow();
 			win.setPosition(position);
 			win.setContent(content);
-			if (options != "none") {
-				win.setOptions(eval("({" + options + (addressBasedMarker ? ',disableAutoPan:true' : '') + "})"));
-			} else if (addressBasedMarker) {
-				win.setOptions({disableAutoPan:true});
+            if (addressBasedMarker) {
+                options.disableAutoPan = true;
+                win.setOptions(options);
 			}
 			if (markerId != "none")
 			{

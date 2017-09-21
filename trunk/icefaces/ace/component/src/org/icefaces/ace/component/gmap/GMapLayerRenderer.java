@@ -16,6 +16,8 @@
 
 package org.icefaces.ace.component.gmap;
 
+import org.icefaces.ace.json.JSONException;
+import org.icefaces.ace.json.JSONObject;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
@@ -48,15 +50,21 @@ public class GMapLayerRenderer extends CoreRenderer {
 			.endFunction();
             writer.write(jb.toString());
             if (gMapLayer.isVisible()) {
+                String options;
+                try {
+                    options = (new JSONObject("{" + gMapLayer.getOptions() + "}")).toString();
+                } catch (JSONException e) {
+                    options = "{}";
+                }
                 if (gMapLayer.getUrl() != null) {
 					jb = JSONBuilder.create();
-					jb.beginFunction("ice.ace.gMap.addMapLayer")
-						.item(mapClientId)
-						.item(clientId)
-						.item(gMapLayer.getLayerType())
-						.item(gMapLayer.getOptions())
-						.item(gMapLayer.getUrl())
-					.endFunction();
+                    jb.beginFunction("ice.ace.gMap.addMapLayer")
+                            .item(mapClientId)
+                            .item(clientId)
+                            .item(gMapLayer.getLayerType())
+                            .item(options, false)
+                            .item(gMapLayer.getUrl())
+                            .endFunction();
                     writer.write(jb.toString());
                 } else {
 					jb = JSONBuilder.create();
@@ -64,8 +72,8 @@ public class GMapLayerRenderer extends CoreRenderer {
 						.item(mapClientId)
 						.item(clientId)
 						.item(gMapLayer.getLayerType())
-						.item(gMapLayer.getOptions())
-					.endFunction();
+                            .item(options, false)
+                            .endFunction();
                     writer.write(jb.toString());
 				}
             }

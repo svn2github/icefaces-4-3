@@ -16,6 +16,8 @@
 
 package org.icefaces.ace.component.gmap;
 
+import org.icefaces.ace.json.JSONException;
+import org.icefaces.ace.json.JSONObject;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.render.MandatoryResourceComponent;
 import org.icefaces.ace.util.JSONBuilder;
@@ -76,6 +78,13 @@ public class GMapInfoWindowRenderer extends CoreRenderer {
 		JSONBuilder jb;
 		String content = infoWindow.getContent();
         if (!infoWindow.isDisabled()) {
+            String options;
+            try {
+                options = (new JSONObject("{" + infoWindow.getOptions() + "}")).toString();
+            } catch (JSONException e) {
+                options = "{}";
+            }
+
             if (infoWindow.getChildCount() == 0) {
 				jb = JSONBuilder.create();
 				jb.beginFunction("ice.ace.gMap.addGWindow")
@@ -83,8 +92,8 @@ public class GMapInfoWindowRenderer extends CoreRenderer {
 					.item(clientId)
 					.item(content == null ? "" : content)
 					.item("new google.maps.LatLng(" + infoWindow.getLatitude() + "," + infoWindow.getLongitude() + ")", false)
-					.item(infoWindow.getOptions())
-					.item(markerId)
+                        .item(options, false)
+                        .item(markerId)
 					.item(infoWindow.isShowOnClick())
 					.item(infoWindow.isStartOpen())
 					.item(addressBasedMarker)
@@ -100,8 +109,8 @@ public class GMapInfoWindowRenderer extends CoreRenderer {
 						.item(clientId)
 						.item("document.getElementById('" + clientId + "_content')", false)
 						.item("new google.maps.LatLng(" + infoWindow.getLatitude() + "," + infoWindow.getLongitude() + ")", false)
-						.item(infoWindow.getOptions())
-						.item(markerId)
+                            .item(options, false)
+                            .item(markerId)
 						.item(infoWindow.isShowOnClick())
 						.item(infoWindow.isStartOpen())
 						.item(addressBasedMarker)
@@ -116,8 +125,8 @@ public class GMapInfoWindowRenderer extends CoreRenderer {
 						.item(clientId)
 						.item(content == null ? "" : content)
 						.item("new google.maps.LatLng(" + infoWindow.getLatitude() + "," + infoWindow.getLongitude() + ")", false)
-						.item(infoWindow.getOptions())
-						.item(markerId)
+                            .item(options, false)
+                            .item(markerId)
 						.item(infoWindow.isShowOnClick())
 						.item(infoWindow.isStartOpen())
 						.item(addressBasedMarker)

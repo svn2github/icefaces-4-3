@@ -16,6 +16,8 @@
 
 package org.icefaces.ace.component.gmap;
 
+import org.icefaces.ace.json.JSONException;
+import org.icefaces.ace.json.JSONObject;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
@@ -46,8 +48,15 @@ public class GMapMarkerRenderer extends CoreRenderer {
 		JSONBuilder jb;
         //create a marker if lat and lon defined on the component itself
         if (!marker.isDisabled()) {
-			if (address != null && !"".equals(address)) {
-				jb = JSONBuilder.create();
+            String options;
+            try {
+                options = (new JSONObject("{" + marker.getOptions() + "}")).toString();
+            } catch (JSONException e) {
+                options = "{}";
+            }
+
+            if (address != null && !"".equals(address)) {
+                jb = JSONBuilder.create();
 				jb.beginFunction("ice.ace.gMap.removeMarker")
 					.item(mapClientId)
 					.item(clientId)
@@ -61,8 +70,8 @@ public class GMapMarkerRenderer extends CoreRenderer {
 						.item("")
 						.item("")
 						.item(address)
-						.item(marker.getOptions())
-					.endFunction();
+                            .item(options, false)
+                            .endFunction();
 					writer.write(jb.toString());
 				} else {
 					jb = JSONBuilder.create();
@@ -91,8 +100,8 @@ public class GMapMarkerRenderer extends CoreRenderer {
 						.item(currentLat)
 						.item(currentLon)
 						.item("")
-						.item(marker.getOptions())
-					.endFunction();
+                            .item(options, false)
+                            .endFunction();
 					writer.write(jb.toString());
 				} else {
 					jb = JSONBuilder.create();
