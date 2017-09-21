@@ -165,7 +165,7 @@ ice.ace.gMap.addMapLayer = function (ele, layerId, layerType, options, url) {
         });
 
     };
-	
+
 	ice.ace.gMap.replaceAddDomListener = function() {
 		ice.ace.gMap.original_addDomListener = google.maps.event.addDomListener;
 		google.maps.event.addDomListener = function(instance, eventName, handler, capture) {
@@ -173,7 +173,7 @@ ice.ace.gMap.addMapLayer = function (ele, layerId, layerType, options, url) {
 			if (instance == window && eventName == 'resize') {
 				google.maps.event.removeListener(eventListener);
 				if (!ice.ace.gMap.windowResizeListener) {
-					ice.ace.gMap.windowResizeListener = 
+                    ice.ace.gMap.windowResizeListener =
 						ice.ace.gMap.original_addDomListener.call(google.maps.event, window, 'resize', ice.ace.gMap.windowResizeHandler);
 				}
 			}
@@ -191,7 +191,7 @@ ice.ace.gMap.addMapLayer = function (ele, layerId, layerType, options, url) {
     ice.ace.gMap.create = function (ele, lat, lng, zoom, type) {
 		// replace addDomListener here, because the events code is lazily loaded by google
 		if (!ice.ace.gMap.original_addDomListener) ice.ace.gMap.replaceAddDomListener();
-		
+
         if(lat == undefined && lng == undefined)
             var gmapWrapper = new GMapWrapper(ele, new google.maps.Map(document.getElementById(ele), {mapTypeId:google.maps.MapTypeId.ROADMAP, zoom:5, center: new google.maps.LatLng(0,0)}));
         else
@@ -416,16 +416,16 @@ ice.ace.gMap.addMarkerCallback = function(id, callback){
 			if (input.createTextRange) { // IE
 				input.focus();
 				if (input.value.length > 0) {
-					var fieldRange = input.createTextRange();  
-					fieldRange.moveStart('character', input.value.length);  
-					fieldRange.collapse(false);  
+                    var fieldRange = input.createTextRange();
+                    fieldRange.moveStart('character', input.value.length);
+                    fieldRange.collapse(false);
 					fieldRange.select();
 				}
 			}
 			else {
 				input.focus();
-				var length = input.value.length;  
-				input.setSelectionRange(length, length);  
+                var length = input.value.length;
+                input.setSelectionRange(length, length);
 			}
 		}
 		var init = function() {
@@ -474,8 +474,8 @@ ice.ace.gMap.addMarkerCallback = function(id, callback){
 								map.setCenter(result.geometry.location);
 							}
 							input.value = result.formatted_address;
-							
-							var url = 'https://maps.google.com/maps/place?q=' + encodeURIComponent(result.formatted_address);
+
+                            var url = 'https://maps.google.com/maps/place?q=' + encodeURIComponent(result.formatted_address);
                             map.panBy(Number(xOffset), Number(yOffset));
 							if(windowRender){
 								marker.setPosition(result.geometry.location);
@@ -483,8 +483,8 @@ ice.ace.gMap.addMarkerCallback = function(id, callback){
                                 infowindow.setOptions(windowOptions);
 								infowindow.open(map,marker);
 							}
-							
-							document.getElementById(autoId+"_latLng").value = result.geometry.location.toString();
+
+                            document.getElementById(autoId + "_latLng").value = result.geometry.location.toString();
 							document.getElementById(autoId+"_address").value = result.formatted_address;
 							document.getElementById(autoId+"_types").value = result.types.toString();
 							document.getElementById(autoId+"_url").value = url;
@@ -896,37 +896,32 @@ ice.ace.gMap.gOverlay = function (ele, overlayID, shape, locationList, overlayOp
     };
 
 ice.ace.gMap.addEvent = function (mapId, parentId, eventId, parentName, eventType, rendererType, callback, listener, addressBasedMarker) {
-        var componentToUse;
-        var parent;
-        //TODO: Update Autocomplete to work with this.
-        if (parentName.indexOf("gmap.GMapAutocomplete") != -1){
-            parent = wrapper.infoWindows[parentId];
-            componentToUse = ice.ace.gMap.getGMapWrapper(mapId).infoWindows[parentId];
-        }
-        else if (parentName.indexOf("gmap.GMapInfoWindow") != -1){
-            parent = wrapper.infoWindows[parentId];
-            componentToUse = ice.ace.gMap.getGMapWrapper(mapId).infoWindows[parentId];
-        }
-        else if (parentName.indexOf("gmap.GMapLayer") != -1){
-            parent = wrapper.layer;
-            componentToUse = ice.ace.gMap.getGMapWrapper(mapId).layer;
-        }
-        else if (parentName.indexOf("gmap.GMapMarker") != -1){
-            parent = wrapper.markers[parentId];
-            componentToUse = ice.ace.gMap.getGMapWrapper(mapId).markers[parentId];
-        }
-        else if (parentName.indexOf("gmap.GMapOverlay") != -1){
-            parent = wrapper.overlays[parentId];
-            componentToUse = ice.ace.gMap.getGMapWrapper(mapId).overlays[parentId];
-        }
-        else if(parentName.indexOf("gmap.GMap") != -1){
-            parent = wrapper.getRealGMap();
-            componentToUse = ice.ace.gMap.getGMapWrapper(mapId).getRealGMap();
-        }
-        var event = wrapper.events[eventId];
-		if (event) {
-			google.maps.event.removeListener(event);
-		}
+    var wrapper = ice.ace.gMap.getGMapWrapper(mapId);
+    var componentToUse;
+    //TODO: Update Autocomplete to work with this.
+    if (parentName.indexOf("gmap.GMapAutocomplete") != -1) {
+        componentToUse = wrapper.infoWindows[parentId];
+    }
+    else if (parentName.indexOf("gmap.GMapInfoWindow") != -1) {
+        componentToUse = wrapper.infoWindows[parentId];
+    }
+    else if (parentName.indexOf("gmap.GMapLayer") != -1) {
+        componentToUse = wrapper.layer;
+    }
+    else if (parentName.indexOf("gmap.GMapMarker") != -1) {
+        componentToUse = wrapper.markers[parentId];
+    }
+    else if (parentName.indexOf("gmap.GMapOverlay") != -1) {
+        componentToUse = wrapper.overlays[parentId];
+    }
+    else if (parentName.indexOf("gmap.GMap") != -1) {
+        componentToUse = wrapper.getRealGMap();
+    }
+
+    var event = wrapper.events[eventId];
+    if (event) {
+        google.maps.event.removeListener(event);
+    }
 
     function eventHandler() {
         var map = ice.ace.gMap.getGMapWrapper(mapId).getRealGMap();
@@ -938,8 +933,8 @@ ice.ace.gMap.addEvent = function (mapId, parentId, eventId, parentName, eventTyp
         }
     }
 
-    if (parent) {
-        wrapper.events[eventId] = google.maps.event.addDomListener(parent, eventType, eventHandler);
+    if (componentToUse) {
+        wrapper.events[eventId] = google.maps.event.addDomListener(componentToUse, eventType, eventHandler);
     } else if (addressBasedMarker) {
 			ice.ace.gMap.addMarkerCallback(parentId, function() {
                 wrapper.events[eventId] = google.maps.event.addDomListener(wrapper.markers[parentId], eventType, eventHandler);
