@@ -27,9 +27,15 @@
     zoom: 1;
     *display:inline;
 }
-.ui-panel .header-facet .ui-panel-title {
+
+.ui-panel .header-facet {
 	width: 70%;
 }
+
+.ui-panel-title {
+    width: 100%;
+}
+
 .ui-panel .ui-panel-titlebar-icons {
     display:inline-block;
     vertical-align: middle;
