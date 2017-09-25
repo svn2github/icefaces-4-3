@@ -97,12 +97,7 @@ public class GMapRenderer extends CoreRenderer {
 		jb.beginFunction("ice.ace.gMap.setMapType").item(clientId).item(gmap.getType().toUpperCase()).endFunction();
         writer.write(jb.toString());
         if (gmap.getOptions() != null && gmap.getOptions().length() > 1) {
-            String options;
-            try {
-                options = (new JSONObject("{" + gmap.getOptions() + "}")).toString();
-            } catch (JSONException e) {
-                options = "{}";
-            }
+            String options = "{" + gmap.getOptions() + "}";
             jb = JSONBuilder.create();
             jb.beginFunction("ice.ace.gMap.addOptions").item(clientId).item(options, false).endFunction();
             writer.write(jb.toString());

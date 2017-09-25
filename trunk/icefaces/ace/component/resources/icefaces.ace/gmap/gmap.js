@@ -600,41 +600,29 @@ ice.ace.gMap.nameToControl = function (name) {
 ice.ace.gMap.textToPosition = function (position) {
     switch (position.toLowerCase()) {
         case "bottomcenter":
-            return "google.maps.ControlPosition.BOTTOM_CENTER";
-            break;
+            return google.maps.ControlPosition.BOTTOM_CENTER;
         case "bottomright":
-            return "google.maps.ControlPosition.BOTTOM_RIGHT";
-            break;
+            return google.maps.ControlPosition.BOTTOM_RIGHT;
         case "bottomleft":
-            return "google.maps.ControlPosition.BOTTOM_LEFT";
-            break;
+            return google.maps.ControlPosition.BOTTOM_LEFT;
         case "topcenter":
-            return "google.maps.ControlPosition.TOP_CENTER";
-            break;
+            return google.maps.ControlPosition.TOP_CENTER;
         case "topright":
-            return "google.maps.ControlPosition.TOP_RIGHT";
-            break;
+            return google.maps.ControlPosition.TOP_RIGHT;
         case "topleft":
-            return "google.maps.ControlPosition.TOP_LEFT";
-            break;
+            return google.maps.ControlPosition.TOP_LEFT;
         case "lefttop":
-            return "google.maps.ControlPosition.LEFT_TOP";
-            break;
+            return google.maps.ControlPosition.LEFT_TOP;
         case "leftcenter":
-            return "google.maps.ControlPosition.LEFT_CENTER";
-            break;
+            return google.maps.ControlPosition.LEFT_CENTER;
         case "leftbottom":
-            return "google.maps.ControlPosition.LEFT_BOTTOM";
-            break;
+            return google.maps.ControlPosition.LEFT_BOTTOM;
         case "righttop":
-            return "google.maps.ControlPosition.RIGHT_TOP";
-            break;
+            return google.maps.ControlPosition.RIGHT_TOP;
         case "rightcenter":
-            return "google.maps.ControlPosition.RIGHT_CENTER";
-            break;
+            return google.maps.ControlPosition.RIGHT_CENTER;
         case "rightbottom":
-            return "google.maps.ControlPosition.RIGHT_BOTTOM";
-            break;
+            return google.maps.ControlPosition.RIGHT_BOTTOM;
     }
 };
 
@@ -643,19 +631,19 @@ ice.ace.gMap.textToStyle = function (rawname, rawstyle) {
     var style = rawstyle.toLowerCase();
     if (name == "type") {
         if (style == "default")
-            return "google.maps.MapTypeControlStyle.DEFAULT";
+            return google.maps.MapTypeControlStyle.DEFAULT;
         else if (style == "dropdown")
-            return "google.maps.MapTypeControlStyle.DROPDOWN_MENU";
+            return google.maps.MapTypeControlStyle.DROPDOWN_MENU;
         else if (style == "bar")
-            return "google.maps.MapTypeControlStyle.HORIZONTAL_BAR";
+            return google.maps.MapTypeControlStyle.HORIZONTAL_BAR;
     }
     else if (name == "zoom") {
         if (style == "default")
-            return "google.maps.ZoomControlStyle.DEFAULT";
+            return google.maps.ZoomControlStyle.DEFAULT;
         else if (style == "large")
-            return "google.maps.ZoomControlStyle.LARGE";
+            return google.maps.ZoomControlStyle.LARGE;
         else if (style == "small")
-            return "google.maps.ZoomControlStyle.SMALL";
+            return google.maps.ZoomControlStyle.SMALL;
     }
 };
 

@@ -53,12 +53,8 @@ public class GMapOverlayRenderer extends CoreRenderer {
             writer.write(jb.toString());
 			String shape = overlay.getShape();
 			String points = overlay.getPoints();
-            String options;
-            try {
-                options = (new JSONObject("{" + overlay.getOptions() + "}")).toString();
-            } catch (JSONException e) {
-                options = "{}";
-            }
+            String options = overlay.getOptions() == null ? "{}" : "{" + overlay.getOptions() + "}";
+
             jb = JSONBuilder.create();
 			jb.beginFunction("ice.ace.gMap.gOverlay")
 				.item(mapClientId)

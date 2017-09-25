@@ -48,12 +48,7 @@ public class GMapMarkerRenderer extends CoreRenderer {
 		JSONBuilder jb;
         //create a marker if lat and lon defined on the component itself
         if (!marker.isDisabled()) {
-            String options;
-            try {
-                options = (new JSONObject("{" + marker.getOptions() + "}")).toString();
-            } catch (JSONException e) {
-                options = "{}";
-            }
+            String options = marker.getOptions() == null ? "{}" : "{" + marker.getOptions() + "}";
 
             if (address != null && !"".equals(address)) {
                 jb = JSONBuilder.create();

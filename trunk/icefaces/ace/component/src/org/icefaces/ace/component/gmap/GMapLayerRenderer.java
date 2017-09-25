@@ -50,12 +50,8 @@ public class GMapLayerRenderer extends CoreRenderer {
 			.endFunction();
             writer.write(jb.toString());
             if (gMapLayer.isVisible()) {
-                String options;
-                try {
-                    options = (new JSONObject("{" + gMapLayer.getOptions() + "}")).toString();
-                } catch (JSONException e) {
-                    options = "{}";
-                }
+                String options = gMapLayer.getOptions() == null ? "{}" : "{" + gMapLayer.getOptions() + "}";
+
                 if (gMapLayer.getUrl() != null) {
 					jb = JSONBuilder.create();
                     jb.beginFunction("ice.ace.gMap.addMapLayer")

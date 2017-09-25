@@ -78,12 +78,7 @@ public class GMapInfoWindowRenderer extends CoreRenderer {
 		JSONBuilder jb;
 		String content = infoWindow.getContent();
         if (!infoWindow.isDisabled()) {
-            String options;
-            try {
-                options = (new JSONObject("{" + infoWindow.getOptions() + "}")).toString();
-            } catch (JSONException e) {
-                options = "{}";
-            }
+            String options = infoWindow.getOptions() == null ? "{}" : "{" + infoWindow.getOptions() + "}";
 
             if (infoWindow.getChildCount() == 0) {
 				jb = JSONBuilder.create();
