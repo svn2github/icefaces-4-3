@@ -92,7 +92,7 @@ public class ScheduleUtils {
 	/**
      * Assumes month is 1-relative
      */
-	public static Date convertDateTimeToServerFormat(String date, String time) {
+	public static Date convertDateTimeToServerFormat(String date, String time, String timeZoneOffset) {
 		Calendar cal = Calendar.getInstance();
 		try {
 			String yearString = date.substring(0, 4);
@@ -108,6 +108,10 @@ public class ScheduleUtils {
 			minute = Integer.valueOf(minuteString);
 			cal.set(year, month, day, hour, minute);
 			cal.set(Calendar.SECOND, 0);
+			if (!(timeZoneOffset == null || "".equals(timeZoneOffset))) { // if autoDetectTimeZone="true"
+				int offset = Integer.valueOf(timeZoneOffset);
+				cal.add(Calendar.MINUTE, offset);
+			}
 		} catch (Exception e) {
 			return null;
 		}
@@ -128,6 +132,7 @@ public class ScheduleUtils {
 		String styleClass = params.get(clientId + "_styleClass");
 		String id = params.get(clientId + "_id");
 		TimeZone timeZone = schedule.calculateTimeZone();
+		String timeZoneOffset = params.get(clientId + "_timeZoneOffset");
 
 		// if no start date specified, use current date
 		if (startDate == null || "".equals(startDate)) {
@@ -164,13 +169,13 @@ public class ScheduleUtils {
 		}
 
 		ScheduleEvent scheduleEvent = new ScheduleEvent();
-		Date convertedDate = convertDateTimeToServerFormat(startDate, startTime);
+		Date convertedDate = convertDateTimeToServerFormat(startDate, startTime, timeZoneOffset);
 		if (convertedDate == null) {
 			FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Couldn't parse start date/time when converting to server format.", "Couldn't parse start date/time when converting to server format.");
 			FacesContext.getCurrentInstance().addMessage(clientId, fm);
 			return null;
 		}
-		Date convertedEndDate = convertDateTimeToServerFormat(endDate, endTime);
+		Date convertedEndDate = convertDateTimeToServerFormat(endDate, endTime, timeZoneOffset);
 		if (convertedEndDate == null) {
 			FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Couldn't parse end date/time when converting to server format.", "Couldn't parse end date/time when converting to server format.");
 			FacesContext.getCurrentInstance().addMessage(clientId, fm);
@@ -202,6 +207,7 @@ public class ScheduleUtils {
 		String styleClass = params.get(clientId + "_styleClass");
 		String id = params.get(clientId + "_id");
 		TimeZone timeZone = schedule.calculateTimeZone();
+		String timeZoneOffset = params.get(clientId + "_timeZoneOffset");
 
 		if (isAllDay) {
 			startTime = "00:00";
@@ -209,13 +215,13 @@ public class ScheduleUtils {
 		}
 
 		ScheduleEvent scheduleEvent = new ScheduleEvent();
-		Date convertedDate = convertDateTimeToServerFormat(startDate, startTime);
+		Date convertedDate = convertDateTimeToServerFormat(startDate, startTime, timeZoneOffset);
 		if (convertedDate == null) {
 			FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Couldn't parse start date/time when converting to server format.", "Couldn't parse start date/time when converting to server format.");
 			FacesContext.getCurrentInstance().addMessage(clientId, fm);
 			return null;
 		}
-		Date convertedEndDate = convertDateTimeToServerFormat(endDate, endTime);
+		Date convertedEndDate = convertDateTimeToServerFormat(endDate, endTime, timeZoneOffset);
 		if (convertedEndDate == null) {
 			FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Couldn't parse end date/time when converting to server format.", "Couldn't parse end date/time when converting to server format.");
 			FacesContext.getCurrentInstance().addMessage(clientId, fm);

@@ -165,7 +165,7 @@ public class ScheduleRenderer extends CoreRenderer {
 		if (!isCurrentDateProgrammaticallySet) {
 			if (previousViewMode != null && !viewMode.equalsIgnoreCase(previousViewMode)) {
 				if (selectedDateString != null && !"".equals(selectedDateString)) {
-					Date selectedDate = ScheduleUtils.convertDateTimeToServerFormat(selectedDateString, "00:00");
+					Date selectedDate = ScheduleUtils.convertDateTimeToServerFormat(selectedDateString, "00:00", null);
 					if (selectedDate != null) {
 						selectedDateOnViewChange = true;
 						Calendar cal = Calendar.getInstance();
@@ -221,6 +221,7 @@ public class ScheduleRenderer extends CoreRenderer {
 		boolean displayTooltip = schedule.isShowTooltip();
 		String tooltipClass = displayTooltip ? "schedule-config-details-tooltip" : "";
 		String scrollableClass = schedule.isScrollable() ? "schedule-config-scrollable" : "";
+		boolean autoDetectTimeZone = schedule.isAutoDetectTimeZone();
 
 		writer.startElement("div", null);
 		writer.writeAttribute("id", clientId, null);
@@ -262,6 +263,7 @@ public class ScheduleRenderer extends CoreRenderer {
 
 					if (schedule.isScrollable()) jb.entry("scrollHeight", schedule.getScrollHeight());
 					if (schedule.isTwelveHourClock()) jb.entry("isTwelveHourClock", true);
+					if (autoDetectTimeZone) jb.entry("autoDetectTimeZone", true);
 
 					if (schedule.isLazy()) jb.entry("isLazy", true);
 
@@ -368,8 +370,10 @@ public class ScheduleRenderer extends CoreRenderer {
 
 					for (int i = 0; i < rowCount; i++) {
 						ScheduleUtils.ScheduleEventDecorator scheduleEvent = sortedEvents.get(i);
-						Date startDate = ScheduleUtils.toTimeZoneFromUTC(scheduleEvent.getStartDate(), timeZone);
-						Date endDate = ScheduleUtils.toTimeZoneFromUTC(scheduleEvent.getEndDate(), timeZone);
+						Date startDate = autoDetectTimeZone ? scheduleEvent.getStartDate() :
+								ScheduleUtils.toTimeZoneFromUTC(scheduleEvent.getStartDate(), timeZone);
+						Date endDate = autoDetectTimeZone ? scheduleEvent.getEndDate() :
+								ScheduleUtils.toTimeZoneFromUTC(scheduleEvent.getEndDate(), timeZone);
 						jb.beginMap();
 						jb.entry("index", scheduleEvent.getIndex());
 						ScheduleUtils.DateIntegerValues startDateValues = ScheduleUtils.getDateIntegerValues(startDate);
@@ -435,6 +439,16 @@ public class ScheduleRenderer extends CoreRenderer {
 				+ "-" + addLeadingZero(currentDateValues[2]), null);
 		}
 		writer.endElement("input");
+
+/*
+		if (autoDetectTimeZone) {
+			writer.startElement("input", null);
+			writer.writeAttribute("id", clientId + "_timeZoneOffset", null);
+			writer.writeAttribute("name", clientId + "_timeZoneOffset", null);
+			writer.writeAttribute("type", "hidden", null);
+			writer.endElement("input");
+		}
+*/
 
 		writer.startElement("input", null);
 		writer.writeAttribute("id", clientId + "_viewMode", null);

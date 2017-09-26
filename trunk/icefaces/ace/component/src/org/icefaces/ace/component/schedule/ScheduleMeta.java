@@ -94,7 +94,7 @@ public class ScheduleMeta extends UIDataMeta {
 	@Property(tlddoc = "The value should be a List, Array, DataModel or a type that can be adapted into a DataModel (java.sql.ResultSet, javax.servlet.jsp.jstl.sql.Result, and java.util.Collection). It must contain the org.icefaces.ace.model.schedule.ScheduleEvent objects to be displayed on the schedule. Alternatively, the value can be an implementation of org.icefaces.ace.model.schedule.LazyScheduleEventList to work in a lazy-loading mode.")
 	private Object value;
 
-	@Property(tlddoc = "A Date object specifying the date that is currently displayed in the client. This attribute can be used to set an inital date to display or to programmatically set a date to display. This attribute will be automatically updated with the current date being displayed in the client as the user interacts with the component. If the current view mode is set to 'month', this Date object will be automatically changed to the first day of the given month. If the current view mode is set to 'week', this Date object will be automatically changed to the Sunday when the week starts. If the current view mode is set to 'day', this Date object will not change. The time values are irrelevant for this attribute. If this attribute is not specified, the current date is going to be used. This Date object is assumed to be in the time zone specified by the 'timeZone' attribute.")
+	@Property(tlddoc = "A Date object specifying the date that is currently displayed in the client. This attribute can be used to set an inital date to display or to programmatically set a date to display. This attribute will be automatically updated with the current date being displayed in the client as the user interacts with the component. If the current view mode is set to 'month', this Date object will be automatically changed to the first day of the given month. If the current view mode is set to 'week', this Date object will be automatically changed to the Sunday when the week starts. If the current view mode is set to 'day', this Date object will not change. The time values are irrelevant for this attribute. If this attribute is not specified, the current date is going to be used. This Date object is assumed to be in the time zone specified by the 'timeZone' attribute, unless the attribute 'autoDetectTimeZone' is set to true, in which case this Date object will be assumed to be in the time zone of the client.")
 	private Date viewDate;
 
 	@Property(tlddoc = "Specifies the location of the sidebar or whether it should be hidden. Possible values are 'right', 'left', and 'hidden'.", defaultValue="right")
@@ -148,6 +148,9 @@ public class ScheduleMeta extends UIDataMeta {
 
     @Property(tlddoc = "Specifies the tabindex attribute for the navigation controls ('previous' and 'next' buttons). A  value of '0' enables focusing these buttons by pressing the tab key. A value of '-1' disables this behaviour. A value greater than '0' determines a specific order.", defaultValue = "0", defaultValueType = DefaultValueType.EXPRESSION)
 	private int tabindex;
+
+    @Property(tlddoc = "Enabling ignores the 'timeZone' attribute and detects the time zone used by the client and uses it to perform all event operations in the server for this component.", defaultValue = "false")
+    private boolean autoDetectTimeZone;
 
 	@Field(defaultValue="-1")
 	private Integer currentYear;

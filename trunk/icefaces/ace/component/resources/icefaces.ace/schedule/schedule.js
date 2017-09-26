@@ -31,11 +31,21 @@ ice.ace.Schedule = function(id, cfg) {
         ice.onElementUpdate(this.id, function() { self.unload(); });
     }
 
+	if (this.cfg.autoDetectTimeZone) {
+		var date = new Date();
+		this.timeZoneOffset = date.getTimezoneOffset();
+		//document.getElementById(this.id + '_timeZoneOffset').setAttribute('value', this.timeZoneOffset);
+	}
+
 	// order events according to their server-side index
 	this.eventsMap = {};
 	var i;
 	for (i = 0; i < cfg.events.length; i++) {
 		var event = cfg.events[i];
+		if (this.cfg.autoDetectTimeZone) {
+			this.applyTimeZoneOffset(event, 'start');
+			this.applyTimeZoneOffset(event, 'end');
+		}
 		this.eventsMap[''+event.index] = event;
 	}
 
@@ -722,6 +732,9 @@ ice.ace.Schedule.prototype.sendEditRequest = function(event, type) {
     else if (type == 'edit') params[this.id + "_edit"] = true;
     else if (type == 'delete') params[this.id + "_delete"] = true;
 	this.addTimeParameters(params);
+	var date = new Date();
+	this.timeZoneOffset = date.getTimezoneOffset();
+	if (this.cfg.autoDetectTimeZone) params[this.id + '_timeZoneOffset'] = this.timeZoneOffset;
     options.params = params;
 
 	// save scroll position
@@ -2308,6 +2321,19 @@ ice.ace.Schedule.prototype.getTitle = function(event) {
 // replace spaces for non-breaking spaces
 ice.ace.Schedule.prototype.replaceSpaces = function(str) {
 	return str.replace(/ /g, '&nbsp;');
+};
+
+ice.ace.Schedule.prototype.applyTimeZoneOffset = function(event, type) {
+	var year = event[type + 'Date'].substring(0,4);
+	var month = parseInt(event[type + 'Date'].substring(5,7), 10) - 1;
+	var day = parseInt(event[type + 'Date'].substring(8,10), 10);
+	var hour = parseInt(event[type + 'Time'].substring(0,2), 10);
+	var minutes = event[type + 'Time'].substring(3,5);
+	var date = new Date(year, month, day, hour, minutes, 0, 0);
+	date.setMinutes(date.getMinutes() - this.timeZoneOffset);
+	event[type + 'Date'] = date.getFullYear() + '-' + this.addLeadingZero(date.getMonth() + 1)
+		+ '-' + this.addLeadingZero(date.getDate());
+	event[type + 'Time'] = this.addLeadingZero(date.getHours()) + ':' + this.addLeadingZero(date.getMinutes());
 };
 
 ice.ace.Schedule.prototype.unload = function() {

@@ -335,6 +335,8 @@ public class Schedule extends ScheduleBase implements Serializable {
 	}
 
     public TimeZone calculateTimeZone() {
+		if (isAutoDetectTimeZone()) return TimeZone.getTimeZone("UTC");
+
         if (appropriateTimeZone == null) {
             Object usertimeZone = getTimeZone();
             if (usertimeZone != null) {
