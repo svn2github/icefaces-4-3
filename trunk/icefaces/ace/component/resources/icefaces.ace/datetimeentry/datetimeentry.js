@@ -57,21 +57,53 @@ ice.ace.Calendar = function(id, cfg) {
 		for (i = 0; i < rangesLength; i++) {
 			ranges[i] = this.convertToMillis(ranges[i]);
 		}
+		var self = this;
 		this.cfg.beforeShowDay = function(date) {
 			var millis = date.getTime();
+			var selectable = false;
 			for (i = 0; i < rangesLength; i = i + 2) {
 				if ((ranges[i] && ranges[i+1]) 
 					&& (millis >= ranges[i] && millis <= ranges[i+1])) {
-					return [true, ''];
+					selectable = true;
 				}
 				if ((ranges[i] && !ranges[i+1]) && millis >= ranges[i]) {
-					return [true, ''];
+					selectable = true;
 				}
 				if ((!ranges[i] && ranges[i+1]) && millis <= ranges[i+1]) {
-					return [true, ''];
+					selectable = true;
 				}
 			}
-			return [false, ''];
+			if (self.cfg.highlightedDates) {
+				var highlighted = self.cfg.highlightedDates;
+				var highlightedLength = highlighted.length;
+				var highlightedStyleClass = self.cfg.highlightedStyleClass || '';
+				for (i = 0; i < highlightedLength; i++) {
+					var highlightedDate = highlighted[i];
+					if (highlightedDate.year == date.getFullYear()
+							&& highlightedDate.month == date.getMonth()
+							&& highlightedDate.day == date.getDate()) {
+						return [selectable, highlightedStyleClass];
+					}
+				}
+				return [selectable, ''];
+			} else {
+				return [selectable, ''];
+			}
+		}
+	} else if (this.cfg.highlightedDates) {
+		var highlighted = this.cfg.highlightedDates;
+		var highlightedLength = highlighted.length;
+		var highlightedStyleClass = this.cfg.highlightedStyleClass || '';
+		this.cfg.beforeShowDay = function(date) {
+			for (i = 0; i < highlightedLength; i++) {
+				var highlightedDate = highlighted[i];
+				if (highlightedDate.year == date.getFullYear()
+						&& highlightedDate.month == date.getMonth()
+						&& highlightedDate.day == date.getDate()) {
+					return [true, highlightedStyleClass];
+				}
+			}
+			return [true, ''];
 		}
 	}
 

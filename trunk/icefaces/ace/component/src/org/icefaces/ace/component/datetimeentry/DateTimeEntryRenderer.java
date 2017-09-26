@@ -384,6 +384,64 @@ public class DateTimeEntryRenderer extends InputRenderer {
 			json.endArray();
 		}
 
+		Object highlightedDates = dateTimeEntry.getHighlightedDates();
+		if (highlightedDates != null) {
+			json.beginArray("highlightedDates");
+			if (highlightedDates instanceof String) {
+				SimpleDateFormat format = new SimpleDateFormat(dateTimeEntry.getPattern(), locale);
+				format.setTimeZone(TimeZone.getTimeZone("UTC"));
+				format.setLenient(dateTimeEntry.isLenientParsing());
+				String[] dates = ((String) highlightedDates).split(",");
+				for (int i = 0; i < dates.length; i++) {
+					try {
+						String dateString = dates[i];
+						dateString = dateString != null ? dateString.trim() : "";
+						Date convertedDate = format.parse(dateString);
+						Calendar cal  = Calendar.getInstance();
+						cal.setTime(convertedDate);
+						json.beginMap()
+							.entry("year", cal.get(Calendar.YEAR))
+							.entry("month", cal.get(Calendar.MONTH))
+							.entry("day", cal.get(Calendar.DATE))
+						.endMap();
+					} catch (ParseException e) {
+						json.item("");
+					}
+				}
+			} else if (highlightedDates instanceof List) {
+				List<Date> dates = (List<Date>) highlightedDates;
+				int size = dates.size();
+				for (int i = 0; i < size; i++) {
+					Date date = dates.get(i);
+					Calendar cal  = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+					cal.setTime(date);
+					json.beginMap()
+						.entry("year", cal.get(Calendar.YEAR))
+						.entry("month", cal.get(Calendar.MONTH))
+						.entry("day", cal.get(Calendar.DATE))
+					.endMap();
+				}
+			} else if (Object[].class.isAssignableFrom(highlightedDates.getClass())) {
+				Date[] dates = (Date[]) highlightedDates;
+				for (int i = 0; i < dates.length; i++) {
+					Date date = dates[i];
+					Calendar cal  = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+					cal.setTime(date);
+					json.beginMap()
+						.entry("year", cal.get(Calendar.YEAR))
+						.entry("month", cal.get(Calendar.MONTH))
+						.entry("day", cal.get(Calendar.DATE))
+					.endMap();
+				}
+			} else {
+				throw new FacesException("Attribute highlightedDates must be either a comma-separated string containing dates according to the pattern attribute, a List of java.util.Date objects or an array of java.util.Date objects.");
+			}
+			json.endArray();
+			String highlightedStyleClass = dateTimeEntry.getHighlightedStyleClass();
+			highlightedStyleClass = highlightedStyleClass == null ? "" : highlightedStyleClass;
+			json.entry("highlightedStyleClass", highlightedStyleClass);
+		}
+
 		json.entryNonNullValue("showButtonPanel", dateTimeEntry.isShowButtonPanel())
 			.entryNonNullValue("yearRange", dateTimeEntry.getYearRange());
 

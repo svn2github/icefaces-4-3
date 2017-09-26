@@ -63,6 +63,12 @@ public class DateTimeEntryMeta extends UIInputMeta {
     @Property(tlddoc = "Specifies a number of ranges of selectable dates. The value can be a number of date strings separated by commas, a List of Date objects or an Array of Date objects. These dates are taken in pairs to delimit a range; the first date in the pair is the start date, and the second date in the pair is the end date of that range. These dates are inclusive. If the first date of the pair is null, the empty string, or an invalid date, then the range will be considered to be from any date in the past up to its end date. Likewise, if the second date of the pair is null, an empty string, or an invalid date, then the range will be considered to be from its start date to any date in the future thereafter. If the dates are specified as strings, they are parsed according to the 'pattern' attribute of this component. Dates are taken literally, as they appear in the calendar, without regard for time zones. This attribute takes precedence over the 'mindate', 'maxdate', 'minDateTime', and 'maxDateTime' attributes. This attribute is only used to specify date ranges, not date-time ranges.")
     private Object selectableDateRanges;
 
+    @Property(tlddoc = "Specifies a number of dates that should be highlighted in the client, applying the style class specified by the 'highlightedStyleClass' attribute. The value can be a number of date strings separated by commas, a List of Date objects or an Array of Date objects. If the dates are specified as strings, they are parsed according to the 'pattern' attribute of this component. Dates are taken literally, as they appear in the calendar, without regard for time zones.")
+    private Object highlightedDates;
+
+    @Property(tlddoc = "Specifies the style class to apply to those dates specified in the 'highlightedDates' attribute.")
+    private String highlightedStyleClass;
+
     @Property(defaultValue = "1", tlddoc = "Enables multiple page rendering.")
     private int pages;
 
@@ -217,4 +223,6 @@ public class DateTimeEntryMeta extends UIInputMeta {
 
 	@Property(tlddoc = "Access key that, when pressed, transfers focus to this component.")
 	String accesskey;
+
+
 }
