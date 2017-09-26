@@ -196,7 +196,7 @@ public class CheckboxButtonsRenderer extends CheckboxButtonRenderer {
 		Object value = getConvertedValueForClient(facesContext, checkboxButtons, item.getValue());
 		boolean selected = isSelected(facesContext, checkboxButtons, value, currentSelections, converter);
 
-        String firstWrapperClass = "yui-button yui-checkboxbutton-button ui-button ui-widget";
+        String firstWrapperClass = "ui-button ui-widget";
         String secondWrapperClass = "first-child";
         boolean ariaEnabled = EnvUtils.isAriaEnabled(facesContext);
 

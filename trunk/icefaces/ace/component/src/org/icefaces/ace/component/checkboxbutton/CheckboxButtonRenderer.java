@@ -69,7 +69,7 @@ public class CheckboxButtonRenderer extends InputRenderer {
         String clientId = uiComponent.getClientId(facesContext);
 		Map<String, Object> labelAttributes = getLabelAttributes(uiComponent);
 		labelAttributes.put("fieldClientId", clientId + "_button");
-        String firstWrapperClass = "yui-button yui-checkboxbutton-button ui-button ui-widget";
+        String firstWrapperClass = "ui-button ui-widget";
         String secondWrapperClass = "first-child";
         boolean ariaEnabled = EnvUtils.isAriaEnabled(facesContext);
 
