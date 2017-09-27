@@ -16,6 +16,7 @@
 
 package org.icefaces.ace.component.animation;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -24,7 +25,7 @@ import java.util.Map;
 
 import org.icefaces.ace.util.JSONBuilder;
 
-public abstract class Effect{
+public abstract class Effect implements Serializable {
  
 	private AnimationBehavior effectBehavior;
 	private Map<String, Object> properties = new HashMap<String, Object>(); 

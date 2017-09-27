@@ -32,10 +32,10 @@ import java.util.Map;
 
 @ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
-	@ICEResourceDependency(name = "util/ace-core.js"),
-	@ICEResourceDependency(name = "jquery/jquery.js"),
-	@ICEResourceDependency(name = "util/ace-jquery-ui.js"),
-	@ICEResourceDependency(name = "animation/animation.js")
+        @ICEResourceDependency(name = "util/ace-core.js"),
+        @ICEResourceDependency(name = "jquery/jquery.js"),
+        @ICEResourceDependency(name = "util/ace-jquery-ui.js"),
+        @ICEResourceDependency(name = "animation/animation.js")
 })
 @FacesBehavior("org.icefaces.ace.animation.Animation")
 public class AnimationBehavior extends BehaviorBase {
@@ -51,8 +51,6 @@ public class AnimationBehavior extends BehaviorBase {
     private Integer iterations;
     private Double duration;
 
-
-    
     public String getTo() {
         return to;
     }
@@ -138,17 +136,6 @@ public class AnimationBehavior extends BehaviorBase {
         return (Boolean) eval("run", run);
     }
 
-    private void run(FacesContext facesContext, UIComponent uiComponent) {
-//    	if (!isRun()) return;
-//    		setRun(false);
-//	    	try {
-//				ScriptWriter.insertScript(facesContext, uiComponent, buildScript(uiComponent) );
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-    }
-
     private void use(String name) {
         if ("Appear".equalsIgnoreCase(name)) {
             effect = new Appear();
@@ -182,7 +169,7 @@ public class AnimationBehavior extends BehaviorBase {
             effect = new Size();
         } else if ("Transfer".equalsIgnoreCase(name)) {
             effect = new Transfer();
-        } else if("Anim".equalsIgnoreCase(name)) {
+        } else if ("Anim".equalsIgnoreCase(name)) {
             effect = new Anim();
         }
     }
@@ -196,6 +183,7 @@ public class AnimationBehavior extends BehaviorBase {
     }
 
     private String styleClass;
+
     public String getStyleClass() {
         return styleClass;
     }
@@ -223,7 +211,6 @@ public class AnimationBehavior extends BehaviorBase {
     }
 
     public String getScript(ClientBehaviorContext behaviorContext, boolean run) {
-
         if ("Anim".equals(effect.getName())) {
             if (getTo() != null && !effect.getProperties().containsKey("to")) {
                 effect.getProperties().put("to", getTo());
@@ -238,7 +225,6 @@ public class AnimationBehavior extends BehaviorBase {
         if (getDuration() != null && !effect.getProperties().containsKey("duration")) {
             effect.getProperties().put("duration", getDuration());
         }
-
         if (getEasing() != null && !effect.getProperties().containsKey("easing")) {
             effect.getProperties().put("easing", getEasing());
         }
@@ -254,7 +240,8 @@ public class AnimationBehavior extends BehaviorBase {
         }
         StringBuilder call = new StringBuilder();
         call.append(getEffectsLib());
-        if(run) {
+
+        if (run) {
             call.append("run");
         } else {
             call.append("register");
@@ -262,29 +249,21 @@ public class AnimationBehavior extends BehaviorBase {
         call.append("(");
         call.append(effect.getPropertiesAsJSON());
         call.append(")");
-        // System.out.println(call.toString());
+
         return call.toString();
     }
 
 
-
-    public void decode(FacesContext context,
-                       UIComponent component) {
+    public void decode(FacesContext context, UIComponent component) {
         super.decode(context, component);
         Map map = context.getExternalContext().getRequestParameterMap();
-        String id = "effect_style"+ component.getClientId();
+        String id = "effect_style" + component.getClientId();
         if (map.containsKey(id)) {
             setStyle(map.get(id).toString());
-            // System.out.println("Style found "+ map.get(id).toString());
         }
     }
 
-    public void encodeBegin(FacesContext context, UIComponent uiComponent){
-
-        run(context, uiComponent);
-    }
     protected Object eval(String propertyName, Object value) {
-
         ValueExpression expression = getValueExpression(propertyName);
 
         if (expression != null) {
@@ -295,26 +274,24 @@ public class AnimationBehavior extends BehaviorBase {
         if (value != null) {
             return value;
         }
+
         return null;
     }
 
     public ValueExpression getValueExpression(String name) {
-
         if (name == null) {
             throw new NullPointerException();
         }
+
         return ((bindings == null) ? null : bindings.get(name));
     }
 
-
     public void setValueExpression(String name, ValueExpression binding) {
-
         if (name == null) {
             throw new NullPointerException();
         }
 
         if (binding != null) {
-
             if (binding.isLiteralText()) {
                 setLiteralValue(name, binding);
             } else {
@@ -324,25 +301,25 @@ public class AnimationBehavior extends BehaviorBase {
 
                 bindings.put(name, binding);
                 if ("effectObject".equals(name)) {
-                    effect = ((Effect)binding.getValue(FacesContext.getCurrentInstance().getELContext()));
+                    effect = ((Effect) binding.getValue(FacesContext.getCurrentInstance().getELContext()));
                     effect.setEffectBehavior(this);
                 } else if ("name".equals(name)) {
-                    String effectName = ((String)binding.getValue(FacesContext.getCurrentInstance().getELContext()));
+                    String effectName = ((String) binding.getValue(FacesContext.getCurrentInstance().getELContext()));
                     use(effectName);
                 } else if ("to".equals(name)) {
-                    String to = ((String)binding.getValue(FacesContext.getCurrentInstance().getELContext()));
+                    String to = ((String) binding.getValue(FacesContext.getCurrentInstance().getELContext()));
                     setTo(to);
                 } else if ("from".equals(name)) {
-                    String from = ((String)binding.getValue(FacesContext.getCurrentInstance().getELContext()));
+                    String from = ((String) binding.getValue(FacesContext.getCurrentInstance().getELContext()));
                     setFrom(from);
                 } else if ("easing".equals(name)) {
-                    String easing = ((String)binding.getValue(FacesContext.getCurrentInstance().getELContext()));
+                    String easing = ((String) binding.getValue(FacesContext.getCurrentInstance().getELContext()));
                     setEasing(easing);
                 } else if ("iterations".equals(name)) {
-                    Integer iterations = ((Integer)binding.getValue(FacesContext.getCurrentInstance().getELContext()));
+                    Integer iterations = ((Integer) binding.getValue(FacesContext.getCurrentInstance().getELContext()));
                     setIterations(iterations);
                 } else if ("duration".equals(name)) {
-                    Double duration= ((Double)binding.getValue(FacesContext.getCurrentInstance().getELContext()));
+                    Double duration = ((Double) binding.getValue(FacesContext.getCurrentInstance().getELContext()));
                     setDuration(duration);
                 }
             }
@@ -358,10 +335,9 @@ public class AnimationBehavior extends BehaviorBase {
         clearInitialState();
     }
 
-    protected void setLiteralValue(String propertyName,
-                                   ValueExpression expression) {
+    protected void setLiteralValue(String propertyName, ValueExpression expression) {
 
-        assert(expression.isLiteralText());
+        assert (expression.isLiteralText());
 
         Object value;
         javax.el.ELContext context = FacesContext.getCurrentInstance().getELContext();
@@ -372,31 +348,56 @@ public class AnimationBehavior extends BehaviorBase {
             throw new FacesException(ele);
         }
         if ("run".equals(propertyName)) {
-            run = (Boolean)value;
-        } else if ("name".equals(propertyName)){
-            setName((String)value);
+            run = (Boolean) value;
+        } else if ("name".equals(propertyName)) {
+            setName((String) value);
         } else if ("to".equals(propertyName)) {
-            setTo((String)value);
+            setTo((String) value);
         } else if ("from".equals(propertyName)) {
-            setFrom((String)value);
+            setFrom((String) value);
         } else if ("easing".equals(propertyName)) {
-            setEasing((String)value);
+            setEasing((String) value);
         } else if ("iterations".equals(propertyName)) {
-            setIterations((Integer)value);
+            setIterations((Integer) value);
         } else if ("duration".equals(propertyName)) {
-            setDuration((Double)value);
+            setDuration((Double) value);
         }
     }
 
+    public Object saveState(FacesContext context) {
+        Object[] state = new Object[9];
+        state[0] = usingStyleClass;
+        state[1] = run;
+        state[2] = effect;
+        state[3] = style;
+        state[4] = to;
+        state[5] = from;
+        state[6] = easing;
+        state[7] = iterations;
+        state[8] = duration;
+        return state;
+    }
+
+    public void restoreState(FacesContext context, Object state) {
+        Object[] s = (Object[]) state;
+        usingStyleClass = ((Boolean) s[0]).booleanValue();
+        run = ((Boolean) s[1]).booleanValue();
+        effect = (Effect) s[2];
+        style = (String) s[3];
+        to = (String) s[4];
+        from = (String) s[5];
+        easing = (String) s[6];
+        iterations = (Integer) s[7];
+        duration = (Double) s[8];
+    }
+
     public interface IIterator {
-        public void next (String name, AnimationBehavior effectBehavior);
+        void next(String name, AnimationBehavior effectBehavior);
     }
 
     public static abstract class Iterator implements IIterator {
         private UIComponent uiComponent;
-        private Iterator(){
 
-        }
         public Iterator(UIComponent uiComponent) {
             this.uiComponent = uiComponent;
         }
