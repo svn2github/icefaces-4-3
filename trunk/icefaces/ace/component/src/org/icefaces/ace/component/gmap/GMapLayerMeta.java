@@ -55,7 +55,7 @@ public class GMapLayerMeta extends UIPanelMeta {
     @Property(tlddoc = "The URL from which to draw kml data.")
     private String url;
 
-    @Property(tlddoc = "Additional options to be sent to the layer. Check google maps API for more specifics at https://developers.google.com/maps/documentation/javascript/reference#KmlLayerOptions. Form is attribute:'value'.", defaultValue = "Skip")
+    @Property(tlddoc = "Additional options to be sent to the layer. Check google maps API for more specifics at https://developers.google.com/maps/documentation/javascript/reference#KmlLayerOptions. Form is attribute:'value'.", defaultValue = "")
     private String options;
 
     @Property(tlddoc = "Whether to make the chosen layer visible or not.")

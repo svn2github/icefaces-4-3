@@ -56,7 +56,7 @@ public class GMapMarkerMeta extends UIPanelMeta {
     @Property(tlddoc = "The animation that the marker should use. Valid values are 'bounce', 'drop', or 'none'.")
     private String animation;
 
-    @Property(tlddoc = "Additional options to be sent to the marker. Check google maps API for more specifics at https://developers.google.com/maps/documentation/javascript/reference#MarkerOptions. Form is attribute:'value'.", defaultValue = " ")
+    @Property(tlddoc = "Additional options to be sent to the marker. Check google maps API for more specifics at https://developers.google.com/maps/documentation/javascript/reference#MarkerOptions. Form is attribute:'value'.", defaultValue = "")
     private String options;
 
     @Property(tlddoc = "Set to true to remove the marker from the map", defaultValue = "false")
