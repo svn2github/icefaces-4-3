@@ -63,9 +63,9 @@ public class ExpansionToggler extends ExpansionTogglerBase {
 
                 FacesEvent event;
                 if (table.hasTreeDataModel())
-                    event = new ExpansionChangeEvent(this, table.getRowData(), rowState.isExpanded(), ((TreeDataModel)table.getModel()).getRowEntry().getValue());
+                    event = new ExpansionChangeEvent(this, table.getRowData(), !rowState.isExpanded(), ((TreeDataModel)table.getModel()).getRowEntry().getValue());
                 else
-                    event = new ExpansionChangeEvent(this, table.getRowData(), rowState.isExpanded());
+                    event = new ExpansionChangeEvent(this, table.getRowData(), !rowState.isExpanded());
 
                 event.setPhaseId(PhaseId.INVOKE_APPLICATION);
                 queueEvent(event);
