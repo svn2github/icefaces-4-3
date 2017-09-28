@@ -101,9 +101,16 @@ public class ChartRenderer extends CoreRenderer {
     }
 
     private void processSelections(Chart chart, String[] select) {
-        int seriesIndex = Integer.parseInt(select[0]);
-        int pointIndex = Integer.parseInt(select[1]);
-        chart.queueEvent(new SeriesSelectionEvent(chart, seriesIndex, pointIndex));
+        String seriesObject = select[0];
+        String pointObject =select[1];
+        try{
+            int seriesIndex = Integer.parseInt(seriesObject);
+            int pointIndex = Integer.parseInt(pointObject);
+            chart.queueEvent(new SeriesSelectionEvent(chart, seriesIndex, pointIndex));
+        }catch (NumberFormatException nfe)  {
+            chart.queueEvent(new SeriesSelectionEvent(chart, seriesObject, pointObject));
+        }
+
     }
 
     private void processExport(Chart chart, String exportInput) {

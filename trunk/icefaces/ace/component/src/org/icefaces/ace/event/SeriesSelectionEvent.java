@@ -21,20 +21,24 @@ import javax.faces.event.FacesEvent;
 import javax.faces.event.FacesListener;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Nils
- * Date: 5/11/12
- * Time: 2:00 PM
- * To change this template use File | Settings | File Templates.
+ * this event is used by the Chart component.  Original event would only allow integer values
+ * in the event, but ICE-11337 work allows label for chart to be part of the event.
  */
 public class SeriesSelectionEvent extends FacesEvent {
     int seriesIndex;
     int pointIndex;
+    String pointLabel;
+    String seriesLabel;
 
     public SeriesSelectionEvent(UIComponent c, int seriesIndex, int pointIndex) {
         super(c);
         this.seriesIndex = seriesIndex;
         this.pointIndex = pointIndex;
+    }
+    public SeriesSelectionEvent(UIComponent c, String seriesIndex, String pointLabel){
+        super(c);
+        this.seriesLabel = seriesIndex;
+        this.pointLabel=pointLabel;
     }
 
     public SeriesSelectionEvent(UIComponent component) {
@@ -65,5 +69,21 @@ public class SeriesSelectionEvent extends FacesEvent {
 
     public void setSeriesIndex(int seriesIndex) {
         this.seriesIndex = seriesIndex;
+    }
+
+    public String getPointLabel() {
+        return pointLabel;
+    }
+
+    public void setPointLabel(String pointLabel) {
+        this.pointLabel = pointLabel;
+    }
+
+    public String getSeriesLabel() {
+        return seriesLabel;
+    }
+
+    public void setSeriesLabel(String seriesLabel) {
+        this.seriesLabel = seriesLabel;
     }
 }
