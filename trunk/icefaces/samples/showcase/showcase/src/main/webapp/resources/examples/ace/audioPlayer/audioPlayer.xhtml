@@ -31,7 +31,7 @@
                 <h:panelGrid width="60%" columns="2" cellpadding="20" cellspacing="20">
                     <h:outputLabel for="value" value="Bird sound: "/>
                     <ace:simpleSelectOneMenu id="value" value="#{audioPlayerBean.value}">
-						<ace:ajax render="audioPlayer" />
+                        <ace:ajax render="@this audioPlayer"/>
                         <f:selectItem itemLabel="Canary" itemValue="./resources/media/canary.mp3"/>
                         <f:selectItem itemLabel="Crow" itemValue="./resources/media/crow.mp3"/>
                         <f:selectItem itemLabel="Duck" itemValue="./resources/media/duck.mp3"/>
