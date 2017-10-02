@@ -290,6 +290,7 @@ public class PanelRenderer extends CoreRenderer {
 
         writer.startElement("tr", null);
         writer.startElement("td", null);
+        writer.startElement("div", null);
         writer.writeAttribute("id", panel.getClientId() + "_content", null);
         writer.writeAttribute("class", Panel.PANEL_CONTENT_CLASS, null);
         if (panel.isCollapsed()) {
@@ -298,6 +299,7 @@ public class PanelRenderer extends CoreRenderer {
 
         renderChildren(facesContext, panel);
 
+        writer.endElement("div");
         writer.endElement("td");
         writer.endElement("tr");
     }
