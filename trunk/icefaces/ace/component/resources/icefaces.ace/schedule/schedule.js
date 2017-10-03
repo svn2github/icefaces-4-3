@@ -374,9 +374,10 @@ ice.ace.Schedule.prototype.getEventDetailsMarkup = function(data, isEventAdditio
 		}
 		if (data.styleClass) markup += '<input type="hidden" name="'+this.id+'_styleClass" value="'+data.styleClass+'"/>';
 		if (data.id) markup += '<input type="hidden" name="'+this.id+'_id" value="'+data.id+'"/>';
-		if (isEventAddition) markup += '<button onclick="var s = ice.ace.instance(\''+this.id+'\');'
-			+ 'if (s.validateInputs()) { s.sendEditRequest(event, \'add\'); } return false;">' + msgs.Add + '</button>';
-		else {
+		if (isEventAddition) {
+			markup += '<button onclick="var s = ice.ace.instance(\''+this.id+'\');'
+				+ 'if (s.validateInputs()) { s.sendEditRequest(event, \'add\'); } return false;">' + msgs.Add + '</button>';
+		} else {
 			if (isEventEditing) {
 				var closeDetailsMarkup = '';
 				if (this.cfg.eventDetails == 'popup') {
@@ -390,6 +391,8 @@ ice.ace.Schedule.prototype.getEventDetailsMarkup = function(data, isEventAdditio
 			}
 			if (isEventDeletion) markup += '<span><button onclick="ice.ace.instance(\''+this.id+'\').confirmDeletion(this);return false;">' + msgs.Delete + '</button><span role="alert" style="display:none;"><span>' + msgs.AreYouSure + ' </span><br/><button onclick="ice.ace.instance(\''+this.id+'\').sendEditRequest(event, \'delete\');return false;">' + msgs.Yes + '</button> <button onclick="ice.ace.instance(\''+this.id+'\').cancelDeletion(this);return false;">' + msgs.No + '</button></span></span>';
 		}
+		markup += '<button onclick="var s = ice.ace.instance(\''+this.id+'\');'
+			+ 's.resetFields(\'' + this.cfg.eventDetails + '\'); return false;">' + 'Reset' + '</button>';
 		return markup;
 	} else {
 		return '<div>No Data</div>';
@@ -470,6 +473,7 @@ ice.ace.Schedule.prototype.displayEventDetailsPopup = function(markup, event) {
 	eventDetails.find('button').button();
 	if (!event.isAllDay) this.addDefaultDurationFunctionality();
 	this.addAllDayFunctionality();
+	this.saveOriginalValues('popup');
 };
 
 ice.ace.Schedule.prototype.addDefaultDurationFunctionality = function() {
@@ -558,6 +562,7 @@ ice.ace.Schedule.prototype.displayEventDetailsSidebar = function(markup, event) 
 	eventDetails.find('button').button();
 	if (!event.isAllDay) this.addDefaultDurationFunctionality();
 	this.addAllDayFunctionality();
+	this.saveOriginalValues('sidebar');
 };
 
 ice.ace.Schedule.prototype.validateInputs = function() {
@@ -625,6 +630,44 @@ ice.ace.Schedule.prototype.validateInputs = function() {
 	}
 
 	return valid;
+};
+
+ice.ace.Schedule.prototype.saveOriginalValues = function(container) {
+	var dialog = ice.ace.jq(this.jqId).find('.schedule-details-' + container + '-content');
+	this.originalTextValues = [];
+	this.originalCheckboxValue = '';
+	this.originalSelectValues = [];
+	this.originalTextareaValue = '';
+	var textInputs = dialog.find('input[type="text"]');
+	var checkboxInput = dialog.find('input[type="checkbox"]');
+	var selectInputs = dialog.find('select');
+	var textareaInput = dialog.find('textarea');
+	var self = this;
+	textInputs.each(function() {
+		self.originalTextValues.push(ice.ace.jq(this).val());
+	});
+	this.originalCheckboxValue = checkboxInput.val();
+	selectInputs.each(function() {
+		self.originalSelectValues.push(ice.ace.jq(this).val());
+	});
+	this.originalTextareaValue = textareaInput.val();
+}
+
+ice.ace.Schedule.prototype.resetFields = function(container) {
+	var dialog = ice.ace.jq(this.jqId).find('.schedule-details-' + container + '-content');
+	var textInputs = dialog.find('input[type="text"]');
+	var checkboxInput = dialog.find('input[type="checkbox"]');
+	var selectInputs = dialog.find('select');
+	var textareaInput = dialog.find('textarea');
+	var self = this;
+	textInputs.each(function(i){
+		ice.ace.jq(this).val(self.originalTextValues[i]);
+	});
+	checkboxInput.val(this.originalCheckboxValue);
+	selectInputs.each(function(i){
+		ice.ace.jq(this).val(self.originalSelectValues[i]);
+	});
+	textareaInput.val(this.originalTextareaValue);
 };
 
 ice.ace.Schedule.prototype.displayEventDetailsTooltip = function(markup, node) {
@@ -909,7 +952,9 @@ ice.ace.Schedule.prototype.renderMonthEvents = function(data) {
 			eventElement.html('<span>' + startTime + ' ' + this.getTitle(event) + '</span>');
 			if (event.isAllDay) {
 				eventElement.addClass('schedule-event-allday');
-				eventElement.insertAfter(dayDiv.find('.schedule-day-number'));
+				var lastAllDayEvent = dayDiv.find('.schedule-event-allday:last');
+				if (lastAllDayEvent.size() > 0) eventElement.insertAfter(lastAllDayEvent);
+				else eventElement.insertAfter(dayDiv.find('.schedule-day-number'));
 			} else {
 				eventElement.appendTo(dayDiv);
 			}
@@ -1222,6 +1267,7 @@ ice.ace.Schedule.prototype.renderWeekEvents = function() {
 	// process regular events
 	var listing = 0;
 	var isChrome = ice.ace.browser.isChrome() && navigator.userAgent.indexOf('Edge\/') == -1;
+	var earllestEventTopPosition = -1;
 	for (i = 0; i < this.events.length; i++) {
 		var event = this.events[i];
 		if (event.isAllDay) continue;
@@ -1274,6 +1320,8 @@ ice.ace.Schedule.prototype.renderWeekEvents = function() {
 				left:position.left+multiplicityAdjustment+(isChrome?1:0),
 				width: (width - multiplicityAdjustment) + 'px', 
 				height: (endPosition.top - position.top + height) + 'px'}).appendTo(eventsContainer);
+			earllestEventTopPosition = earllestEventTopPosition == -1 ? 
+				position.top : (position.top < earllestEventTopPosition ? position.top : earllestEventTopPosition);
 			var highlightClass = listing % 2 == 1 ? ' ui-state-highlight' : '';
 			ice.ace.jq('<div role="listitem" class="schedule-list-event schedule-event-' + event.index + highlightClass + '"><span class="schedule-list-event-day">'+this.getDayOfTheWeekName(dow)+', '+this.getMonthNameShort(eventStartDate.getMonth())+' '+event.startDate.substring(8)+'</span><span class="schedule-list-event-name">'+this.getTitle(event)+'</span><span class="schedule-list-event-location">'+this.escapeHtml(event.location)+'</span></div>').appendTo(sidebarEventsContainer);
 			this.markUsedTimeSlots(this.weekTimeSlots[dow], startingTimeSlot, endingTimeSlot);
@@ -1312,6 +1360,8 @@ ice.ace.Schedule.prototype.renderWeekEvents = function() {
 							left:position.left+multiplicityAdjustment+(isChrome?1:0),
 							width: (width - multiplicityAdjustment) + 'px', 
 							height: (endPosition.top - position.top + height) + 'px'}).appendTo(eventsContainer);
+						earllestEventTopPosition = earllestEventTopPosition == -1 ? 
+							position.top : (position.top < earllestEventTopPosition ? position.top : earllestEventTopPosition);
 						this.markUsedTimeSlots(this.weekTimeSlots[dow], startingTimeSlot, endingTimeSlot);
 					}
 				}
@@ -1356,6 +1406,8 @@ ice.ace.Schedule.prototype.renderWeekEvents = function() {
 						left:position.left+multiplicityAdjustment+(isChrome?1:0),
 						width: (width - multiplicityAdjustment) + 'px', 
 						height: (endPosition.top - position.top + height) + 'px'}).appendTo(eventsContainer);
+					earllestEventTopPosition = earllestEventTopPosition == -1 ? 
+						position.top : (position.top < earllestEventTopPosition ? position.top : earllestEventTopPosition);
 					this.markUsedTimeSlots(this.weekTimeSlots[dow], startingTimeSlot, endingTimeSlot);
 				}
 			}
@@ -1387,16 +1439,24 @@ ice.ace.Schedule.prototype.renderWeekEvents = function() {
 					left:position.left+multiplicityAdjustment+(isChrome?1:0),
 					width: (width - multiplicityAdjustment) + 'px', 
 					height: (endPosition.top - position.top + height) + 'px'}).appendTo(eventsContainer);
+				earllestEventTopPosition = earllestEventTopPosition == -1 ? 
+					position.top : (position.top < earllestEventTopPosition ? position.top : earllestEventTopPosition);
 				this.markUsedTimeSlots(this.weekTimeSlots[dow], startingTimeSlot, endingTimeSlot);
 			}
 		}
 	}
 	this.expandEventList();
-	if  (this.cfg.scrollHeight) {
+	if (this.cfg.scrollHeight) {
 		if (window[this.id + '_lastScrollTop']) {
 			this.jqRoot.find('.schedule-days').animate({scrollTop: window[this.id + '_lastScrollTop']}, 1);
+			window[this.id + '_lastScrollTop'] = 0;
+		} else {
+			if (allDayEventCount == -1) {
+				if (eventsContainer.children('.schedule-event').size() > 0) {
+					this.jqRoot.find('.schedule-days').animate({scrollTop: earllestEventTopPosition}, 1);
+				}
+			}
 		}
-		window[this.id + '_lastScrollTop'] = 0;
 	}
 
 	// add selected styling
@@ -1533,6 +1593,7 @@ ice.ace.Schedule.prototype.renderDayEvents = function() {
 	// process regular events
 	var listing = 0;
 	var isChrome = ice.ace.browser.isChrome() && navigator.userAgent.indexOf('Edge\/') == -1;
+	var earllestEventTopPosition = -1;
 	for (i = 0; i < this.events.length; i++) {
 		var event = this.events[i];
 		if (event.isAllDay) continue;
@@ -1580,6 +1641,8 @@ ice.ace.Schedule.prototype.renderDayEvents = function() {
 				left:position.left+multiplicityAdjustment+(isChrome?1:0),
 				width: (width - multiplicityAdjustment) + 'px',
 				height: (endPosition.top - position.top + height) + 'px'}).appendTo(eventsContainer);
+			earllestEventTopPosition = earllestEventTopPosition == -1 ? 
+				position.top : (position.top < earllestEventTopPosition ? position.top : earllestEventTopPosition);
 			var highlightClass = listing % 2 == 1 ? ' ui-state-highlight' : '';
 			ice.ace.jq('<div role="listitem" class="schedule-list-event schedule-event-' + event.index + highlightClass + '"><span class="schedule-list-event-day">'+event.startTime+'</span><span class="schedule-list-event-name">'+this.getTitle(event)+'</span><span class="schedule-list-event-location">'+this.escapeHtml(event.location)+'</span></div>').appendTo(sidebarEventsContainer);
 			this.markUsedTimeSlots(this.dayTimeSlots, startingTimeSlot, endingTimeSlot);
@@ -1614,6 +1677,8 @@ ice.ace.Schedule.prototype.renderDayEvents = function() {
 				left:position.left+multiplicityAdjustment+(isChrome?1:0),
 				width: (width - multiplicityAdjustment) + 'px',
 				height: (endPosition.top - position.top + height) + 'px'}).appendTo(eventsContainer);
+			earllestEventTopPosition = earllestEventTopPosition == -1 ? 
+				position.top : (position.top < earllestEventTopPosition ? position.top : earllestEventTopPosition);
 			var highlightClass = listing % 2 == 1 ? ' ui-state-highlight' : '';
 			ice.ace.jq('<div class="schedule-list-event schedule-event-' + event.index + highlightClass + '"><span class="schedule-list-event-day">(continued)</span><span class="schedule-list-event-name">'+this.getTitle(event)+'</span><span class="schedule-list-event-location">'+this.escapeHtml(event.location)+'</span></div>').appendTo(sidebarEventsContainer);
 			this.markUsedTimeSlots(this.dayTimeSlots, startingTimeSlot, endingTimeSlot);
@@ -1646,6 +1711,8 @@ ice.ace.Schedule.prototype.renderDayEvents = function() {
 				left:position.left+multiplicityAdjustment+(isChrome?1:0),
 				width: (width - multiplicityAdjustment) + 'px',
 				height: (endPosition.top - position.top + height) + 'px'}).appendTo(eventsContainer);
+			earllestEventTopPosition = earllestEventTopPosition == -1 ? 
+				position.top : (position.top < earllestEventTopPosition ? position.top : earllestEventTopPosition);
 			var highlightClass = listing % 2 == 1 ? ' ui-state-highlight' : '';
 			ice.ace.jq('<div class="schedule-list-event schedule-event-' + event.index + highlightClass + '"><span class="schedule-list-event-day">(continued)</span><span class="schedule-list-event-name">'+this.getTitle(event)+'</span><span class="schedule-list-event-location">'+this.escapeHtml(event.location)+'</span></div>').appendTo(sidebarEventsContainer);
 			this.markUsedTimeSlots(this.dayTimeSlots, startingTimeSlot, endingTimeSlot);
@@ -1653,11 +1720,17 @@ ice.ace.Schedule.prototype.renderDayEvents = function() {
 		}
 	}
 	this.expandEventList();
-	if  (this.cfg.scrollHeight) {
+	if (this.cfg.scrollHeight) {
 		if (window[this.id + '_lastScrollTop']) {
 			this.jqRoot.find('.schedule-days').animate({scrollTop: window[this.id + '_lastScrollTop']}, 1);
+			window[this.id + '_lastScrollTop'] = 0;
+		} else {
+			if (allDayEventCount == -1) {
+				if (eventsContainer.children('.schedule-event').size() > 0) {
+					this.jqRoot.find('.schedule-days').animate({scrollTop: earllestEventTopPosition}, 1);
+				}
+			}
 		}
-		window[this.id + '_lastScrollTop'] = 0;
 	}
 };
 
@@ -1721,7 +1794,7 @@ ice.ace.Schedule.prototype.addAllDayRow = function(count) {
 	var daysGrid = ice.ace.jq(this.jqId).find('.schedule-days > table > tbody');
 
 	if (this.cfg.viewMode == 'week') {
-		var markup = '<tr>';
+		var markup = '<tr class="schedule-row-allday">';
 		markup += '<td class="ui-widget-content schedule-cell schedule-cell-time schedule-cell-allday">' + this.messages.ALLDAY + '</td>';
 		
 		var i;
@@ -1731,16 +1804,20 @@ ice.ace.Schedule.prototype.addAllDayRow = function(count) {
 
 		markup += '</tr>';
 
-		ice.ace.jq(markup).prependTo(daysGrid);
+		var lastAllDayRow = daysGrid.find('.schedule-row-allday:last');
+		if (lastAllDayRow.size() > 0) ice.ace.jq(markup).insertAfter(lastAllDayRow);
+		else ice.ace.jq(markup).prependTo(daysGrid);
 	} else if (this.cfg.viewMode == 'day') {
-		var markup = '<tr>';
+		var markup = '<tr class="schedule-row-allday">';
 		markup += '<td class="ui-widget-content schedule-cell schedule-cell-time schedule-cell-allday">' + this.messages.ALLDAY + '</td>';
 
 		markup += '<td class="ui-widget-content schedule-cell schedule-dow-single schedule-time-allday schedule-time-allday-' + count + '"><div class="schedule-state"></div></td>';
 
 		markup += '</tr>';
 
-		ice.ace.jq(markup).prependTo(daysGrid);
+		var lastAllDayRow = daysGrid.find('.schedule-row-allday:last');
+		if (lastAllDayRow.size() > 0) ice.ace.jq(markup).insertAfter(lastAllDayRow);
+		else ice.ace.jq(markup).prependTo(daysGrid);
 	}
 };
 

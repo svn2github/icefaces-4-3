@@ -106,6 +106,10 @@ public class FileEntryRenderer extends Renderer {
             if (classLoader == null) classLoader = bundleName.getClass().getClassLoader();
             if (bundleName == null) bundleName = ACE_MESSAGES_BUNDLE;
             bundle = ResourceBundle.getBundle(bundleName, locale, classLoader);
+System.out.println();
+System.out.println("locale: " + locale);
+System.out.println("bundleName: " + bundleName);
+System.out.println("add files: " + bundle.getString(MESSAGE_KEY_PREFIX + "ADD_FILES"));
 			
             writer.writeAttribute("class", "buttonbar", "styleClass");
 
