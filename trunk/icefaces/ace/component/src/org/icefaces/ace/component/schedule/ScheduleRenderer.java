@@ -49,6 +49,17 @@ public class ScheduleRenderer extends CoreRenderer {
 		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
 		String clientId = schedule.getClientId(context);
+
+		if (params.containsKey(clientId + "_viewModeChange")) {
+			String viewMode = params.get(clientId + "_viewModeChange");
+			if (viewMode != null && !"".equals(viewMode)) {
+				viewMode = viewMode.toLowerCase();
+				if ("month".equals(viewMode) || "week".equals(viewMode) || "day".equals(viewMode)) {
+					schedule.setViewMode(viewMode);
+				}
+			}
+		}
+
 		if (params.containsKey(clientId + "_add")) decodeAdd(context, schedule, params);
 		else if (params.containsKey(clientId + "_edit")) decodeEdit(context, schedule, params);
 		else if (params.containsKey(clientId + "_delete")) decodeDelete(context, schedule, params);
@@ -222,6 +233,7 @@ public class ScheduleRenderer extends CoreRenderer {
 		String tooltipClass = displayTooltip ? "schedule-config-details-tooltip" : "";
 		String scrollableClass = schedule.isScrollable() ? "schedule-config-scrollable" : "";
 		boolean autoDetectTimeZone = schedule.isAutoDetectTimeZone();
+		boolean enableViewModeControls = schedule.isEnableViewModeControls();
 
 		writer.startElement("div", null);
 		writer.writeAttribute("id", clientId, null);
@@ -264,6 +276,7 @@ public class ScheduleRenderer extends CoreRenderer {
 					if (schedule.isScrollable()) jb.entry("scrollHeight", schedule.getScrollHeight());
 					if (schedule.isTwelveHourClock()) jb.entry("isTwelveHourClock", true);
 					if (autoDetectTimeZone) jb.entry("autoDetectTimeZone", true);
+					if (enableViewModeControls) jb.entry("enableViewModeControls", true);
 
 					if (schedule.isLazy()) jb.entry("isLazy", true);
 
@@ -440,21 +453,18 @@ public class ScheduleRenderer extends CoreRenderer {
 		}
 		writer.endElement("input");
 
-/*
-		if (autoDetectTimeZone) {
-			writer.startElement("input", null);
-			writer.writeAttribute("id", clientId + "_timeZoneOffset", null);
-			writer.writeAttribute("name", clientId + "_timeZoneOffset", null);
-			writer.writeAttribute("type", "hidden", null);
-			writer.endElement("input");
-		}
-*/
-
 		writer.startElement("input", null);
 		writer.writeAttribute("id", clientId + "_viewMode", null);
 		writer.writeAttribute("name", clientId + "_viewMode", null);
 		writer.writeAttribute("type", "hidden", null);
 		writer.writeAttribute("value", viewMode, null);
+		writer.endElement("input");
+
+		writer.startElement("input", null);
+		writer.writeAttribute("id", clientId + "_viewModeChange", null);
+		writer.writeAttribute("name", clientId + "_viewModeChange", null);
+		writer.writeAttribute("type", "hidden", null);
+		writer.writeAttribute("value", "", null);
 		writer.endElement("input");
 
 		writer.startElement("script", null);

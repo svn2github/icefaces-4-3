@@ -152,6 +152,9 @@ public class ScheduleMeta extends UIDataMeta {
     @Property(tlddoc = "Enabling ignores the 'timeZone' attribute and detects the time zone used by the client and uses it to perform all event operations in the server for this component.", defaultValue = "false")
     private boolean autoDetectTimeZone;
 
+    @Property(tlddoc = "Enabling renders three buttons to change the view mode to either month, week or day. These buttons are displayed when clicking on the schedule header.", defaultValue = "true")
+	private boolean enableViewModeControls;
+
 	@Field(defaultValue="-1")
 	private Integer currentYear;
 
