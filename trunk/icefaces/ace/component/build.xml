@@ -393,9 +393,6 @@
                 verbose="${combined.css.present}"/>
         <concat destfile="${resources}/icefaces.ace/util/combined.css"
                 force="true" fixlastline="true">
-            <filelist dir="${resources}">
-                <file name="yui/2_8_2/button/assets/button-core.css"/>
-            </filelist>
             <fileset dir="${resources}">
                 <include name="icefaces.ace/*/*.css"/>
                 <exclude name="icefaces.ace/fileentry/*.css"/>
