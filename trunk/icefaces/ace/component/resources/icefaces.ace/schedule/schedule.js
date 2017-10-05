@@ -374,6 +374,10 @@ ice.ace.Schedule.prototype.getEventDetailsMarkup = function(data, isEventAdditio
 		}
 		if (data.styleClass) markup += '<input type="hidden" name="'+this.id+'_styleClass" value="'+data.styleClass+'"/>';
 		if (data.id) markup += '<input type="hidden" name="'+this.id+'_id" value="'+data.id+'"/>';
+		if (this.cfg.eventDetails == 'sidebar' && (isEventAddition || isEventEditing)) {
+			markup += '<button onclick="var s = ice.ace.instance(\''+this.id+'\');'
+				+ 's.resetFields(\'' + this.cfg.eventDetails + '\'); return false;">' + msgs.Reset + '</button>';
+		}
 		if (isEventAddition) {
 			markup += '<button onclick="var s = ice.ace.instance(\''+this.id+'\');'
 				+ 'if (s.validateInputs()) { s.sendEditRequest(event, \'add\'); } return false;">' + msgs.Add + '</button>';
@@ -391,8 +395,10 @@ ice.ace.Schedule.prototype.getEventDetailsMarkup = function(data, isEventAdditio
 			}
 			if (isEventDeletion) markup += '<span><button onclick="ice.ace.instance(\''+this.id+'\').confirmDeletion(this);return false;">' + msgs.Delete + '</button><span role="alert" style="display:none;"><span>' + msgs.AreYouSure + ' </span><br/><button onclick="ice.ace.instance(\''+this.id+'\').sendEditRequest(event, \'delete\');return false;">' + msgs.Yes + '</button> <button onclick="ice.ace.instance(\''+this.id+'\').cancelDeletion(this);return false;">' + msgs.No + '</button></span></span>';
 		}
-		markup += '<button onclick="var s = ice.ace.instance(\''+this.id+'\');'
-			+ 's.resetFields(\'' + this.cfg.eventDetails + '\'); return false;">' + 'Reset' + '</button>';
+		if (this.cfg.eventDetails == 'popup' && (isEventAddition || isEventEditing)) {
+			markup += '<button onclick="var s = ice.ace.instance(\''+this.id+'\');'
+				+ 's.resetFields(\'' + this.cfg.eventDetails + '\'); return false;">' + msgs.Reset + '</button>';
+		}
 		return markup;
 	} else {
 		return '<div>No Data</div>';
@@ -525,11 +531,11 @@ ice.ace.Schedule.prototype.addDefaultDurationFunctionality = function() {
 
 ice.ace.Schedule.prototype.addAllDayFunctionality = function() {
 	var self = this;
-	var displayLocation = self.cfg.eventDetails == 'sidebar' ? 'sidebar-' : 'popup-';
-	var timeInputs = ice.ace.jq(this.jqId).find('.schedule-details-'+displayLocation+'content').find('select');
+	var displayLocation = self.cfg.eventDetails == 'sidebar' ? 'sidebar' : 'popup';
+	var timeInputs = ice.ace.jq(this.jqId).find('.schedule-details-'+displayLocation+'-content').find('select');
 
 	if (timeInputs.size() >= 4) {
-		var allDayCheckbox = ice.ace.jq(this.jqId).find('.schedule-details-'+displayLocation+'content').find('input[type="checkbox"]');
+		var allDayCheckbox = ice.ace.jq(this.jqId).find('.schedule-details-'+displayLocation+'-content').find('input[type="checkbox"]');
 		if (allDayCheckbox.size() > 0) {
 			var applyAllDayFunctionality = function() {
 				if (allDayCheckbox.get(0).checked) {
@@ -646,7 +652,8 @@ ice.ace.Schedule.prototype.saveOriginalValues = function(container) {
 	textInputs.each(function() {
 		self.originalTextValues.push(ice.ace.jq(this).val());
 	});
-	this.originalCheckboxValue = checkboxInput.val();
+	this.originalCheckboxValue = checkboxInput.attr('checked');
+	this.originalCheckboxValue = this.originalCheckboxValue ? true : false;
 	selectInputs.each(function() {
 		self.originalSelectValues.push(ice.ace.jq(this).val());
 	});
@@ -663,7 +670,12 @@ ice.ace.Schedule.prototype.resetFields = function(container) {
 	textInputs.each(function(i){
 		ice.ace.jq(this).val(self.originalTextValues[i]);
 	});
-	checkboxInput.val(this.originalCheckboxValue);
+	if (this.originalCheckboxValue) {
+		checkboxInput.attr('checked', 'checked');
+	} else {
+		checkboxInput.removeAttr('checked');
+	}
+	checkboxInput.trigger('change');
 	selectInputs.each(function(i){
 		ice.ace.jq(this).val(self.originalSelectValues[i]);
 	});
@@ -2094,7 +2106,7 @@ ice.ace.Schedule.prototype.addNavigationListeners = function() {
 				currentDay = date.substring(date.indexOf('-', 5) + 1);
 				currentDay = parseInt(currentDay, 10);
 			}
-			if (view != 'day') { // set to previous Sunday
+			if (view == 'week') { // set to previous Sunday
 				var dateObject = new Date(currentYear, currentMonth, currentDay, 0, 0, 0, 0);
 				dateObject.setDate(dateObject.getDate() - dateObject.getDay());
 				currentYear = dateObject.getFullYear()
@@ -2114,12 +2126,16 @@ ice.ace.Schedule.prototype.addNavigationListeners = function() {
 			}
 			self.sendSelectionRequest();
 		}});
+		var startingDate = new Date(self.cfg.currentYear, self.cfg.currentMonth, 1, 0, 0, 0, 0);
+		navigationDialog.children().first().datepicker('setDate', startingDate);
+
+		// view mode controls
 		if (self.cfg.enableViewModeControls) {
 			navigationDialog.children().last().attr('style', 'text-align: center; padding: 5px 0;');
 			navigationDialog.children().last().html(
-				'<button onclick="var s = ice.ace.instance(\''+self.id+'\');s.changeViewMode(\'month\');return false;">Month</button>'
-				+'<button onclick="var s = ice.ace.instance(\''+self.id+'\');s.changeViewMode(\'week\');return false;">Week</button>'
-				+'<button onclick="var s = ice.ace.instance(\''+self.id+'\');s.changeViewMode(\'day\');return false;">Day</button>');
+				'<button onclick="var s = ice.ace.instance(\''+self.id+'\');s.changeViewMode(\'month\');return false;">' + self.messages.Month + '</button>'
+				+'<button onclick="var s = ice.ace.instance(\''+self.id+'\');s.changeViewMode(\'week\');return false;">' + self.messages.Week + '</button>'
+				+'<button onclick="var s = ice.ace.instance(\''+self.id+'\');s.changeViewMode(\'day\');return false;">' + self.messages.Day + '</button>');
 			var buttons = navigationDialog.children().last().find('button');
 			var monthButton = buttons.eq(0);
 			var weekButton = buttons.eq(1);

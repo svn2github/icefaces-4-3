@@ -21,6 +21,37 @@ import java.util.Date;
 
 public class ScheduleEvent implements Serializable {
 
+	public ScheduleEvent() {}
+
+	public ScheduleEvent(String id, String title, Date startDate, Date endDate, 
+			boolean allDay, String location, String notes, String styleClass) {
+		this.id = id;
+		this.title = title;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.allDay = allDay;
+		this.location = location;
+		this.notes = notes;
+		this.styleClass = styleClass;
+	}
+
+	public ScheduleEvent(String title, Date startDate, Date endDate, 
+			boolean allDay, String location, String notes) {
+		this.title = title;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.allDay = allDay;
+		this.location = location;
+		this.notes = notes;
+	}
+
+	public ScheduleEvent(String title, Date startDate, Date endDate, String location) {
+		this.title = title;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.location = location;
+	}
+
 	private String id;
 	/**
      * For app-specific, business logic use.
@@ -43,19 +74,19 @@ public class ScheduleEvent implements Serializable {
     public Date getEndDate() { return endDate; }
 	public void setEndDate(Date endDate) { this.endDate = endDate; }
 
+	private boolean allDay;
+    public boolean isAllDay() { return allDay; }
+	public void setAllDay(boolean allDay) { this.allDay = allDay; }
+
 	private String location;
     public String getLocation() { return location; }
 	public void setLocation(String location) { this.location = location; }
-
-	private String styleClass;
-    public String getStyleClass() { return styleClass; }
-	public void setStyleClass(String styleClass) { this.styleClass = styleClass; }
 
 	private String notes;
     public String getNotes() { return notes; }
 	public void setNotes(String notes) { this.notes = notes; }
 
-	private boolean allDay;
-    public boolean isAllDay() { return allDay; }
-	public void setAllDay(boolean allDay) { this.allDay = allDay; }
+	private String styleClass;
+    public String getStyleClass() { return styleClass; }
+	public void setStyleClass(String styleClass) { this.styleClass = styleClass; }
 }

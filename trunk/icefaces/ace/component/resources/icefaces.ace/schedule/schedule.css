@@ -212,6 +212,9 @@
 	display: block;
 	margin-top: 5px;
 }
+.ice-ace-schedule .schedule-sidebar .schedule-details-sidebar-content > button {
+	margin-right: 5px;
+}
 .ice-ace-schedule .schedule-sidebar .schedule-details-sidebar-content > span > span > span {
 	display: block;
 }
