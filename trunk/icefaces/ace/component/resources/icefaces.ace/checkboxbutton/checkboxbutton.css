@@ -23,6 +23,27 @@
 	padding: 0.2em 0.45em 0.2em 0.2em;
 }
 
+.ice-checkboxbutton .ui-button {
+	display: -moz-inline-box;
+	display: inline-block;
+	vertical-align: text-bottom;
+}
+
+.ice-checkboxbutton .ui-button .first-child {
+	display: block;
+	*display: inline-block;
+}
+
+.ice-checkboxbutton .ui-button button {
+    background-color: transparent;
+    *overflow: visible;
+    cursor: pointer;
+    display: block;
+    *display: inline-block;
+    border: none;
+    margin: 0;
+}
+
 .ice-checkboxbutton .ui-button > span > button {
     border:none;
 	padding: 0.2em 0.2em 0.2em 0.45em;
