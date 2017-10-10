@@ -25,7 +25,7 @@ import java.io.Serializable;
 import java.util.*;
 
 public class NodeStateMap implements Map<Object, NodeState>, Serializable {
-    Map<Object, NodeState> map = new HashMap<Object, NodeState>();
+    Map<Object, NodeState> map = new LinkedHashMap<Object, NodeState>();
     KeySegmentConverter keyConverter;
     Predicate selectedPredicate = new SelectedPredicate();
     Predicate expandedPredicate = new ExpandedPredicate();
