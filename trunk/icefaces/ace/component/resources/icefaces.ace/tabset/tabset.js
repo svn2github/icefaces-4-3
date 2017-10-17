@@ -31,12 +31,13 @@ ice.ace.tabset = {
        ice.ace.tabset.consoleLog(false, 'tabSet.initialize');
 	 
 	   var Dom = YAHOO.util.Dom;
+       var initElem = document.getElementById(clientId);
+		var initWidth = ice.ace.jq(initElem).width();
 
        var tabview = new YAHOO.widget.TabView(clientId), cachedOldTabs = [], cachedNewTab = null;
        tabview.set('orientation', jsProps.orientation);
 
        //if tabset is client side, lets find out if the state is already stored.
-       var initElem = document.getElementById(clientId);
        initElem.suppressTabChange = true;
        if (jsfProps.isClientSide) {
     	   if(ice.ace.clientState.has(clientId)){
@@ -55,6 +56,23 @@ ice.ace.tabset = {
            }
        }
        initElem.suppressTabChange = null;
+
+		if (jsProps.scrollableTabs) {
+			var root = ice.ace.jq(ice.ace.escapeClientId(clientId));
+			var container = root.find('.ui-tabs-container');
+			container.addClass('.ui-tabs-container-scrollable');
+			container.find('ul').css('white-space', 'nowrap');
+			var middleDiv = container.children('div');
+			var leftArrow = root.find('.ui-tabs-arrow-left');
+			leftArrow.html('<button><i class="fa fa-arrow-left"></i></button>');
+			leftArrow.find('button').button().click(function() {middleDiv.get(0).scrollLeft-= 50; return false;});
+			var rightArrow = root.find('.ui-tabs-arrow-right');
+			rightArrow.html('<button><i class="fa fa-arrow-right"></i></button>');
+			rightArrow.find('button').button().click(function() {middleDiv.get(0).scrollLeft+= 50; return false;});
+			middleDiv.css('margin-left', leftArrow.width());
+			middleDiv.css('margin-right', rightArrow.width());
+			middleDiv.width(initWidth - leftArrow.width() - rightArrow.width());
+		}
        
        var tabChange=function(event) {
             var tabChangeStartTime = new Date().getTime();

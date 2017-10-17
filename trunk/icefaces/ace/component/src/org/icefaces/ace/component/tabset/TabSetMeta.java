@@ -184,4 +184,11 @@ public class TabSetMeta extends UIComponentBaseMeta {
         "contents will execute.")
     private Integer preDecodeSelectedIndex;
 
+    @Property(tlddoc = "If true then if the tabs in the tabSet don't fit in the " +
+		"available width in a single row of tabs, instead of rendering the rest of " +
+		"the tabs in the next row, they all will be rendered in the same row, and " +
+		"two arrow buttons, one pointing left and the other pointing right, will be " +
+		"rendered at the ends of the row of tabs, making it possible to scroll through " +
+        "all the tabs in the tabSet.")
+    private boolean scrollableTabs;
 }

@@ -147,7 +147,7 @@
 
 .ui-tabset .ui-tabs-nav li {
     list-style: none;
-    float: left;
+    /*float: left;*/display: inline-block;
     position: relative;
     margin: 0 .2em 0 0;
     padding: 0;
@@ -288,4 +288,26 @@
 
 .ui-tabset-vertical .ui-tabs-hide {
     display: none !important;
+}
+
+/* ----- scrollable tabs ----- */
+
+.ui-tabs-container {
+	position: relative;
+}
+
+.ui-tabs-container > div {
+	overflow: hidden;
+}
+
+.ui-tabs-container .ui-tabs-arrow-left {
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+
+.ui-tabs-container .ui-tabs-arrow-right {
+	position: absolute;
+	right: 0;
+	top: 0;
 }
