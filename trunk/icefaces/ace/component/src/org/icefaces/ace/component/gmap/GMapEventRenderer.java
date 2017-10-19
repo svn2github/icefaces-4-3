@@ -77,6 +77,8 @@ public class GMapEventRenderer extends CoreRenderer {
 			String address = ((GMapMarker) gMapComponentParent).getAddress();
 			addressBasedMarker = address != null && !"".equals(address);
 		}
+		String scriptToUse = gMapEvent.getScriptToUse();
+		scriptToUse = scriptToUse == null ? "" : scriptToUse;
 		JSONBuilder jb = JSONBuilder.create();
 		if (!gMapEvent.isDisabled()) {
 			jb.beginFunction("ice.ace.gMap.addEvent")
@@ -86,7 +88,7 @@ public class GMapEventRenderer extends CoreRenderer {
 				.item(gMapComponentParent.getClass().getName())
 				.item(gMapEvent.getEventType())
 				.item(gMapEvent.getRendererType())
-                    .item("function(map, component) {" + gMapEvent.getScriptToUse() + "}", false)
+                    .item("function(map, component) {" + scriptToUse + "}", false)
                     .item((gMapEvent.getListener() != null))
 				.item(addressBasedMarker)
 			.endFunction();
