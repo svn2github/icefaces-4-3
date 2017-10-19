@@ -292,22 +292,30 @@
 
 /* ----- scrollable tabs ----- */
 
-.ui-tabs-container {
+.ui-tabs-scrollable {
 	position: relative;
 }
 
-.ui-tabs-container > div {
+.ui-tabs-scrollable > div {
 	overflow: hidden;
 }
 
-.ui-tabs-container .ui-tabs-arrow-left {
+.ui-tabs-scrollable .ui-tabs-scrollable-left {
 	position: absolute;
 	left: 0;
 	top: 0;
 }
 
-.ui-tabs-container .ui-tabs-arrow-right {
+.ui-tabs-scrollable .ui-tabs-scrollable-left button {
+	padding: 0.2em 0;
+}
+
+.ui-tabs-scrollable .ui-tabs-scrollable-right {
 	position: absolute;
 	right: 0;
 	top: 0;
+}
+
+.ui-tabs-scrollable .ui-tabs-scrollable-right button {
+	padding: 0.2em 0;
 }

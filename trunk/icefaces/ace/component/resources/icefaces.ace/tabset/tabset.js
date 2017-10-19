@@ -59,19 +59,50 @@ ice.ace.tabset = {
 
 		if (jsProps.scrollableTabs) {
 			var root = ice.ace.jq(ice.ace.escapeClientId(clientId));
-			var container = root.find('.ui-tabs-container');
-			container.addClass('.ui-tabs-container-scrollable');
+			var container = root.find('.ui-tabs-scrollable');
 			container.find('ul').css('white-space', 'nowrap');
 			var middleDiv = container.children('div');
-			var leftArrow = root.find('.ui-tabs-arrow-left');
+			var leftArrow = root.find('.ui-tabs-scrollable-left');
+			var rightArrow = root.find('.ui-tabs-scrollable-right');
+			var checkScroll = function() {
+				var width = middleDiv.width();
+				var scrollLeft = middleDiv.get(0).scrollLeft;
+				var scrollWidth = middleDiv.get(0).scrollWidth;
+				var tabsFitInWidth = false;
+
+				var lastTab = container.find('li').last();
+				if (scrollLeft > 0 || (lastTab.position().left + lastTab.width()) > (width+10)) {
+					leftArrow.find('button').button('enable');
+					rightArrow.find('button').button('enable');
+				} else {
+					leftArrow.find('button').button('disable').removeClass('ui-state-focus');
+					rightArrow.find('button').button('disable').removeClass('ui-state-focus');
+					tabsFitInWidth = true;
+				}
+
+				if (scrollLeft == 0) {
+					leftArrow.find('button').button('disable').removeClass('ui-state-focus');
+				} else {
+					leftArrow.find('button').button('enable');
+				}
+				if (tabsFitInWidth || (width + scrollLeft) >= scrollWidth) {
+					rightArrow.find('button').button('disable').removeClass('ui-state-focus');
+				} else {
+					rightArrow.find('button').button('enable');
+				}
+			};
 			leftArrow.html('<button><i class="fa fa-arrow-left"></i></button>');
-			leftArrow.find('button').button().click(function() {middleDiv.get(0).scrollLeft-= 50; return false;});
-			var rightArrow = root.find('.ui-tabs-arrow-right');
+			leftArrow.find('button').button().click(function() {middleDiv.animate({
+				scrollLeft: (middleDiv.get(0).scrollLeft - 200) + 'px'}, checkScroll); return false;
+			});
 			rightArrow.html('<button><i class="fa fa-arrow-right"></i></button>');
-			rightArrow.find('button').button().click(function() {middleDiv.get(0).scrollLeft+= 50; return false;});
+			rightArrow.find('button').button().click(function() {middleDiv.animate({
+				scrollLeft: (middleDiv.get(0).scrollLeft + 200) + 'px'}, checkScroll); return false;
+			});
 			middleDiv.css('margin-left', leftArrow.width());
 			middleDiv.css('margin-right', rightArrow.width());
 			middleDiv.width(initWidth - leftArrow.width() - rightArrow.width());
+			checkScroll();
 		}
        
        var tabChange=function(event) {

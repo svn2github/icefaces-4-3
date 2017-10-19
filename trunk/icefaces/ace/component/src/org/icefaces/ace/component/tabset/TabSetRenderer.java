@@ -111,6 +111,7 @@ public class TabSetRenderer extends CoreRenderer {
         TabSet tabSet = (TabSet) uiComponent;
         String orientation = tabSet.getOrientation();
         orientation = orientation == null || "".equals(orientation) ? "top" : orientation;
+		boolean scrollableTabs = tabSet.isScrollableTabs();
         
         //As per YUI's contract if the orientation is set to bottom, the contents of the tab
         //should ger rendered first, and then tabs
@@ -130,12 +131,14 @@ public class TabSetRenderer extends CoreRenderer {
             writer.endElement(HTML.UL_ELEM);
               
         } else if ("top".equals(orientation)) {
-			writer.startElement(HTML.DIV_ELEM, null);
-			writer.writeAttribute(HTML.CLASS_ATTR, "ui-tabs-container", HTML.CLASS_ATTR);
-			writer.startElement(HTML.SPAN_ELEM, null);
-			writer.writeAttribute(HTML.CLASS_ATTR, "ui-tabs-arrow-left", HTML.CLASS_ATTR);
-			writer.endElement(HTML.SPAN_ELEM);
-			writer.startElement(HTML.DIV_ELEM, null);
+			if (scrollableTabs) {
+				writer.startElement(HTML.DIV_ELEM, null);
+				writer.writeAttribute(HTML.CLASS_ATTR, "ui-tabs-scrollable", HTML.CLASS_ATTR);
+				writer.startElement(HTML.SPAN_ELEM, null);
+				writer.writeAttribute(HTML.CLASS_ATTR, "ui-tabs-scrollable-left", HTML.CLASS_ATTR);
+				writer.endElement(HTML.SPAN_ELEM);
+				writer.startElement(HTML.DIV_ELEM, null);
+			}
             writer.startElement(HTML.UL_ELEM, null);
                 writer.writeAttribute(HTML.ID_ATTR, clientId+"_nav", HTML.ID_ATTR);
                 writer.writeAttribute(HTML.CLASS_ATTR, "yui-nav ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all", HTML.CLASS_ATTR);
@@ -144,11 +147,13 @@ public class TabSetRenderer extends CoreRenderer {
                 }                
                 doTabs(facesContext, uiComponent, Do.RENDER_LABEL, null, null, null);
             writer.endElement(HTML.UL_ELEM);
-			writer.endElement(HTML.DIV_ELEM);
-			writer.startElement(HTML.SPAN_ELEM, null);
-			writer.writeAttribute(HTML.CLASS_ATTR, "ui-tabs-arrow-right", HTML.CLASS_ATTR);
-			writer.endElement(HTML.SPAN_ELEM);
-			writer.endElement(HTML.DIV_ELEM);
+			if (scrollableTabs) {
+				writer.endElement(HTML.DIV_ELEM);
+				writer.startElement(HTML.SPAN_ELEM, null);
+				writer.writeAttribute(HTML.CLASS_ATTR, "ui-tabs-scrollable-right", HTML.CLASS_ATTR);
+				writer.endElement(HTML.SPAN_ELEM);
+				writer.endElement(HTML.DIV_ELEM);
+			}
             
             
             writer.startElement(HTML.DIV_ELEM, null);
