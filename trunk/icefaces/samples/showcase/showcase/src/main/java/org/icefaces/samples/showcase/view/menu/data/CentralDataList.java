@@ -578,7 +578,9 @@ public class CentralDataList {
 					new Demo(msgs("menu.ace.tabSet.subMenu.serverSide"), msgs("example.ace.tabSet.serverSide.description"),
 							 "tab", "tabset-server_side.xhtml", "TabServerSideBean.java"),
 					new Demo(msgs("menu.ace.tabSet.subMenu.proxy"), msgs("example.ace.tabSet.proxy.description"),
-							 "tab", "tabset-proxy.xhtml", "TabProxyBean.java")),
+							 "tab", "tabset-proxy.xhtml", "TabProxyBean.java"),
+					new Demo(msgs("menu.ace.tabSet.subMenu.scrollableTabs"), msgs("example.ace.tabSet.scrollableTabs.description"),
+							 "tab", "tabset-scrollable.xhtml", "TabScrollableBean.java")),
 				new ComponentGroup("ace:tree", new DemoResource[] {
 						new DemoResource(DemoResource.Type.WIKI, "ace:tree", "Tree"),
 						new DemoResource(DemoResource.Type.TLD, "ace:tree", "tree.html"),
