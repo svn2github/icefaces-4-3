@@ -337,10 +337,7 @@ version: 2.8.2r1
                     if (current != value) {
                         this.removeClass('yui-navset-' + current);
                     }
-                    
-                    if (value === 'bottom') {
-                        this.appendChild(this._tabParent);
-                    }
+                    // ICE-11363 removed code that moved ul element
                 }
             });
             

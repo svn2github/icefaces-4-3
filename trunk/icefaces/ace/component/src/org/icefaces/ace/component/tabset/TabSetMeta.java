@@ -189,6 +189,6 @@ public class TabSetMeta extends UIComponentBaseMeta {
 		"the tabs in the next row, they all will be rendered in the same row, and " +
 		"two arrow buttons, one pointing left and the other pointing right, will be " +
 		"rendered at the ends of the row of tabs, making it possible to scroll through " +
-        "all the tabs in the tabSet.")
+        "all the tabs in the tabSet. This functionality only applies to the 'top' and 'bottom' orientations.")
     private boolean scrollableTabs;
 }

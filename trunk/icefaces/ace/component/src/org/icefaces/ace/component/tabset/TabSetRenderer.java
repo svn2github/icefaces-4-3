@@ -121,6 +121,14 @@ public class TabSetRenderer extends CoreRenderer {
                 writer.writeAttribute(HTML.CLASS_ATTR, "yui-content ui-tabs-panel ui-widget-content ui-corner-top", HTML.CLASS_ATTR);
             writer.endElement(HTML.DIV_ELEM);
         
+			if (scrollableTabs) {
+				writer.startElement(HTML.DIV_ELEM, null);
+				writer.writeAttribute(HTML.CLASS_ATTR, "ui-tabs-scrollable", HTML.CLASS_ATTR);
+				writer.startElement(HTML.SPAN_ELEM, null);
+				writer.writeAttribute(HTML.CLASS_ATTR, "ui-tabs-scrollable-left", HTML.CLASS_ATTR);
+				writer.endElement(HTML.SPAN_ELEM);
+				writer.startElement(HTML.DIV_ELEM, null);
+			}
             writer.startElement(HTML.UL_ELEM, null);
                 writer.writeAttribute(HTML.ID_ATTR, clientId+"_nav", HTML.ID_ATTR);
                 writer.writeAttribute(HTML.CLASS_ATTR, "yui-nav ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all", HTML.CLASS_ATTR);
@@ -129,6 +137,13 @@ public class TabSetRenderer extends CoreRenderer {
                 }
                 doTabs(facesContext, uiComponent, Do.RENDER_LABEL, null, null, null);
             writer.endElement(HTML.UL_ELEM);
+			if (scrollableTabs) {
+				writer.endElement(HTML.DIV_ELEM);
+				writer.startElement(HTML.SPAN_ELEM, null);
+				writer.writeAttribute(HTML.CLASS_ATTR, "ui-tabs-scrollable-right", HTML.CLASS_ATTR);
+				writer.endElement(HTML.SPAN_ELEM);
+				writer.endElement(HTML.DIV_ELEM);
+			}
               
         } else if ("top".equals(orientation)) {
 			if (scrollableTabs) {
