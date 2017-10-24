@@ -339,7 +339,35 @@ ice.ace.gMap.remove = function (ele) {
 ice.ace.gMap.addMarker = function (ele, markerID, Lat, Lon, address, options) {
     var wrapper = ice.ace.gMap.getGMapWrapper(ele);
     var marker = wrapper.markers[markerID];
-    if (marker == null || marker.getMap() == null) {
+	if (marker != null) { // update marker object
+        var markerOps;
+        markerOps = options;
+        markerOps.map = wrapper.getRealGMap();
+        if (address) {
+            markerOps.position = new google.maps.LatLng(0, 0);
+            var visible = markerOps.visible !== false;
+            markerOps.visible = false;
+            marker.setOptions(markerOps);
+            var initGeocoder = new google.maps.Geocoder();
+            initGeocoder.geocode({'address': address}, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    var result = results[0];
+                    if (result) {
+                        marker.setPosition(result.geometry.location);
+                        marker.setVisible(visible);
+                        var callbacks = ice.ace.gMap.markerCallbacks[markerID];
+                        if (callbacks) {
+                            while (callbacks.length > 0)
+                                callbacks.pop().call(marker);
+                        }
+                    }
+                }
+            });
+        } else {
+            markerOps.position = new google.maps.LatLng(Lat, Lon);
+            marker.setOptions(markerOps);
+        }
+    } else if (marker == null || marker.getMap() == null) {
         var markerOps;
         markerOps = options;
         markerOps.map = wrapper.getRealGMap();
@@ -379,7 +407,7 @@ ice.ace.gMap.addMarkerCallback = function (id, callback) {
     ice.ace.gMap.markerCallbacks[id].push(callback);
 };
 
-ice.ace.gMap.removeMarker = function (ele, markerId) {
+ice.ace.gMap.removeMarker = function (ele, markerId, persistObject) {
     var gmapWrapper = ice.ace.gMap.getGMapWrapper(ele);
     var marker = gmapWrapper.markers[markerId];
     if (marker != null) {
@@ -388,13 +416,15 @@ ice.ace.gMap.removeMarker = function (ele, markerId) {
         //nothing found just return
         return;
     }
-    var newMarkerArray = {};
-    for (var markerObj in gmapWrapper.markers) {
-        if (marker != markerObj) {
-            newMarkerArray[markerObj] = gmapWrapper.markers[markerObj];
-        }
-    }
-    gmapWrapper.markers = newMarkerArray;
+	if (!persistObject) {
+		var newMarkerArray = {};
+		for (var markerObj in gmapWrapper.markers) {
+			if (marker != markerObj) {
+				newMarkerArray[markerObj] = gmapWrapper.markers[markerObj];
+			}
+		}
+		gmapWrapper.markers = newMarkerArray;
+	}
 };
 
 ice.ace.gMap.animateMarker = function (ele, markerId, animation) {

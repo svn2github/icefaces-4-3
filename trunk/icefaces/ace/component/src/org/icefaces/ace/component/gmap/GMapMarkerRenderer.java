@@ -55,6 +55,7 @@ public class GMapMarkerRenderer extends CoreRenderer {
 				jb.beginFunction("ice.ace.gMap.removeMarker")
 					.item(mapClientId)
 					.item(clientId)
+					.item(true) // persist object, since it's going to be updated
 				.endFunction();
 				writer.write(jb.toString());
 				if (marker.getOptions() != null) {
@@ -85,6 +86,7 @@ public class GMapMarkerRenderer extends CoreRenderer {
 				jb.beginFunction("ice.ace.gMap.removeMarker")
 					.item(mapClientId)
 					.item(clientId)
+					.item(true) // persist object, since it's going to be updated
 				.endFunction();
 				writer.write(jb.toString());
 				if (marker.getOptions() != null) {
@@ -124,6 +126,7 @@ public class GMapMarkerRenderer extends CoreRenderer {
 			jb.beginFunction("ice.ace.gMap.removeMarker")
 				.item(mapClientId)
 				.item(clientId)
+				.item(true) // persist object, since it's going to be updated
 			.endFunction();
 			writer.write(jb.toString());
         }
