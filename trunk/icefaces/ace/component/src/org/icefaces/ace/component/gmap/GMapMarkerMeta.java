@@ -17,6 +17,7 @@
 package org.icefaces.ace.component.gmap;
 
 import org.icefaces.ace.meta.annotation.Component;
+import org.icefaces.ace.meta.annotation.Expression;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
 
@@ -24,6 +25,8 @@ import org.icefaces.ace.resources.ACEResourceNames;
 import org.icefaces.resources.ICEResourceDependencies;
 import org.icefaces.resources.ICEResourceDependency;
 import org.icefaces.resources.ICEResourceLibrary;
+
+import javax.el.MethodExpression;
 
 @Component(
         tagName = "gMapMarker",
@@ -64,4 +67,9 @@ public class GMapMarkerMeta extends UIPanelMeta {
 
     @Property(tlddoc = "The address to locate via the Google Maps Geocoder API, at which the marker will be placed after a successful geocoding request. This attribute takes precedence over latitude and longitude.")
     private String address;
+
+    @Property(expression = Expression.METHOD_EXPRESSION,
+			methodExpressionArgument = "org.icefaces.ace.event.MarkerDragDropEvent",
+			tlddoc = "A server side listener to be invoked when the marker is dragged and dropped at a different position. The MarkerDragDropEvent object contains the new latitude and longitude values.")
+    private MethodExpression dragDropListener;
 }

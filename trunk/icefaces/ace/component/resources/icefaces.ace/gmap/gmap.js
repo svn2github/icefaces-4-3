@@ -336,7 +336,7 @@ ice.ace.gMap.remove = function (ele) {
     GMapRepository = newRepository;
 };
 
-ice.ace.gMap.addMarker = function (ele, markerID, Lat, Lon, address, options) {
+ice.ace.gMap.addMarker = function (ele, markerID, Lat, Lon, address, options, dragDropListener) {
     var wrapper = ice.ace.gMap.getGMapWrapper(ele);
     var marker = wrapper.markers[markerID];
 	if (marker != null) { // update marker object
@@ -375,29 +375,49 @@ ice.ace.gMap.addMarker = function (ele, markerID, Lat, Lon, address, options) {
             markerOps.position = new google.maps.LatLng(0, 0);
             var visible = markerOps.visible !== false;
             markerOps.visible = false;
-            var addressMarker = new google.maps.Marker(markerOps);
-            wrapper.markers[markerID] = addressMarker;
+            marker = new google.maps.Marker(markerOps);
+            wrapper.markers[markerID] = marker;
             var initGeocoder = new google.maps.Geocoder();
             initGeocoder.geocode({'address': address}, function (results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
                     var result = results[0];
                     if (result) {
-                        addressMarker.setPosition(result.geometry.location);
-                        addressMarker.setVisible(visible);
+                        marker.setPosition(result.geometry.location);
+                        marker.setVisible(visible);
                         var callbacks = ice.ace.gMap.markerCallbacks[markerID];
                         if (callbacks) {
                             while (callbacks.length > 0)
-                                callbacks.pop().call(addressMarker);
+                                callbacks.pop().call(marker);
                         }
                     }
                 }
             });
         } else {
             markerOps.position = new google.maps.LatLng(Lat, Lon);
-            var marker = new google.maps.Marker(markerOps);
+            marker = new google.maps.Marker(markerOps);
             wrapper.markers[markerID] = marker;
         }
     }
+	if (dragDropListener) {
+		var previousListener = marker.listener;
+		if (previousListener) google.maps.event.removeListener(marker, "dragend", previousListener);
+		marker.listener = function(event) {
+			var options = {
+				source: markerID,
+				execute: markerID,
+				render: '@all'
+			};
+
+			var params = {};
+			params[markerID + "_lat"] = event.latLng.lat();
+			params[markerID + "_lng"] = event.latLng.lng();
+
+			options.params = params;
+
+			ice.ace.AjaxRequest(options);
+		}
+		google.maps.event.addListener(marker, "dragend", marker.listener);
+	}
 };
 
 if (!ice.ace.gMap.markerCallbacks) ice.ace.gMap.markerCallbacks = {};

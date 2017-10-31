@@ -16,6 +16,7 @@
 
 package org.icefaces.ace.component.gmap;
 
+import org.icefaces.ace.event.MarkerDragDropEvent;
 import org.icefaces.ace.json.JSONException;
 import org.icefaces.ace.json.JSONObject;
 import org.icefaces.ace.renderkit.CoreRenderer;
@@ -27,10 +28,25 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.Map;
 
 @MandatoryResourceComponent(tagName = "gMap", value = "org.icefaces.ace.component.gmap.GMap")
 public class GMapMarkerRenderer extends CoreRenderer {
 
+	@Override
+	public void decode(FacesContext context, UIComponent component) {
+
+		GMapMarker marker = (GMapMarker) component;
+		String clientId = marker.getClientId(context);
+		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+
+		if (params.containsKey(clientId + "_lat") && marker.getDragDropListener() != null) {
+			MarkerDragDropEvent event = new MarkerDragDropEvent(marker, 
+				params.get(clientId + "_lat"),
+				params.get(clientId + "_lng"));
+			marker.queueEvent(event);
+		}
+	}
 
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -66,8 +82,9 @@ public class GMapMarkerRenderer extends CoreRenderer {
 						.item("")
 						.item("")
 						.item(address)
-                            .item(options, false)
-                            .endFunction();
+                        .item(options, false)
+                        .item(marker.getDragDropListener() != null)
+                    .endFunction();
 					writer.write(jb.toString());
 				} else {
 					jb = JSONBuilder.create();
@@ -77,6 +94,8 @@ public class GMapMarkerRenderer extends CoreRenderer {
 						.item("")
 						.item("")
 						.item(address)
+						.item("")
+                        .item(marker.getDragDropListener() != null)
 					.endFunction();
 					writer.write(jb.toString());
 				}
@@ -97,8 +116,9 @@ public class GMapMarkerRenderer extends CoreRenderer {
 						.item(currentLat)
 						.item(currentLon)
 						.item("")
-                            .item(options, false)
-                            .endFunction();
+                        .item(options, false)
+                        .item(marker.getDragDropListener() != null)
+                    .endFunction();
 					writer.write(jb.toString());
 				} else {
 					jb = JSONBuilder.create();
@@ -108,6 +128,8 @@ public class GMapMarkerRenderer extends CoreRenderer {
 						.item(currentLat)
 						.item(currentLon)
 						.item("")
+                        .item("")
+                        .item(marker.getDragDropListener() != null)
 					.endFunction();
 					writer.write(jb.toString());
 				}

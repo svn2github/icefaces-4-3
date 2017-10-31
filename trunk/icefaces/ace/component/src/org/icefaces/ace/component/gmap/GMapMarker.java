@@ -16,6 +16,24 @@
 
 package org.icefaces.ace.component.gmap;
 
+import org.icefaces.ace.event.MarkerDragDropEvent;
+
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.FacesEvent;
+import javax.faces.context.FacesContext;
+import javax.el.MethodExpression;
+
 public class GMapMarker extends GMapMarkerBase {
 
+	@Override
+    public void broadcast(FacesEvent event) throws AbortProcessingException {
+		super.broadcast(event);
+
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		MethodExpression me = getDragDropListener();
+
+		if (me != null && event instanceof MarkerDragDropEvent) {
+			me.invoke(facesContext.getELContext(), new Object[] {event});
+		}
+	}
 }
