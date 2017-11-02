@@ -54,6 +54,13 @@ import org.icefaces.ace.component.expansiontoggler.ExpansionToggler;
 import org.icefaces.ace.component.excludefromexport.ExcludeFromExport;
 import org.icefaces.ace.component.celleditor.CellEditor;
 import org.icefaces.ace.component.panelexpansion.PanelExpansion;
+import org.icefaces.ace.model.table.RowState;
+import org.icefaces.ace.model.table.RowStateMap;
+import org.icefaces.ace.model.table.TreeDataModel;
+
+import org.icefaces.ace.component.list.ACEList;
+import org.icefaces.impl.component.Repeat;
+import org.icefaces.impl.component.VarStatus;
 
 import org.icefaces.application.ResourceRegistry;
 
@@ -499,7 +506,132 @@ public abstract class Exporter {
 			} catch (Exception e) {}
 
 			return value.toString();
-        }
+		} else if (component instanceof DataTable) {
+			DataTable table = (DataTable) component;
+
+			Object model = table.getModel();
+			TreeDataModel rootModel = null;
+			boolean hasRowExpansion = false;
+			if (model != null && table.hasTreeDataModel()) {
+				rootModel = (TreeDataModel) model;
+				hasRowExpansion = true;
+			}
+
+			int rowCount = table.getRowCount();
+			int first = table.getFirst();
+			int rows = table.getRows();
+			int size = rows > 0 ? (first + rows) : rowCount;
+			size = size > rowCount ? rowCount : size;
+
+			String rowIndexVar = table.getRowIndexVar();
+			rowIndexVar = rowIndexVar == null ? "" : rowIndexVar;
+
+			StringBuilder builder = new StringBuilder();
+			String rowVar = table.getVar();
+			Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+			for (int i = 0; i < size; i++) {
+				table.setRowIndex(i);
+				Object rowData = table.getRowData();
+                if (rowVar != null) requestMap.put(rowVar, rowData);
+				if (!"".equals(rowIndexVar)) {
+					requestMap.put(rowIndexVar, i);
+				}
+
+				// 'before' conditional rows
+				List<Row> leadingRows = table.getConditionalRows(i, true);
+				for (Row r : leadingRows) exportConditionalRowValues(builder, r);
+
+				for (UIComponent child : table.getChildren()) {
+					if (child instanceof UIColumn) {
+						builder.append(exportValue(context, child));
+						builder.append(" ");
+					}
+				}
+
+				if (hasRowExpansion) {
+					exportChildRowValues(context, rootModel, table.getStateMap(), table, "" + i, builder);
+				}
+
+				// 'after' conditional rows
+				List<Row> tailingRows = table.getConditionalRows(i, false);
+				for (Row r : tailingRows) exportConditionalRowValues(builder, r);
+				builder.append(" ");
+			}
+			requestMap.remove(rowVar);
+			return builder.toString();
+        } else if (component instanceof ACEList) {
+			ACEList list = (ACEList) component;
+
+			StringBuilder builder = new StringBuilder();
+			int rowCount = list.getRowCount();
+			String rowVar = list.getVar();
+			Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+			for (int i = 0; i < rowCount; i++) {
+				list.setRowIndex(i);
+				Object rowData = list.getRowData();
+                if (rowVar != null) requestMap.put(rowVar, rowData);
+
+				for (UIComponent child : list.getChildren()) {
+					builder.append(exportValue(context, child));
+					builder.append(" ");
+				}
+				builder.append(" ");
+			}
+			requestMap.remove(rowVar);
+			return builder.toString();
+        } else if (component instanceof Repeat) {
+			Repeat repeat = (Repeat) component;
+
+			StringBuilder builder = new StringBuilder();
+			int rowCount = repeat.getRowCount();
+			int rows = repeat.getRows();
+			int first = repeat.getFirst();
+			first = first > rowCount ? 0 : first;
+			if (rows == 0 || rows + first > rowCount) {
+				rows = rowCount - first;
+			}
+			int last = first + rows - 1;
+			String rowVar = repeat.getVar();
+			String varStatus = repeat.getVarStatus();
+			Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+			for (int i = 0; i < rowCount; i++) {
+				repeat.setRowIndex(i);
+				Object rowData = repeat.getRowData();
+                if (rowVar != null) requestMap.put(rowVar, rowData);
+                if (varStatus != null) requestMap.put(varStatus, new VarStatus(first, last, i));
+
+				for (UIComponent child : repeat.getChildren()) {
+					builder.append(exportValue(context, child));
+					builder.append(" ");
+				}
+				builder.append(" ");
+			}
+			requestMap.remove(rowVar);
+			requestMap.remove(varStatus);
+			return builder.toString();
+        } else if (component instanceof UIData) {
+			UIData uiData = (UIData) component;
+
+			StringBuilder builder = new StringBuilder();
+			int rowCount = uiData.getRowCount();
+			String rowVar = uiData.getVar();
+			Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+			for (int i = 0; i < rowCount; i++) {
+				uiData.setRowIndex(i);
+				Object rowData = uiData.getRowData();
+                if (rowVar != null) requestMap.put(rowVar, rowData);
+
+				for (UIComponent child : uiData.getChildren()) {
+					if (child instanceof UIColumn) {
+						builder.append(exportValue(context, child));
+						builder.append(" ");
+					}
+				}
+				builder.append(" ");
+			}
+			requestMap.remove(rowVar);
+			return builder.toString();
+		}
         
 		String ret = "";
         //This would get the plain texts on UIInstructions when using Facelets
@@ -523,6 +655,69 @@ public abstract class Exporter {
 		}
         return ret;
     }
+
+	protected void exportConditionalRowValues(StringBuilder builder, Row row) {
+		List<UIComponent> children = row.getChildren();
+		List<UIColumn> rowColumns = new ArrayList<UIColumn>(children.size());
+		for (UIComponent kid : children) {
+			if (kid instanceof Column) {
+				Column c = (Column) kid;
+				int colspan = c.getColspan();
+				for (int i = 0; i < colspan; i++) rowColumns.add(c);
+			}
+		}
+		FacesContext context = FacesContext.getCurrentInstance();
+		for (UIColumn child : rowColumns) {
+			builder.append(exportValue(context, child));
+			builder.append(" ");
+		}
+		builder.append(" ");
+	}
+
+	protected void exportChildRowValues(FacesContext context, TreeDataModel rootModel, RowStateMap rowStateMap,
+		DataTable table, String rootIndex, StringBuilder builder) {
+		rootModel.setRootIndex(rootIndex);
+		rootModel.setRowIndex(0);
+
+		RowState rootState = rowStateMap.get(rootModel.getRootData());
+		
+		String rowVar = table.getVar();
+		String rowIndexVar = table.getRowIndexVar();
+		Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+		if (rootState.isExpanded() && rootModel.getRowCount() > 0) {
+			while (rootModel.getRowIndex() < rootModel.getRowCount()) {
+				int rowIndex = rootModel.getRowIndex();
+				Object rowData = rootModel.getRowData();
+                if (rowVar != null) requestMap.put(rowVar, rowData);
+                if (rowIndexVar != null) requestMap.put(rowIndexVar, rowData);
+				RowState rowState = rowStateMap.get(rootModel.getRowData());
+				
+				// export
+				for (UIComponent child : table.getChildren()) {
+					if (child instanceof UIColumn) {
+						builder.append(exportValue(context, child));
+						builder.append(" ");
+					}
+				}
+				builder.append(" ");
+				
+				if (rowState.isExpanded()) {
+					
+					// recurse
+					exportChildRowValues(context, rootModel, rowStateMap, table, rootIndex + "." + rowIndex, builder);
+					
+					// restore
+					rootModel.setRootIndex(rootIndex);
+					rootModel.setRowIndex(rowIndex);
+				}
+                rootModel.setRowIndex(rootModel.getRowIndex() + 1);
+                if (rowIndexVar != null) requestMap.remove(rowIndexVar);
+                if (rowVar != null) requestMap.remove(rowVar);
+			}
+		}
+		
+        rootModel.setRootIndex(null);
+	}
 
 	protected String registerResource(byte[] bytes, String filename, String contentType) {
 		ExporterResource resource = new ExporterResource(bytes);
