@@ -22,14 +22,17 @@ import javax.faces.event.FacesListener;
 
 public class MarkerDragDropEvent extends FacesEvent {
 
-	private String lat;
-
-	private String lng;
+	private String newLat;
+	private String newLng;
+	private String oldLat;
+	private String oldLng;
 	
-	public MarkerDragDropEvent(UIComponent component, String lat, String lng) {
+	public MarkerDragDropEvent(UIComponent component, String newLat, String newLng, String oldLat, String oldLng) {
 		super(component);
-		this.lat = lat;
-		this.lng = lng;
+		this.newLat = newLat;
+		this.newLng = newLng;
+		this.oldLat = oldLat;
+		this.oldLng = oldLng;
 	}
 
 	@Override
@@ -42,11 +45,19 @@ public class MarkerDragDropEvent extends FacesEvent {
 		throw new UnsupportedOperationException();
 	}
 	
-	public String getLat() {
-		return lat;
+	public String getNewLatitude() {
+		return newLat;
 	}
 
-	public String getLng() {
-		return lng;
+	public String getNewLongitude() {
+		return newLng;
+	}
+
+	public String getOldLatitude() {
+		return oldLat;
+	}
+
+	public String getOldLongitude() {
+		return oldLng;
 	}
 }

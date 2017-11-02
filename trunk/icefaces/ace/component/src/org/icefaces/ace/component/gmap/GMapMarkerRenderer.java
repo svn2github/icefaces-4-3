@@ -41,10 +41,19 @@ public class GMapMarkerRenderer extends CoreRenderer {
 		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
 		if (params.containsKey(clientId + "_lat") && marker.getDragDropListener() != null) {
-			MarkerDragDropEvent event = new MarkerDragDropEvent(marker, 
-				params.get(clientId + "_lat"),
-				params.get(clientId + "_lng"));
-			marker.queueEvent(event);
+			String newLatitude = params.get(clientId + "_lat");
+			String newLongitude = params.get(clientId + "_lng");
+			if (newLatitude != null && !"".equals(newLatitude)
+				&& newLongitude != null && !"".equals(newLongitude)) {
+				MarkerDragDropEvent event = new MarkerDragDropEvent(marker, 
+					newLatitude,
+					newLongitude,
+					marker.getLatitude(),
+					marker.getLongitude());
+				marker.queueEvent(event);
+				marker.setLatitude(newLatitude);
+				marker.setLongitude(newLongitude);
+			}
 		}
 	}
 

@@ -70,6 +70,6 @@ public class GMapMarkerMeta extends UIPanelMeta {
 
     @Property(expression = Expression.METHOD_EXPRESSION,
 			methodExpressionArgument = "org.icefaces.ace.event.MarkerDragDropEvent",
-			tlddoc = "A server side listener to be invoked when the marker is dragged and dropped at a different position. The MarkerDragDropEvent object contains the new latitude and longitude values.")
+			tlddoc = "A server side listener to be invoked when the marker is dragged and dropped at a different position. The MarkerDragDropEvent object contains the new and old latitude and longitude values. Also, this component's latitude and longitude values are automatically updated as well.")
     private MethodExpression dragDropListener;
 }
