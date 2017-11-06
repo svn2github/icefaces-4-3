@@ -336,7 +336,7 @@ ice.ace.gMap.remove = function (ele) {
     GMapRepository = newRepository;
 };
 
-ice.ace.gMap.addMarker = function (ele, markerID, Lat, Lon, address, options, dragDropListener) {
+ice.ace.gMap.addMarker = function (ele, markerID, Lat, Lon, address, options) {
     var wrapper = ice.ace.gMap.getGMapWrapper(ele);
     var marker = wrapper.markers[markerID];
 	if (marker != null) { // update marker object
@@ -398,10 +398,10 @@ ice.ace.gMap.addMarker = function (ele, markerID, Lat, Lon, address, options, dr
             wrapper.markers[markerID] = marker;
         }
     }
-	if (dragDropListener) {
-		var previousListener = marker.listener;
-		if (previousListener) google.maps.event.removeListener(marker, "dragend", previousListener);
-		marker.listener = function(event) {
+	var previousListener = marker.listener;
+	if (previousListener) google.maps.event.removeListener(previousListener);
+	if (marker.getDraggable()) {
+		marker.listener = google.maps.event.addListener(marker, "dragend", 	function(event) {
 			var options = {
 				source: markerID,
 				execute: markerID,
@@ -415,8 +415,7 @@ ice.ace.gMap.addMarker = function (ele, markerID, Lat, Lon, address, options, dr
 			options.params = params;
 
 			ice.ace.AjaxRequest(options);
-		}
-		google.maps.event.addListener(marker, "dragend", marker.listener);
+		});
 	}
 };
 

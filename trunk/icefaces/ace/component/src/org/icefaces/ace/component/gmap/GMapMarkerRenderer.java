@@ -40,17 +40,19 @@ public class GMapMarkerRenderer extends CoreRenderer {
 		String clientId = marker.getClientId(context);
 		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
-		if (params.containsKey(clientId + "_lat") && marker.getDragDropListener() != null) {
+		if (params.containsKey(clientId + "_lat")) {
 			String newLatitude = params.get(clientId + "_lat");
 			String newLongitude = params.get(clientId + "_lng");
 			if (newLatitude != null && !"".equals(newLatitude)
 				&& newLongitude != null && !"".equals(newLongitude)) {
-				MarkerDragDropEvent event = new MarkerDragDropEvent(marker, 
-					newLatitude,
-					newLongitude,
-					marker.getLatitude(),
-					marker.getLongitude());
-				marker.queueEvent(event);
+				if (marker.getDragDropListener() != null) {
+					MarkerDragDropEvent event = new MarkerDragDropEvent(marker, 
+						newLatitude,
+						newLongitude,
+						marker.getLatitude(),
+						marker.getLongitude());
+					marker.queueEvent(event);
+				}
 				marker.setLatitude(newLatitude);
 				marker.setLongitude(newLongitude);
 			}
@@ -92,7 +94,6 @@ public class GMapMarkerRenderer extends CoreRenderer {
 						.item("")
 						.item(address)
                         .item(options, false)
-                        .item(marker.getDragDropListener() != null)
                     .endFunction();
 					writer.write(jb.toString());
 				} else {
@@ -104,7 +105,6 @@ public class GMapMarkerRenderer extends CoreRenderer {
 						.item("")
 						.item(address)
 						.item("")
-                        .item(marker.getDragDropListener() != null)
 					.endFunction();
 					writer.write(jb.toString());
 				}
@@ -126,7 +126,6 @@ public class GMapMarkerRenderer extends CoreRenderer {
 						.item(currentLon)
 						.item("")
                         .item(options, false)
-                        .item(marker.getDragDropListener() != null)
                     .endFunction();
 					writer.write(jb.toString());
 				} else {
@@ -138,7 +137,6 @@ public class GMapMarkerRenderer extends CoreRenderer {
 						.item(currentLon)
 						.item("")
                         .item("")
-                        .item(marker.getDragDropListener() != null)
 					.endFunction();
 					writer.write(jb.toString());
 				}
