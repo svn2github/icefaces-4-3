@@ -96,7 +96,7 @@ public class DataTableRowRenderer {
                     encodeRegularCell(new CellRenderingContext(
                             context, cols, i, visibleIndex,
                             selectedColumnIds.contains(kid.getId()),
-                            innerTdDivRequired), userRowStyleClass
+                            innerTdDivRequired, rowIndex == 0), userRowStyleClass
                     );
 					visibleIndex++;
                 }
@@ -236,6 +236,10 @@ public class DataTableRowRenderer {
 					columnStyleClass += " ui-table-priority-" + displayPriority; 
 				}
 
+				if (cellContext.firstRow) {
+					columnStyleClass += " ui-datatable-first";
+				}
+
                 writer.writeAttribute(HTML.CLASS_ATTR, userRowStyleClass + " " + columnStyleClass, null);
 
                 if (cellContext.resizable) writer.startElement(HTML.DIV_ELEM, null);
@@ -321,7 +325,7 @@ public class DataTableRowRenderer {
                         IProxiableColumn kid = cols.get(i);
                         if (kid.isRendered()) {
                             boolean cellSelected = false;
-                            encodeRegularCell(new CellRenderingContext(context, cols, i, visibleIndex, selectedColumnIds.contains(kid.getId()), false), "");
+                            encodeRegularCell(new CellRenderingContext(context, cols, i, visibleIndex, selectedColumnIds.contains(kid.getId()), false, false), "");
 							visibleIndex++;
                         }
                     }
@@ -424,14 +428,16 @@ public class DataTableRowRenderer {
 		int visibleIndex;
         boolean selected;
         boolean resizable;
+		boolean firstRow;
 
-        public CellRenderingContext(FacesContext context, List<IProxiableColumn> columns, int index, int visibleIndex, boolean selected, boolean innerDiv) {
+        public CellRenderingContext(FacesContext context, List<IProxiableColumn> columns, int index, int visibleIndex, boolean selected, boolean innerDiv, boolean firstRow) {
             this.context = context;
             this.columns = columns;
             this.index = index;
 			this.visibleIndex = visibleIndex;
             this.selected = selected;
             this.resizable = innerDiv;
+			this.firstRow = firstRow;
         }
     }
 }
