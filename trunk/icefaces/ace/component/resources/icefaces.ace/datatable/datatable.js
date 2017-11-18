@@ -2649,10 +2649,10 @@ ice.ace.DataTable.prototype.unpinColumn = function(i) {
     }
 */
     this.currentPinRegionOffset = this.currentPinRegionOffset - offsetWidth;
-
+/*
     bodyContainer.add(tfoot.parent()).add(thead.parent()).css('margin-left',
             this.currentPinRegionOffset > 0 ? this.currentPinRegionOffset : 0);
-
+*/
     // Send request
     if (this.behaviors && this.behaviors.unpin) {
         var options = {
