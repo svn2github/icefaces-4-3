@@ -2648,11 +2648,35 @@ ice.ace.DataTable.prototype.unpinColumn = function(i) {
         bodyCells.add(footCells).add(headCells).css('border-left-width','0px');
     }
 */
-    this.currentPinRegionOffset = this.currentPinRegionOffset - offsetWidth;
+
 /*
     bodyContainer.add(tfoot.parent()).add(thead.parent()).css('margin-left',
             this.currentPinRegionOffset > 0 ? this.currentPinRegionOffset : 0);
 */
+    // Add table offset
+	var escapedClientId = ice.ace.escapeClientId(this.id);
+	var tableOffsetId = this.id + '_pin_offset';
+	var tableOffsetStyleNode = document.getElementById(tableOffsetId);
+	var tableOffsetStyleNodeExists = !!tableOffsetStyleNode;
+	if (!tableOffsetStyleNodeExists) tableOffsetStyleNode = document.createElement('style');
+
+	tableOffsetStyleNode.id = tableOffsetId;
+	tableOffsetStyleNode.type = 'text/css';
+	tableOffsetStyleNode.innerHTML = '';
+
+    this.currentPinRegionOffset = this.currentPinRegionOffset - offsetWidth;
+	var tableOffsetCssText = escapedClientId + ' > div.ui-datatable-scrollable-body, '
+		+ escapedClientId + ' > div.ui-datatable-scrollable-header, '
+		+ escapedClientId + ' > div.ui-datatable-scrollable-footer'
+		+ '{margin-left: '+this.currentPinRegionOffset+'px;}';
+
+	if (tableOffsetStyleNode.styleSheet){
+		tableOffsetStyleNode.styleSheet.cssText = tableOffsetCssText;
+	} else {
+		tableOffsetStyleNode.appendChild(document.createTextNode(tableOffsetCssText));
+	}
+	if (!tableOffsetStyleNodeExists) head.appendChild(tableOffsetStyleNode);
+
     // Send request
     if (this.behaviors && this.behaviors.unpin) {
         var options = {
@@ -2860,14 +2884,6 @@ ice.ace.DataTable.prototype.pinColumn = function(i) {
 	cssText += escapedClientId + ' > div.ui-datatable-scrollable-body > table > tbody'
 		+ '{border-left: 0px;}';
 
-    // Add table offset
-    this.currentPinRegionOffset = cellWidth + 21 + this.currentPinRegionOffset;
-    //#tbody.add(thead.add(tfoot)).parent().css('margin-left', this.currentPinRegionOffset);
-	cssText += escapedClientId + ' > div.ui-datatable-scrollable-body, '
-		+  escapedClientId + ' > div.ui-datatable-scrollable-header, '
-		+ escapedClientId + ' > div.ui-datatable-scrollable-footer'
-		+ '{margin-left: '+this.currentPinRegionOffset+'px;}';
-
     // Add scrolling
     if (this.columnPinScrollListener[i])
         tbody.parent().unbind('scroll', this.columnPinScrollListener[i]);
@@ -2893,6 +2909,30 @@ ice.ace.DataTable.prototype.pinColumn = function(i) {
     }
 
 //
+    // Add table offset
+	var tableOffsetId = this.id + '_pin_offset';
+	var tableOffsetStyleNode = document.getElementById(tableOffsetId);
+	var tableOffsetStyleNodeExists = !!tableOffsetStyleNode;
+	if (!tableOffsetStyleNodeExists) tableOffsetStyleNode = document.createElement('style');
+
+	tableOffsetStyleNode.id = tableOffsetId;
+	tableOffsetStyleNode.type = 'text/css';
+	tableOffsetStyleNode.innerHTML = '';
+
+    this.currentPinRegionOffset = cellWidth + 21 + this.currentPinRegionOffset;
+	var tableOffsetCssText = escapedClientId + ' > div.ui-datatable-scrollable-body, '
+		+  escapedClientId + ' > div.ui-datatable-scrollable-header, '
+		+ escapedClientId + ' > div.ui-datatable-scrollable-footer'
+		+ '{margin-left: '+this.currentPinRegionOffset+'px;}';
+
+	if (tableOffsetStyleNode.styleSheet){
+		tableOffsetStyleNode.styleSheet.cssText = tableOffsetCssText;
+	} else {
+		tableOffsetStyleNode.appendChild(document.createTextNode(tableOffsetCssText));
+	}
+	if (!tableOffsetStyleNodeExists) head.appendChild(tableOffsetStyleNode);
+
+	// Add stylesheet to page
 	if (styleNode.styleSheet){
 		styleNode.styleSheet.cssText = cssText;
 	} else {
