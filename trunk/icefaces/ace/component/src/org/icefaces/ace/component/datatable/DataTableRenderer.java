@@ -235,8 +235,14 @@ public class DataTableRenderer extends CoreRenderer {
 		if (DataTableRendererUtil.hasRowEditor(table))
 			JavaScriptRunner.runScript(context, "(function(){var table = ice.ace.instance('"+table.getClientId(context)+"');if(table) {var rowEditors = table.getRowEditors(); if (rowEditors.length > 0) table.setupCellEditorEvents(rowEditors);table.adjustFooterWidth();}})();");
 
-		if (table.isSortRequest(context) && table.isResizableColumns())
-			JavaScriptRunner.runScript(context, "(function(){var table = ice.ace.instance('"+table.getClientId(context)+"');if(table) table.setupResizableColumns();})();");
+		if (table.isSortRequest(context)) {
+			if (table.isResizableColumns() && table.isReorderableColumns())
+				JavaScriptRunner.runScript(context, "(function(){var table = ice.ace.instance('"+table.getClientId(context)+"');if(table) {table.setupResizableColumns(); table.setupReorderableColumns();}})();");
+			else if (table.isResizableColumns())
+				JavaScriptRunner.runScript(context, "(function(){var table = ice.ace.instance('"+table.getClientId(context)+"');if(table) table.setupResizableColumns();})();");
+			else if (table.isReorderableColumns())
+				JavaScriptRunner.runScript(context, "(function(){var table = ice.ace.instance('"+table.getClientId(context)+"');if(table) table.setupReorderableColumns();})();");
+		}
     }
 
     private void encodePinningStateHolder(FacesContext context, DataTable table) throws IOException {
