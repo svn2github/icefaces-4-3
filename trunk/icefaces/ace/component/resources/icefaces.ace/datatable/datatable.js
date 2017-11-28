@@ -3065,7 +3065,11 @@ ice.ace.DataTable.prototype.writePinningState = function () {
 };
 
 ice.ace.DataTable.prototype.readPinningState = function () {
-    this.columnPinOrder = ice.ace.jq.parseJSON(ice.ace.jq(this.pinningHolder).val());
+	try {
+		this.columnPinOrder = JSON.parse(ice.ace.jq(this.pinningHolder).val().replace(/'/g,"\""));
+	} catch (e) {
+		this.columnPinOrder = {};
+	}
 };
 
 ice.ace.DataTable.prototype.setupDisabledStyling = function () {
