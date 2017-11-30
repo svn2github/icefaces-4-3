@@ -121,14 +121,16 @@ public class PushButtonRenderer extends CoreRenderer {
 		//assign ID here so that focus manager can focus the button but ID assigning will not interfere with the DOM updates
 		writer.writeText("document.getElementById('" + clientId + "').getElementsByTagName('button')[0].id = '" + clientId + "_button';", null);
 		if (!disabled) {
-			writer.writeText(getScript(facesContext, writer, pushButton, clientId), null);
+			writer.writeText(getScript(facesContext, writer, pushButton, clientId)
+				+ "document.getElementById('" + buttonId + "').submitOnEnter = 'disabled';", null);
 		} else {
 			// remove passthrough attributes added with the <f:passThroughAttribute /> tag
 			writer.writeText("ice.ace.jq(document.getElementById('" + clientId + "')).attr('onclick', '')"
 				+ ".attr('ondblclick','').attr('onkeydown','').attr('onkeypress','').attr('onkeyup','')"
 				+ ".attr('onmousedown','').attr('onmousemove','').attr('onmouseout','').attr('onmouseover','')"
 				+ ".attr('onmouseup','').attr('onblur','').attr('onfocus','').attr('onchange','')"
-				+ ".attr('onselect','');", null);
+				+ ".attr('onselect','');"
+				+ "document.getElementById('" + buttonId + "').submitOnEnter = 'disabled';", null);
 		}
 		writer.endElement(HTML.SCRIPT_ELEM);
     }
