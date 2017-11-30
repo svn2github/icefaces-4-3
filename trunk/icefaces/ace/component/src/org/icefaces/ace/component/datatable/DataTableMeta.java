@@ -294,7 +294,7 @@ public class DataTableMeta extends UIDataMeta {
     /* ##################################################################### */
     /* ######################### Column Pinning ############################ */
     /* ##################################################################### */
-    @Property(tlddoc = "Enable statically positioned columns along the left hand side of a scrollable table.")
+    @Property(tlddoc = "Enable statically positioned columns along the left hand side of a scrollable table (i.e. the 'scrollable' attribute must be set to 'true' for this feature to work).")
     boolean columnPinning;
 
     @Property(tlddoc = "Enable client controls to add column to the list of statically positioned columns.")
