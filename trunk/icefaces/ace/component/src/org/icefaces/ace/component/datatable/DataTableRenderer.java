@@ -243,6 +243,10 @@ public class DataTableRenderer extends CoreRenderer {
 			else if (table.isReorderableColumns())
 				JavaScriptRunner.runScript(context, "(function(){var table = ice.ace.instance('"+table.getClientId(context)+"');if(table) table.setupReorderableColumns();})();");
 		}
+
+        if (table.isColumnPinning() && table.isFilterRequest(context)) {
+			JavaScriptRunner.runScript(context, "(function(){var table = ice.ace.instance('"+table.getClientId(context)+"');if(table) setTimeout(function(){table.resizeScrolling();},0);})();");
+		}
     }
 
     private void encodePinningStateHolder(FacesContext context, DataTable table) throws IOException {
