@@ -189,6 +189,7 @@ ice.ace.DataTable = function (id, cfg) {
     this.columnPinOrder = {};
     this.columnPinPosition = {};
     this.columnPinScrollListener = {};
+    this.pinnedColumns = [];
     this.parentResizeDelaySet = false;
     this.delayedFilterCall = null;
     this.behaviors = cfg.behaviors;
@@ -2450,17 +2451,33 @@ ice.ace.DataTable.prototype.repairPinnedColumn = function(i) {
         firefox = ice.ace.jq.browser.mozilla;
 	if (ie11) firefox = false;
 
+//
+	var escapedClientId = ice.ace.escapeClientId(this.id);
+	var className = 'ui-col-' + (i-1);
+	var cssid = this.id + '_pin' + i;
+	var cssText = '';
+	var head = document.head || document.getElementsByTagName('head')[0];
+	var styleNode = document.getElementById(cssid);
+//
+
     if (ie8 || ie9) {
-        bodyCells.first().css('border-top','0px');
-        bodyCells.css('top', '').css('height','').css('position','relative')
-                .each(function(i,e) {
+        //#bodyCells.first().css('border-top','0px');
+		cssText += escapedClientId + ' > div.ui-datatable-scrollable-body > table > tbody > tr > th:nth-child('+i+').ui-datatable-first'
+			+ '{border-top:0px;}';
+        //#bodyCells.css('top', '').css('height','').css('position','relative')
+		cssText += escapedClientId + ' > div.ui-datatable-scrollable-body > table > tbody > tr > th:nth-child('+i+')'
+			+ '{top:;height:;position:relative;}';
+/*
+        bodyCells.each(function(i,e) {
                     var topVal = e.offsetTop;
                     if (((i + 1)%3 == 0) || ((i + 2)%3 == 0))
                         topVal = topVal - 1;
                     ice.ace.jq(e).css('top', topVal);
                 });
+*/
     }
 
+/*
     bodyCells.css('position','absolute')
             .css('left', offset)
             .css('width', cellWidth)
@@ -2469,41 +2486,79 @@ ice.ace.DataTable.prototype.repairPinnedColumn = function(i) {
             .addClass('pinned')
             .find('> div').css('width', cellWidth).end()
             .first().css('border-top','0px').addClass('pinned');
+*/
 
-    headCells.add(footCells).css('left', offset);
+	var firstCell = bodyCells.first();
+	var pinnedColumnsSelector = this.pinnedColumns.join();
+	var sibling = firstCell.nextAll(':not(' + pinnedColumnsSelector + ')').first();
+	if (sibling.length == 0)
+		sibling = firstCell.prevAll(':not(' + pinnedColumnsSelector + ')').first();
+	var borderRightColor = sibling.css('border-right-color');
+
+	cssText += escapedClientId + ' > div.ui-datatable-scrollable-body > table > tbody > tr > td.' + className + ' {'
+		+ 'position: absolute;'
+		+ 'left: ' + offset + 'px;'
+		+ 'width: ' + cellWidth + 'px;'
+		+ 'border-bottom: 0px solid;'
+		+ 'border-left: 1px solid;' // correct previously removed border if removed due to pinning corrections
+		+ 'margin-top: ' + (0-tbody.parent().scrollTop()) + ';'
+		+ 'border-color:' + borderRightColor + ';}';
+	cssText += escapedClientId + ' > div.ui-datatable-scrollable-body > table > tbody > tr > td.' + className + ' > div {'
+		+ 'width: ' + cellWidth + 'px;}';
+	cssText += escapedClientId + ' > div.ui-datatable-scrollable-body > table > tbody > tr > td.'+className+'.ui-datatable-first'
+		+ '{border-top:0px;}';
+
+    //# headCells.add(footCells).css('left', offset);
+	cssText += escapedClientId + ' > div.ui-datatable-scrollable-header > table > thead > tr > th:nth-child('+i+'), '
+			+ escapedClientId + ' > div.ui-datatable-scrollable-footer > table > tfoot > tr > td:nth-child('+i+')'
+			+ '{left:' + offset + 'px;}'
 
     if (firefox)
-        bodyCells.css('margin-top','-1px');
+        //bodyCells.css('margin-top','-1px');
+		cssText += escapedClientId + ' > div.ui-datatable-scrollable-body > table > tbody > tr > td.' + className
+			+ '{margin-top:-1px;}'
 
-    var scrollTopVal = tbody.parent().scrollTop();
     bodyCells.each(function(i,e) {
         e = ice.ace.jq(e);
-        var sibling = e.nextAll(':not(.pinned)').first();
+        var sibling = e.nextAll(':not(' + pinnedColumnsSelector + ')').first();
 
         if (sibling.length == 0)
-            sibling = e.prevAll(':not(.pinned)').first();
-
+            sibling = e.prevAll(':not(' + pinnedColumnsSelector + ')').first();
+/*#moved above
         e.css('margin-top', 0-scrollTopVal);
+*/
 
         if (e.parent().is(':last-child'))
             e.css('height', sibling.height() + ice.ace.jq.getScrollWidth());
         else
             e.css('height', sibling.height() + 1);
 
+/*#moved above
         e.css('border-color', sibling.css('border-right-color'));
+*/
     });
 
-    var nextUnpinnedIndex = bodyCells.first().next('td:not(.pinned)').index();
+    var nextUnpinnedIndex = bodyCells.first().next('td:not(' + pinnedColumnsSelector + ')').index();
 
     if (nextUnpinnedIndex >= 0) {
         nextUnpinnedIndex = nextUnpinnedIndex+1;
-        tbody.find(' > tbody > tr > td:nth-child('+nextUnpinnedIndex+')').css('border-left','0px');
+        //#tbody.find(' > tbody > tr > td:nth-child('+nextUnpinnedIndex+')').css('border-left','0px');
+		cssText += escapedClientId + ' > div.ui-datatable-scrollable-body > table > tbody > tr > td:nth-child('+nextUnpinnedIndex+')'
+				+ '{border-left: 0px;}';
     }
 
     var nonBodyCellWidth = cellWidth + 20;
 
+/*#
     headCells.add(footCells).css('width', nonBodyCellWidth)
             .find('> div').css('width', cellWidth).end();
+*/
+	cssText += escapedClientId + ' > div.ui-datatable-scrollable-header > table > thead > tr > th:nth-child('+i+'), '
+			+ escapedClientId + ' > div.ui-datatable-scrollable-footer > table > tfoot > tr > td:nth-child('+i+')'
+			+ '{width:' + nonBodyCellWidth + 'px;}';
+	cssText += escapedClientId + ' > div.ui-datatable-scrollable-header > table > thead > tr > th:nth-child('+i+') > div, '
+			+ escapedClientId + ' > div.ui-datatable-scrollable-footer > table > tfoot > tr > td:nth-child('+i+') > div'
+			+ '{width:' + cellWidth + 'px;}';
 
     // Add scrolling
     if (this.columnPinScrollListener[i])
@@ -2519,6 +2574,18 @@ ice.ace.DataTable.prototype.repairPinnedColumn = function(i) {
     };
 
     tbody.parent().bind('scroll', this.columnPinScrollListener[i]);
+
+	// Add stylesheet to page
+	if (styleNode) {
+		styleNode.id = cssid;
+		styleNode.type = 'text/css';
+		//styleNode.innerHTML = '';
+		if (styleNode.styleSheet){
+			styleNode.styleSheet.cssText = cssText;
+		} else {
+			styleNode.appendChild(document.createTextNode(cssText));
+		}
+	}
 };
 
 ice.ace.DataTable.prototype.fixPinnedColumnPositions = function(state) {
@@ -2541,7 +2608,15 @@ ice.ace.DataTable.prototype.pinThisColumn = function(event) {
         cell = ice.ace.jq(target).closest('th,td'),
         ie7 = ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 7;
 
-    if (cell.hasClass('pinned')) {
+	var isPinned = false;
+	for (var i = 0; i < this.pinnedColumns.length; i++) {
+		if (cell.hasClass(this.pinnedColumns[i].substring(1))) {
+			isPinned = true;
+			break;
+		}
+	}
+
+    if (isPinned) {
         if (ie7) this.ie7UnpinColumn(cell.index() + 1);
         else this.unpinColumn(cell.index() + 1);
     }
@@ -2625,12 +2700,23 @@ ice.ace.DataTable.prototype.unpinColumn = function(i) {
     if (this.columnPinScrollListener[i])
         tbody.parent().unbind('scroll', this.columnPinScrollListener[i]);
 
+	var index = -1;
+	var className = '.ui-col-' + (i-1);
+	var newPinnedColumns = [];
+	for (var j = 0; j < this.pinnedColumns.length; j++) {
+		if (this.pinnedColumns[j] != className) {
+			newPinnedColumns.push(this.pinnedColumns[j]);
+		}
+	}
+	this.pinnedColumns = newPinnedColumns;
+
 //
 	bodyCells.add(footCells).add(headCells).removeClass('pinned');
 //
 
+// .removeClass('pinned')
     bodyCells.add(footCells).add(headCells).css('position','').css('height','')
-            .css('top','').css('left','').removeClass('pinned');
+            .css('top','').css('left','');
 
     if (safari || chrome) offsetWidth = offsetWidth + 1;
 
@@ -2730,11 +2816,17 @@ ice.ace.DataTable.prototype.pinColumn = function(i) {
     if (safari || chrome) cellWidth++;
 
     // Exit if already pinned
-    if (bodyCells.first().is('.pinned'))
-        return this.repairPinnedColumn(i, tbody, bodyCells, headCells, footCells);
+    //if (bodyCells.first().is('.pinned'))
+	var className = 'ui-col-' + (i-1);
+	for (var j = 0; j < this.pinnedColumns.length; j++) {
+		if (this.pinnedColumns[j] == ('.' + className)) {
+			return this.repairPinnedColumn(i, tbody, bodyCells, headCells, footCells);
+		}
+	}
 
     // Add new column to pinning state
-    this.columnPinOrder[i - 1] = this.getNextPinnedIndex();
+    //this.columnPinOrder[i - 1] = this.getNextPinnedIndex();
+    this.columnPinOrder[i - 1] = this.pinnedColumns.length;
     this.writePinningState();
 
     // Raise head cell z-index to prevent overlap in IE & FF
@@ -2752,9 +2844,11 @@ ice.ace.DataTable.prototype.pinColumn = function(i) {
         //#bodyCells.css('position','relative');
 		cssText += escapedClientId + ' > div.ui-datatable-scrollable-body > table > tbody > tr > th:nth-child('+i+')'
 			+ '{position:relative;}';
+/*
         bodyCells.each(function(i,e) {
-                    //#ice.ace.jq(e).css('top', e.offsetTop);
+                    ice.ace.jq(e).css('top', e.offsetTop);
                 });
+*/
     }
 
     // Reposition cells
@@ -2762,19 +2856,21 @@ ice.ace.DataTable.prototype.pinColumn = function(i) {
 
 //
 
-    bodyCells.addClass('pinned');
+    //bodyCells.addClass('pinned');
+	this.pinnedColumns.push('.' + className);
             //#.first().css('border-top','0px solid');
-	cssText += escapedClientId + ' > div.ui-datatable-scrollable-body > table > tbody > tr > th:nth-child('+i+').ui-datatable-first'
+	cssText += escapedClientId + ' > div.ui-datatable-scrollable-body > table > tbody > tr > td.'+className+'.ui-datatable-first'
 		+ '{border-top:0px solid;}';
 
 //
 	var firstCell = bodyCells.first();
-	var sibling = firstCell.nextAll(':not(.pinned)').first();
+	var pinnedColumnsSelector = this.pinnedColumns.join();
+	var sibling = firstCell.nextAll(':not(' + pinnedColumnsSelector + ')').first();
 	if (sibling.length == 0)
-		sibling = firstCell.prevAll(':not(.pinned)').first();
+		sibling = firstCell.prevAll(':not(' + pinnedColumnsSelector + ')').first();
 	var borderRightColor = sibling.css('border-right-color');
 
-	cssText += escapedClientId + ' .ui-col-' + (i-1) + ' {'
+	cssText += escapedClientId + ' > div.ui-datatable-scrollable-body > table > tbody > tr > td.' + className + ' {'
 		+ 'position: absolute;'
 		+ 'left: ' + this.columnPinPosition[i] + 'px;'
 		+ 'width: ' + cellWidth + 'px;'
@@ -2782,16 +2878,16 @@ ice.ace.DataTable.prototype.pinColumn = function(i) {
 		+ 'border-left: 1px solid;' // correct previously removed border if removed due to pinning corrections
 		+ 'margin-top: ' + (0-tbody.parent().scrollTop()) + 'px;'
 		+ 'border-color: ' + borderRightColor + ';}';
-	cssText += ice.ace.escapeClientId(this.id) + ' .ui-col-' + (i-1) + ' > div {'
+	cssText += escapedClientId + ' > div.ui-datatable-scrollable-body > table > tbody > tr > td.' + className + ' > div {'
 		+ 'width: ' + cellWidth + 'px;}';
 //
 
     bodyCells.each(function(i,e) {
         e = ice.ace.jq(e);
-        var sibling = e.nextAll(':not(.pinned)').first();
+        var sibling = e.nextAll(':not(' + pinnedColumnsSelector + ')').first();
 
         if (sibling.length == 0)
-            sibling = e.prevAll(':not(.pinned)').first();
+            sibling = e.prevAll(':not(' + pinnedColumnsSelector + ')').first();
 
 		/*
 		// moved above
@@ -2821,9 +2917,9 @@ ice.ace.DataTable.prototype.pinColumn = function(i) {
 
     headCells.each(function(i,e) {
         e = ice.ace.jq(e);
-        var sibling = e.nextAll(':not(.pinned)').first();
+        var sibling = e.nextAll(':not(' + pinnedColumnsSelector + ')').first();
 
-        if (sibling.length == 0) sibling = e.prevAll(':not(.pinned)').first();
+        if (sibling.length == 0) sibling = e.prevAll(':not(' + pinnedColumnsSelector + ')').first();
 
         if (safari || chrome)
             e.css('height', sibling.height() + 1);
@@ -2838,7 +2934,7 @@ ice.ace.DataTable.prototype.pinColumn = function(i) {
         }, 1);
     }
 
-    var nextUnpinnedIndex = bodyCells.first().next('td:not(.pinned)').index();
+    var nextUnpinnedIndex = bodyCells.first().next('td:not(' + pinnedColumnsSelector + ')').index();
 
     if (nextUnpinnedIndex >= 0) {
         nextUnpinnedIndex = nextUnpinnedIndex+1;
@@ -2870,7 +2966,8 @@ ice.ace.DataTable.prototype.pinColumn = function(i) {
 			+ 'left:' + this.columnPinPosition[i] + 'px;'
 			+ 'width:' + nonBodyCellWidth + 'px;}'
 
-    headCells.add(footCells).addClass('pinned').css('width',''); // allow the width specified in the dynamic stylesheet to be applied
+    headCells.add(footCells).addClass('pinned') // change direction of arrow icon
+		.css('width',''); // allow the width specified in the dynamic stylesheet to be applied
 
     if (firefox) {
         //#bodyCells.add(headCells).add(footCells).css('margin-top','-1px');
@@ -3051,7 +3148,7 @@ ice.ace.DataTable.prototype.getPinnedColumns = function() {
         tbody = ice.ace.jq(this.jqId + ' > div.ui-datatable-scrollable-body > table');
     if (tbody.length == 0) tbody = ice.ace.jq(this.jqId + ' > div > table');
 
-    return tbody.find('> tbody > tr:first-child > td.pinned').sort(function(a,b) {
+    return tbody.find('> tbody > tr:first-child > td').filter(this.pinnedColumns.join()).sort(function(a,b) {
         return table.columnPinOrder[ice.ace.jq(a).index()] - table.columnPinOrder[ice.ace.jq(b).index()];
     });
 };

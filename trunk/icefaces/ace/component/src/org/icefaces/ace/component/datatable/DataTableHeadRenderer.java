@@ -81,7 +81,9 @@ public class DataTableHeadRenderer {
                 }
                 writer.startElement(HTML.TR_ELEM, null);
                 tableContext.setInHeaderSubrows(iterator.row() != null);
+				int columnIndex = -1;
                 do {
+					columnIndex++;
                     List<Column> columnsInCell = iterator.columns();
                     for (int i = 0; i < columnsInCell.size(); i++) {
                         Column column = columnsInCell.get(i);
@@ -99,7 +101,7 @@ public class DataTableHeadRenderer {
                                     throw new FacesException("DataTable : \"" + clientId + "\" must not have stacked header columns, with unequal rowspan values.");
                             }
                             encodeColumn(context, tableContext, column,
-                                isCurrStacked, isNextStacked, map);
+                                isCurrStacked, isNextStacked, map, columnIndex);
                             renderingFirstCol = false;
                         }
                     }
@@ -135,7 +137,7 @@ public class DataTableHeadRenderer {
             DataTableRenderingContext tableContext, Column column,
             boolean isCurrStacked, boolean isNextStacked,
             Map<String, AutoAdjustRenderedColspan.AdjustedRenderedColspan>
-            adjColspans) throws IOException {
+            adjColspans, int index) throws IOException {
         DataTable table = tableContext.getTable();
         ResponseWriter writer = context.getResponseWriter();
         String clientId = column.getClientId(context);
@@ -146,7 +148,7 @@ public class DataTableHeadRenderer {
         if (!isCurrStacked) {
             String style = column.getStyle();
             String styleClass = column.getStyleClass();
-            String columnClass = DataTableConstants.COLUMN_HEADER_CLASS;
+            String columnClass = DataTableConstants.COLUMN_HEADER_CLASS + " ui-col-" + index;
 
             columnClass = (tableContext.isReorderableColumns() && column.isReorderable())
                     ? columnClass + " " + DataTableConstants.REORDERABLE_COL_CLASS
