@@ -2877,7 +2877,8 @@ ice.ace.DataTable.prototype.pinColumn = function(i) {
 		+ 'border-bottom: 0px solid;'
 		+ 'border-left: 1px solid;' // correct previously removed border if removed due to pinning corrections
 		+ 'margin-top: ' + (0-tbody.parent().scrollTop()) + 'px;'
-		+ 'border-color: ' + borderRightColor + ';}';
+		+ 'border-color: ' + borderRightColor + ';'
+		+ 'background: inherit;}';
 	cssText += escapedClientId + ' > div.ui-datatable-scrollable-body > table > tbody > tr > td.' + className + ' > div {'
 		+ 'width: ' + cellWidth + 'px;}';
 //
