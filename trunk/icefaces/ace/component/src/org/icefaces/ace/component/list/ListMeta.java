@@ -35,7 +35,7 @@ import java.util.Set;
     tagName = "list",
     componentClass = "org.icefaces.ace.component.list.ACEList",
     generatedClass = "org.icefaces.ace.component.list.ListBase",
-    extendsClass = "org.icefaces.impl.component.UISeriesBase",
+    extendsClass = "javax.faces.component.UIData",
     componentType = "org.icefaces.ace.component.List",
     rendererType  = "org.icefaces.ace.component.ListRenderer",
     rendererClass = "org.icefaces.ace.component.list.ListRenderer",
