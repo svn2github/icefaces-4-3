@@ -20,6 +20,8 @@ import javax.el.ELException;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
+import javax.faces.component.NamingContainer;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
@@ -29,7 +31,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TabSet extends TabSetBase {
+public class TabSet extends TabSetBase implements NamingContainer {
     
     public TabSet() {
     }
@@ -110,4 +112,15 @@ public class TabSet extends TabSetBase {
 //System.out.println("isExecutingTabPaneContents()    ret: " + ret);
         return ret;
     }
+
+	public String getContainerClientId(FacesContext context) {
+		if (isPrependId()) {
+			setId(getId()); // cause to re-calculate client ID to include naming container ID
+			return this.getClientId(context);
+		} else {
+			UIComponent parent = getParent();
+			if (parent != null) return parent.getContainerClientId(context);
+			else return "";
+		}
+	}
 }

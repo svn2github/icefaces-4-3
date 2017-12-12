@@ -191,4 +191,7 @@ public class TabSetMeta extends UIComponentBaseMeta {
 		"rendered at the ends of the row of tabs, making it possible to scroll through " +
         "all the tabs in the tabSet. This functionality only applies to the 'top' and 'bottom' orientations.")
     private boolean scrollableTabs;
+
+    @Property(tlddoc="Flag indicating whether or not this component should prepend its id to its descendent's id during the clientId generation process. If this flag is not set, the default value is false.", defaultValue="false")
+	private boolean prependId;
 }

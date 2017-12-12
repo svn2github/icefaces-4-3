@@ -55,6 +55,6 @@ public class PanelStackMeta extends UINamingContainerMeta {
      @Property(tlddoc="Style class to apply to the container element.")
      private String styleClass;
 
-
-
+    @Property(tlddoc="Flag indicating whether or not this component should prepend its id to its descendent's id during the clientId generation process. If this flag is not set, the default value is false.", defaultValue="false")
+	private boolean prependId;
 }

@@ -16,10 +16,22 @@
 package org.icefaces.ace.component.panelstack;
 
 import org.icefaces.ace.api.StackPaneController;
+import javax.faces.component.NamingContainer;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 
+public class PanelStack extends PanelStackBase implements StackPaneController, NamingContainer {
 
-public class PanelStack extends PanelStackBase implements StackPaneController{
-
+	public String getContainerClientId(FacesContext context) {
+		if (isPrependId()) {
+			setId(getId()); // cause to re-calculate client ID to include naming container ID
+			return this.getClientId(context);
+		} else {
+			UIComponent parent = getParent();
+			if (parent != null) return parent.getContainerClientId(context);
+			else return "";
+		}
+	}
 }
 
 

@@ -32,6 +32,7 @@ package org.icefaces.ace.component.accordion;
 
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
+import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIPanel;
@@ -40,7 +41,7 @@ import javax.faces.event.AbortProcessingException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Accordion extends AccordionBase {
+public class Accordion extends AccordionBase implements NamingContainer {
 
 	private static final String OPTIMIZED_PACKAGE = "org.icefaces.ace.component.";
 
@@ -114,5 +115,16 @@ public class Accordion extends AccordionBase {
 
 	protected FacesContext getFacesContext() {
 		return FacesContext.getCurrentInstance();
+	}
+
+	public String getContainerClientId(FacesContext context) {
+		if (isPrependId()) {
+			setId(getId()); // cause to re-calculate client ID to include naming container ID
+			return this.getClientId(context);
+		} else {
+			UIComponent parent = getParent();
+			if (parent != null) return parent.getContainerClientId(context);
+			else return "";
+		}
 	}
 }

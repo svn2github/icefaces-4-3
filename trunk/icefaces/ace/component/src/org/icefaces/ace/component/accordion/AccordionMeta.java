@@ -85,6 +85,9 @@ public class AccordionMeta extends UIPanelMeta {
 	@Property(tlddoc="Server side listener to invoke when active pane changes", expression= Expression.METHOD_EXPRESSION, methodExpressionArgument="org.icefaces.ace.event.AccordionPaneChangeEvent")
 	private MethodExpression paneChangeListener;
 
+    @Property(tlddoc="Flag indicating whether or not this component should prepend its id to its descendent's id during the clientId generation process. If this flag is not set, the default value is false.", defaultValue="false")
+	private boolean prependId;
+
 	@Field
 	private String tabTitles;
 }
