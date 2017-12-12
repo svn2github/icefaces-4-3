@@ -219,6 +219,12 @@ public class FileEntryMeta extends UIComponentBaseMeta {
         defaultValue="false")
     private boolean required;
 
+    @Property(tlddoc="The MIME type of the files that are accepted by this " +
+        "component. The second term in the MIME type can be an asterisk " +
+        "to indicate that all files of a general category are accepted " +
+        "(e.g. acceptType=\"image/*\" would accept all image files).")
+    private String acceptType;
+
     //TODO
     //private String fileNamePattern;
     //private String acceptableFileExtensions;

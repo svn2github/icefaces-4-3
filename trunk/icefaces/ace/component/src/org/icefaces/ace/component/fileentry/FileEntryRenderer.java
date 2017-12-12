@@ -179,7 +179,12 @@ public class FileEntryRenderer extends Renderer {
                 endFunction().toString();
             writer.writeAttribute("onchange", onchange, null);
         } else {
-            writer.writeAttribute("onchange", "this.parentNode.setAttribute('title', this.value);", null);
+			String validateType = "";
+			String acceptType = fileEntry.getAcceptType();
+			if (acceptType != null && !"".equals(acceptType)) {
+				validateType = "var valid = ice.ace.fileentry.validateType(this.id, '" + acceptType + "'); if (valid) ";
+			}
+            writer.writeAttribute("onchange", validateType + "this.parentNode.setAttribute('title', this.value);", null);
 		}
         writer.endElement("input");
         if (multiple) {

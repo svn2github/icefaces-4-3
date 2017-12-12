@@ -623,7 +623,27 @@ ice.ace.fileentry = {
         if (root && root.firstChild) {
             root.firstChild.innerHTML = root.firstChild.innerHTML;
         }
-    }
+    },
+
+	validateType : function (clientId, type) {
+		var input = document.getElementById(clientId);
+		if (input) {
+			if ('files' in input) {
+				if (input.files.length > 0) {
+					for (var i = 0; i < input.files.length; i++) {
+						var file = input.files[i];
+						if ('type' in file) {
+							if (file.type != type) {
+								var root = document.getElementById(clientId + '_container');
+								if (root) root.innerHTML = root.innerHTML;
+								return false;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 };
 
 ice.ace.fileentry.clear = function(id, multiple) {
