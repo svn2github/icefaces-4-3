@@ -346,8 +346,10 @@ public class ListRenderer extends CoreRenderer {
         // List has implicit UIColumn child to wrap composite children
         for (UIComponent component : list.getChildren()) {
             if (!(component instanceof UISelectItem ||
-                    component instanceof UISelectItems))
+                    component instanceof UISelectItems)) {
+				component.setId(component.getId()); // cause to re-calculate client ID to include naming container ID
                 component.encodeAll(context);
+			}
         }
         writer.endElement(HTML.LI_ELEM);
     }
