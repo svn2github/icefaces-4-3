@@ -625,17 +625,21 @@ ice.ace.fileentry = {
         }
     },
 
-	validateType : function (clientId, type) {
+	validateType : function (clientId, type, message) {
 		var input = document.getElementById(clientId);
+		var categoryPattern = new RegExp('\\*$');
+		var category = categoryPattern.test(type) ? type.substring(0,type.length-1) : '';
 		if (input) {
 			if ('files' in input) {
 				if (input.files.length > 0) {
 					for (var i = 0; i < input.files.length; i++) {
 						var file = input.files[i];
 						if ('type' in file) {
+							if (category && file.type.indexOf(category) == 0) continue;
 							if (file.type != type) {
 								var root = document.getElementById(clientId + '_container');
 								if (root) root.innerHTML = root.innerHTML;
+								ice.ace.fileentry.displayInvalidFileTypeMessage(message);
 								return false;
 							}
 						}
@@ -643,6 +647,21 @@ ice.ace.fileentry = {
 				}
 			}
 		}
+		return true;
+	},
+
+	displayInvalidFileTypeMessage : function(message) {
+		var container = document.createElement("DIV");
+		container.style.cssText = 'position: fixed;width: 250px;height: 100px;margin: auto;'
+			+ 'top: 0;left: 0;bottom: 0;right: 0;padding: 1em;z-index:1000;';
+		container.setAttribute('class', 'ui-widget ui-widget-content ui-corner-all ui-state-error');
+		container.innerHTML = '<div><span style="float:right" class="ui-corner-all"'
+			+ 'onmouseover="this.setAttribute(\'class\', \'ui-corner-all ui-state-hover\');"'
+			+ 'onmouseout="this.setAttribute(\'class\', \'ui-corner-all\');"><span class="ui-icon ui-icon-closethick"'
+			+ 'onclick="document.body.removeChild(ice.ace.fileentry.invalidFileTypeMessage);"'
+			+ '>Close</span></span></div><div style="padding:1em;">'+message+'</div>';
+		document.body.appendChild(container);
+		ice.ace.fileentry.invalidFileTypeMessage = container;
 	}
 };
 

@@ -177,12 +177,35 @@ public class FileEntryRenderer extends Renderer {
                     item(multiple).
                     item(autoUpload).
                 endFunction().toString();
-            writer.writeAttribute("onchange", onchange, null);
+
+			String validateType = "";
+			String acceptType = fileEntry.getAcceptType();
+
+            locale = facesContext.getViewRoot().getLocale();
+            classLoader = Thread.currentThread().getContextClassLoader();
+            String bundleName = facesContext.getApplication().getMessageBundle();
+            if (classLoader == null) classLoader = bundleName.getClass().getClassLoader();
+            if (bundleName == null) bundleName = ACE_MESSAGES_BUNDLE;
+            bundle = ResourceBundle.getBundle(bundleName, locale, classLoader);
+			if (acceptType != null && !"".equals(acceptType)) {
+				validateType = "var valid = ice.ace.fileentry.validateType(this.id, '" + acceptType + "', "
+					+"'" + bundle.getString(MESSAGE_KEY_PREFIX + "INVALID_FILE_TYPE") + "'); if (valid) ";
+			}
+
+            writer.writeAttribute("onchange", validateType + onchange, null);
         } else {
 			String validateType = "";
 			String acceptType = fileEntry.getAcceptType();
+
+            locale = facesContext.getViewRoot().getLocale();
+            classLoader = Thread.currentThread().getContextClassLoader();
+            String bundleName = facesContext.getApplication().getMessageBundle();
+            if (classLoader == null) classLoader = bundleName.getClass().getClassLoader();
+            if (bundleName == null) bundleName = ACE_MESSAGES_BUNDLE;
+            bundle = ResourceBundle.getBundle(bundleName, locale, classLoader);
 			if (acceptType != null && !"".equals(acceptType)) {
-				validateType = "var valid = ice.ace.fileentry.validateType(this.id, '" + acceptType + "'); if (valid) ";
+				validateType = "var valid = ice.ace.fileentry.validateType(this.id, '" + acceptType + "', "
+					+"'" + bundle.getString(MESSAGE_KEY_PREFIX + "INVALID_FILE_TYPE") + "'); if (valid) ";
 			}
             writer.writeAttribute("onchange", validateType + "this.parentNode.setAttribute('title', this.value);", null);
 		}
