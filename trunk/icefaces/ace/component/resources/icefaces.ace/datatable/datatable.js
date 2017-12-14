@@ -4091,3 +4091,13 @@ ice.ace.DataTable.setupClickableHeaderEventsForColumn = function(tableClientId, 
         table.setupClickableHeaderEventsForColumn(columnClientId);
     }
 };
+
+ice.ace.DataTable.selectFirstInput = function(rootId) {
+	if (rootId) {
+		setTimeout(function() {
+			ice.ace.jq(ice.ace.escapeClientId(rootId))
+			.find(':not(:submit):not(:button):not(:checkbox):not(:radio):input:visible:enabled,textarea:visible:enabled')
+			.first().select();
+		}, 150);
+	}
+};
