@@ -41,6 +41,13 @@
                                                   value="#{aceDataTableFind.selectedColumns}" >
                                 <f:selectItems value="#{aceDataTableFind.COLUMNS}"/>
                             </h:selectManyCheckbox>
+
+                            <h:outputLabel for="selectedFindMode" value="Find Mode:" />
+                            <ace:radioButtons id="selectedFindMode"
+                                              value="#{aceDataTableFind.selectedFindMode}">
+                                <f:selectItems value="#{aceDataTableFind.FIND_MODES}"/>
+                            </ace:radioButtons>
+
                             <h:outputLabel for="selectedMode" value="Search Type:" />
                             <ace:radioButtons id="selectedMode"
                                               value="#{aceDataTableFind.selectedSearchMode}">
@@ -70,6 +77,8 @@
                 <h:panelGroup styleClass="exampleBox dataScrollingContainer" style="display: block;"  >
                     <!-- DataTable with 5 rows per page -->
                     <ace:dataTable id="data"
+                                   selectionMode="multiple"
+                                   stateMap="${aceDataTableFind.stateMap}"
                                    var="car"
                                    value="#{aceDataTableFind.cars}"
                                    rows="6"

@@ -30,6 +30,10 @@ import org.icefaces.ace.component.datatable.DataTable;
 import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
 import org.icefaces.samples.showcase.util.FacesUtils;
 
+import org.icefaces.ace.model.table.RowState;
+import org.icefaces.ace.model.table.RowStateMap;
+import org.icefaces.util.JavaScriptRunner;
+
 @ManagedBean(name= DataTableFind.BEAN_NAME)
 @CustomScoped(value = "#{window}")
 public class DataTableFind implements Serializable {
@@ -38,11 +42,13 @@ public class DataTableFind implements Serializable {
 
     public String selectedEffectType = "default";
     public String selectedSearchMode = "contains";
+    public String selectedFindMode = "row";
     public String searchQuery = "";
     public String[] selectedColumns = new String[]{"name", "id", "chassis", "weight", "acceleration", "mpg", "cost"};
     public int lastFoundIndex = -1;
     private boolean caseSensitive;
     private List<Car> cars;
+	private RowStateMap stateMap = new RowStateMap();
 
     public final SelectItem[] SEARCH_MODES = {new SelectItem("startsWith", "Starts With"),
             new SelectItem("endsWith", "Ends With"),
@@ -60,6 +66,9 @@ public class DataTableFind implements Serializable {
     public final SelectItem[] EFFECT_TYPES = {new SelectItem("none", "None"),
             new SelectItem("default", "Default (Highlight)"),
             new SelectItem("pulsate", "Pulsate")};
+
+    public final SelectItem[] FIND_MODES = {new SelectItem("row", "Find Single Row"),
+            new SelectItem("cells", "Find All Cells on a Page and Select Rows")};
     
     public DataTableFind() {
         cars = new ArrayList<Car>(DataTableData.getDefaultData());
@@ -70,6 +79,14 @@ public class DataTableFind implements Serializable {
     }
 
     public void find(javax.faces.event.ActionEvent e) {
+		if ("row".equals(selectedFindMode)) {
+			findRow(e);
+		} else if ("cells".equals(selectedFindMode)) {
+			findCells(e);
+		}
+	}
+
+    public void findRow(javax.faces.event.ActionEvent e) {
         DataTable iceTable = ((DataTableBindings)(FacesUtils.getManagedBean("dataTableBindings"))).getTable(this.getClass());
 
         DataTable.SearchType type = null;
@@ -165,4 +182,94 @@ public class DataTableFind implements Serializable {
     public void setCars(List<Car> cars) {
         this.cars = cars;
     }
+
+    public RowStateMap getStateMap() {
+		return stateMap;
+	}
+
+    public void setStateMap(RowStateMap stateMap) {
+		this.stateMap = stateMap;
+	}
+
+    public SelectItem[] getFIND_MODES() {
+        return FIND_MODES;
+    }
+
+    public String getSelectedFindMode() {
+        return selectedFindMode;
+    }
+
+    public void setSelectedFindMode(String selectedFindMode) {
+        this.selectedFindMode = selectedFindMode;
+    }
+
+    public void findCells(javax.faces.event.ActionEvent e) {
+        DataTable iceTable = ((DataTableBindings)(FacesUtils.getManagedBean("dataTableBindings"))).getTable(this.getClass());
+
+        DataTable.SearchType type = null;
+        if (selectedSearchMode.equals("contains"))
+            type = DataTable.SearchType.CONTAINS;
+        else if (selectedSearchMode.equals("startsWith"))
+            type = DataTable.SearchType.STARTS_WITH;
+        else if (selectedSearchMode.equals("endsWith"))
+            type = DataTable.SearchType.ENDS_WITH;
+        else if (selectedSearchMode.equals("exact"))
+            type = DataTable.SearchType.EXACT;
+        else type = DataTable.SearchType.CONTAINS;
+
+		ArrayList<Integer> indexes = new ArrayList<Integer>();
+		int firstFoundIndex = -1;
+		do {
+			int newFoundIndex = iceTable.findRow(searchQuery, selectedColumns, lastFoundIndex + 1, type, caseSensitive);
+
+			if (newFoundIndex >= 0) {
+				if (firstFoundIndex == -1) {
+					indexes.add(new Integer(newFoundIndex));
+					firstFoundIndex = newFoundIndex;
+					iceTable.navigateToRow(firstFoundIndex, null);
+				} else if (newFoundIndex >= (iceTable.getPage() * iceTable.getRows())) {
+					break;
+				} else {
+					indexes.add(new Integer(newFoundIndex));
+				}
+			} else {
+				break;
+			}
+
+			lastFoundIndex = newFoundIndex;
+		} while (lastFoundIndex >= 0);
+
+        if (indexes.size() == 0) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(iceTable.getClientId(context),
+                    new FacesMessage("Search starting at index " + (lastFoundIndex + 1) + " for \"" + searchQuery + "\" did not return a result."));
+			return;
+        }
+
+		stateMap.setAllSelected(false);
+		int originalIndex = iceTable.getRowIndex();
+		String indexList = "";
+		for (int i = 0; i < indexes.size(); i++) {
+			int index = indexes.get(i);
+			iceTable.setRowIndex(index);
+			indexList += index + ",";
+			
+			RowState state = stateMap.get(iceTable.getRowData());
+			if (state != null) state.setSelected(true);
+		}
+		iceTable.setRowIndex(originalIndex);
+		indexList = indexList.substring(0, indexList.length() - 1);
+
+		JavaScriptRunner.runScript(FacesContext.getCurrentInstance(),
+			"(function(){var tableId = ice.ace.escapeClientId('" + iceTable.getClientId() + "');"
+				+ "var rowIndexes = [" + indexList + "];"
+				+ "for (var i = 0; i < rowIndexes.length; i++) {"
+					+ "ice.ace.jq(tableId + '_row_' + rowIndexes[i]).find('td').each(function(){"
+					+ "var td = ice.ace.jq(this);"
+					+ "if (td.text().indexOf('" + searchQuery + "') > -1) td.effect('highlight');"
+					+ "});"
+				+ "}"
+				+ "})();");
+    }
+
 }
