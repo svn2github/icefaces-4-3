@@ -1223,6 +1223,28 @@ ice.ace.DataTable.prototype.setupClickEvents = function() {
 				this.element.off('mouseup', ice.ace.DataTable.restoreTextSelectionSingle);
 				this.element.on('mouseup', ice.ace.DataTable.restoreTextSelectionSingle);
 			}
+
+			this.element
+				.off('keydown', this.rowSelector)
+				.on('keydown', this.rowSelector, function (e) {
+					if (e.target.tagName != 'TR') return;
+
+					if (e.which == 38) {
+						ice.ace.jq(e.currentTarget).prev().focus();return false;
+					} else if (e.which == 40) {
+						ice.ace.jq(e.currentTarget).next().focus();return false;
+					} else if (e.which == 32) {
+						doRowSelect.call(self, e);return false;
+					}
+				})
+				.off('keyup', this.rowSelector)
+				.on('keyup', this.rowSelector, function (e) {
+					if (e.target.tagName != 'TR') return;
+
+					if (e.which == 13) {
+						doRowSelect.call(self, e);return false;
+					}
+				});
         }
 
         this.setupSelectionHover();
@@ -1338,8 +1360,8 @@ ice.ace.DataTable.prototype.setupSelectionHover = function () {
         });
 
     this.element
-        .off('mouseenter', selector)
-        .on('mouseenter', selector, function (e) {
+        .off('mouseenter, focus', selector)
+        .on('mouseenter, focus', selector, function (e) {
             var src = ice.ace.jq(e.currentTarget);
 
             src.siblings().removeClass('ui-state-hover ui-datatable-state-active-hover');

@@ -452,7 +452,7 @@ public class DataTableMeta extends UIDataMeta {
             defaultValue =  "true", defaultValueType = DefaultValueType.EXPRESSION)
     private boolean clickableHeaderSorting;
 
-    @Property(tlddoc = "Row tabindex is required for dataTable Find feature. If Find feature is not used and the tabindex interferes with tabbing through inputs in the table, set this to false.",
+    @Property(tlddoc = "Row tabindex is required for dataTable Find feature and for selecting rows by using the keyboard. If the Find or Row Selection features are not used and the tabindex interferes with tabbing through inputs in the table, set this to false.",
             defaultValue =  "true")
     private boolean renderRowTabindex;
 
