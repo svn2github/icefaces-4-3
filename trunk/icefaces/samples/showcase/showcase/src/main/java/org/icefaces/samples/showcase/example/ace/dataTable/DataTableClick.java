@@ -27,6 +27,7 @@ import javax.faces.event.AjaxBehaviorEvent;
 import org.icefaces.ace.component.celleditor.CellEditor;
 import org.icefaces.ace.event.DataTableCellClickEvent;
 import org.icefaces.ace.model.table.RowState;
+import org.icefaces.util.JavaScriptRunner;
 
 @ManagedBean(name= DataTableClick.BEAN_NAME)
 @CustomScoped(value = "#{window}")
@@ -55,6 +56,8 @@ public class DataTableClick implements Serializable {
                 state.removeActiveCellEditor(editor);
             } else {
                 state.addActiveCellEditor(editor);
+				JavaScriptRunner.runScript(FacesContext.getCurrentInstance(),
+					"(function(){ice.ace.DataTable.selectFirstInput('"+editor.getClientId()+"');})();");
             }
         } else {
             FacesContext.getCurrentInstance().addMessage(event.getColumn().getClientId(),
