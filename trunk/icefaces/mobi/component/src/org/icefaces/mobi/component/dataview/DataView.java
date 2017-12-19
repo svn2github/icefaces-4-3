@@ -174,10 +174,18 @@ public class DataView extends DataViewBase implements NamingContainer {
     }
 
     public void initDetailContext(FacesContext context) {
-        Integer index = getActiveRowIndex();
+		DataViewDataModel model = getDataModel();
+		Integer index = getActiveRowIndex();
 
-        if (index != null &&index >= 0)
-            getRequestMap(context).put(getVar(), getDataModel().getDataByIndex(index));
+		if (index != null &&index >= 0) {
+			int length = -1;
+			if (model instanceof DataViewListDataModel) length = ((DataViewListDataModel) model).length();
+			else if (model instanceof DataViewLazyDataModel) length = ((DataViewLazyDataModel) model).length();
+
+			if (length > index) {
+				getRequestMap(context).put(getVar(), getDataModel().getDataByIndex(index));
+			}
+		}
     }
 
     private Map<String,Object> getRequestMap(FacesContext context) {

@@ -23,6 +23,8 @@ import org.icefaces.ace.util.HTML;
 import org.icefaces.mobi.model.dataview.DataViewColumnModel;
 import org.icefaces.mobi.model.dataview.DataViewColumnsModel;
 import org.icefaces.mobi.model.dataview.DataViewDataModel;
+import org.icefaces.mobi.model.dataview.DataViewLazyDataModel;
+import org.icefaces.mobi.model.dataview.DataViewListDataModel;
 import org.icefaces.mobi.model.dataview.IndexedIterator;
 import org.icefaces.mobi.renderkit.CoreRenderer;
 
@@ -524,7 +526,15 @@ public class DataViewRenderer extends CoreRenderer {
 
         if (index != null && index >= 0) {
             DataViewDataModel dataModel = dataView.getDataModel();
-            requestMap.put(var, dataModel.getDataByIndex(index));
+
+			int length = -1;
+			if (dataModel instanceof DataViewListDataModel) length = ((DataViewListDataModel) dataModel).length();
+			else if (dataModel instanceof DataViewLazyDataModel) length = ((DataViewLazyDataModel) dataModel).length();
+
+			if (length > index) {
+				requestMap.put(var, dataModel.getDataByIndex(index));
+			}
+
             if (rowIndexVar != null) requestMap.put(rowIndexVar, index);
         }
 
