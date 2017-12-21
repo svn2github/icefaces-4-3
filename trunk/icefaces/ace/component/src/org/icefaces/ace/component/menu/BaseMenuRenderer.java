@@ -28,10 +28,12 @@
 package org.icefaces.ace.component.menu;
 
 import java.io.IOException;
+import javax.faces.application.ViewHandler;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.component.UIParameter;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.icefaces.ace.component.menuitem.MenuItem;
@@ -94,22 +96,39 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 				writer.writeAttribute("class", "ui-state-disabled wijmo-wijmenu-link ui-corner-all", null);
 			} else {
 				writer.writeAttribute("class", "wijmo-wijmenu-link ui-corner-all", null);
-				String url = menuItem.getUrl();
-				if(url != null) {
-					writer.writeAttribute("href", getEncodedURL(context, menuItem.getUrlEncoding(), url, menuItem.getUrlParameters()), null);
-					if(menuItem.getOnclick() != null) writer.writeAttribute("onclick", menuItem.getOnclick(), null);
-					if(menuItem.getTarget() != null) writer.writeAttribute("target", menuItem.getTarget(), null);
-				} else {
-					writer.writeAttribute("style", "cursor:pointer;", null);
+				String outcome = menuItem.getOutcome();
+				if (outcome != null && !"".equals(outcome)) {
+					String viewUrl = menuItem.getEncodedTargetURL(context, menuItem.getNavigationCase(context));
 
-					UIComponent form = ComponentUtils.findParentForm(context, menuItem);
-					if(form == null) {
-						throw new FacesException("Menubar must be inside a form element");
+					Map parameters = new HashMap();
+					for(UIComponent child : menuItem.getChildren()) {
+						if(child instanceof UIParameter) {
+							UIParameter param = (UIParameter) child;
+							java.util.List list = new java.util.ArrayList();
+							list.add(param.getValue());
+							parameters.put(param.getName(), list);
+						}
 					}
 
+					writer.writeAttribute("href", context.getExternalContext().encodeBookmarkableURL(viewUrl, parameters), null);
+				} else {
+					String url = menuItem.getUrl();
+					if(url != null) {
+						writer.writeAttribute("href", getEncodedURL(context, menuItem.getUrlEncoding(), url, menuItem.getUrlParameters()), null);
+						if(menuItem.getOnclick() != null) writer.writeAttribute("onclick", menuItem.getOnclick(), null);
+						if(menuItem.getTarget() != null) writer.writeAttribute("target", menuItem.getTarget(), null);
+					} else {
+						writer.writeAttribute("style", "cursor:pointer;", null);
 
-					String onclick = getScript(context, menuItem);
-					writer.writeAttribute("onclick", onclick, null);
+						UIComponent form = ComponentUtils.findParentForm(context, menuItem);
+						if(form == null) {
+							throw new FacesException("Menubar must be inside a form element");
+						}
+
+
+						String onclick = getScript(context, menuItem);
+						writer.writeAttribute("onclick", onclick, null);
+					}
 				}
 			}
 

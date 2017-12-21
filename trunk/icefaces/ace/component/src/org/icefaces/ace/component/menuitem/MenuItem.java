@@ -39,6 +39,8 @@ import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 
+import javax.faces.application.*;
+import javax.faces.event.ActionListener;
 
 public class MenuItem extends MenuItemBase implements java.io.Serializable {
 	
@@ -87,5 +89,47 @@ public class MenuItem extends MenuItemBase implements java.io.Serializable {
 
     protected FacesContext getFacesContext() {
         return FacesContext.getCurrentInstance();
+    }
+
+    public NavigationCase getNavigationCase(FacesContext context) {
+        NavigationHandler navHandler = context.getApplication().getNavigationHandler();
+        if (!(navHandler instanceof ConfigurableNavigationHandler)) {
+            return null;
+        }
+
+        String outcome = getOutcome();
+        if (outcome == null) {
+            outcome = context.getViewRoot().getViewId();
+        }
+        String toFlowDocumentId = (String) getAttributes().get(ActionListener.TO_FLOW_DOCUMENT_ID_ATTR_NAME);
+        NavigationCase navCase = null;
+        if (null == toFlowDocumentId) {
+            navCase = ((ConfigurableNavigationHandler) navHandler).getNavigationCase(context, null, outcome);            
+        } else {
+            navCase = ((ConfigurableNavigationHandler) navHandler).getNavigationCase(context, null, outcome, toFlowDocumentId);            
+        }
+
+        return navCase;
+    }
+
+    public String getEncodedTargetURL(FacesContext context, NavigationCase navCase) {
+        String toViewId;
+		if (navCase != null) {
+			toViewId = navCase.getToViewId(context);
+		} else {
+			toViewId = getOutcome();
+			if (toViewId == null) {
+				toViewId = context.getViewRoot().getViewId();
+			} else if (!"".equals(toViewId) && !toViewId.substring(0, 1).equals("/")) {
+				toViewId = "/" + toViewId;
+			}
+		}
+		Map<String,List<String>> params = new java.util.HashMap<String,List<String>>();
+        String result = null;
+        
+		result = context.getApplication().getViewHandler().getBookmarkableURL(context,
+			toViewId, params, false);
+        
+        return result;
     }
 }

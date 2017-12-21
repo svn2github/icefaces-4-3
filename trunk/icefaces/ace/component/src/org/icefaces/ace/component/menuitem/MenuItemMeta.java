@@ -73,4 +73,7 @@ public class MenuItemMeta extends UICommandMeta {
 	
 	@Property(tlddoc = "Access key that, when pressed, transfers focus to this component.")
 	String accesskey;
+
+	@Property(tlddoc = "The outcome, used by the navigation handler to determine the target view when the component is rendered. This attribute overrides the \"url\" attribute. Also, f:param tags can be nested inside this component when using this attribute.")
+	String outcome;
 }
