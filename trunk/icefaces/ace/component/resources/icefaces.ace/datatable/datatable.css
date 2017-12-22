@@ -251,10 +251,6 @@
 	border-top-width: 0;
 }
 
-.ui-datatable-scrollable .ui-datatable-scrollable-body > table {
-    table-layout: fixed;
-}
-
 .ui-datatable-scrollable .ui-datatable-scrollable-body > table > tbody {
     border-top:none;
 }
