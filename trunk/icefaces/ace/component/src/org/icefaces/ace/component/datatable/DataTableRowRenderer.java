@@ -90,13 +90,19 @@ public class DataTableRowRenderer {
             //TODO DONE groupBy, stacked, etc.
             List<IProxiableColumn> cols = tableContext.getProxiedBodyColumns();
 			int visibleIndex = 0;
+
+			int tabindex = -1;
+			if (table.isRenderRowTabindex() && tableContext.isCellSelection()) {
+				tabindex = tableContext.getTabIndex();
+			}
+
             for (int i = 0; i < cols.size(); i++) {
                 IProxiableColumn kid = cols.get(i);
                 if (kid.isRendered()) {
                     encodeRegularCell(new CellRenderingContext(
                             context, cols, i, visibleIndex,
                             selectedColumnIds.contains(kid.getId()),
-                            innerTdDivRequired, rowIndex == 0), userRowStyleClass
+                            innerTdDivRequired, rowIndex == 0, tabindex), userRowStyleClass
                     );
 					visibleIndex++;
                 }
@@ -210,6 +216,10 @@ public class DataTableRowRenderer {
                 if (isNextGrouped)
                     writer.writeAttribute(HTML.ROWSPAN_ATTR, DataTableRendererUtil.findCurrGroupLength(column)+1, null);
 
+				if (cellContext.tabindex > -1) {
+					writer.writeAttribute(HTML.TABINDEX_ATTR, cellContext.tabindex, null);
+				}
+
                 String columnStyleClass = "ui-col-"+cellContext.visibleIndex;
 
                 if (column.getStyleClass() != null)
@@ -315,6 +325,15 @@ public class DataTableRowRenderer {
 				writer.writeAttribute(HTML.ID_ATTR,
 						clientId + "_row_" + expandedRowId + "." + rootModel.getRowIndex(), null);
 
+				if (table.isRenderRowTabindex()) {
+					writer.writeAttribute(HTML.TABINDEX_ATTR, tableContext.getTabIndex(), null);
+				}
+
+				int tabindex = -1;
+				if (table.isRenderRowTabindex() && tableContext.isCellSelection()) {
+					tabindex = tableContext.getTabIndex();
+				}
+
                 if (visible && display) {
                     writer.writeAttribute(HTML.CLASS_ATTR,
                             DataTableConstants.ROW_CLASS + " " + alternatingClass + " " + selectionClass + " " + expandedClass + " " + unselectableClass, null);
@@ -325,7 +344,7 @@ public class DataTableRowRenderer {
                         IProxiableColumn kid = cols.get(i);
                         if (kid.isRendered()) {
                             boolean cellSelected = false;
-                            encodeRegularCell(new CellRenderingContext(context, cols, i, visibleIndex, selectedColumnIds.contains(kid.getId()), false, false), "");
+                            encodeRegularCell(new CellRenderingContext(context, cols, i, visibleIndex, selectedColumnIds.contains(kid.getId()), false, false, tabindex), "");
 							visibleIndex++;
                         }
                     }
@@ -429,8 +448,9 @@ public class DataTableRowRenderer {
         boolean selected;
         boolean resizable;
 		boolean firstRow;
+		int tabindex;
 
-        public CellRenderingContext(FacesContext context, List<IProxiableColumn> columns, int index, int visibleIndex, boolean selected, boolean innerDiv, boolean firstRow) {
+        public CellRenderingContext(FacesContext context, List<IProxiableColumn> columns, int index, int visibleIndex, boolean selected, boolean innerDiv, boolean firstRow, int tabindex) {
             this.context = context;
             this.columns = columns;
             this.index = index;
@@ -438,6 +458,7 @@ public class DataTableRowRenderer {
             this.selected = selected;
             this.resizable = innerDiv;
 			this.firstRow = firstRow;
+			this.tabindex = tabindex;
         }
     }
 }

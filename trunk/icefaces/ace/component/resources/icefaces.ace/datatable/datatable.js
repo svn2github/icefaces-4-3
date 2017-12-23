@@ -1206,6 +1206,48 @@ ice.ace.DataTable.prototype.setupClickEvents = function() {
                 cellDblClickObs.push(function(event) { doCellSelect.call(self, event); });
             else
                 cellClickObs.push(function(event) { doCellSelect.call(self, event); })
+
+			this.element
+				.off('keydown', this.cellSelector)
+				.on('keydown', this.cellSelector, function (e) {
+					if (e.target.tagName != 'TD') return;
+
+					if (e.which == 37) {
+						ice.ace.jq(e.currentTarget).prev().focus();return false;
+					} else if (e.which == 39) {
+						ice.ace.jq(e.currentTarget).next().focus();return false;
+					} else if (e.which == 38) {
+						var cell = ice.ace.jq(e.currentTarget);
+						var cellIndex = cell.index();
+						var prevRow = cell.parent().prev();
+						while (true) {
+							if (prevRow.size() == 0) break;
+							if (prevRow.is(':visible')) break;
+							prevRow = prevRow.prev();
+						}
+						prevRow.find('td').eq(cellIndex).focus();return false;
+					} else if (e.which == 40) {
+						var cell = ice.ace.jq(e.currentTarget);
+						var cellIndex = cell.index();
+						var nextRow = cell.parent().next();
+						while (true) {
+							if (nextRow.size() == 0) break;
+							if (nextRow.is(':visible')) break;
+							nextRow = nextRow.next();
+						}
+						nextRow.find('td').eq(cellIndex).focus();return false;
+					} else if (e.which == 32) {
+						doCellSelect.call(self, e);return false;
+					}
+				})
+				.off('keyup', this.cellSelector)
+				.on('keyup', this.cellSelector, function (e) {
+					if (e.target.tagName != 'TD') return;
+
+					if (e.which == 13) {
+						doCellSelect.call(self, e);return false;
+					}
+				});
         }
         else {
             if (this.cfg.dblclickSelect) {
@@ -1230,9 +1272,23 @@ ice.ace.DataTable.prototype.setupClickEvents = function() {
 					if (e.target.tagName != 'TR') return;
 
 					if (e.which == 38) {
-						ice.ace.jq(e.currentTarget).prev().focus();return false;
+						var row = ice.ace.jq(e.currentTarget);
+						var prevRow = row.prev();
+						while (true) {
+							if (prevRow.size() == 0) break;
+							if (prevRow.is(':visible')) break;
+							prevRow = prevRow.prev();
+						}
+						prevRow.focus();return false;
 					} else if (e.which == 40) {
-						ice.ace.jq(e.currentTarget).next().focus();return false;
+						var row = ice.ace.jq(e.currentTarget);
+						var nextRow = row.next();
+						while (true) {
+							if (nextRow.size() == 0) break;
+							if (nextRow.is(':visible')) break;
+							nextRow = nextRow.next();
+						}
+						nextRow.focus();return false;
 					} else if (e.which == 32) {
 						doRowSelect.call(self, e);return false;
 					}

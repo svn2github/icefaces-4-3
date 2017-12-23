@@ -54,6 +54,7 @@ public class DataTableRenderingContext {
     private boolean columnPinningEnabled;
     private int tabIndex;
     private boolean showPinControl;
+	private boolean cellSelection;
 
     public DataTableRenderingContext(DataTable table) {
         this.table = table;
@@ -79,6 +80,8 @@ public class DataTableRenderingContext {
         tabIndex = table.getTabIndex();
         columnPinningEnabled = table.isColumnPinning();
         showPinControl = table.isColumnPinningControlsInHeader();
+		cellSelection = "singlecell".equalsIgnoreCase(selectionMode) || "multiplecell".equalsIgnoreCase(selectionMode)
+			|| "cellblock".equalsIgnoreCase(selectionMode) || "cellrange".equalsIgnoreCase(selectionMode);
     }
 
     public DataTable getTable() {
@@ -211,5 +214,9 @@ public class DataTableRenderingContext {
 
     public boolean showPinningControls() {
         return showPinControl;
+    }
+
+    public boolean isCellSelection() {
+        return cellSelection;
     }
 }
