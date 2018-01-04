@@ -297,6 +297,7 @@ if (!window.ice.icefaces) {
                         'ice.submit.type': 'ice.push',
                         'ice.view': viewID,
                         'ice.window': namespace.window,
+                        execute: '@form',
                         render: '@all',
                         onerror: retries
                     };
