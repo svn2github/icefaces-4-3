@@ -272,6 +272,10 @@
     width:auto;
 }
 
+.ui-datatable-scrollable-invisible {
+	visibility: hidden;
+}
+
 .ui-datatable .ui-column-resizer {
     width:2px;
     height:20px;

@@ -60,6 +60,7 @@ public class DataTableConstants {
     public static final String SCROLLABLE_HEADER_CLASS = "ui-datatable-scrollable-header";
     public static final String SCROLLABLE_BODY_CLASS = "ui-datatable-scrollable-body";
     public static final String SCROLLABLE_FOOTER_CLASS = "ui-datatable-scrollable-footer";
+    public static final String SCROLLABLE_INVISIBLE_CLASS = "ui-datatable-scrollable-invisible";
     public static final String COLUMN_RESIZER_CLASS = "ui-column-resizer";
     public static final String CONDITIONAL_ROW_CLASS = "dt-cond-row";
 }

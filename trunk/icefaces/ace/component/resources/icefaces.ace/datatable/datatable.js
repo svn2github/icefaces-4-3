@@ -2459,6 +2459,9 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
             console.log("ace:dataTable - ID: " + this.id + " - resizeScrolling - " + (new Date().getTime() - startTime)/1000 + "s");
         }
 
+		// remove invisible class
+		bodyTable.removeClass('ui-datatable-scrollable-invisible');
+
         if (this.cfg.pinning) {
             this.pinningHolder = this.jqId + '_pinning';
             this.initializePinningState();

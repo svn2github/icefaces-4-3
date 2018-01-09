@@ -321,6 +321,9 @@ public class DataTableRenderer extends CoreRenderer {
             writer.writeAttribute(HTML.CLASS_ATTR, scrollClass, null);
             writer.writeAttribute(HTML.STYLE_ELEM, "height:" + tableContext.getScrollHeight() + "px", null);
             writer.startElement(HTML.TABLE_ELEM, null);
+
+			writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.SCROLLABLE_INVISIBLE_CLASS, null);
+
 			String caption = table.getCaption();
 			if (caption != null) {
 				writer.startElement("caption", null);
