@@ -65,8 +65,16 @@ public class ColumnModel {
                     headerIterator.columns() : null;
             if (currHeadColumns != null) {
                 for (int i = 0; i < currBodyColumns.size(); i++) {
+
+					Column currBodyColumn = currBodyColumns.get(i);
+					String forValue = currBodyColumn.getFor();
+					Column forColumn = null;
+					if (forValue != null && !"".equals(forValue)) {
+						forColumn = (Column) currBodyColumn.findComponent(forValue);
+					}
+
                     proxiedColumns.add(new ProxiedBodyColumn(
-                        currHeadColumns.get(i), currBodyColumns.get(i)));
+                        forColumn != null ? forColumn : currHeadColumns.get(i), currBodyColumn));
                     if (log.isLoggable(Level.FINER)) {
                         log.finer("Matching BODY " + currBodyColumns.get(i).
                             getHeaderText() + " to HEADER " + currHeadColumns.

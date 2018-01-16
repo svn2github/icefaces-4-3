@@ -196,6 +196,9 @@ public class ColumnMeta extends UIColumnMeta {
         UIComponent filter;
     }
 
+	@Property(name="for", tlddoc="Specifies the id of the header column from which to inherit properties.")
+	private String forValue;
+
 //    These per-feature configuration attributes will be used when the 'value' property is added to Column.
 //    Until then they are redundant.
 //    @Property(tlddoc="Enables per-column control of column sorting when either the " +

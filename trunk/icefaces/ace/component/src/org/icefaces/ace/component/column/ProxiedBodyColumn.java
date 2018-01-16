@@ -357,4 +357,13 @@ public class ProxiedBodyColumn implements IProxiableColumn{
     public String getAccesskey() {
         return (isPropertySpecified(bodyColumn, "accesskey") ? bodyColumn : headerColumn).getFooterText();
     }
+
+	// we don't want to get or set the for property on the header column
+    public String getFor() {
+        return bodyColumn.getFor();
+    }
+
+    public void setFor(String forValue) {
+        bodyColumn.setFor(forValue);
+    }
 }
