@@ -67,14 +67,14 @@ public class ColumnModel {
                 for (int i = 0; i < currBodyColumns.size(); i++) {
 
 					Column currBodyColumn = currBodyColumns.get(i);
-					String forValue = currBodyColumn.getFor();
-					Column forColumn = null;
-					if (forValue != null && !"".equals(forValue)) {
-						forColumn = (Column) currBodyColumn.findComponent(forValue);
+					String inheritFrom = currBodyColumn.getInheritFrom();
+					Column fromColumn = null;
+					if (inheritFrom != null && !"".equals(inheritFrom)) {
+						fromColumn = (Column) currBodyColumn.findComponent(inheritFrom);
 					}
 
                     proxiedColumns.add(new ProxiedBodyColumn(
-                        forColumn != null ? forColumn : currHeadColumns.get(i), currBodyColumn));
+                        fromColumn != null ? fromColumn : currHeadColumns.get(i), currBodyColumn));
                     if (log.isLoggable(Level.FINER)) {
                         log.finer("Matching BODY " + currBodyColumns.get(i).
                             getHeaderText() + " to HEADER " + currHeadColumns.

@@ -196,8 +196,8 @@ public class ColumnMeta extends UIColumnMeta {
         UIComponent filter;
     }
 
-	@Property(name="for", tlddoc="Specifies the id of the header column from which to inherit properties.")
-	private String forValue;
+	@Property(tlddoc="Specifies the id of the header column from which to inherit properties. Note that this is only a way to inherit properties from a header column and not necessarily a way to couple a body column to a header column for other purposes. When exporting and on the table configuration panel, the same rules of correspondence will be applied. This property is primarily intended for cases when multiple column components can occupy the same column position and only one of them is rendered, based on some business or display logic. It's also useful for having multiple body columns inherit properties from the same header column, as a way to avoid repetition, and in cases when sorting and filtering controls are desired to be rendered on a middle or top header row and not on the bottom row, as it is customary.")
+	private String inheritFrom;
 
 //    These per-feature configuration attributes will be used when the 'value' property is added to Column.
 //    Until then they are redundant.

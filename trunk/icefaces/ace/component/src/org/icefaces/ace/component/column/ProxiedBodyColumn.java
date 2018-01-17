@@ -359,11 +359,11 @@ public class ProxiedBodyColumn implements IProxiableColumn{
     }
 
 	// we don't want to get or set the for property on the header column
-    public String getFor() {
-        return bodyColumn.getFor();
+    public String getInheritFrom() {
+        return bodyColumn.getInheritFrom();
     }
 
-    public void setFor(String forValue) {
-        bodyColumn.setFor(forValue);
+    public void setInheritFrom(String inheritFrom) {
+        bodyColumn.setInheritFrom(inheritFrom);
     }
 }
