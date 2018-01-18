@@ -132,10 +132,26 @@ public class ColumnMeta extends UIColumnMeta {
     @Property(tlddoc="When enabled, this column is rendered underneath the previous column.")
     private boolean stacked;
 
-    @Property(tlddoc="When disabled, this column is excluded from the list of columns available" +
+    @Property(tlddoc="When false, this column is excluded from the list of columns available" +
             " for configuration on a TableConfigPanel component.",
             defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
     private boolean configurable;
+
+    @Property(tlddoc = "When false, configuring this column's order will be disabled in the TableConfigPanel component, otherwise configuring this column's order will be enabled when column ordering configuration is enabled as well in the TableConfigPanel component.",
+            defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
+    boolean columnOrderingConfigurable;
+
+    @Property(tlddoc = "When false, configuring this column's visibility will be disabled in the TableConfigPanel component, otherwise configuring this column's visibility will be enabled when column visibility configuration is enabled as well in the TableConfigPanel component.",
+            defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
+    boolean columnVisibilityConfigurable;
+
+    @Property(tlddoc = "When false, configuring this column's name will be disabled in the TableConfigPanel component, otherwise configuring this column's name will be enabled when column name configuration is enabled as well in the TableConfigPanel component.",
+            defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
+    boolean columnNameConfigurable;
+
+    @Property(tlddoc = "When false, configuring this column's sorting will be disabled in the TableConfigPanel component, otherwise configuring this column's sorting will be enabled when column sorting configuration is enabled as well in the TableConfigPanel component.",
+            defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
+    boolean columnSortingConfigurable;
 
     @Property(tlddoc="Defines the priority of a column during sorting. The column " +
             "priorities incoming from the client during a sort request overwrite any " +

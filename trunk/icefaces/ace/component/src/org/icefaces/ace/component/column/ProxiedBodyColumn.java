@@ -358,6 +358,38 @@ public class ProxiedBodyColumn implements IProxiableColumn{
         return (isPropertySpecified(bodyColumn, "accesskey") ? bodyColumn : headerColumn).getFooterText();
     }
 
+    public void setColumnOrderingConfigurable(boolean columnOrderingConfigurable) {
+        (isPropertySpecified(bodyColumn, "columnOrderingConfigurable") ? bodyColumn : headerColumn).setColumnOrderingConfigurable(columnOrderingConfigurable);
+    }
+
+    public boolean isColumnOrderingConfigurable() {
+        return (isPropertySpecified(bodyColumn, "columnOrderingConfigurable") ? bodyColumn : headerColumn).isColumnOrderingConfigurable();
+    }
+
+    public void setColumnVisibilityConfigurable(boolean columnVisibilityConfigurable) {
+        (isPropertySpecified(bodyColumn, "columnVisibilityConfigurable") ? bodyColumn : headerColumn).setColumnVisibilityConfigurable(columnVisibilityConfigurable);
+    }
+
+    public boolean isColumnVisibilityConfigurable() {
+        return (isPropertySpecified(bodyColumn, "columnVisibilityConfigurable") ? bodyColumn : headerColumn).isColumnVisibilityConfigurable();
+    }
+
+    public void setColumnNameConfigurable(boolean columnNameConfigurable) {
+        (isPropertySpecified(bodyColumn, "columnNameConfigurable") ? bodyColumn : headerColumn).setColumnNameConfigurable(columnNameConfigurable);
+    }
+
+    public boolean isColumnNameConfigurable() {
+        return (isPropertySpecified(bodyColumn, "columnNameConfigurable") ? bodyColumn : headerColumn).isColumnNameConfigurable();
+    }
+
+    public void setColumnSortingConfigurable(boolean columnSortingConfigurable) {
+        (isPropertySpecified(bodyColumn, "columnSortingConfigurable") ? bodyColumn : headerColumn).setColumnSortingConfigurable(columnSortingConfigurable);
+    }
+
+    public boolean isColumnSortingConfigurable() {
+        return (isPropertySpecified(bodyColumn, "columnSortingConfigurable") ? bodyColumn : headerColumn).isColumnSortingConfigurable();
+    }
+
 	// we don't want to get or set the for property on the header column
     public String getInheritFrom() {
         return bodyColumn.getInheritFrom();

@@ -516,7 +516,8 @@ public class TableConfigPanelRenderer extends CoreRenderer implements
             Column column, boolean isBodyColumn) throws IOException {
         state.writer.startElement(HTML.SPAN_ELEM, null);
         state.writer.writeAttribute(HTML.CLASS_ATTR, "sorting", null);
-        if (isBodyColumn && column.getValueExpression("sortBy") != null) {
+        if (isBodyColumn && column.getValueExpression("sortBy") != null
+			&& column.isConfigurable() && column.isColumnSortingConfigurable()) {
             Integer sortPriority = column.getSortPriority();
             if (sortPriority != null && sortPriority.intValue() == 0)
                 sortPriority = null;
@@ -568,40 +569,42 @@ public class TableConfigPanelRenderer extends CoreRenderer implements
     private void writeColumnOrderingControl(TableConfigPanelRenderState state,
             Column column, boolean havePeers, boolean unstackedOrFirstStacked)
             throws IOException {
-        state.writer.startElement(HTML.SPAN_ELEM, null);
-        state.writer.writeAttribute(HTML.CLASS_ATTR, "handle-container ordering", null);
-        int numHeaderLevels = state.t.getHeaderTreeIterator().getColumnGroupModel().getRows();
-        int headerLevel = state.t.getHeaderTreeIterator().rowIndex();
-        for (int level = 0; level < numHeaderLevels; level++) {
-            if (level == headerLevel) {
-                state.writer.startElement(HTML.ANCHOR_ELEM, null);
-                StringBuilder styleClass = new StringBuilder(64);
-                if (!havePeers || !state.spanConfigurable) {
-                    styleClass.append("ui-disabled "); //TODO  ui-opacity-40
-                }
-                if (unstackedOrFirstStacked) {
-                    styleClass.append("ui-state-default ");
-                }
-                styleClass.append("ui-corner-all ui-sortable-handle");
-                state.writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
-                state.writer.writeAttribute(HTML.HREF_ATTR, "#", null);
+		state.writer.startElement(HTML.SPAN_ELEM, null);
+		state.writer.writeAttribute(HTML.CLASS_ATTR, "handle-container ordering", null);
+		if (column.isConfigurable() && column.isColumnOrderingConfigurable()) {
+			int numHeaderLevels = state.t.getHeaderTreeIterator().getColumnGroupModel().getRows();
+			int headerLevel = state.t.getHeaderTreeIterator().rowIndex();
+			for (int level = 0; level < numHeaderLevels; level++) {
+				if (level == headerLevel) {
+					state.writer.startElement(HTML.ANCHOR_ELEM, null);
+					StringBuilder styleClass = new StringBuilder(64);
+					if (!havePeers || !state.spanConfigurable) {
+						styleClass.append("ui-disabled "); //TODO  ui-opacity-40
+					}
+					if (unstackedOrFirstStacked) {
+						styleClass.append("ui-state-default ");
+					}
+					styleClass.append("ui-corner-all ui-sortable-handle");
+					state.writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
+					state.writer.writeAttribute(HTML.HREF_ATTR, "#", null);
 
-                state.writer.startElement(HTML.SPAN_ELEM, null);
-                state.writer.writeAttribute(HTML.CLASS_ATTR, "ui-icon ui-icon-arrowthick-2-n-s", null);
-                // On IE7 the ui-icon text-indent was keeping stacked from showing
-                state.writer.writeAttribute(HTML.STYLE_ATTR, "text-indent:0px;", null);
-                state.writer.endElement(HTML.SPAN_ELEM);
+					state.writer.startElement(HTML.SPAN_ELEM, null);
+					state.writer.writeAttribute(HTML.CLASS_ATTR, "ui-icon ui-icon-arrowthick-2-n-s", null);
+					// On IE7 the ui-icon text-indent was keeping stacked from showing
+					state.writer.writeAttribute(HTML.STYLE_ATTR, "text-indent:0px;", null);
+					state.writer.endElement(HTML.SPAN_ELEM);
 
-                state.writer.endElement(HTML.ANCHOR_ELEM);
-            } else {
-                state.writer.startElement(HTML.SPAN_ELEM, null);
-                state.writer.writeAttribute(HTML.CLASS_ATTR, "ui-icon icon-spacer", null);
-                // On IE7 the ui-icon text-indent was keeping stacked from showing
-                state.writer.writeAttribute(HTML.STYLE_ATTR, "text-indent:0px;", null);
-                state.writer.endElement(HTML.SPAN_ELEM);
-            }
-        }
-        state.writer.endElement(HTML.SPAN_ELEM);
+					state.writer.endElement(HTML.ANCHOR_ELEM);
+				} else {
+					state.writer.startElement(HTML.SPAN_ELEM, null);
+					state.writer.writeAttribute(HTML.CLASS_ATTR, "ui-icon icon-spacer", null);
+					// On IE7 the ui-icon text-indent was keeping stacked from showing
+					state.writer.writeAttribute(HTML.STYLE_ATTR, "text-indent:0px;", null);
+					state.writer.endElement(HTML.SPAN_ELEM);
+				}
+			}
+		}
+		state.writer.endElement(HTML.SPAN_ELEM);
     }
     private void writeColumnVisibilityControl(ResponseWriter writer,
             Column column, String columnClientId, boolean columnConfigurable,
@@ -610,8 +613,8 @@ public class TableConfigPanelRenderer extends CoreRenderer implements
         writer.writeAttribute(HTML.CLASS_ATTR, "visibility", null);
         writer.startElement(HTML.INPUT_ELEM, null);
         writer.writeAttribute(HTML.TYPE_ATTR, "checkbox", null);
-        if (!columnConfigurable)
-            writer.writeAttribute(HTML.DISABLED_ATTR, "disabled", null);
+        if (!columnConfigurable || !column.isColumnVisibilityConfigurable())
+            writer.writeAttribute(HTML.ONCLICK_ATTR, "return false;", null);
         writer.writeAttribute(HTML.NAME_ATTR, columnClientId+TableConfigPanel.COLUMN_VISIBILITY_SUFFIX, null);
         if (columnRendered)
             writer.writeAttribute(HTML.CHECKED_ATTR, "checked", null);
@@ -625,8 +628,8 @@ public class TableConfigPanelRenderer extends CoreRenderer implements
         writer.writeAttribute(HTML.CLASS_ATTR, "name", null);
         writer.startElement(HTML.INPUT_ELEM, null);
         writer.writeAttribute(HTML.TYPE_ATTR, "text", null);
-        if (!naming || !columnConfigurable)
-            writer.writeAttribute(HTML.DISABLED_ATTR, "disabled", null);
+        if (!naming || !columnConfigurable || !column.isColumnNameConfigurable())
+            writer.writeAttribute(HTML.READONLY_ATTR, "readonly", null);
         writer.writeAttribute(HTML.NAME_ATTR, columnClientId+TableConfigPanel.COLUMN_HEAD_SUFFIX, null);
         writer.writeAttribute(HTML.VALUE_ATTR, column.getHeaderText(), null);
         writer.endElement(HTML.INPUT_ELEM);
