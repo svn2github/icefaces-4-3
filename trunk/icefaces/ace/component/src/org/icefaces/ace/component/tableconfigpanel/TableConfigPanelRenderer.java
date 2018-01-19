@@ -613,8 +613,10 @@ public class TableConfigPanelRenderer extends CoreRenderer implements
         writer.writeAttribute(HTML.CLASS_ATTR, "visibility", null);
         writer.startElement(HTML.INPUT_ELEM, null);
         writer.writeAttribute(HTML.TYPE_ATTR, "checkbox", null);
-        if (!columnConfigurable || !column.isColumnVisibilityConfigurable())
+        if (!columnConfigurable || !column.isColumnVisibilityConfigurable()) {
             writer.writeAttribute(HTML.ONCLICK_ATTR, "return false;", null);
+			writer.writeAttribute(HTML.CLASS_ATTR, "ui-state-disabled", null);
+		}
         writer.writeAttribute(HTML.NAME_ATTR, columnClientId+TableConfigPanel.COLUMN_VISIBILITY_SUFFIX, null);
         if (columnRendered)
             writer.writeAttribute(HTML.CHECKED_ATTR, "checked", null);
@@ -628,8 +630,10 @@ public class TableConfigPanelRenderer extends CoreRenderer implements
         writer.writeAttribute(HTML.CLASS_ATTR, "name", null);
         writer.startElement(HTML.INPUT_ELEM, null);
         writer.writeAttribute(HTML.TYPE_ATTR, "text", null);
-        if (!naming || !columnConfigurable || !column.isColumnNameConfigurable())
+        if (!naming || !columnConfigurable || !column.isColumnNameConfigurable()) {
             writer.writeAttribute(HTML.READONLY_ATTR, "readonly", null);
+			writer.writeAttribute(HTML.CLASS_ATTR, "ui-state-disabled", null);
+		}
         writer.writeAttribute(HTML.NAME_ATTR, columnClientId+TableConfigPanel.COLUMN_HEAD_SUFFIX, null);
         writer.writeAttribute(HTML.VALUE_ATTR, column.getHeaderText(), null);
         writer.endElement(HTML.INPUT_ELEM);
