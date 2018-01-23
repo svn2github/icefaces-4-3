@@ -177,7 +177,7 @@ public class ListMeta extends UIDataMeta {
     private Boolean controlsEnabled;
 
     @Property(tlddoc = "Defines the order in which the buttons render. " +
-            "Specify a space delimited list of values such as \"top\", \"up\", \"dwn\", \"btm\", and \"rmv\" (for the remove button). Note that the remove button always makes a request to the server, whether an ajax event is used or not. This is done in order to keep the list contents consistent. A confimation dialog is displayed before sending the request.",
+            "Specify a space delimited list of values such as \"top\", \"up\", \"dwn\", \"btm\", and \"rmv\" (for the remove button). Note that the remove button always makes a request to the server, whether an ajax event is used or not. This is done in order to keep the list contents consistent. A confirmation dialog is displayed before sending the request.",
             defaultValue = "top up dwn btm",
             defaultValueType = DefaultValueType.STRING_LITERAL)
     private String controlsFormat;
