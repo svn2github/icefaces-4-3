@@ -103,6 +103,29 @@ public class ListDecoder {
         return this;
     }
 
+    public ListDecoder processRemovals(String raw) throws JSONException {
+        if (list.isSelectItemModel() || raw == null || raw.length() == 0) return this;
+        JSONArray array = new JSONArray(raw);
+        Object value = list.getValue();
+
+		int[] indexes = new int[array.length()];
+		for (int i = 0; i < array.length(); i++) {
+			indexes[i] = array.getInt(i);
+		}
+		Arrays.sort(indexes);
+
+        List collection = null;
+        if (value instanceof List) collection = (List) value;
+        else if (value.getClass().isArray()) collection = Arrays.asList(value);
+
+        for (int i = indexes.length-1; i > -1; i--) {
+            int index = indexes[i];
+			collection.remove(index);
+        }
+
+        return this;
+    }
+
     public ListDecoder attachEmigrants(FacesContext context, String destListId) throws JSONException {
         if (list.isSelectItemModel() || destListId == null || destListId.length() == 0)
             return this;

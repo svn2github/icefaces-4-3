@@ -77,6 +77,10 @@ import java.util.Set;
 	@ClientEvent(name="filter",
 			javadoc="Fired when a change to the current filters occurs on the list.",
 			tlddoc="Fired when a change to the current filters occurs on the list.",
+			defaultRender="@all", defaultExecute="@this"),
+	@ClientEvent(name="remove",
+			javadoc="Fired when an item is removed from the List.",
+			tlddoc="Fired when an item is removed from the List.",
 			defaultRender="@all", defaultExecute="@this")
     },
     defaultEvent = "select"
@@ -172,8 +176,8 @@ public class ListMeta extends UIDataMeta {
             defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
     private Boolean controlsEnabled;
 
-    @Property(tlddoc = "Defines the order in which the reordering buttons render. " +
-            "Specify a space delimited list of values such as \"top\", \"up\", \"dwn\", \"btm\".",
+    @Property(tlddoc = "Defines the order in which the buttons render. " +
+            "Specify a space delimited list of values such as \"top\", \"up\", \"dwn\", \"btm\", and \"rmv\" (for the remove button). Note that the remove button always makes a request to the server, whether an ajax event is used or not. This is done in order to keep the list contents consistent. A confimation dialog is displayed before sending the request.",
             defaultValue = "top up dwn btm",
             defaultValueType = DefaultValueType.STRING_LITERAL)
     private String controlsFormat;
@@ -209,6 +213,11 @@ public class ListMeta extends UIDataMeta {
             defaultValue = "ui-icon ui-icon-arrowstop-1-s",
             defaultValueType = DefaultValueType.STRING_LITERAL)
     private String bottomButtonClass;
+
+    @Property(tlddoc = "Style class to apply to the span defining the remove button icon.",
+            defaultValue = "ui-icon ui-icon-trash",
+            defaultValueType = DefaultValueType.STRING_LITERAL)
+    private String removeButtonClass;
 
     @Property(tlddoc = "Enables an alternate style on the table that uses greatly " +
             "reduced padding and a 8 point default font.",

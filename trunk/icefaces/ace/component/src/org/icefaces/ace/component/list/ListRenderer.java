@@ -43,6 +43,9 @@ import org.icefaces.ace.component.datetimeentry.DateTimeEntryUtils;
 import org.icefaces.util.EnvUtils;
 import javax.faces.application.Resource;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 @MandatoryResourceComponent(tagName="list", value="org.icefaces.ace.component.list.ACEList")
 public class ListRenderer extends CoreRenderer {
     public static final String containerStyleClass = "if-list ui-widget ui-widget-content ui-corner-all";
@@ -58,6 +61,8 @@ public class ListRenderer extends CoreRenderer {
     public static final String headerStyleClass = "if-list-head ui-widget-header";
     public static final String footerStyleClass = "if-list-foot ui-widget-content";
     public static final String placeholderStyleClass = "if-list-plhld if-list-item ui-state-default";
+	private static final String ACE_MESSAGES_BUNDLE = "org.icefaces.ace.resources.messages";
+    private static final String MESSAGE_KEY_PREFIX = "org.icefaces.ace.component.list.";
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -78,12 +83,14 @@ public class ListRenderer extends CoreRenderer {
 			String select = id + "_selections";
 			String deselect = id + "_deselections";
 			String reordering = id + "_reorderings";
+			String removal = id + "_removals";
 			String immigration = id + "_immigration";
 			String emigration = id + "_emigration";
 
 			String selectInput = params.get(select);
 			String deselectInput = params.get(deselect);
 			String reorderingInput = params.get(reordering);
+			String removalInput = params.get(removal);
 			String immigrationInput = params.get(immigration);
 			String emigrationInput = params.get(emigration);
 
@@ -96,6 +103,7 @@ public class ListRenderer extends CoreRenderer {
 						 // to their destination list
 						 .attachEmigrants(context, emigrationInput)
 						  .processReorderings(reorderingInput)
+						  .processRemovals(removalInput)
 						   /// If destination, fetch incoming objects if not
 						   /// already passed by decoding source list
 						   .fetchImmigrants(context, immigrationInput)
@@ -208,6 +216,10 @@ public class ListRenderer extends CoreRenderer {
             iconStyleClass = component.getBottomButtonClass();
             property = "bottomButtonClass";
             facet = component.getFacet("bottomButton");
+        } else if (buttonCode.equals("rmv")) {
+            iconStyleClass = component.getRemoveButtonClass();
+            property = "removeButtonClass";
+            facet = component.getFacet("removeButton");
         } else return;
 
         if (facet != null) {
@@ -392,6 +404,13 @@ public class ListRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.TYPE_ATTR, "hidden", null);
         writer.writeAttribute(HTML.AUTOCOMPLETE_ATTR, "off", null);
         writer.endElement(HTML.INPUT_ELEM);
+
+        writer.startElement(HTML.INPUT_ELEM, null);
+        writer.writeAttribute(HTML.ID_ATTR, id + "_removals", null);
+        writer.writeAttribute(HTML.NAME_ATTR, id + "_removals", null);
+        writer.writeAttribute(HTML.TYPE_ATTR, "hidden", null);
+        writer.writeAttribute(HTML.AUTOCOMPLETE_ATTR, "off", null);
+        writer.endElement(HTML.INPUT_ELEM);
     }
 
     private void encodeScript(FacesContext context, ResponseWriter writer, ACEList component) throws IOException {
@@ -446,6 +465,20 @@ public class ListRenderer extends CoreRenderer {
 		if (component.getValueExpression("sortBy") != null) {
 			cfgBuilder.entry("sorting", true);
 		}
+
+		Locale locale;
+		ClassLoader classLoader;
+		ResourceBundle bundle = null;
+		locale = context.getViewRoot().getLocale();
+		classLoader = Thread.currentThread().getContextClassLoader();
+		String bundleName = context.getApplication().getMessageBundle();
+		if (classLoader == null) classLoader = bundleName.getClass().getClassLoader();
+		if (bundleName == null) bundleName = ACE_MESSAGES_BUNDLE;
+		bundle = ResourceBundle.getBundle(bundleName, locale, classLoader);
+
+		cfgBuilder.entry("removeConfirmationMessage", bundle.getString(MESSAGE_KEY_PREFIX + "REMOVE_CONFIRMATION_QUESTION"));
+		cfgBuilder.entry("yesMessage", bundle.getString(MESSAGE_KEY_PREFIX + "YES"));
+		cfgBuilder.entry("noMessage", bundle.getString(MESSAGE_KEY_PREFIX + "NO"));
 
         encodeClientBehaviors(context, component, cfgBuilder);
 

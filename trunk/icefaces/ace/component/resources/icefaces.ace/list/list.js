@@ -625,6 +625,11 @@ ice.ace.List.prototype.controlClickHandler = function(e) {
             .toggleClass('ui-state-active', 50);
     }
 
+	if (jqCtrl.hasClass('if-list-ctrl-rmv')) {
+		this.displayRemoveItemsConfirmation(e);
+		return;
+	}
+
     if (jqCtrl.hasClass('if-list-ctrl-top'))
         dir = "top";
     else if (jqCtrl.hasClass('if-list-ctrl-up'))
@@ -950,6 +955,7 @@ ice.ace.List.prototype.clearState = function() {
     this.write('reorderings', []);
     this.write('selections', []);
     this.write('deselections', []);
+    this.write('removals', []);
 }
 
 ice.ace.List.prototype.moveItems = function(dir) {
@@ -1036,6 +1042,53 @@ ice.ace.List.prototype.moveItems = function(dir) {
                 ice.ace.ab(this.behaviors.move);
             }
     }
+};
+
+ice.ace.List.prototype.displayRemoveItemsConfirmation = function(e) {
+	var container = document.createElement("DIV");
+	container.style.cssText = 'position: fixed;width: 250px;height: 120px;margin: auto;'
+		+ 'top: 0;left: 0;bottom: 0;right: 0;padding: 1em;z-index:1000;';
+	container.setAttribute('class', 'ui-widget ui-widget-content ui-corner-all');
+	container.innerHTML = '<div><span style="float:right" class="ui-corner-all"'
+		+ 'onmouseover="this.setAttribute(\'class\', \'ui-corner-all ui-state-hover\');"'
+		+ 'onmouseout="this.setAttribute(\'class\', \'ui-corner-all\');"><span class="ui-icon ui-icon-closethick"'
+		+ 'onclick="var root = this.parentElement.parentElement.parentElement; root.parentElement.removeChild(root);"'
+		+ '>Close</span></span></div><div style="padding:1em;">' + this.cfg.removeConfirmationMessage + '</div><div style="padding:1em;">'
+		+ '<button onclick="var root = this.parentElement.parentElement;'
+		+ 'root.parentElement.removeChild(root);">' + this.cfg.yesMessage + '</button><button onclick="var root = this.parentElement.parentElement;'
+		+ 'root.parentElement.removeChild(root);" style="margin-left:1em;">' + this.cfg.noMessage + '</button></div></div>';
+	document.body.appendChild(container);
+	var self = this;
+	ice.ace.jq(container).find('button').eq(0).on('click', function(){self.removeItems(e);});
+};
+
+ice.ace.List.prototype.removeItems = function(e) {
+    var selectedItems = this.element.find('.ui-state-active');
+
+    if (selectedItems.length > 0) {
+        var records = this.read('removals');
+
+		for (var i = selectedItems.length-1; i >= 0; i--) {
+			var item = ice.ace.jq(selectedItems[i]);
+
+			records.push(item.index());
+			item.hide();
+			//this.swapIdPrefix(item, target);
+		}
+
+        // write removals or ajax submit
+        this.write('removals', records);
+
+		if (this.behaviors && this.behaviors.remove) {
+			var self = this;
+			this.behaviors.remove.oncomplete = function() {
+				self.clearState();
+			};
+			ice.ace.ab(this.behaviors.remove);
+		} else {
+			ice.se(e, this.element.get(0));
+		}
+	}
 };
 
 // Used to keep id for each child in place, so per-item updates
