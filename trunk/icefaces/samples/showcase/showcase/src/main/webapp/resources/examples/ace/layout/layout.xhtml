@@ -1,0 +1,55 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+    xmlns:ace="http://www.icefaces.org/icefaces/components"
+    xmlns:icecore="http://www.icefaces.org/icefaces/core"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    template="/resources/templates/content-template.xhtml">
+
+    <ui:define name="example">
+		<style type="text/css">
+			.ice-ace-layout {
+				height:100%;
+				width:100%;
+				min-height:600px;
+				min-width:500px;
+			}
+		</style>
+        <h:form id="form">
+			<ace:layout>
+				<ace:layoutPane position="center">
+					<h:outputText value="CENTER" />
+				</ace:layoutPane>
+				<ace:layoutPane position="north">
+					<h:outputText value="NORTH" />
+				</ace:layoutPane>
+				<ace:layoutPane position="south">
+					<h:outputText value="SOUTH" />
+				</ace:layoutPane>
+				<ace:layoutPane position="east">
+					<h:outputText value="EAST" />
+				</ace:layoutPane>
+				<ace:layoutPane position="west">
+					<h:outputText value="WEST" />
+				</ace:layoutPane>
+			</ace:layout>
+        </h:form>
+    </ui:define>
+</ui:composition>

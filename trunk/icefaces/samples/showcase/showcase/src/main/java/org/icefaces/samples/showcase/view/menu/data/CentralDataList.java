@@ -540,6 +540,14 @@ public class CentralDataList {
 				},
 					new Demo(msgs("overview"), msgs("example.ace.drawerpanel.description"),
 							 "drawerpanel", "drawerPanel.xhtml", "DrawerPanelBean.java")),
+				new ComponentGroup("ace:layout", new DemoResource[] {
+						new DemoResource(DemoResource.Type.WIKI, "ace:layout", "Layout"),
+						new DemoResource(DemoResource.Type.WIKI, "ace:layoutPane", "LayoutPane"),
+						new DemoResource(DemoResource.Type.TLD, "ace:layout", "layout.html"),
+						new DemoResource(DemoResource.Type.TLD, "ace:layoutPane", "layoutPane.html")
+				},
+					new Demo(msgs("overview"), msgs("example.ace.layout.description"),
+							 "layout", "layout.xhtml", "LayoutBean.java")),
 				new ComponentGroup("ace:panel", "Panel", "panel.html",
 						new Demo(msgs("overview"), msgs("example.ace.panel.description"),
 								 "panel", "panel.xhtml", "PanelBean.java"),
