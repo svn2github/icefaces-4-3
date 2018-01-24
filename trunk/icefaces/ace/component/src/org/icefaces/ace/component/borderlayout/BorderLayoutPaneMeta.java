@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icefaces.ace.component.list;
+package org.icefaces.ace.component.borderlayout;
 
 import org.icefaces.ace.meta.annotation.*;
 import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
@@ -23,14 +23,14 @@ import javax.el.MethodExpression;
 import javax.faces.component.UIComponent;
 
 @Component(
-        tagName         = "layoutPane",
-        componentClass  = "org.icefaces.ace.component.layout.LayoutPane",
-        rendererClass   = "org.icefaces.ace.component.layout.LayoutPaneRenderer",
-        generatedClass  = "org.icefaces.ace.component.layout.LayoutPaneBase",
+        tagName         = "borderLayoutPane",
+        componentClass  = "org.icefaces.ace.component.borderlayout.BorderLayoutPane",
+        rendererClass   = "org.icefaces.ace.component.borderlayout.BorderLayoutPaneRenderer",
+        generatedClass  = "org.icefaces.ace.component.borderlayout.BorderLayoutPaneBase",
         extendsClass    = "javax.faces.component.UIPanel",
-        componentType   = "org.icefaces.ace.component.LayoutPane",
-        rendererType    = "org.icefaces.ace.component.LayoutPaneRenderer",
-		componentFamily = "org.icefaces.ace.Layout",
+        componentType   = "org.icefaces.ace.component.BorderLayoutPane",
+        rendererType    = "org.icefaces.ace.component.BorderLayoutPaneRenderer",
+		componentFamily = "org.icefaces.ace.BorderLayout",
 		tlddoc = ""
         )
 /*
@@ -38,7 +38,7 @@ import javax.faces.component.UIComponent;
 
 })
 */
-public class LayoutPaneMeta extends UIPanelMeta {
+public class BorderLayoutPaneMeta extends UIPanelMeta {
 
     @Property(tlddoc="")
     private String position;

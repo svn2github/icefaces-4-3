@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icefaces.ace.component.list;
+package org.icefaces.ace.component.borderlayout;
 
 import org.icefaces.ace.meta.annotation.*;
 import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
@@ -28,32 +28,32 @@ import org.icefaces.resources.ICEResourceDependency;
 import org.icefaces.resources.ICEResourceLibrary;
 
 @Component(
-        tagName         = "layout",
-        componentClass  = "org.icefaces.ace.component.layout.Layout",
-        rendererClass   = "org.icefaces.ace.component.layout.LayoutRenderer",
-        generatedClass  = "org.icefaces.ace.component.layout.LayoutBase",
+        tagName         = "borderLayout",
+        componentClass  = "org.icefaces.ace.component.borderlayout.BorderLayout",
+        rendererClass   = "org.icefaces.ace.component.borderlayout.BorderLayoutRenderer",
+        generatedClass  = "org.icefaces.ace.component.borderlayout.BorderLayoutBase",
         extendsClass    = "javax.faces.component.UIPanel",
-        componentType   = "org.icefaces.ace.component.Layout",
-        rendererType    = "org.icefaces.ace.component.LayoutRenderer",
-		componentFamily = "org.icefaces.ace.Layout",
+        componentType   = "org.icefaces.ace.component.BorderLayout",
+        rendererType    = "org.icefaces.ace.component.BorderLayoutRenderer",
+		componentFamily = "org.icefaces.ace.BorderLayout",
 		tlddoc = ""
         )
 @ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
 	@ICEResourceDependency(name = "fontawesome/font-awesome.css"),
-	@ICEResourceDependency(name = "layout/layout.css"),
+	@ICEResourceDependency(name = "borderlayout/borderlayout.css"),
 	@ICEResourceDependency(name = "util/ace-core.js"),
 	@ICEResourceDependency(name = "jquery/jquery.js"),
 	@ICEResourceDependency(name = "util/ace-jquery-ui.js"),
-	@ICEResourceDependency(name = "layout/jquerylayout.js"),
-	@ICEResourceDependency(name = "layout/layout.js")
+	@ICEResourceDependency(name = "borderlayout/jquerylayout.js"),
+	@ICEResourceDependency(name = "borderlayout/borderlayout.js")
 })
 /*
 @ClientBehaviorHolder(events = {
 
 })
 */
-public class LayoutMeta extends UIPanelMeta {
+public class BorderLayoutMeta extends UIPanelMeta {
 
     @Property(tlddoc="", defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
     private boolean fullPage;

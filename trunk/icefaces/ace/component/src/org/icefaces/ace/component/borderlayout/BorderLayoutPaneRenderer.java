@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icefaces.ace.component.layout;
+package org.icefaces.ace.component.borderlayout;
 
 import java.io.IOException;
 
@@ -25,14 +25,12 @@ import javax.faces.FacesException;
 
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.JSONBuilder;
-import org.icefaces.render.MandatoryResourceComponent;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-@MandatoryResourceComponent(tagName="layout", value="org.icefaces.ace.component.layout.Layout")
-public class LayoutRenderer extends CoreRenderer {
+public class BorderLayoutPaneRenderer extends CoreRenderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -42,20 +40,26 @@ public class LayoutRenderer extends CoreRenderer {
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        Layout layout = (Layout) component;
-        String clientId = layout.getClientId(context);
+        BorderLayoutPane borderLayoutPane = (BorderLayoutPane) component;
+        //String clientId = borderLayoutPane.getClientId(context);
 
         writer.startElement("div", component);
-        writer.writeAttribute("id", clientId, null);
+        //writer.writeAttribute("id", clientId, null);
         //ComponentUtils.enableOnElementUpdateNotify(writer, clientId);
 
-		String style = layout.getStyle();
+/*
+		String style = borderLayoutPane.getStyle();
         if (style != null) {
             writer.writeAttribute("class", style, null);
         }
+*/
 
-		String baseClass = "ice-ace-layout";
-		String styleClass = layout.getStyleClass();
+		String position = borderLayoutPane.getPosition();
+		if (position == null) return;
+		position = position.toLowerCase();
+
+		String baseClass = "ice-ace-boderlayout-pane ui-layout-" + position;
+		String styleClass = borderLayoutPane.getStyleClass();
         if (styleClass != null) {
             baseClass += " " + styleClass;
         }
@@ -65,36 +69,7 @@ public class LayoutRenderer extends CoreRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        Layout layout = (Layout) component;
-
-		encodeScript(context, layout);
 
         writer.endElement("div");
-    }
-
-    protected void encodeScript(FacesContext context, Layout layout) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        String clientId = layout.getClientId(context);
-
-        writer.startElement("script", null);
-        writer.writeAttribute("type", "text/javascript", null);
-
-        JSONBuilder jb = JSONBuilder.create();
-        jb.beginFunction("ice.ace.create")
-          .item("Layout")
-          .beginArray()
-          .item(clientId)
-          .beginMap();
-          //.entry("isVisible", drawerPanel.isVisible())
-
-        // Behaviors
-        //encodeClientBehaviors(context, drawerPanel, jb);
-
-        jb.endMap().endArray();
-		jb.endFunction();
-
-		writer.write(jb.toString());
-
-        writer.endElement("script");
     }
 }

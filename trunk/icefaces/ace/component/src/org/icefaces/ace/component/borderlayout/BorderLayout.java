@@ -14,8 +14,8 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icefaces.ace.component.layout;
+package org.icefaces.ace.component.borderlayout;
 
-public class Layout extends LayoutBase {
+public class BorderLayout extends BorderLayoutBase {
 
 }
