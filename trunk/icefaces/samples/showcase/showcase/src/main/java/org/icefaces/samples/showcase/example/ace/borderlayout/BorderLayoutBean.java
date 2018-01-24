@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icefaces.samples.showcase.example.ace.layout;
+package org.icefaces.samples.showcase.example.ace.borderlayout;
 
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
@@ -22,13 +22,13 @@ import javax.faces.event.AjaxBehaviorEvent;
 
 import java.io.Serializable;
 
-@ManagedBean(name= LayoutBean.BEAN_NAME)
+@ManagedBean(name= BorderLayoutBean.BEAN_NAME)
 @CustomScoped(value = "#{window}")
-public class LayoutBean implements Serializable {
-    public static final String BEAN_NAME = "layoutBean";
+public class BorderLayoutBean implements Serializable {
+    public static final String BEAN_NAME = "borderLayoutBean";
 	public String getBeanName() { return BEAN_NAME; }
 
-	public LayoutBean() {
+	public BorderLayoutBean() {
 		
 	}
 }
