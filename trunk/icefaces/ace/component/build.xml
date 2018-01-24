@@ -314,6 +314,8 @@
 			<file name="${resources}/icefaces.ace/accordion/accordion.js"/>
 			<file name="${resources}/icefaces.ace/animation/animation.js"/>
 			<file name="${resources}/icefaces.ace/autocompleteentry/autocompleteentry.js"/>
+			<file name="${resources}/icefaces.ace/borderlayout/jquerylayout.js" />
+			<file name="${resources}/icefaces.ace/borderlayout/borderlayout.js" />
 			<file name="${resources}/icefaces.ace/combobox/combobox.js"/>
 			<file name="${resources}/icefaces.ace/checkboxbutton/checkboxbutton.js"/>
             <file name="${resources}/icefaces.ace/confirmationdialog/confirmationdialog.js" />
