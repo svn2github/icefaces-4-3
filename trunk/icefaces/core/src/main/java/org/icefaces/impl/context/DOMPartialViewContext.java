@@ -110,7 +110,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
             return;
         }
 
-        final Element e = oldDOM.getElementById(id);
+        final Element e = oldDOM == null ? null : oldDOM.getElementById(id);
         if (e != null) {
             final ArrayList<String> collectedIDs = new ArrayList<String>();
             if (e.hasAttribute(DATA_ELEMENTUPDATE)) {
@@ -280,9 +280,11 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                 Document oldDOM = writer.getOldDocument();
                 UIViewRoot viewRoot = facesContext.getViewRoot();
 
-                applyBrowserChanges(getRenderIds(), getExecuteIds(), ec.getRequestParameterValuesMap(), oldDOM);
-                writer.setDocument(oldDOM);
-                writer.saveOldDocument();
+                if (oldDOM != null) {
+                    applyBrowserChanges(getRenderIds(), getExecuteIds(), ec.getRequestParameterValuesMap(), oldDOM);
+                    writer.setDocument(oldDOM);
+                    writer.saveOldDocument();
+                }
 
                 List<DOMUtils.EditOperation> diffs = null;
                 Collection<String> customIds = null;
@@ -429,7 +431,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                 }
 
                 //apply subtree changes to old DOM and then save it as the new DOM
-                if (documentOperations != null) {
+                if (documentOperations != null && oldDOM != null) {
                     for (DocumentOperation op: documentOperations) {
                         op.operateOn(oldDOM);
                     }
@@ -834,12 +836,8 @@ class DOMPartialRenderCallback implements VisitCallback {
         final String clientId = component.getClientId(facesContext);
         DOMResponseWriter domWriter = (DOMResponseWriter)
                 facesContext.getResponseWriter();
-        final Document oldDocument = domWriter.getOldDocument();
-        if (oldDocument == null) {
-            throw new RuntimeException("The partial submit does not contain javax.faces.ViewState key.");
-        }
-
-        Node oldSubtree = oldDocument.getElementById(clientId);
+        Document oldDocument = domWriter.getOldDocument();
+        Node oldSubtree = oldDocument == null ? null : oldDocument.getElementById(clientId);
         if (null == oldSubtree) {
             log.fine("DOM Subtree rendering for " + clientId +
                     " could not be found and is reverting to standard rendering.");

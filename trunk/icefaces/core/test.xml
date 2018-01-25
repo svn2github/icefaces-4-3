@@ -1,32 +1,5 @@
-<form action="/resizable/resizableOnly.jsf" enctype="application/x-www-form-urlencoded" id="frm" method="post"
-      name="frm">
-    <input name="frm" type="hidden" value="frm">
-    <input autocomplete="off" name="ice.window" type="hidden" value="6oj4eqqxu2">
-    <input autocomplete="off" name="ice.view" type="hidden" value="vewz7i72:0">
-    <script id="frm:frm_captureSubmit" type="text/javascript">
-        ice.captureSubmit('frm',false);ice.captureKeypress('frm',null);
-    </script>
-    <h2>Resizable Only</h2>
-    <div class="ui-wrapper"
-         style="overflow: hidden; position: relative; width: 57px; height: 61px; top: 0px; left: 0px; margin: 0px;">
-        <img height="61" id="frm:resizableImage" src="graphicImage/img/icesoft.jpg" width="57" class="ui-resizable"
-             style="resize: none; position: static; zoom: 1; display: block; margin: 0px; height: 61px; width: 57px;">
-        <div class="ui-resizable-handle ui-resizable-e" style="z-index: 1000;"></div>
-        <div class="ui-resizable-handle ui-resizable-s" style="z-index: 1000;"></div>
-        <div class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se"
-             style="z-index: 1000;"></div>
-    </div>
-    <br>
-    <input id="frm:submit" name="frm:submit" type="submit" value="Submit">
-    <br>
-    <span id="frm:resizeMessage"></span>
-    <span id="frm:resizable">
-        <script type="text/javascript">
-            ice.ace.jq(function(){ice.ace.create('Resizable',['frm:resizable',{'target':'frm:resizableImage','ajaxResize':true}]);});
-        </script>
-    </span>
-    <input type="hidden" name="javax.faces.ViewState" id="j_id1:javax.faces.ViewState:0"
-           value="-1058120534607361372:-6188725985992312445" autocomplete="off">
-    <input type="hidden" name="javax.faces.ClientWindow" id="j_id1:javax.faces.ClientWindow:0" value="6oj4eqqxu2"
-           autocomplete="off">
-</form>
+<my-locations-view name="my-locations" class="style-scope client-app-view iron-selected x-scope my-locations-view-0">
+
+    <template is="dom-if" class="style-scope my-locations-view"></template>
+    <template is="dom-if" class="style-scope my-locations-view"></template>
+</my-locations-view>

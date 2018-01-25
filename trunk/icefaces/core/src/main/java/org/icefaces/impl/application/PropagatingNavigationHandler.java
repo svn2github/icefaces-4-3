@@ -60,8 +60,8 @@ public class PropagatingNavigationHandler extends ConfigurableNavigationHandler 
         Iterator keys = propagated.keySet().iterator();
         while (keys.hasNext()) {
             Object key = keys.next();
-            if (!propagated.get(key).getClass()
-                    .isAnnotationPresent(ViewRetained.class)) {
+            Object value = propagated.get(key);
+            if (value == null || !value.getClass().isAnnotationPresent(ViewRetained.class)) {
                 keys.remove();
             } else {
                 if (log.isLoggable(Level.FINE)) {
