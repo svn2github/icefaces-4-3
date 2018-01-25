@@ -413,4 +413,10 @@
 			<resource name="util/ace-jquery-ui.js" library="icefaces.ace"/>
         </requires>
     </resource>
+    <resource name="borderlayout/borderlayout.js" library="icefaces.ace">
+        <requires>
+            <resource name="util/ace-core.js" library="icefaces.ace"/>
+			<resource name="util/ace-jquery-ui.js" library="icefaces.ace"/>
+        </requires>
+    </resource>
 </dependencies>

@@ -81,14 +81,44 @@ public class BorderLayoutRenderer extends CoreRenderer {
 
         JSONBuilder jb = JSONBuilder.create();
         jb.beginFunction("ice.ace.create")
-          .item("BorderLayout")
-          .beginArray()
-          .item(clientId)
-          .beginMap();
-          //.entry("isVisible", drawerPanel.isVisible())
+			.item("BorderLayout")
+			.beginArray()
+			.item(clientId)
+			.beginMap();
+			for (UIComponent child : borderLayout.getChildren()) {
+				if (child.isRendered() && child instanceof BorderLayoutPane) {
+					BorderLayoutPane pane = (BorderLayoutPane) child;
+
+					String position = pane.getPosition();
+					if (position == null) continue;
+					position = position.toLowerCase();
+					jb.beginMap(pane.getPosition())
+						.entry("paneSelector", ".ice-ace-boderlayout-" + position)
+						.entry("size", pane.getSize())
+						.entry("resizable", pane.isResizable())
+						.entry("closable", pane.isCollapsible())
+						.entry("minSize", pane.getMinSize())
+						.entry("maxSize", pane.getMaxSize())
+						.entry("spacing_open", pane.getBorderWidth());
+					
+						if (pane.isCollapsible()) {
+							jb.entry("spacing_closed", pane.getCollapseSize());
+						}
+					
+						jb.entry("initHidden", !pane.isVisible())
+						.entry("initClosed", pane.isCollapsed())
+						.entryNonNullValue("fxName", pane.getEffect())
+						.entryNonNullValue("fxSpeed", pane.getEffectSpeed());
+/*
+						.entry("resizerTip", layout.getResizeTitle(), null)
+						.entry("togglerTip_closed", layout.getExpandTitle(), null);
+*/
+					jb.endMap();
+				}
+			}
 
         // Behaviors
-        //encodeClientBehaviors(context, drawerPanel, jb);
+        //encodeClientBehaviors(context, borderLayout, jb);
 
         jb.endMap().endArray();
 		jb.endFunction();

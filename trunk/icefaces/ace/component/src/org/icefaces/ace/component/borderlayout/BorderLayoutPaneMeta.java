@@ -40,50 +40,50 @@ import javax.faces.component.UIComponent;
 */
 public class BorderLayoutPaneMeta extends UIPanelMeta {
 
-    @Property(tlddoc="")
+    @Property(tlddoc="The pane position that this component defines in the layout. Valid values are \"center\", \"north\", \"south\", \"east\", and \"west\". The center pane is required for the layout to work.")
     private String position;
 
-    @Property(tlddoc="", defaultValue = "auto")
+    @Property(tlddoc="Specifies the size of the pane in pixels. For the north and south panes the size is the height, and for the east and west panes the size is the width. The size refers to the total size, including paddings and border widths. The value can be \"auto\" for an appropriate, standard size for the pane.", defaultValue = "auto")
     private String size;
 
-    @Property(tlddoc="", defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
+    @Property(tlddoc="Specifies whether this pane is resizable or not. This attribute doesn't apply to the center pane.", defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
     private boolean resizable;
 
     @Property(tlddoc="", defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
     private boolean closable;
 
-    @Property(tlddoc="", defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
+    @Property(tlddoc="Specifies whether this pane can be collapsed or not. ", defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
     private boolean collapsible;
 
-    @Property(tlddoc="", defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
+    @Property(tlddoc="Specifies whether this pane starts out being visible or not.", defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
     private boolean visible;
 
-    @Property(tlddoc="", defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
+    @Property(tlddoc="Specifies whether this pane starts out being collapsed or not.", defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
     private boolean collapsed;
 
-    @Property(tlddoc="", defaultValue = "100", defaultValueType = DefaultValueType.EXPRESSION)
+    @Property(tlddoc="Specifies the minumum size of the pane in pixels, meaning that it cannot be resized to a smaller size than this. For the north and south panes the size is the height, and for the east and west panes the size is the width. The size refers to the total size, including paddings and border widths.", defaultValue = "100", defaultValueType = DefaultValueType.EXPRESSION)
     private int minSize;
 
-    @Property(tlddoc="", defaultValue = "0", defaultValueType = DefaultValueType.EXPRESSION)
+    @Property(tlddoc="Specifies the maximum size of the pane in pixels, meaning that it cannot be resized to a larger size than this. For the north and south panes the size is the height, and for the east and west panes the size is the width. The size refers to the total size, including paddings and border widths.", defaultValue = "0", defaultValueType = DefaultValueType.EXPRESSION)
     private int maxSize;
 
-    @Property(tlddoc="", defaultValue = "6", defaultValueType = DefaultValueType.EXPRESSION)
-    private int gutter;
+    @Property(tlddoc="Specifies the width in pixels of the resizable borders. This attribute doesn't apply to the center pane.", defaultValue = "5", defaultValueType = DefaultValueType.EXPRESSION)
+    private int borderWidth;
 
-    @Property(tlddoc="", defaultValue = "25", defaultValueType = DefaultValueType.EXPRESSION)
+    @Property(tlddoc="Specifies the width in pixels of the border when this pane is collapsed. This attribute doesn't apply to the center pane.", defaultValue = "20", defaultValueType = DefaultValueType.EXPRESSION)
     private int collapseSize;
 
-    @Property(tlddoc="")
-    private String header;
+    @Property(tlddoc="The text to render in the header of the pane.")
+    private String headerText;
 
-    @Property(tlddoc="")
-    private String footer;
+    @Property(tlddoc="The text to render in the footer of the pane.")
+    private String footerText;
+	
+	@Property(tlddoc="Style to apply to the content container of the pane (i.e. excluding the header and the footer).")
+	private String style;
 
-    @Property(tlddoc="")
-    private String style;
-
-    @Property(tlddoc="")
-    private String styleClass;
+	@Property(tlddoc="Style class of the main container of the pane (the one containing the header, content and footer).")
+	private String styleClass;
 
     @Property(tlddoc="")
     private String effect;

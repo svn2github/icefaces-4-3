@@ -32,44 +32,134 @@ import java.util.Map;
 
 public class BorderLayoutPaneRenderer extends CoreRenderer {
 
-    @Override
-    public void decode(FacesContext context, UIComponent component) {
-        super.decodeBehaviors(context, component);
-    }
+	@Override
+	public void decode(FacesContext context, UIComponent component) {
+		super.decodeBehaviors(context, component);
+	}
 
-    @Override
-    public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        BorderLayoutPane borderLayoutPane = (BorderLayoutPane) component;
-        //String clientId = borderLayoutPane.getClientId(context);
+	@Override
+	public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		BorderLayoutPane borderLayoutPane = (BorderLayoutPane) component;
+		String clientId = borderLayoutPane.getClientId(context);
 
-        writer.startElement("div", component);
-        //writer.writeAttribute("id", clientId, null);
-        //ComponentUtils.enableOnElementUpdateNotify(writer, clientId);
+		writer.startElement("div", component);
+		//ComponentUtils.enableOnElementUpdateNotify(writer, clientId);
 
 /*
 		String style = borderLayoutPane.getStyle();
-        if (style != null) {
-            writer.writeAttribute("class", style, null);
-        }
+		if (style != null) {
+			writer.writeAttribute("class", style, null);
+		}
 */
 
 		String position = borderLayoutPane.getPosition();
 		if (position == null) return;
 		position = position.toLowerCase();
 
-		String baseClass = "ice-ace-boderlayout-pane ui-layout-" + position;
+		String baseClass = "ice-ace-boderlayout-" + position;
 		String styleClass = borderLayoutPane.getStyleClass();
-        if (styleClass != null) {
-            baseClass += " " + styleClass;
-        }
-        writer.writeAttribute("class", baseClass, null);
+		if (styleClass != null) {
+			baseClass += " " + styleClass;
+		}
+		writer.writeAttribute("class", baseClass, null);
+
+		writer.startElement("div", null); // for table-like styling
+
+		encodeHeader(context, borderLayoutPane);
+
+		writer.startElement("div", null);
+		writer.writeAttribute("id", clientId + "_content", null);
+		writer.writeAttribute("class", "ice-ace-boderlayout-content", null);
+		String style = borderLayoutPane.getStyle();
+		if (style != null) {
+			writer.writeAttribute("style", style, null);
+		}
 	}
 
-    @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+	@Override
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		BorderLayoutPane borderLayoutPane = (BorderLayoutPane) component;
+
+		writer.endElement("div");
+
+		encodeFooter(context, borderLayoutPane);
+
+		writer.endElement("div"); // for table-like styling
+
+		writer.endElement("div");
+	}
+
+    public void encodeHeader(FacesContext context, BorderLayoutPane borderLayoutPane) throws IOException {
+        String headerText = borderLayoutPane.getHeaderText();
+        UIComponent headerFacet = borderLayoutPane.getFacet("header");
+        
+        if (headerText == null && headerFacet == null) {
+            return;
+        }
+        
         ResponseWriter writer = context.getResponseWriter();
 
+		writer.startElement("div", null);
+        writer.writeAttribute("class", "ui-widget-header ui-corner-all", null);
+
+        writer.startElement("span", null);
+        
+        if (headerFacet != null)
+            headerFacet.encodeAll(context);
+        else if (headerText != null)
+            writer.writeText(headerText, null);
+        
+        writer.endElement("span");
+
+/*
+        if(borderLayoutPane.isClosable()) {
+            encodeIcon(context, "ui-icon-close");
+        }
+
+        if(borderLayoutPane.isCollapsible()) {
+            encodeIcon(context, "ui-icon-close");
+        }
+*/
         writer.endElement("div");
+	}
+
+    public void encodeFooter(FacesContext context, BorderLayoutPane borderLayoutPane) throws IOException {
+        String footerText = borderLayoutPane.getFooterText();
+        UIComponent footerFacet = borderLayoutPane.getFacet("footer");
+        
+        if (footerText == null && footerFacet == null) {
+            return;
+        }
+        
+        ResponseWriter writer = context.getResponseWriter();
+
+		writer.startElement("div", null);
+        writer.writeAttribute("class", "ui-widget-header ui-corner-all", null);
+
+        writer.startElement("span", null);
+        
+        if (footerFacet != null)
+            footerFacet.encodeAll(context);
+        else if (footerText != null)
+            writer.writeText(footerText, null);
+        
+        writer.endElement("span");
+
+        writer.endElement("div");
+	}
+
+    protected void encodeIcon(FacesContext context, String iconClass) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        writer.startElement("a", null);
+        writer.writeAttribute("href", "javascript:void(0);", null);
+
+        writer.startElement("span", null);
+        writer.writeAttribute("class", "ui-icon " + iconClass, null);
+        writer.endElement("span");
+
+        writer.endElement("a");
     }
 }
