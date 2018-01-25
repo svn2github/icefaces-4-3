@@ -24,29 +24,21 @@
     template="/resources/templates/content-template.xhtml">
 
     <ui:define name="example">
-		<style type="text/css">
-			.ice-ace-borderlayout {
-				height:100%;
-				width:100%;
-				min-height:600px;
-				min-width:500px;
-			}
-		</style>
         <h:form id="form">
 			<ace:borderLayout>
-				<ace:borderLayoutPane position="center">
+				<ace:borderLayoutPane position="center" headerText="Center" footerText="(center footer)" resizable="true" closable="false" collapsible="false">
 					<h:outputText value="CENTER" />
 				</ace:borderLayoutPane>
-				<ace:borderLayoutPane position="north">
+				<ace:borderLayoutPane position="north" headerText="North" footerText="(north footer)" resizable="true" closable="true" collapsible="true">
 					<h:outputText value="NORTH" />
 				</ace:borderLayoutPane>
-				<ace:borderLayoutPane position="south">
+				<ace:borderLayoutPane position="south" headerText="South" footerText="(south footer)" resizable="true" closable="true" collapsible="true">
 					<h:outputText value="SOUTH" />
 				</ace:borderLayoutPane>
-				<ace:borderLayoutPane position="east">
+				<ace:borderLayoutPane position="east" headerText="East" footerText="(east footer)" resizable="true" closable="true" collapsible="true">
 					<h:outputText value="EAST" />
 				</ace:borderLayoutPane>
-				<ace:borderLayoutPane position="west">
+				<ace:borderLayoutPane position="west" headerText="West" footerText="(west footer)" resizable="true" closable="true" collapsible="true">
 					<h:outputText value="WEST" />
 				</ace:borderLayoutPane>
 			</ace:borderLayout>
