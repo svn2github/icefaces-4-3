@@ -95,9 +95,12 @@ public class BorderLayoutPaneRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
 		writer.startElement("div", null);
+
+		writer.startElement("div", null);
         writer.writeAttribute("class", "ui-widget-header ui-corner-all", null);
 
         writer.startElement("span", null);
+		writer.writeAttribute("id", borderLayoutPane.getClientId(context) + "_header", null);
         
         if (headerFacet != null)
             headerFacet.encodeAll(context);
@@ -144,6 +147,8 @@ public class BorderLayoutPaneRenderer extends CoreRenderer {
         }
 
         writer.endElement("div");
+
+        writer.endElement("div");
 	}
 
     public void encodeFooter(FacesContext context, BorderLayoutPane borderLayoutPane) throws IOException {
@@ -157,9 +162,12 @@ public class BorderLayoutPaneRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
 		writer.startElement("div", null);
+
+		writer.startElement("div", null);
         writer.writeAttribute("class", "ui-widget-header ui-corner-all", null);
 
         writer.startElement("span", null);
+		writer.writeAttribute("id", borderLayoutPane.getClientId(context) + "_footer", null);
         
         if (footerFacet != null)
             footerFacet.encodeAll(context);
@@ -167,6 +175,8 @@ public class BorderLayoutPaneRenderer extends CoreRenderer {
             writer.writeText(footerText, null);
         
         writer.endElement("span");
+
+        writer.endElement("div");
 
         writer.endElement("div");
 	}

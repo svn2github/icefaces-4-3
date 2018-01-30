@@ -232,7 +232,7 @@ iframe.ui-layout-mask {}	/* extra mask for objects/applets */
 	min-width: 500px;
 }
 
-.ice-ace-borderlayout .ui-layout-pane .ui-widget-header, .ui-layout-pane .ui-widget-footer {
+.ice-ace-borderlayout .ui-layout-pane .ui-widget-header {
 	padding: 5px;
 }
 
