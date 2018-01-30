@@ -232,21 +232,30 @@ iframe.ui-layout-mask {}	/* extra mask for objects/applets */
 	min-width: 500px;
 }
 
-.ui-layout-pane .ui-widget-header, .ui-layout-pane .ui-widget-footer {
+.ice-ace-borderlayout .ui-layout-pane .ui-widget-header, .ui-layout-pane .ui-widget-footer {
 	padding: 5px;
 }
 
-.ui-layout-pane > div {
+.ice-ace-borderlayout .ui-layout-pane > div {
 	display: table;
 	height: 100%;
 	width: 100%;
 }
 
-.ui-layout-pane > div > div {
+.ice-ace-borderlayout .ui-layout-pane > div > div {
 	display: table-row;
 }
 
-.ui-layout-pane > div > div.ice-ace-boderlayout-content {
+.ice-ace-borderlayout .ui-layout-pane > div > div.ice-ace-boderlayout-content {
 	display: table-row;
 	height: 100%;
+}
+
+.ice-ace-borderlayout .ice-ace-boderlayout-button-close {
+	float: right;
+}
+
+.ice-ace-borderlayout .ice-ace-boderlayout-button-collapsible {
+	float: right;
+	margin-right: 5px;
 }

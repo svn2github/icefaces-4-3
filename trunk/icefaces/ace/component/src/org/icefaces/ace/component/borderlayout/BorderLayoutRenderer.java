@@ -99,7 +99,8 @@ public class BorderLayoutRenderer extends CoreRenderer {
 						.entry("closable", pane.isCollapsible())
 						.entry("minSize", pane.getMinSize())
 						.entry("maxSize", pane.getMaxSize())
-						.entry("spacing_open", pane.getBorderWidth());
+						.entry("spacing_open", pane.getBorderWidth())
+						.entry("togglerLength_open", 0); // hide default toggler button
 					
 						if (pane.isCollapsible()) {
 							jb.entry("spacing_closed", pane.getCollapseSize());
@@ -109,6 +110,8 @@ public class BorderLayoutRenderer extends CoreRenderer {
 						.entry("initClosed", pane.isCollapsed())
 						.entryNonNullValue("fxName", pane.getEffect())
 						.entryNonNullValue("fxSpeed", pane.getEffectSpeed());
+
+						encodeClientBehaviors(context, pane, jb);
 /*
 						.entry("resizerTip", layout.getResizeTitle(), null)
 						.entry("togglerTip_closed", layout.getExpandTitle(), null);

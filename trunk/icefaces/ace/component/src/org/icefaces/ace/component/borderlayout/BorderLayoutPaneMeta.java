@@ -33,11 +33,10 @@ import javax.faces.component.UIComponent;
 		componentFamily = "org.icefaces.ace.BorderLayout",
 		tlddoc = ""
         )
-/*
 @ClientBehaviorHolder(events = {
-
-})
-*/
+	@ClientEvent(name="toggle", javadoc="Fired when the pane either collapsed or expanded.", tlddoc="Fired when the pane either collapsed or expanded.", defaultRender="@all", defaultExecute="@this"),
+	@ClientEvent(name="close", javadoc="Fired when the pane is closed.", tlddoc="Fired when the pane is closed.", defaultRender="@all", defaultExecute="@this")
+}, defaultEvent="toggle")
 public class BorderLayoutPaneMeta extends UIPanelMeta {
 
     @Property(tlddoc="The pane position that this component defines in the layout. Valid values are \"center\", \"north\", \"south\", \"east\", and \"west\". The center pane is required for the layout to work.")
@@ -49,10 +48,10 @@ public class BorderLayoutPaneMeta extends UIPanelMeta {
     @Property(tlddoc="Specifies whether this pane is resizable or not. This attribute doesn't apply to the center pane.", defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
     private boolean resizable;
 
-    @Property(tlddoc="", defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
+    @Property(tlddoc="Specifies whether this pane can be closed or not.", defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
     private boolean closable;
 
-    @Property(tlddoc="Specifies whether this pane can be collapsed or not. ", defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
+    @Property(tlddoc="Specifies whether this pane can be collapsed/expanded or not.", defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
     private boolean collapsible;
 
     @Property(tlddoc="Specifies whether this pane starts out being visible or not.", defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)

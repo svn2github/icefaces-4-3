@@ -46,13 +46,6 @@ public class BorderLayoutPaneRenderer extends CoreRenderer {
 		writer.startElement("div", component);
 		//ComponentUtils.enableOnElementUpdateNotify(writer, clientId);
 
-/*
-		String style = borderLayoutPane.getStyle();
-		if (style != null) {
-			writer.writeAttribute("class", style, null);
-		}
-*/
-
 		String position = borderLayoutPane.getPosition();
 		if (position == null) return;
 		position = position.toLowerCase();
@@ -113,15 +106,43 @@ public class BorderLayoutPaneRenderer extends CoreRenderer {
         
         writer.endElement("span");
 
-/*
-        if(borderLayoutPane.isClosable()) {
-            encodeIcon(context, "ui-icon-close");
+        if (borderLayoutPane.isClosable()) {
+			writer.startElement("a", null);
+			writer.writeAttribute("href", "javascript:void(0);", null);
+			writer.writeAttribute("class", "ice-ace-boderlayout-button-close", null);
+
+			writer.startElement("span", null);
+			writer.writeAttribute("class", "fa fa-window-close fa-lg", null);
+			writer.endElement("span");
+
+			writer.endElement("a");
         }
 
-        if(borderLayoutPane.isCollapsible()) {
-            encodeIcon(context, "ui-icon-close");
+        if (borderLayoutPane.isCollapsible()) {
+			String position = borderLayoutPane.getPosition();
+			position = position.toLowerCase();
+
+			String iconClass = "";
+			if ("north".equals(position)) {
+				iconClass = "fa-caret-square-o-up";
+			} else if ("south".equals(position)) {
+				iconClass = "fa-caret-square-o-down";
+			} else if ("east".equals(position)) {
+				iconClass = "fa-caret-square-o-right";
+			} else if ("west".equals(position)) {
+				iconClass = "fa-caret-square-o-left";
+			}
+
+			writer.startElement("a", null);
+			writer.writeAttribute("href", "javascript:void(0);", null);
+			writer.writeAttribute("class", "ice-ace-boderlayout-button-collapsible", null);
+
+			writer.startElement("span", null);
+			writer.writeAttribute("class", "fa " + iconClass + " fa-lg", null);
+			writer.endElement("span");
+			writer.endElement("a");
         }
-*/
+
         writer.endElement("div");
 	}
 
@@ -149,17 +170,4 @@ public class BorderLayoutPaneRenderer extends CoreRenderer {
 
         writer.endElement("div");
 	}
-
-    protected void encodeIcon(FacesContext context, String iconClass) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-
-        writer.startElement("a", null);
-        writer.writeAttribute("href", "javascript:void(0);", null);
-
-        writer.startElement("span", null);
-        writer.writeAttribute("class", "ui-icon " + iconClass, null);
-        writer.endElement("span");
-
-        writer.endElement("a");
-    }
 }
