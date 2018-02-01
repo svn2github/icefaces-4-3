@@ -16,6 +16,44 @@
 
 package org.icefaces.ace.component.borderlayout;
 
+import org.icefaces.ace.event.CloseEvent;
+import org.icefaces.ace.event.ToggleEvent;
+import org.icefaces.ace.model.Visibility;
+import org.icefaces.ace.util.Constants;
+
+import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.FacesEvent;
+import javax.faces.event.PhaseId;
+import java.util.Map;
+
 public class BorderLayoutPane extends BorderLayoutPaneBase {
 
+	@Override
+	public void queueEvent(FacesEvent event) {
+		FacesContext context = FacesContext.getCurrentInstance();
+		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+		String eventName = params.get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
+		String source = params.get(Constants.PARTIAL_SOURCE_PARAM);
+		String clientId = this.getClientId(context);
+
+		if (clientId.equals(source)) {
+			if (eventName != null && eventName.equals("toggle") && event instanceof AjaxBehaviorEvent) {
+				boolean collapsed = Boolean.valueOf(params.get(clientId + "_collapsed"));
+				Visibility visibility = collapsed ? Visibility.HIDDEN : Visibility.VISIBLE;
+
+				setVisible(collapsed);
+				ToggleEvent toggleEvent = new ToggleEvent(this, ((AjaxBehaviorEvent) event).getBehavior(), visibility);
+				toggleEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
+				super.queueEvent(toggleEvent);
+			} else if (eventName != null && eventName.equals("close") && event instanceof AjaxBehaviorEvent) {
+				setVisible(false);
+				CloseEvent closeEvent = new CloseEvent(this, ((AjaxBehaviorEvent) event).getBehavior());
+				closeEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
+				super.queueEvent(closeEvent);
+			} 
+		} else {
+			super.queueEvent(event);
+		}
+	}
 }

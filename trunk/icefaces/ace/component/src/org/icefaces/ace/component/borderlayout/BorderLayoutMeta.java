@@ -36,7 +36,7 @@ import org.icefaces.resources.ICEResourceLibrary;
         componentType   = "org.icefaces.ace.component.BorderLayout",
         rendererType    = "org.icefaces.ace.component.BorderLayoutRenderer",
 		componentFamily = "org.icefaces.ace.BorderLayout",
-		tlddoc = "The BorderLayout component is a container with five different regions (north, south, east, west and center), which are collapsible, expandable, closable, and resizable, except for the center region, which is also required to be defined. The regions are defined by nesting BorderLayoutPane components. <p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/BorderLayout\">BorderLayout Wiki Documentation</a>."
+		tlddoc = "The BorderLayout component is a container with five different regions (north, south, east, west and center), which are collapsible, expandable, closable, and resizable, except for the center region. The center region is also required to be defined for the component to function properly. The regions are defined by nesting BorderLayoutPane components in this component. Each BorderLayoutPane has its own ajax events. <p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/BorderLayout\">BorderLayout Wiki Documentation</a>."
         )
 @ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
@@ -44,19 +44,11 @@ import org.icefaces.resources.ICEResourceLibrary;
 	@ICEResourceDependency(name = "borderlayout/jquerylayout.js"),
 	@ICEResourceDependency(name = "borderlayout/borderlayout.js")
 })
-/*
-@ClientBehaviorHolder(events = {
-
-})
-*/
 public class BorderLayoutMeta extends UIPanelMeta {
 
-    @Property(tlddoc="", defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
-    private boolean fullPage;
+	@Property(tlddoc="Style to apply to the main container of the layout.")
+	private String style;
 
-    @Property(tlddoc="")
-    private String style;
-
-    @Property(tlddoc="")
-    private String styleClass;
+	@Property(tlddoc="Style class of the main container of the layout.")
+	private String styleClass;
 }

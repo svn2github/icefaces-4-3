@@ -96,13 +96,15 @@ public class BorderLayoutRenderer extends CoreRenderer {
 						.entry("paneSelector", ".ice-ace-boderlayout-" + position)
 						.entry("size", pane.getSize())
 						.entry("resizable", pane.isResizable())
-						.entry("closable", pane.isCollapsible())
+						.entry("closable", pane.isClosable())
 						.entry("minSize", pane.getMinSize())
 						.entry("maxSize", pane.getMaxSize())
 						.entry("spacing_open", pane.getBorderWidth())
-						.entry("togglerLength_open", 0); // hide default toggler button
+
+						.entry("togglerLength_open", 0) // hide default toggler button
+						.entry("togglerLength_closed", "100%"); // use the whole bar to open collapsed pane
 					
-						if (pane.isCollapsible()) {
+						if (pane.isToggleable()) {
 							jb.entry("spacing_closed", pane.getCollapseSize());
 						}
 					

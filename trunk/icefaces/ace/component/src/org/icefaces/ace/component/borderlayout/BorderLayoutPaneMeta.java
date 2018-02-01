@@ -31,11 +31,11 @@ import javax.faces.component.UIComponent;
         componentType   = "org.icefaces.ace.component.BorderLayoutPane",
         rendererType    = "org.icefaces.ace.component.BorderLayoutPaneRenderer",
 		componentFamily = "org.icefaces.ace.BorderLayout",
-		tlddoc = ""
+		tlddoc = "The BorderLayoutPane component defines one of the five regions of a BorderLayout component. This component controls all aspects of a region in the BorderLayout, including sizes, state, and ajax events. <p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/BorderLayoutPane\">BorderLayoutPane Wiki Documentation</a>."
         )
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="toggle", javadoc="Fired when the pane either collapsed or expanded.", tlddoc="Fired when the pane either collapsed or expanded.", defaultRender="@all", defaultExecute="@this"),
-	@ClientEvent(name="close", javadoc="Fired when the pane is closed.", tlddoc="Fired when the pane is closed.", defaultRender="@all", defaultExecute="@this")
+	@ClientEvent(name="toggle", javadoc="Fired when the pane either collapsed or expanded.", tlddoc="Fired when the pane either collapsed or expanded.", defaultRender="@all", defaultExecute="@this", argumentClass="org.icefaces.ace.event.ToggleEvent"),
+	@ClientEvent(name="close", javadoc="Fired when the pane is closed.", tlddoc="Fired when the pane is closed.", defaultRender="@all", defaultExecute="@this", argumentClass="org.icefaces.ace.event.CloseEvent")
 }, defaultEvent="toggle")
 public class BorderLayoutPaneMeta extends UIPanelMeta {
 
@@ -52,7 +52,7 @@ public class BorderLayoutPaneMeta extends UIPanelMeta {
     private boolean closable;
 
     @Property(tlddoc="Specifies whether this pane can be collapsed/expanded or not.", defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
-    private boolean collapsible;
+    private boolean toggleable;
 
     @Property(tlddoc="Specifies whether this pane starts out being visible or not.", defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
     private boolean visible;
@@ -63,7 +63,7 @@ public class BorderLayoutPaneMeta extends UIPanelMeta {
     @Property(tlddoc="Specifies the minumum size of the pane in pixels, meaning that it cannot be resized to a smaller size than this. For the north and south panes the size is the height, and for the east and west panes the size is the width. The size refers to the total size, including paddings and border widths.", defaultValue = "100", defaultValueType = DefaultValueType.EXPRESSION)
     private int minSize;
 
-    @Property(tlddoc="Specifies the maximum size of the pane in pixels, meaning that it cannot be resized to a larger size than this. For the north and south panes the size is the height, and for the east and west panes the size is the width. The size refers to the total size, including paddings and border widths.", defaultValue = "0", defaultValueType = DefaultValueType.EXPRESSION)
+    @Property(tlddoc="Specifies the maximum size of the pane in pixels, meaning that it cannot be resized to a larger size than this. For the north and south panes the size is the height, and for the east and west panes the size is the width. The size refers to the total size, including paddings and border widths. A value of 0 indicates no set limit.", defaultValue = "0", defaultValueType = DefaultValueType.EXPRESSION)
     private int maxSize;
 
     @Property(tlddoc="Specifies the width in pixels of the resizable borders. This attribute doesn't apply to the center pane.", defaultValue = "5", defaultValueType = DefaultValueType.EXPRESSION)
