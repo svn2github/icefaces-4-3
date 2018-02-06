@@ -26,10 +26,14 @@ import javax.faces.FacesException;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
+import org.icefaces.ace.util.ComponentUtils;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 @MandatoryResourceComponent(tagName="boderLayout", value="org.icefaces.ace.component.borderlayout.BorderLayout")
 public class BorderLayoutRenderer extends CoreRenderer {
@@ -44,10 +48,10 @@ public class BorderLayoutRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         BorderLayout borderLayout = (BorderLayout) component;
         String clientId = borderLayout.getClientId(context);
+        ComponentUtils.enableOnElementUpdateNotify(writer, clientId);
 
         writer.startElement("div", component);
         writer.writeAttribute("id", clientId, null);
-        //ComponentUtils.enableOnElementUpdateNotify(writer, clientId);
 
 		String style = borderLayout.getStyle();
         if (style != null) {
@@ -76,6 +80,14 @@ public class BorderLayoutRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = borderLayout.getClientId(context);
 
+		Locale locale = context.getViewRoot().getLocale();
+		String bundleName = context.getApplication().getMessageBundle();
+		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+		if (bundleName == null) bundleName = "org.icefaces.ace.resources.messages";
+		if (classLoader == null) classLoader = bundleName.getClass().getClassLoader();
+		ResourceBundle bundle = ResourceBundle.getBundle(bundleName, locale, classLoader);
+		final String MESSAGES_PREFIX = "org.icefaces.ace.component.borderlayout.";
+
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
 
@@ -85,6 +97,15 @@ public class BorderLayoutRenderer extends CoreRenderer {
 			.beginArray()
 			.item(clientId)
 			.beginMap();
+
+			if (borderLayout.isNested()) {
+				jb.entry("parent", borderLayout.getParent().getClientId(context));
+			}
+
+			jb.entry("closeTitle", bundle.getString(MESSAGES_PREFIX + "closeTitle"));
+			jb.entry("collapseTitle", bundle.getString(MESSAGES_PREFIX + "collapseTitle"));
+
+			// --- encode panes' settings ---
 			for (UIComponent child : borderLayout.getChildren()) {
 				if (child.isRendered() && child instanceof BorderLayoutPane) {
 					BorderLayoutPane pane = (BorderLayoutPane) child;
@@ -111,19 +132,15 @@ public class BorderLayoutRenderer extends CoreRenderer {
 						jb.entry("initHidden", !pane.isVisible())
 						.entry("initClosed", pane.isCollapsed())
 						.entryNonNullValue("fxName", pane.getEffect())
-						.entryNonNullValue("fxSpeed", pane.getEffectSpeed());
+						.entry("fxSpeed", pane.getEffectLength())
+						.entry("resizerTip", bundle.getString(MESSAGES_PREFIX + "resizeTitle"))
+						.entry("togglerTip_closed", bundle.getString(MESSAGES_PREFIX + "expandTitle"));
 
 						encodeClientBehaviors(context, pane, jb);
-/*
-						.entry("resizerTip", layout.getResizeTitle(), null)
-						.entry("togglerTip_closed", layout.getExpandTitle(), null);
-*/
+
 					jb.endMap();
 				}
 			}
-
-        // Behaviors
-        //encodeClientBehaviors(context, borderLayout, jb);
 
         jb.endMap().endArray();
 		jb.endFunction();

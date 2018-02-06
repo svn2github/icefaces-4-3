@@ -48,7 +48,7 @@ public class BorderLayoutPaneMeta extends UIPanelMeta {
     @Property(tlddoc="Specifies whether this pane is resizable or not. This attribute doesn't apply to the center pane.", defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
     private boolean resizable;
 
-    @Property(tlddoc="Specifies whether this pane can be closed or not.", defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
+    @Property(tlddoc="Specifies whether this pane can be closed or not. If true, a close button will be rendered at the upper right corner of the pane header.", defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
     private boolean closable;
 
     @Property(tlddoc="Specifies whether this pane can be collapsed/expanded or not.", defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
@@ -72,10 +72,10 @@ public class BorderLayoutPaneMeta extends UIPanelMeta {
     @Property(tlddoc="Specifies the width in pixels of the border when this pane is collapsed. This attribute doesn't apply to the center pane.", defaultValue = "20", defaultValueType = DefaultValueType.EXPRESSION)
     private int collapseSize;
 
-    @Property(tlddoc="The text to render in the header of the pane.")
+    @Property(tlddoc="The text to render in the header of the pane. If no header text is specified and no header facet is defined, the header will not be rendered.")
     private String headerText;
 
-    @Property(tlddoc="The text to render in the footer of the pane.")
+    @Property(tlddoc="The text to render in the footer of the pane. If no footer text is specified and no footer facet is defined, the header will not be rendered.")
     private String footerText;
 	
 	@Property(tlddoc="Style to apply to the content container of the pane (i.e. excluding the header and the footer).")
@@ -84,9 +84,17 @@ public class BorderLayoutPaneMeta extends UIPanelMeta {
 	@Property(tlddoc="Style class of the main container of the pane (the one containing the header, content and footer).")
 	private String styleClass;
 
-    @Property(tlddoc="")
+    @Property(tlddoc="Specifies the name of the effect to use when collapsing and expanding the pane. Possible values are \"slide\", \"drop\", \"scale\", and \"none\".", defaultValue="slide")
     private String effect;
 
-    @Property(tlddoc="")
-    private String effectSpeed;
+    @Property(tlddoc="Specifies the length of the effect in milliseconds.", defaultValue="400", defaultValueType = DefaultValueType.EXPRESSION)
+    private int effectLength;
+
+    @Facets
+    class FacetsMeta {
+        @Facet
+        UIComponent header;
+        @Facet
+        UIComponent footer;
+    }
 }

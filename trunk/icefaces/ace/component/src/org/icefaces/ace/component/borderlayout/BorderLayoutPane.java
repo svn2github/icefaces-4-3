@@ -21,6 +21,7 @@ import org.icefaces.ace.event.ToggleEvent;
 import org.icefaces.ace.model.Visibility;
 import org.icefaces.ace.util.Constants;
 
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
@@ -42,12 +43,11 @@ public class BorderLayoutPane extends BorderLayoutPaneBase {
 				boolean collapsed = Boolean.valueOf(params.get(clientId + "_collapsed"));
 				Visibility visibility = collapsed ? Visibility.HIDDEN : Visibility.VISIBLE;
 
-				setVisible(collapsed);
+				setCollapsed(collapsed);
 				ToggleEvent toggleEvent = new ToggleEvent(this, ((AjaxBehaviorEvent) event).getBehavior(), visibility);
 				toggleEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
 				super.queueEvent(toggleEvent);
-			} else if (eventName != null && eventName.equals("close") && event instanceof AjaxBehaviorEvent) {
-				setVisible(false);
+			} else if (eventName != null && eventName.equals("close") && event instanceof AjaxBehaviorEvent) {;
 				CloseEvent closeEvent = new CloseEvent(this, ((AjaxBehaviorEvent) event).getBehavior());
 				closeEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
 				super.queueEvent(closeEvent);
@@ -56,4 +56,13 @@ public class BorderLayoutPane extends BorderLayoutPaneBase {
 			super.queueEvent(event);
 		}
 	}
+
+    public boolean isNesting() {
+        for (UIComponent child : getChildren()) {
+            if (child instanceof BorderLayout)
+                return true;
+        }
+
+        return false;
+    }
 }

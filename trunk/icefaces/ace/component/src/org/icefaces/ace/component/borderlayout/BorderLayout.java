@@ -18,4 +18,7 @@ package org.icefaces.ace.component.borderlayout;
 
 public class BorderLayout extends BorderLayoutBase {
 
+	public boolean isNested() {
+		return this.getParent() instanceof BorderLayoutPane;
+	}
 }

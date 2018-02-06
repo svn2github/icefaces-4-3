@@ -54,9 +54,9 @@ public class BorderLayoutPaneRenderer extends CoreRenderer {
 			!"west".equals(position)) return;
 
 		writer.startElement("div", component);
-		//ComponentUtils.enableOnElementUpdateNotify(writer, clientId);
 
-		String baseClass = "ice-ace-boderlayout-" + position;
+		String baseClass = "ice-ace-boderlayout-" + position + " ui-layout-pane-scroll";
+		if (!borderLayoutPane.isNesting()) baseClass += " ui-widget-content ui-layout-pane-padding";
 		String styleClass = borderLayoutPane.getStyleClass();
 		if (styleClass != null) {
 			baseClass += " " + styleClass;
@@ -110,6 +110,7 @@ public class BorderLayoutPaneRenderer extends CoreRenderer {
 				writer.startElement("a", null);
 				writer.writeAttribute("href", "javascript:void(0);", null);
 				writer.writeAttribute("class", "ice-ace-boderlayout-button-close", null);
+				writer.writeAttribute("role", "button", null);
 
 				writer.startElement("span", null);
 				writer.writeAttribute("class", "fa fa-window-close fa-lg", null);
@@ -135,6 +136,7 @@ public class BorderLayoutPaneRenderer extends CoreRenderer {
 				writer.startElement("a", null);
 				writer.writeAttribute("href", "javascript:void(0);", null);
 				writer.writeAttribute("class", "ice-ace-boderlayout-button-toggle", null);
+				writer.writeAttribute("role", "button", null);
 
 				writer.startElement("span", null);
 				writer.writeAttribute("class", "fa " + iconClass + " fa-lg", null);
