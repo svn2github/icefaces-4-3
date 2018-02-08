@@ -1,0 +1,123 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+    xmlns:ace="http://www.icefaces.org/icefaces/components"
+    xmlns:icecore="http://www.icefaces.org/icefaces/core"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    template="/resources/templates/content-template.xhtml">
+
+    <ui:define name="example">
+<style type="text/css">
+.outer-layout {
+height:800px;
+}
+.column {
+height:100%;
+}
+</style>
+        <h:form id="form">
+
+			<!-- outer layout -->
+			<ace:borderLayout styleClass="outer-layout">
+
+				<!-- main content, demo -->
+				<ace:borderLayoutPane position="center" headerText="Demo">
+					<h:panelGroup layout="block" style="padding:10px;">
+						<ui:include src="#{borderLayoutNestingBean.currentPath}"/>
+					</h:panelGroup>
+				</ace:borderLayoutPane>
+
+				<!-- header -->
+				<ace:borderLayoutPane position="north" borderWidth="0" size="130">
+					<h:graphicImage value="/resources/css/images/topBannerImages/title.png" alt="ICEfaces Logo"/>
+				</ace:borderLayoutPane>
+
+				<!-- source code -->
+				<ace:borderLayoutPane position="south" headerText="Source Code" size="200" toggleable="true" borderWidth="0">
+					<pre style="border:1px solid #999;background-color:#ccc;color:#333;padding:10px;"><h:outputText value="#{borderLayoutNestingBean.currentSource}" /></pre>
+				</ace:borderLayoutPane>
+
+				<!-- left column -->
+				<ace:borderLayoutPane position="west" size="150" borderWidth="0">
+
+					<ace:borderLayout styleClass="column">
+
+						<!-- component menu -->
+						<ace:borderLayoutPane position="center" headerText="Components">
+							<ul>
+							<ui:repeat value="#{borderLayoutNestingBean.demoList}" var="item" varStatus="status">
+								<li>
+									<h:commandLink value="#{item.name}" actionListener="#{borderLayoutNestingBean.selectMenuItem}">
+										<f:param name="BorderLayoutNestingBean_index" value="#{status.index}" />
+									</h:commandLink>
+								</li>
+							</ui:repeat>
+							</ul>
+						</ace:borderLayoutPane>
+
+						<!-- component info -->
+						<ace:borderLayoutPane position="south" headerText="Info" size="250" resizable="true">
+							<h:outputText value="#{borderLayoutNestingBean.currentInfo}" />
+						</ace:borderLayoutPane>
+
+					</ace:borderLayout>
+
+				</ace:borderLayoutPane>
+
+				<!-- right column -->
+				<ace:borderLayoutPane position="east" size="150" borderWidth="0">
+
+					<ace:borderLayout styleClass="column">
+
+						<!-- info box 1 -->
+						<ace:borderLayoutPane position="north" size="125" headerText="Info Box" closable="true" effect="drop" borderWidth="0">
+							<h:outputText value="Select a component from the menu on the left to load a demo." />
+						</ace:borderLayoutPane>
+
+						<ace:borderLayoutPane position="center">
+
+							<ace:borderLayout styleClass="column">
+
+								<!-- info box 2 -->
+								<ace:borderLayoutPane position="north" size="125" headerText="Info Box" closable="true" effect="drop" borderWidth="0">
+									<h:outputText value="View the demo source code in the bottom pane." />
+								</ace:borderLayoutPane>
+
+								<!-- right column static content -->
+								<ace:borderLayoutPane position="center">
+									For more demos visit the <a href="http://icefaces-showcase.icesoft.org/showcase.jsf" 
+										style="text-decoration:underline;"
+										target="_blank">ICEfaces Showcase</a>.
+								</ace:borderLayoutPane>
+
+							</ace:borderLayout>
+
+						</ace:borderLayoutPane>
+
+					</ace:borderLayout>
+
+				</ace:borderLayoutPane>
+
+			<!-- outer layout end -->
+			</ace:borderLayout>
+
+        </h:form>
+    </ui:define>
+</ui:composition>
