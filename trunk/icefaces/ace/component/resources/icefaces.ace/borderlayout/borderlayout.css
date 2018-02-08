@@ -15,10 +15,8 @@
  */
 
 .ice-ace-borderlayout {
-	height: 100%;
+	height: 600px;
 	width: 100%;
-	min-height: 600px;
-	min-width: 500px;
 }
 
 .ice-ace-borderlayout .ui-layout-pane-padding {
@@ -37,18 +35,20 @@
 	padding: 5px;
 }
 
-.ice-ace-borderlayout .ui-layout-pane > div {
+.ice-ace-borderlayout .ui-layout-pane-table > div {
 	display: table;
+}
+
+.ice-ace-borderlayout .ui-layout-pane-table > div > div {
+	display: table-row;
+}
+
+.ice-ace-borderlayout .ui-layout-pane > div {
 	height: 100%;
 	width: 100%;
 }
 
-.ice-ace-borderlayout .ui-layout-pane > div > div {
-	display: table-row;
-}
-
 .ice-ace-borderlayout .ui-layout-pane > div > div.ice-ace-boderlayout-content {
-	display: table-row;
 	height: 100%;
 }
 

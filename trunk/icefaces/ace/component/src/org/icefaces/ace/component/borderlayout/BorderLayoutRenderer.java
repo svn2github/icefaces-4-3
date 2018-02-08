@@ -53,11 +53,6 @@ public class BorderLayoutRenderer extends CoreRenderer {
         writer.startElement("div", component);
         writer.writeAttribute("id", clientId, null);
 
-		String style = borderLayout.getStyle();
-        if (style != null) {
-            writer.writeAttribute("class", style, null);
-        }
-
 		String baseClass = "ice-ace-borderlayout";
 		String styleClass = borderLayout.getStyleClass();
         if (styleClass != null) {
@@ -105,6 +100,11 @@ public class BorderLayoutRenderer extends CoreRenderer {
 			jb.entry("closeTitle", bundle.getString(MESSAGES_PREFIX + "closeTitle"));
 			jb.entry("collapseTitle", bundle.getString(MESSAGES_PREFIX + "collapseTitle"));
 
+			String style = borderLayout.getStyle();
+			if (style != null) {
+				jb.entry("style", style);
+			}
+
 			// --- encode panes' settings ---
 			for (UIComponent child : borderLayout.getChildren()) {
 				if (child.isRendered() && child instanceof BorderLayoutPane) {
@@ -117,7 +117,7 @@ public class BorderLayoutRenderer extends CoreRenderer {
 						.entry("paneSelector", ".ice-ace-boderlayout-" + position)
 						.entry("size", pane.getSize())
 						.entry("resizable", pane.isResizable())
-						.entry("closable", pane.isClosable())
+						.entry("closable", pane.isClosable() || pane.isToggleable())
 						.entry("minSize", pane.getMinSize())
 						.entry("maxSize", pane.getMaxSize())
 						.entry("spacing_open", pane.getBorderWidth())

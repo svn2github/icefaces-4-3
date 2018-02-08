@@ -43,10 +43,18 @@ cfg.onresize_end = function() {
 			if (inst) inst.layout.resizeAll();
 		}
 	});
+
+	// --- fix to display right border on center pane ---
+	ice.ace.jq(self.jqId + ' > .ice-ace-boderlayout-center').css('width', '');
 };
 
 // --- layout widget init ---
 this.layout = this.jq.layout(cfg);
+
+// --- set style attribute, after widget has been initialized ---
+if (this.cfg.style) {
+	this.jq.get(0).style.cssText = this.jq.get(0).style.cssText + this.cfg.style;
+}
 
 // --- buttons' behaviors and events ---
 var collapseEventOptions = {};
