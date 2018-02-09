@@ -75,6 +75,7 @@ public class BorderLayoutNestingBean implements Serializable {
 			"The <ace:sliderEntry> allows a user to enter an input value by dragging or clicking on the slider path.",
 			"	<ace:sliderEntry axis=\"x\"\n" +
 			"		 length=\"200\"\n" +
+			"		 showLabels=\"true\"\n" +
 			"		 min=\"0\"\n" +
 			"		 max=\"100\"/>"));
 		add(new Demo("ace:textAreaEntry", "demo9.xhtml",
