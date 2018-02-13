@@ -103,6 +103,7 @@ public class AceSymbolicResourceHandler extends ResourceHandlerWrapper {
                                 resourceName.equals("tooltip/tooltip.js") ||
                                 resourceName.equals("tooltip/jquery.qtip-2.0.0.js") ||
                                 resourceName.equals("tree/tree.js") ||
+                                resourceName.equals("tristatecheckbox/tristatecheckbox.js") ||
                                 resourceName.equals("util/blockui.js"))))) {
             String compressedResourceName = resourceName.replaceAll("\\.js$", ".c.js");
             return super.createResource(compressedResourceName, libraryName, contentType);

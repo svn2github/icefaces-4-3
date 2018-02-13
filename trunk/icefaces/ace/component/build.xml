@@ -362,6 +362,7 @@
 			<file name="${resources}/icefaces.ace/tooltip/tooltip.js" />
 			<file name="${resources}/icefaces.ace/tooltip/jquery.qtip-2.0.0.js" />
 			<file name="${resources}/icefaces.ace/tree/tree.js" />
+			<file name="${resources}/icefaces.ace/tristatecheckbox/tristatecheckbox.js"/>
 			<file name="${resources}/icefaces.ace/util/blockui.js" />
 		</filelist>
 		<pathconvert refid="batch" property="converted" pathsep=";"/>

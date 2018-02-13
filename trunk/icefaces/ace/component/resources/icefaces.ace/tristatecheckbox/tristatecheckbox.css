@@ -1,0 +1,90 @@
+/*
+ * Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+
+
+.ice-tristatecheckbox {
+	display:inline-block;
+}
+
+.ice-tristatecheckbox .ui-label {
+	padding: 0.2em 0.45em 0.2em 0.2em;
+}
+
+.ice-tristatecheckbox .ui-button {
+	display: -moz-inline-box;
+	display: inline-block;
+	vertical-align: text-bottom;
+}
+
+.ice-tristatecheckbox .ui-button .first-child {
+	display: block;
+	*display: inline-block;
+}
+
+.ice-tristatecheckbox .ui-button button {
+    background-color: transparent;
+    *overflow: visible;
+    cursor: pointer;
+    display: block;
+    *display: inline-block;
+    border: none;
+    margin: 0;
+}
+
+.ice-tristatecheckbox .ui-button > span > button {
+    border:none;
+	padding: 0.2em 0.2em 0.2em 0.45em;
+
+    /* IE7 hacks */
+    *padding: 0px 6px 0px;
+    *font-size: small;
+}
+
+.ui-button .fa-lg {
+	min-width: 1em;
+	text-align: left;
+}
+
+.ice-tristatecheckbox-checked .ui-label,
+.ice-tristatecheckbox-partial .ui-label {
+	opacity: 1;
+}
+
+.ice-tristatecheckbox-unchecked .ui-label {
+	opacity: 0.25;
+}
+
+.ice-ace-tristatecheckboxes {
+	text-align: center;
+}
+
+.ice-ace-tristatecheckboxes .ice-tristatecheckbox {
+	margin-right: 10px;
+}
+
+.ice-ace-tristatecheckboxes.ice-ace-tristatecheckboxes-vertical {
+	text-align: left;
+}
+
+.ice-ace-tristatecheckboxes.ice-ace-tristatecheckboxes-vertical .ice-tristatecheckbox {
+	display: block;
+	margin-right: 0;
+	margin-left: 5px;
+}
+
+.ice-ace-tristatecheckboxes.ice-ace-tristatecheckboxes-vertical .ui-widget-header {
+	text-align: center;
+}
