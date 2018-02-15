@@ -109,7 +109,7 @@ public class TriStateCheckboxRenderer extends InputRenderer {
 		String selectedClass = "";
 
 		String value = (String) checkbox.getValue();
-		if (TriStateCheckbox.PARTIALLY_CHECKED.equals(value)) selectedClass = "ice-tristatecheckbox-partial";
+		if (TriStateCheckbox.INDETERMINATE.equals(value)) selectedClass = "ice-tristatecheckbox-indeterminate";
 		else if (TriStateCheckbox.CHECKED.equals(value)) selectedClass = "ice-tristatecheckbox-checked";
 		else selectedClass = "ice-tristatecheckbox-unchecked";
 
@@ -200,6 +200,7 @@ public class TriStateCheckboxRenderer extends InputRenderer {
           .beginArray()
           .item(clientId)
           .beginMap()
+          .entry("indeterminateBeforeChecked", checkbox.isIndeterminateBeforeChecked())
           .entry("groupId", groupId)
           .entry("ariaEnabled", ariaEnabled);
 
@@ -286,20 +287,6 @@ public class TriStateCheckboxRenderer extends InputRenderer {
                hiddenValue.equalsIgnoreCase("yes");
     }
 
-/*
-    //forced converter support. It's either a boolean or string.
-    @Override
-    public Object getConvertedValue(FacesContext facesContext, UIComponent uiComponent,
-                                    Object submittedValue) throws ConverterException{
-        if (submittedValue instanceof Boolean) {
-            return submittedValue;
-        }
-        else {
-            return Boolean.valueOf(submittedValue.toString());
-        }
-    }
-*/
-
     protected void encodeButtonStyleClass(ResponseWriter writer, boolean disabled) throws IOException{
         String buttonClasses = "";
         String disabledClass = "ui-state-disabled";
@@ -319,14 +306,14 @@ public class TriStateCheckboxRenderer extends InputRenderer {
 
     protected void encodeIconStyle(ResponseWriter writer, TriStateCheckbox checkbox) throws IOException {
         String iconClass = "fa";
-        String partiallyCheckedStyle = "fa-minus-square-o";
+        String indeterminateStyle = "fa-minus-square-o";
         String checkedStyle = "fa-check-square-o";
         String uncheckedStyle = "fa-square-o";
 		String largeStyle = "fa-lg";
 
 		String value = (String) checkbox.getValue();
-		if (TriStateCheckbox.PARTIALLY_CHECKED.equals(value)) {
-			iconClass += " " + partiallyCheckedStyle + " " + largeStyle;
+		if (TriStateCheckbox.INDETERMINATE.equals(value)) {
+			iconClass += " " + indeterminateStyle + " " + largeStyle;
 		} else if (TriStateCheckbox.CHECKED.equals(value)) {
 			iconClass += " " + checkedStyle + " " + largeStyle;
 		} else {

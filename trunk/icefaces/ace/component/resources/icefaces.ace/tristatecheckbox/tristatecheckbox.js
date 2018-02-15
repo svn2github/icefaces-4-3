@@ -99,7 +99,7 @@ ice.ace.TriStateCheckbox.prototype.isChecked = function() {
 ice.ace.TriStateCheckbox.prototype.getState = function() {
 	var field = ice.ace.jq(this.fieldSelector);
 	if (!field.val()) return 'unchecked';
-	else if (field.val() == 'partial') return 'partial';
+	else if (field.val() == 'indeterminate') return 'indeterminate';
 	else if (field.val() == 'checked') return 'checked';
 	else return 'unchecked';
 };
@@ -122,17 +122,17 @@ ice.ace.TriStateCheckbox.prototype.addStateCSSClasses = function(state) {
     if (state == 'hover') {
         this.button.addClass('ui-state-hover');
     }
-    else if (state == 'partial') {
+    else if (state == 'indeterminate') {
 		this.button.removeClass('ice-tristatecheckbox-unchecked')
                  .removeClass('ice-tristatecheckbox-checked')
-                 .addClass('ice-tristatecheckbox-partial');
+                 .addClass('ice-tristatecheckbox-indeterminate');
         this.icon.removeClass('fa-square-o')
                  .removeClass('fa-check-square-o')
                  .addClass('fa-minus-square-o');
     }
     else if (state == 'checked') {
 		this.button.removeClass('ice-tristatecheckbox-unchecked')
-                 .removeClass('ice-tristatecheckbox-partial')
+                 .removeClass('ice-tristatecheckbox-indeterminate')
                  .addClass('ice-tristatecheckbox-checked');
         this.icon.removeClass('fa-square-o')
                  .removeClass('fa-minus-square-o')
@@ -146,7 +146,7 @@ ice.ace.TriStateCheckbox.prototype.removeStateCSSClasses = function(state) {
     }
     else if (state == 'checked') {
 		this.button.removeClass('ice-tristatecheckbox-checked')
-                 .removeClass('ice-tristatecheckbox-partial')
+                 .removeClass('ice-tristatecheckbox-indeterminate')
                  .addClass('ice-tristatecheckbox-unchecked');
         this.icon.removeClass('fa-check-square-o')
                  .removeClass('fa-square-o')
@@ -172,9 +172,16 @@ ice.ace.TriStateCheckbox.prototype.onAriaKeypress = function (e) {
 ice.ace.TriStateCheckbox.prototype.toggleCheckbox = function (activeButton) {
 	var state = this.getState();
     var newState;
-	if (state == 'unchecked') newState = 'partial';
-	else if (state == 'partial') newState = 'checked';
-	else if (state == 'checked') newState = 'unchecked';
+
+	if (this.options.indeterminateBeforeChecked) {
+		if (state == 'unchecked') newState = 'indeterminate';
+		else if (state == 'indeterminate') newState = 'checked';
+		else if (state == 'checked') newState = 'unchecked';
+	} else {
+		if (state == 'unchecked') newState = 'checked';
+		else if (state == 'checked') newState = 'indeterminate';
+		else if (state == 'indeterminate') newState = 'unchecked';
+	}
 
     this.setState(newState);
     if (newState != 'unchecked') this.addStateCSSClasses(state);

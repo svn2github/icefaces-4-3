@@ -35,9 +35,10 @@ import org.icefaces.resources.ICEResourceLibrary;
         componentType  = "org.icefaces.ace.component.TriStateCheckbox",
         rendererType   = "org.icefaces.ace.component.TriStateCheckboxRenderer",
 		componentFamily= "org.icefaces.ace.TriStateCheckbox",
-		tlddoc="The Checkbox Button is a component that allows entry of a button which "+
-		       "supports browsers that see checkbox as true or false, "+
-		       "yes or no, on or off. The Themeroller check icon will be displayed by default when the checkbox is checked. Override the .ui-icon-check class to display a different image." +
+		tlddoc="The TriStateCheckbox a component renders a button that works like a checkbox but with three states: "+
+		       "unchecked, checked, and indeterminate. " +
+		       "The indeterminate state can have different meanings, depending on the application. " +
+		       "The order in which these states cycle is determine by the 'indeterminateBeforeChecked' attribute." +
                "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/TriStateCheckbox\">TriStateCheckbox Wiki Documentation</a>."
         )
 @ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
@@ -101,6 +102,6 @@ public class TriStateCheckboxMeta extends UIInputMeta {
 	@Property(tlddoc = "Access key that, when pressed, transfers focus to this component.")
 	String accesskey;
 
-	@Property(tlddoc = "If true, the order of the states when this button is activated will be \"unchecked-checked-partial\". Otherwise, the order will be \"unchecked-partial-checked\".", defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
-	boolean partiallyCheckedLast;
+	@Property(tlddoc = "If true, the order of the states when this button is activated will be \"unchecked-indeterminate-checked\". Otherwise, the order will be \"unchecked-checked-indeterminate\".", defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
+	boolean indeterminateBeforeChecked;
 }

@@ -59,7 +59,7 @@
 }
 
 .ice-tristatecheckbox-checked .ui-label,
-.ice-tristatecheckbox-partial .ui-label {
+.ice-tristatecheckbox-indeterminate .ui-label {
 	opacity: 1;
 }
 

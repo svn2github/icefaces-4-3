@@ -28,7 +28,7 @@ public class TriStateCheckbox extends TriStateCheckboxBase implements Focusable,
 
     public final static String UNCHECKED = "unchecked";
     public final static String CHECKED = "checked";
-    public final static String PARTIALLY_CHECKED = "partial";
+    public final static String INDETERMINATE = "indeterminate";
 
 	public boolean isUnchecked() {
 		return ((String) getValue()).equalsIgnoreCase(UNCHECKED);
@@ -39,11 +39,11 @@ public class TriStateCheckbox extends TriStateCheckboxBase implements Focusable,
 	}
 
 	public boolean isPartiallyChecked() {
-		return ((String) getValue()).equalsIgnoreCase(PARTIALLY_CHECKED);
+		return ((String) getValue()).equalsIgnoreCase(INDETERMINATE);
 	}
 
 	public void setPartiallyChecked() {
-		setValue(PARTIALLY_CHECKED);
+		setValue(INDETERMINATE);
 	}
 
 	public boolean isChecked() {
@@ -62,8 +62,8 @@ public class TriStateCheckbox extends TriStateCheckboxBase implements Focusable,
 			return;
 		}
 
-		if (stringValue.equalsIgnoreCase(PARTIALLY_CHECKED)) {
-			super.setValue(PARTIALLY_CHECKED);
+		if (stringValue.equalsIgnoreCase(INDETERMINATE)) {
+			super.setValue(INDETERMINATE);
 			return;
 		}
 
@@ -80,7 +80,7 @@ public class TriStateCheckbox extends TriStateCheckboxBase implements Focusable,
 
 		if (stringValue == null) return UNCHECKED;
 
-		if (stringValue.equalsIgnoreCase(PARTIALLY_CHECKED)) return PARTIALLY_CHECKED;
+		if (stringValue.equalsIgnoreCase(INDETERMINATE)) return INDETERMINATE;
 
 		if (stringValue.equalsIgnoreCase(CHECKED)) return CHECKED;
 
