@@ -173,14 +173,19 @@ ice.ace.TriStateCheckbox.prototype.toggleCheckbox = function (activeButton) {
 	var state = this.getState();
     var newState;
 
-	if (this.options.indeterminateBeforeChecked) {
-		if (state == 'unchecked') newState = 'indeterminate';
-		else if (state == 'indeterminate') newState = 'checked';
-		else if (state == 'checked') newState = 'unchecked';
-	} else {
-		if (state == 'unchecked') newState = 'checked';
-		else if (state == 'checked') newState = 'indeterminate';
-		else if (state == 'indeterminate') newState = 'unchecked';
+	if (activeButton) {
+		if (this.options.indeterminateBeforeChecked) {
+			if (state == 'unchecked') newState = 'indeterminate';
+			else if (state == 'indeterminate') newState = 'checked';
+			else if (state == 'checked') newState = 'unchecked';
+		} else {
+			if (state == 'unchecked') newState = 'checked';
+			else if (state == 'checked') newState = 'indeterminate';
+			else if (state == 'indeterminate') newState = 'unchecked';
+		}
+	} else { // avoid toggling if in indeterminate and unchecked states when triggered by other checkbox in the group
+		if (state == 'checked') newState = 'unchecked';
+		else return;
 	}
 
     this.setState(newState);
@@ -220,6 +225,15 @@ ice.ace.TriStateCheckbox.prototype.toggleCheckbox = function (activeButton) {
 if (!ice.ace.TriStateCheckbox.groups) ice.ace.TriStateCheckbox.groups = {};
 
 ice.ace.TriStateCheckbox.toggleOthers = function (options, clientId) {
+	var self = ice.ace.instance(clientId);
+	if (!self) return;
+	var state = self.getState();
+	// only toggle others if this checkbox is transitioning to the checked state
+	if (self.options.indeterminateBeforeChecked) {
+		if (state != 'indeterminate') return;
+	} else {
+		if (state != 'unchecked') return;
+	}
     var groups = ice.ace.TriStateCheckbox.groups,
         groupId = options.groupId,
         id, widget;
