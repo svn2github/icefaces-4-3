@@ -327,7 +327,13 @@ public class CentralDataList {
 						new Demo(msgs("menu.ace.radioButtons.subMenu.indicator"), msgs("example.ace.radioButtons.indicator.description"),
 								 "radioButtons", "radioButtonsIndicator.xhtml", "RadioButtonsIndicatorBean.java"),
 						new Demo(msgs("menu.ace.radioButtons.subMenu.reqStyle"), msgs("example.ace.radioButtons.reqStyle.description"),
-								 "radioButtons", "radioButtonsReqStyle.xhtml", "RadioButtonsReqStyleBean.java"))
+								 "radioButtons", "radioButtonsReqStyle.xhtml", "RadioButtonsReqStyleBean.java")),
+				new ComponentGroup("ace:triStateCheckbox", new DemoResource[] {
+						new DemoResource(DemoResource.Type.WIKI, "ace:triStateCheckbox", "TriStateCheckbox"),
+						new DemoResource(DemoResource.Type.TLD, "ace:triStateCheckbox", "triStateCheckbox.html")
+				},
+					new Demo(msgs("overview"), msgs("example.ace.tristatecheckbox.description"),
+							 "tristatecheckbox", "triStateCheckbox.xhtml", "TriStateCheckboxBean.java"))
 		));
 		
 		toReturn.add(new CategoryGroup(msgs("menu.ace.group.selection.title"),
