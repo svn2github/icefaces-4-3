@@ -246,14 +246,16 @@ public class DeltaSubmitPhaseListener implements PhaseListener {
                             }
                         }
                     } else {
-                        String value = input.getAttribute("value");
-                        String[] values = (String[]) multiParameters.get(name);
-                        if (values == null) {
-                            multiParameters.put(name, new String[]{value});
-                        } else {
-                            ArrayList list = new ArrayList(Arrays.asList(values));
-                            list.add(value);
-                            multiParameters.put(name, list.toArray(StringArray));
+                        if (input.hasAttribute("value")) {
+                            String value = input.getAttribute("value");
+                            String[] values = (String[]) multiParameters.get(name);
+                            if (values == null) {
+                                multiParameters.put(name, new String[]{value});
+                            } else {
+                                ArrayList list = new ArrayList(Arrays.asList(values));
+                                list.add(value);
+                                multiParameters.put(name, list.toArray(StringArray));
+                            }
                         }
                     }
                 }
