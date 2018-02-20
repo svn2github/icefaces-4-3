@@ -39,6 +39,7 @@ import org.icefaces.resources.ICEResourceLibrary;
 		       "unchecked, checked, and indeterminate. " +
 		       "The indeterminate state can have different meanings, depending on the application. " +
 		       "The order in which these states cycle is determine by the 'indeterminateBeforeChecked' attribute." +
+		       "The possible values are the strings 'checked', 'indeterminate', and 'unchecked'. Any other string or a null value defaults to 'unchecked'. The values are case insensitive." +
                "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/TriStateCheckbox\">TriStateCheckbox Wiki Documentation</a>."
         )
 @ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
