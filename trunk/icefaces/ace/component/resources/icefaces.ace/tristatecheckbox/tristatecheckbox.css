@@ -63,6 +63,10 @@
 	opacity: 1;
 }
 
+.ice-tristatecheckbox-indeterminate .ui-label {
+	text-decoration: line-through;
+}
+
 .ice-tristatecheckbox-unchecked .ui-label {
 	opacity: 0.25;
 }

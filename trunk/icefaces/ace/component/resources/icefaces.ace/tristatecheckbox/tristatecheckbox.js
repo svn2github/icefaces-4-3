@@ -189,7 +189,7 @@ ice.ace.TriStateCheckbox.prototype.toggleCheckbox = function (activeButton) {
 	}
 
     this.setState(newState);
-    if (newState != 'unchecked') this.addStateCSSClasses(state);
+    if (newState != 'unchecked') this.addStateCSSClasses(newState);
     else this.removeStateCSSClasses('checked');
 
     if (this.options.ariaEnabled && newState == 'checked') {
