@@ -288,7 +288,13 @@ public class BridgeSetup implements SystemEventListener {
      */
     public static String getViewID(ExternalContext externalContext) {
         Map requestMap = externalContext.getRequestMap();
-        return (String) requestMap.get(BridgeSetup.ViewState);
+        String viewID = (String) requestMap.get(BridgeSetup.ViewState);
+        if (viewID == null) {
+            //most probably we run in a portal environment and only the render phase is executed (after a portlet edit, for example)
+            return assignViewID(FacesContext.getCurrentInstance());
+        } else {
+            return viewID;
+        }
     }
 
     public static class AssignViewID implements PhaseListener {
