@@ -109,6 +109,7 @@ public class TriStateCheckboxRenderer extends InputRenderer {
 		String selectedClass = "";
 
 		String value = (String) checkbox.getValue();
+		value = (String) getConvertedValue(facesContext, checkbox, value);
 		if (TriStateCheckbox.INDETERMINATE.equals(value)) selectedClass = "ice-tristatecheckbox-indeterminate";
 		else if (TriStateCheckbox.CHECKED.equals(value)) selectedClass = "ice-tristatecheckbox-checked";
 		else selectedClass = "ice-tristatecheckbox-unchecked";
@@ -171,6 +172,7 @@ public class TriStateCheckboxRenderer extends InputRenderer {
         String clientId = uiComponent.getClientId(facesContext);
         TriStateCheckbox checkbox = (TriStateCheckbox) uiComponent;
         Object val = checkbox.getValue();
+		val = getConvertedValue(facesContext, checkbox, val);
 
         writer.startElement("input", uiComponent);
         writer.writeAttribute("type", "hidden", null);
@@ -312,6 +314,7 @@ public class TriStateCheckboxRenderer extends InputRenderer {
 		String largeStyle = "fa-lg";
 
 		String value = (String) checkbox.getValue();
+		value = (String) getConvertedValue(FacesContext.getCurrentInstance(), checkbox, value);
 		if (TriStateCheckbox.INDETERMINATE.equals(value)) {
 			iconClass += " " + indeterminateStyle + " " + largeStyle;
 		} else if (TriStateCheckbox.CHECKED.equals(value)) {
@@ -353,4 +356,20 @@ public class TriStateCheckboxRenderer extends InputRenderer {
     protected enum EventType {
         HOVER, FOCUS
     }
+
+
+	@Override
+	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+		String stringValue = (String) super.getConvertedValue(context, component, submittedValue);
+
+		if (stringValue == null) {
+			return TriStateCheckbox.UNCHECKED;
+		} else if (stringValue.equalsIgnoreCase(TriStateCheckbox.INDETERMINATE)) {
+			return TriStateCheckbox.INDETERMINATE;
+		} else if (stringValue.equalsIgnoreCase(TriStateCheckbox.CHECKED)) {
+			return TriStateCheckbox.CHECKED;
+		} else {
+			return TriStateCheckbox.UNCHECKED;
+		}
+	}
 }

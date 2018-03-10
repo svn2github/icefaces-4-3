@@ -18,7 +18,7 @@ package org.icefaces.ace.component.tristatecheckbox;
 
 import org.icefaces.ace.api.ButtonGroupMember;
 import org.icefaces.component.Focusable;
-
+import javax.faces.context.FacesContext;
 
 public class TriStateCheckbox extends TriStateCheckboxBase implements Focusable, ButtonGroupMember {
     public static final String GROUP_LIST_KEY = "org.icefaces.ace.buttonGroup.LIST_KEY";
@@ -31,18 +31,18 @@ public class TriStateCheckbox extends TriStateCheckboxBase implements Focusable,
     public final static String INDETERMINATE = "indeterminate";
 
 	public boolean isUnchecked() {
-		return ((String) getValue()).equalsIgnoreCase(UNCHECKED);
+		return !((String) getValue()).equalsIgnoreCase(INDETERMINATE) && !((String) getValue()).equalsIgnoreCase(CHECKED);
 	}
 
 	public void setUnchecked() {
 		setValue(UNCHECKED);
 	}
 
-	public boolean isPartiallyChecked() {
+	public boolean isIndeterminate() {
 		return ((String) getValue()).equalsIgnoreCase(INDETERMINATE);
 	}
 
-	public void setPartiallyChecked() {
+	public void setIndeterminate() {
 		setValue(INDETERMINATE);
 	}
 
@@ -53,38 +53,4 @@ public class TriStateCheckbox extends TriStateCheckboxBase implements Focusable,
 	public void setChecked() {
 		setValue(CHECKED);
 	}
-
-	public void setValue(Object value) {
-		String stringValue = (String) value;
-
-		if (stringValue == null) {
-			super.setValue(UNCHECKED);
-			return;
-		}
-
-		if (stringValue.equalsIgnoreCase(INDETERMINATE)) {
-			super.setValue(INDETERMINATE);
-			return;
-		}
-
-		if (stringValue.equalsIgnoreCase(CHECKED)) {
-			super.setValue(CHECKED);
-			return;
-		}
-
-		super.setValue(UNCHECKED);
-	}
-
-	public Object getValue() {
-		String stringValue = (String) super.getValue();
-
-		if (stringValue == null) return UNCHECKED;
-
-		if (stringValue.equalsIgnoreCase(INDETERMINATE)) return INDETERMINATE;
-
-		if (stringValue.equalsIgnoreCase(CHECKED)) return CHECKED;
-
-		return UNCHECKED;
-	}
 }
-
