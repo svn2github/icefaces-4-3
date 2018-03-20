@@ -326,6 +326,8 @@
             <file name="${resources}/icefaces.ace/colorentry/swatches/jquery.ui.colorpicker-pantone.js"/>
             <file name="${resources}/icefaces.ace/colorentry/swatches/jquery.ui.colorpicker-ral-classic.js"/>
             <file name="${resources}/icefaces.ace/colorentry/swatches/jquery.ui.colorpicker-x11.js"/>
+			<file name="${resources}/icefaces.ace/dashboard/jquery.gridster.js" />
+			<file name="${resources}/icefaces.ace/dashboard/dashboard.js" />
 			<file name="${resources}/icefaces.ace/datetimeentry/datetimeentry.js" />
 			<file name="${resources}/icefaces.ace/datetimeentry/jquery-ui-timepicker-addon.js" />
 			<file name="${resources}/icefaces.ace/dialog/dialog.js" />
