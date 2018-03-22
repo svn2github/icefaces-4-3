@@ -1,38 +1,39 @@
 /*! gridster.js - v0.6.10 - 2015-05-31
 * https://dsmorse.github.io/gridster.js/
 * Copyright (c) 2015 ducksboard; Licensed MIT */
-.gridster {
+.ice-ace-dashboard {
   position: relative;
 }
-.gridster > * {
+.ice-ace-dashboard > * {
   -webkit-transition: height .4s, width .4s;
   -moz-transition: height .4s, width .4s;
   -o-transition: height .4s, width .4s;
   -ms-transition: height .4s, width .4s;
   transition: height .4s, width .4s;
 }
-.gridster .gs-w {
+.ice-ace-dashboard .gs-w {
   z-index: 2;
   position: absolute;
 }
-.gridster .preview-holder {
+.ice-ace-dashboard .preview-holder {
   z-index: 1;
   position: absolute;
   background-color: #fff;
-  border-color: #fff;
-  opacity: 0.3;
+  border-color: #000;
+  opacity: 0.5;
+  border: 1px dotted #000;
 }
-.gridster .player-revert {
+.ice-ace-dashboard .player-revert {
   z-index: 10!important;
   -webkit-transition: left .3s, top .3s!important;
   -moz-transition: left .3s, top .3s!important;
   -o-transition: left .3s, top .3s!important;
   transition: left .3s, top .3s!important;
 }
-.gridster.collapsed {
+.ice-ace-dashboard.collapsed {
   height: auto !important;
 }
-.gridster.collapsed .gs-w {
+.ice-ace-dashboard.collapsed .gs-w {
   position: static !important;
 }
 .ready .gs-w:not(.preview-holder) {
@@ -48,8 +49,8 @@
   -o-transition: opacity .3s, left .3s, top .3s, width .3s, height .3s;
   transition: opacity .3s, left .3s, top .3s, width .3s, height .3s;
 }
-.gridster .dragging,
-.gridster .resizing {
+.ice-ace-dashboard .dragging,
+.ice-ace-dashboard .resizing {
   z-index: 10!important;
   -webkit-transition: all 0s !important;
   -moz-transition: all 0s !important;

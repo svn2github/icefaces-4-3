@@ -1,4 +1,15 @@
-.gs-w {
-	background-color: #fff;
-	border: 1px solid #000;
+.ice-ace-dashboard-content.ui-widget-content {
+	border: 0;
+}
+
+.ice-ace-dashboard-pane > .ui-widget-header {
+	border-top: 0;
+	border-left: 0;
+	border-right: 0;
+	padding: 2px;
+	cursor: move;
+}
+
+.ice-ace-dashboard-pane > .ui-widget-content {
+	padding: 2px;
 }

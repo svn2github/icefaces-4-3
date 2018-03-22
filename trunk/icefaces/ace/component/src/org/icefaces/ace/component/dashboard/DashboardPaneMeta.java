@@ -39,9 +39,6 @@ import javax.faces.component.UIComponent;
 }, defaultEvent="toggle")
 public class DashboardPaneMeta extends UIPanelMeta {
 
-    @Property(tlddoc="The pane position that this component defines in the layout. Valid values are \"center\", \"north\", \"south\", \"east\", and \"west\". The center pane is required for the layout to work.")
-    private String position;
-
     @Property(tlddoc="Specifies the size of the pane in pixels. For the north and south panes the size is the height, and for the east and west panes the size is the width. The size refers to the total size, including paddings and border widths. The value can be \"auto\" for an appropriate, standard size for the pane.", defaultValue = "auto")
     private String size;
 

@@ -53,22 +53,18 @@ public class DashboardRenderer extends CoreRenderer {
         writer.startElement("div", component);
         writer.writeAttribute("id", clientId, null);
 
-		String baseClass = "ice-ace-dashboard gridster";
+		String baseClass = "ice-ace-dashboard";
 		String styleClass = dashboard.getStyleClass();
         if (styleClass != null) {
             baseClass += " " + styleClass;
         }
         writer.writeAttribute("class", baseClass, null);
-
-        writer.startElement("ul", component);
 	}
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Dashboard dashboard = (Dashboard) component;
-
-        writer.endElement("ul");
 
 		encodeScript(context, dashboard);
 

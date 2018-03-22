@@ -43,9 +43,9 @@ public class DashboardPaneRenderer extends CoreRenderer {
 		DashboardPane dashboardPane = (DashboardPane) component;
 		String clientId = dashboardPane.getClientId(context);
 
-		writer.startElement("li", component);
+		writer.startElement("div", component);
 
-		String baseClass = "ice-ace-dashboard-pane";
+		String baseClass = "ice-ace-dashboard-pane ui-widget ui-widget-content ui-corner-all";
 		String styleClass = dashboardPane.getStyleClass();
 		if (styleClass != null) {
 			baseClass += " " + styleClass;
@@ -65,11 +65,11 @@ public class DashboardPaneRenderer extends CoreRenderer {
 			}
 		}
 
-		//encodeHeader(context, dashboardPane, position);
+		encodeHeader(context, dashboardPane);
 
-		writer.startElement("span", null);
+		writer.startElement("div", null);
 		writer.writeAttribute("id", clientId + "_content", null);
-		writer.writeAttribute("class", "ice-ace-boderlayout-content", null);
+		writer.writeAttribute("class", "ice-ace-dashboard-content ui-widget-content", null);
 		String style = dashboardPane.getStyle();
 		if (style != null) {
 			writer.writeAttribute("style", style, null);
@@ -81,66 +81,50 @@ public class DashboardPaneRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		DashboardPane dashboardPane = (DashboardPane) component;
 
-		writer.endElement("span");
+		writer.endElement("div");
 
 		//encodeFooter(context, dashboardPane);
 
-		writer.endElement("li");
+		writer.endElement("div");
 	}
 
-    public void encodeHeader(FacesContext context, DashboardPane dashboardPane, String position) throws IOException {
+    public void encodeHeader(FacesContext context, DashboardPane dashboardPane) throws IOException {
         String headerText = dashboardPane.getHeaderText();
         UIComponent headerFacet = dashboardPane.getFacet("header");
-        
-        if (headerText == null && headerFacet == null) return;
         
         ResponseWriter writer = context.getResponseWriter();
 
 		writer.startElement("div", null);
+        writer.writeAttribute("class", "ui-widget-header ui-corner-top", null);
 
-		writer.startElement("div", null); // for paddings and theme styling
-        writer.writeAttribute("class", "ui-widget-header ui-corner-all", null);
+		// --- close button ---
+		if (dashboardPane.isClosable()) {
+			writer.startElement("a", null);
+			writer.writeAttribute("href", "javascript:void(0);", null);
+			writer.writeAttribute("class", "ice-ace-dashboard-button-close", null);
+			writer.writeAttribute("role", "button", null);
 
-		if (!"center".equals(position)) {
+			writer.startElement("span", null);
+			writer.writeAttribute("class", "fa fa-window-close fa-lg", null);
+			writer.endElement("span");
 
-			// --- close button ---
-			if (dashboardPane.isClosable()) {
-				writer.startElement("a", null);
-				writer.writeAttribute("href", "javascript:void(0);", null);
-				writer.writeAttribute("class", "ice-ace-boderlayout-button-close", null);
-				writer.writeAttribute("role", "button", null);
+			writer.endElement("a");
+		}
 
-				writer.startElement("span", null);
-				writer.writeAttribute("class", "fa fa-window-close fa-lg", null);
-				writer.endElement("span");
+		// --- toggle button ---
+		if (dashboardPane.isToggleable()) {
 
-				writer.endElement("a");
-			}
+			String iconClass = "fa-caret-up";
 
-			// --- toggle button ---
-			if (dashboardPane.isToggleable()) {
+			writer.startElement("a", null);
+			writer.writeAttribute("href", "javascript:void(0);", null);
+			writer.writeAttribute("class", "ice-ace-dashboard-button-toggle", null);
+			writer.writeAttribute("role", "button", null);
 
-				String iconClass = "";
-				if ("north".equals(position)) {
-					iconClass = "fa-caret-up";
-				} else if ("south".equals(position)) {
-					iconClass = "fa-caret-down";
-				} else if ("east".equals(position)) {
-					iconClass = "fa-caret-right";
-				} else if ("west".equals(position)) {
-					iconClass = "fa-caret-left";
-				}
-
-				writer.startElement("a", null);
-				writer.writeAttribute("href", "javascript:void(0);", null);
-				writer.writeAttribute("class", "ice-ace-boderlayout-button-toggle", null);
-				writer.writeAttribute("role", "button", null);
-
-				writer.startElement("span", null);
-				writer.writeAttribute("class", "fa " + iconClass + " fa-lg", null);
-				writer.endElement("span");
-				writer.endElement("a");
-			}
+			writer.startElement("span", null);
+			writer.writeAttribute("class", "fa " + iconClass + " fa-lg", null);
+			writer.endElement("span");
+			writer.endElement("a");
 		}
 
 		// --- header text ---
@@ -151,10 +135,9 @@ public class DashboardPaneRenderer extends CoreRenderer {
             headerFacet.encodeAll(context);
         else if (headerText != null)
             writer.writeText(headerText, null);
+		else writer.writeText("\u00A0", null);
         
         writer.endElement("span");
-
-        writer.endElement("div"); // for paddings and theme styling
 
         writer.endElement("div");
 	}
