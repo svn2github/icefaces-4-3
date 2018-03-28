@@ -40,11 +40,14 @@ public class DynamicResourceRenderer extends Renderer {
             writer.writeAttribute(HTML.ID_ATTR, uiComponent.getClientId(facesContext) + "_cont", null);
 
             String label = dynamicResource.getLabel();
-            if ("button".equals(dynamicResource.getType())) {
+            String type = dynamicResource.getType();
+            writer.writeAttribute("data-type", type, null); // force full update when changing type and avoid dom diff issues
+            if ("button".equals(type)) {
                 writer.startElement(HTML.INPUT_ELEM, null);
                 if (disabled) {
                     writer.writeAttribute(HTML.DISABLED_ATTR, HTML.DISABLED_ATTR, null);
                 }
+                writer.writeAttribute(HTML.ID_ATTR, clientId, null);
                 writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
                 writer.writeAttribute(HTML.VALUE_ATTR, label, null);
 				String accesskey = dynamicResource.getAccesskey();
