@@ -16,9 +16,14 @@
 
 package org.icefaces.ace.component.list;
 
+import org.icefaces.ace.event.ListMigrateEvent;
+import org.icefaces.ace.event.ListMoveEvent;
 import org.icefaces.ace.event.ListSelectEvent;
+import org.icefaces.ace.json.JSONArray;
+import org.icefaces.ace.json.JSONException;
 import org.icefaces.ace.model.filter.*;
 import org.icefaces.ace.util.collections.*;
+import org.icefaces.impl.util.CoreUtils;
 
 import javax.el.ELContext;
 import javax.el.MethodExpression;
@@ -29,6 +34,7 @@ import javax.faces.component.UISelectItem;
 import javax.faces.component.UISelectItems;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.model.*;
 import javax.xml.transform.Result;
@@ -259,6 +265,53 @@ public class ACEList extends ListBase {
             }
         }
     }
+
+    @Override
+    public void queueEvent(FacesEvent event) {
+        if (event == null) {
+            throw new NullPointerException();
+        }
+
+        if (event instanceof AjaxBehaviorEvent) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+            String eventName = params.get("javax.faces.behavior.event");
+			String clientId = getClientId(context);
+
+            if (eventName.equals("move")) {
+				try {
+					String raw = params.get(clientId + "_reorderings");
+					List<ListMoveEvent.MoveRecord> records = new ArrayList<ListMoveEvent.MoveRecord>();
+					JSONArray array = new JSONArray(raw);
+					for (int i = 0; i < array.length(); i++) {
+						JSONArray record = array.getJSONArray(i);
+						int from = record.getInt(0);
+						int to = record.getInt(1);
+						records.add(new ListMoveEvent.MoveRecord(from, to));
+					}
+					event = new ListMoveEvent((AjaxBehaviorEvent) event, records);
+				} catch (Exception e) { }
+            } else if (eventName.equals("migrate")) {
+				try {
+					String raw = params.get(clientId + "_immigration");
+					List<ListMigrateEvent.MigrationRecord> records = new ArrayList<ListMigrateEvent.MigrationRecord>();
+					JSONArray data = new JSONArray(raw);
+					JSONArray array = data.getJSONArray(1);
+					for (int i = 0; i < array.length(); i++) {
+						JSONArray record = array.getJSONArray(i);
+						int from = record.getInt(0);
+						int to = record.getInt(1);
+						records.add(new ListMigrateEvent.MigrationRecord(from, to));
+					}
+					String srcListClientId = data.getString(0);
+					ACEList srcList = (ACEList) CoreUtils.findComponentByClientId(context.getViewRoot(), srcListClientId);
+					event = new ListMigrateEvent((AjaxBehaviorEvent) event, records, srcList);
+				} catch (Exception e) { }
+            }
+        }
+
+		super.queueEvent(event);
+	}
 
     // References to immigrant objects are gathered immediately
     List<ImmigrationRecord> immigrants;
