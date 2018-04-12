@@ -56,13 +56,26 @@
                     <ace:list id="listOne" value="#{backing.stringList}"
                               styleClass="subList"
                               dropGroup="textGroup"
-                              selectionMode="multiple"/>
+                              selectionMode="multiple">
+                        <ace:ajax event="migrate" render="@form" listener="#{backing.migrateListener}" />
+                    </ace:list>
 
                     <ace:list id="listTwo" value="#{backing.destStringList}"
                               styleClass="subList"
                               dropGroup="textGroup"
-                              selectionMode="multiple"/>
+                              selectionMode="multiple">
+                        <ace:ajax event="migrate" render="@form" listener="#{backing.migrateListener}" />
+                    </ace:list>
                 </ace:listControl>
+				<h:panelGroup layout="block">
+					<div style="text-align:center;font-weight:bold;margin-top:10px;">Migration Records</div>
+					<ui:repeat value="#{backing.records}" var="record">
+						<h:panelGrid columns="2" style="margin-left:auto; margin-right:auto;" cellspacing="10">
+							<h:outputText value="SourceIndex: #{record.srcIndex}" />
+							<h:outputText value="Destination Index: #{record.destIndex}" />
+						</h:panelGrid>
+					</ui:repeat>
+				</h:panelGroup>
             </ace:panel>
         </h:form>
     </ui:define>

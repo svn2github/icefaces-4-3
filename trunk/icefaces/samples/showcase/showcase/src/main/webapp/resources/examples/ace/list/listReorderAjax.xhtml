@@ -35,7 +35,7 @@
                               selectionMode="multiple"
                               dragging="false"
                               controlsEnabled="true">
-                        <ace:ajax event="move" render="@form" />
+                        <ace:ajax event="move" render="@form" listener="#{backing.moveListener}" />
                     </ace:list>
 
                     <h:panelGroup>
@@ -44,6 +44,15 @@
                         </ui:repeat>
                     </h:panelGroup>
                 </h:panelGrid>
+            </h:panelGroup>
+            <h:panelGroup layout="block">
+				<div style="text-align:center;font-weight:bold;">Reordering Records</div>
+				<ui:repeat value="#{backing.records}" var="record">
+					<h:panelGrid columns="2" style="margin-left:auto; margin-right:auto;" cellspacing="10">
+						<h:outputText value="Old Index: #{record.oldIndex}" />
+						<h:outputText value="New Index: #{record.newIndex}" />
+					</h:panelGrid>
+				</ui:repeat>
             </h:panelGroup>
         </h:form>
     </ui:define>

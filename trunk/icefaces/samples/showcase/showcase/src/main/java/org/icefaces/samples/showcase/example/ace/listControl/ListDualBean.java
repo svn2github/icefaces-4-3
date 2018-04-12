@@ -26,6 +26,8 @@ import javax.faces.model.SelectItem;
 
 import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
 
+import org.icefaces.ace.event.ListMigrateEvent;
+
 @ManagedBean(name= ListDualBean.BEAN_NAME)
 @CustomScoped(value = "#{window}")
 public class ListDualBean implements Serializable {
@@ -73,4 +75,12 @@ public class ListDualBean implements Serializable {
     public void setDestStringList(List<SelectItem> destStringList) {
         this.destStringList = destStringList;
     }
+
+	private List<ListMigrateEvent.MigrationRecord> records = null;
+	public  List<ListMigrateEvent.MigrationRecord> getRecords() { return records; }
+	
+
+	public void migrateListener(ListMigrateEvent event) {
+		records = event.getMigrationRecords();
+	}
 }

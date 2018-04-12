@@ -26,6 +26,9 @@ import javax.faces.model.SelectItem;
 
 import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
 
+import java.util.List;
+import org.icefaces.ace.event.ListMoveEvent;
+
 @ManagedBean(name= ListReorderAjaxBean.BEAN_NAME)
 @CustomScoped(value = "#{window}")
 public class ListReorderAjaxBean implements Serializable {
@@ -45,4 +48,11 @@ public class ListReorderAjaxBean implements Serializable {
     public void setAjaxStringList(List<SelectItem> ajaxStringList) {
         this.ajaxStringList = ajaxStringList;
     }
+
+	private List<ListMoveEvent.MoveRecord> records = null;
+	public List<ListMoveEvent.MoveRecord> getRecords() { return records; }
+
+	public void moveListener(ListMoveEvent event) {
+		records = event.getMoveRecords();
+	}
 }
