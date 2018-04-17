@@ -53,4 +53,25 @@ public class DashboardMeta extends UIPanelMeta {
 
 	@Property(tlddoc="Style class of the main container of the layout.")
 	private String styleClass;
+
+    @Property(tlddoc="Specifies whether the panes are draggable or not.", defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
+    private boolean draggable;
+
+    @Property(tlddoc="Specifies whether the panes are resizable or not.", defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
+    private boolean resizable;
+
+    @Property(tlddoc="The base/minimum width of the panes in pixels, which determines the column width as well. This value can be multiplied by the pane's \"sizeX\" property.", defaultValue = "150")
+    private int paneWidth;
+
+    @Property(tlddoc="The base/minimum height of the panes in pixels, which determines the row height as well. This value can be multiplied by the pane's \"sizeY\" property.", defaultValue = "150")
+    private int paneHeight;
+
+    @Property(tlddoc="The size of the horizontal margins between panes, in pixels.", defaultValue = "10")
+    private int marginX;
+
+    @Property(tlddoc="The size of the vertical margins between panes, in pixels.", defaultValue = "10")
+    private int marginY;
+
+    @Property(tlddoc="The maximum number of columns to allow in the dashboard. Set to 0 for an unrestricted amount of columns.", defaultValue = "5")
+    private int maxColumns;
 }

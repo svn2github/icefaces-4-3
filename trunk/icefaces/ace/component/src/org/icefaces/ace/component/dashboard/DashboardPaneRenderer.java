@@ -45,25 +45,14 @@ public class DashboardPaneRenderer extends CoreRenderer {
 
 		writer.startElement("div", component);
 
+		writer.writeAttribute("id", clientId, null);
+
 		String baseClass = "ice-ace-dashboard-pane ui-widget ui-widget-content ui-corner-all";
 		String styleClass = dashboardPane.getStyleClass();
 		if (styleClass != null) {
 			baseClass += " " + styleClass;
 		}
 		writer.writeAttribute("class", baseClass, null);
-
-		writer.writeAttribute("data-sizex", "1", null);
-		writer.writeAttribute("data-sizey", "1", null);
-		writer.writeAttribute("data-col", "1", null);
-
-		List<UIComponent> siblings = dashboardPane.getParent().getChildren();
-		for (int i = 0; i < siblings.size(); i++) {
-			UIComponent sibling = siblings.get(i);
-			if (sibling == dashboardPane) {
-				writer.writeAttribute("data-row", "" + (i + 1), null);
-				break;
-			}
-		}
 
 		encodeHeader(context, dashboardPane);
 
@@ -101,11 +90,11 @@ public class DashboardPaneRenderer extends CoreRenderer {
 		if (dashboardPane.isClosable()) {
 			writer.startElement("a", null);
 			writer.writeAttribute("href", "javascript:void(0);", null);
-			writer.writeAttribute("class", "ice-ace-dashboard-button-close", null);
+			writer.writeAttribute("class", "ice-ace-dashboard-button-close ui-corner-all", null);
 			writer.writeAttribute("role", "button", null);
 
 			writer.startElement("span", null);
-			writer.writeAttribute("class", "fa fa-window-close fa-lg", null);
+			writer.writeAttribute("class", "fa fa-times", null);
 			writer.endElement("span");
 
 			writer.endElement("a");
@@ -122,7 +111,7 @@ public class DashboardPaneRenderer extends CoreRenderer {
 			writer.writeAttribute("role", "button", null);
 
 			writer.startElement("span", null);
-			writer.writeAttribute("class", "fa " + iconClass + " fa-lg", null);
+			writer.writeAttribute("class", "fa " + iconClass, null);
 			writer.endElement("span");
 			writer.endElement("a");
 		}

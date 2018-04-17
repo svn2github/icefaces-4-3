@@ -39,11 +39,11 @@ import javax.faces.component.UIComponent;
 }, defaultEvent="toggle")
 public class DashboardPaneMeta extends UIPanelMeta {
 
-    @Property(tlddoc="Specifies the size of the pane in pixels. For the north and south panes the size is the height, and for the east and west panes the size is the width. The size refers to the total size, including paddings and border widths. The value can be \"auto\" for an appropriate, standard size for the pane.", defaultValue = "auto")
-    private String size;
+    @Property(tlddoc="The horizontal size of this pane as the number columns it occupies.", defaultValue = "1")
+    private int sizeX;
 
-    @Property(tlddoc="Specifies whether this pane is resizable or not. This attribute doesn't apply to the center pane.", defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
-    private boolean resizable;
+    @Property(tlddoc="The vertical size of the pane as the number of rows it occupies.", defaultValue = "1")
+    private int sizeY;
 
     @Property(tlddoc="Specifies whether this pane can be closed or not. If true, a close button will be rendered at the upper right corner of the pane header.", defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
     private boolean closable;

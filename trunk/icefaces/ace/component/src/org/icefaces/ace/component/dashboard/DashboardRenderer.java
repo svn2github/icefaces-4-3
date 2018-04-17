@@ -66,10 +66,58 @@ public class DashboardRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         Dashboard dashboard = (Dashboard) component;
 
+		encodeSizeAndPositionData(context, dashboard);
+
 		encodeScript(context, dashboard);
 
         writer.endElement("div");
     }
+
+    protected void encodeSizeAndPositionData(FacesContext context, Dashboard dashboard) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = dashboard.getClientId(context);
+
+        writer.startElement("span", null);
+        writer.writeAttribute("id", clientId + "_sizeAndPositionData", null);
+
+		writer.startElement("script", null);
+		writer.writeAttribute("type", "text/javascript", null);
+
+		JSONBuilder jb = JSONBuilder.create();
+
+		jb.beginArray();
+
+		int row = 1;
+		int column = 1;
+		int maxColumns = dashboard.getMaxColumns();
+		List<UIComponent> children = dashboard.getChildren();
+		for (int i = 0; i < children.size(); i++) {
+			UIComponent child = children.get(i);
+			if (child instanceof DashboardPane) {
+				DashboardPane pane = (DashboardPane) child;
+				jb.beginMap();
+				jb.entry("paneId", pane.getClientId(context));
+				jb.entry("sizeX", pane.getSizeX());
+				jb.entry("sizeY", pane.getSizeY());
+				jb.entry("row", row);
+				jb.entry("column", column);
+				jb.endMap();
+
+				column += pane.getSizeX();
+				if (column > maxColumns) {
+					row++;
+					column = 1;
+				}
+			}
+		}
+
+		jb.endArray();
+
+		writer.write("ice.ace.Dashboard.data['"+clientId+"'] = " + jb.toString() + ";");
+
+        writer.endElement("script");
+        writer.endElement("span");
+	}
 
     protected void encodeScript(FacesContext context, Dashboard dashboard) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -94,6 +142,13 @@ public class DashboardRenderer extends CoreRenderer {
 			.beginArray()
 			.item(clientId)
 			.beginMap();
+
+				jb.entry("resizable", dashboard.isResizable())
+				.entry("paneWidth", dashboard.getPaneWidth())
+				.entry("paneHeight", dashboard.getPaneHeight())
+				.entry("marginX", dashboard.getMarginX())
+				.entry("marginY", dashboard.getMarginY())
+				.entry("maxColumns", dashboard.getMaxColumns());
 
 /*
 			String style = dashboard.getStyle();
@@ -144,5 +199,17 @@ public class DashboardRenderer extends CoreRenderer {
 		writer.write(jb.toString());
 
         writer.endElement("script");
+
+		// draggable script
+        writer.startElement("span", null);
+        writer.writeAttribute("id", clientId + "_draggableScript", null);
+        writer.startElement("script", null);
+        writer.writeAttribute("type", "text/javascript", null);
+		if (dashboard.isDraggable())
+			writer.write("(function(){ ice.ace.instance('"+clientId+"').enableDragging(); })();");
+		else
+			writer.write("(function(){ ice.ace.instance('"+clientId+"').disableDragging(); })();");
+        writer.endElement("script");
+        writer.endElement("span");
     }
 }
