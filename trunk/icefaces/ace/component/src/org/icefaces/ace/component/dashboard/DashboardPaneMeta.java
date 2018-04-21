@@ -33,10 +33,12 @@ import javax.faces.component.UIComponent;
 		componentFamily = "org.icefaces.ace.Dashboard",
 		tlddoc = ""
         )
+//, argumentClass="org.icefaces.ace.event.ToggleEvent"
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="toggle", javadoc="Fired when the pane either collapsed or expanded.", tlddoc="Fired when the pane either collapsed or expanded.", defaultRender="@all", defaultExecute="@this", argumentClass="org.icefaces.ace.event.ToggleEvent"),
-	@ClientEvent(name="close", javadoc="Fired when the pane is closed.", tlddoc="Fired when the pane is closed.", defaultRender="@all", defaultExecute="@this", argumentClass="org.icefaces.ace.event.CloseEvent")
-}, defaultEvent="toggle")
+	@ClientEvent(name="dragStop", javadoc="Fired when the pane is dragged and dropped by the user.", tlddoc="Fired when the pane is dragged and dropped by the user.", defaultRender="@all", defaultExecute="@this"),
+	@ClientEvent(name="resize", javadoc="Fired when the pane is resized by the user.", tlddoc="Fired when the pane is resized by the user.", defaultRender="@all", defaultExecute="@this"),
+	@ClientEvent(name="close", javadoc="Fired when the pane is closed by the user.", tlddoc="Fired when the pane is closed by the user.", defaultRender="@all", defaultExecute="@this")
+}, defaultEvent="dragStop")
 public class DashboardPaneMeta extends UIPanelMeta {
 
     @Property(tlddoc="The horizontal size of this pane as the number columns it occupies.", defaultValue = "1")
@@ -44,6 +46,12 @@ public class DashboardPaneMeta extends UIPanelMeta {
 
     @Property(tlddoc="The vertical size of the pane as the number of rows it occupies.", defaultValue = "1")
     private int sizeY;
+
+    @Property(tlddoc="The 1-relative row position of this pane. If set to 0, it will be given the next available horizontal position that is not already occupied by a pane with specific row and column values. If this pane overlaps with the position of another pane, this or the other pane will be automatically moved to a more appropriate available space. This value will be automatically updated as the pane changes position in the client, either directly or indirectly, by the dragStop, resize and close ajax events.", defaultValue = "0")
+    private int row;
+
+    @Property(tlddoc="The 1-relative column position of this pane. If set to 0 or if the value is greater than \"maxColumns\" in the parent dashboard component, it will be given the next available horizontal position that is not already occupied by a pane with specific row and column values. If this pane overlaps with the position of another pane, this or the other pane will be automatically moved to a more appropriate available space. This value will be automatically updated as the pane changes position in the client, either directly or indirectly, by the dragStop, resize and close ajax events.", defaultValue = "0")
+    private int column;
 
     @Property(tlddoc="Specifies whether this pane can be closed or not. If true, a close button will be rendered at the upper right corner of the pane header.", defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
     private boolean closable;

@@ -23,11 +23,14 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.FacesException;
 
+import org.icefaces.ace.json.*;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
 import org.icefaces.ace.util.ComponentUtils;
+import org.icefaces.impl.util.CoreUtils;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +43,33 @@ public class DashboardRenderer extends CoreRenderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
-        
+		Map<String, String> requestParameterMap = context.getExternalContext().getRequestParameterMap();
+		Dashboard dashboard = (Dashboard) component;
+		String clientId = component.getClientId();
+
+		// update all sizes and positions of all child dashboard panes
+		if (requestParameterMap.containsKey(clientId + "_state")) {
+			String raw = requestParameterMap.get(clientId + "_state");
+			// TODO: save the submittedState in a transient property
+			try {
+				JSONArray array = new JSONArray(raw);
+				int length = array.length();
+				for (int i = 0; i < length; i++) {
+					JSONObject pane = array.getJSONObject(i);
+					String paneClientId = pane.getString("paneId");
+					UIComponent c = CoreUtils.findComponentByClientId(context.getViewRoot(), paneClientId);
+					if (c instanceof DashboardPane) {
+						DashboardPane dashboardPane = (DashboardPane) c;
+						dashboardPane.setSizeX(pane.getInt("sizeX"));
+						dashboardPane.setSizeY(pane.getInt("sizeY"));
+						dashboardPane.setRow(pane.getInt("row"));
+						dashboardPane.setColumn(pane.getInt("column"));
+					}
+				}
+			} catch (JSONException e) {
+
+			}
+		}
     }
 
     @Override
@@ -85,29 +114,35 @@ public class DashboardRenderer extends CoreRenderer {
 
 		JSONBuilder jb = JSONBuilder.create();
 
+		List<boolean[]> positions = createPositionsList(dashboard);
+
 		jb.beginArray();
 
-		int row = 1;
-		int column = 1;
 		int maxColumns = dashboard.getMaxColumns();
 		List<UIComponent> children = dashboard.getChildren();
+		// render panes' settings in the order they appear
 		for (int i = 0; i < children.size(); i++) {
 			UIComponent child = children.get(i);
 			if (child instanceof DashboardPane) {
 				DashboardPane pane = (DashboardPane) child;
+				int row = pane.getRow();
+				int column = pane.getColumn();
+				int sizeX = pane.getSizeX();
+
+				// if not explicitly set, assign row and column position to pane
+				if (!(row > 0 && column > 0 && column + sizeX - 1 <= maxColumns)) {
+					System.out.println("* " + pane.getId());
+					assignPosition(pane, positions, maxColumns);
+				}
+
+				// render pane's size and position settings
 				jb.beginMap();
 				jb.entry("paneId", pane.getClientId(context));
 				jb.entry("sizeX", pane.getSizeX());
 				jb.entry("sizeY", pane.getSizeY());
-				jb.entry("row", row);
-				jb.entry("column", column);
+				jb.entry("row", pane.getRow());
+				jb.entry("column", pane.getColumn());
 				jb.endMap();
-
-				column += pane.getSizeX();
-				if (column > maxColumns) {
-					row++;
-					column = 1;
-				}
 			}
 		}
 
@@ -115,8 +150,116 @@ public class DashboardRenderer extends CoreRenderer {
 
 		writer.write("ice.ace.Dashboard.data['"+clientId+"'] = " + jb.toString() + ";");
 
+		// TODO: compare the generated state to the submittedState if available
+		// if there are changes, reinit or refresh component
+
         writer.endElement("script");
         writer.endElement("span");
+	}
+
+    protected List<boolean[]> createPositionsList(Dashboard dashboard) {
+		List<boolean[]> positions = new ArrayList<boolean[]>();
+
+		int maxColumns = dashboard.getMaxColumns();
+		List<UIComponent> children = dashboard.getChildren();
+		for (int i = 0; i < children.size(); i++) {
+			UIComponent child = children.get(i);
+			if (child instanceof DashboardPane) {
+				DashboardPane pane = (DashboardPane) child;
+				int row = pane.getRow();
+				int column = pane.getColumn();
+				int sizeY = pane.getSizeY();
+				int sizeX = pane.getSizeX();
+				if (row > 0 && column > 0 && column + sizeX - 1 <= maxColumns) {
+					int size = positions.size();
+					if (row + sizeY - 1 > size) {
+						for (int j = 0; j < (row + sizeY - 1 - size); j++) {
+							positions.add(new boolean[maxColumns]);
+						}
+					}
+					int rowIndex = row - 1;
+					for (int j = 0; j < sizeY; j++) {
+						boolean[] rowArray = positions.get(rowIndex);
+						int columnIndex = column - 1;
+						for (int k = 0; k < sizeX; k++) {
+							rowArray[columnIndex] = true;
+							columnIndex++;
+						}
+						rowIndex++;
+					}
+				}
+			}
+		}
+
+		return positions;
+	}
+
+	protected void assignPosition(DashboardPane pane, List<boolean[]> positions, int maxColumns) {
+
+		int sizeY = pane.getSizeY();
+		int sizeX = pane.getSizeX();
+
+		// make sure no pane takes more columns than the maximum allowed
+		sizeX = sizeX > maxColumns ? maxColumns : sizeX;
+
+		// if no rows yet, add one
+		if (positions.size() == 0) {
+			positions.add(new boolean[maxColumns]);
+		}
+
+		boolean assigned = false;
+		for (int i = 0; i < positions.size(); i++) {
+
+			// make sure there are enough rows in the position list to fit this pane
+			// add enough rows to fit the size of this pane
+			// add +1 more in case it doesn't fit at this row, so we can try the next row at the next iteration
+			while (positions.size() < i + sizeY + 1) {
+				positions.add(new boolean[maxColumns]);
+			}
+
+			boolean[] row = positions.get(i);
+			for (int j = 0; j < maxColumns; j++) {
+				// won't fit in this row due to horizontal size
+				if (j + sizeX > maxColumns) {
+					break;
+				}
+
+				// check if there's enough space for this pane starting at (i,j)
+				if (row[j] == false) {
+
+					boolean fits = true;
+					for (int k = 0; k < sizeY; k++) {
+						boolean[] sizeRow = positions.get(i + k);
+						for (int l = 0; l < sizeX; l++) {
+							if (sizeRow[j + l] == true) {
+								fits = false;
+								break;
+							}
+						}
+						if (!fits) break;
+					}
+
+					if (fits) {System.out.println("-> fits!");
+						// mark occupied spaces in the positions list
+						for (int k = 0; k < sizeY; k++) {
+							boolean[] sizeRow = positions.get(i + k);
+							for (int l = 0; l < sizeX; l++) {
+								sizeRow[j + l] = true;
+							}
+						}
+
+						// assign row and column positions to pane
+						pane.setRow(i+1);
+						pane.setColumn(j+1);
+
+						// signal that we've assigned a suitable position and exit algorithm
+						assigned = true;
+						break;
+					}
+				}
+			}
+			if (assigned) break;
+		}
 	}
 
     protected void encodeScript(FacesContext context, Dashboard dashboard) throws IOException {
@@ -157,41 +300,20 @@ public class DashboardRenderer extends CoreRenderer {
 			}
 */
 
-/*
 			// --- encode panes' settings ---
+			jb.beginMap("panes");
 			for (UIComponent child : dashboard.getChildren()) {
 				if (child.isRendered() && child instanceof DashboardPane) {
 					DashboardPane pane = (DashboardPane) child;
 
-					jb.beginMap(pane.getPosition())
-						.entry("paneSelector", ".ice-ace-boderlayout")
-						.entry("size", pane.getSize())
-						.entry("resizable", pane.isResizable())
-						.entry("closable", pane.isClosable() || pane.isToggleable())
-						.entry("minSize", pane.getMinSize())
-						.entry("maxSize", pane.getMaxSize())
-						.entry("spacing_open", pane.getBorderWidth())
-
-						.entry("togglerLength_open", 0) // hide default toggler button
-						.entry("togglerLength_closed", "100%"); // use the whole bar to open collapsed pane
-					
-						if (pane.isToggleable()) {
-							jb.entry("spacing_closed", pane.getCollapseSize());
-						}
-					
-						jb.entry("initHidden", !pane.isVisible())
-						.entry("initClosed", pane.isCollapsed())
-						.entryNonNullValue("fxName", pane.getEffect())
-						.entry("fxSpeed", pane.getEffectLength());
-						//.entry("resizerTip", bundle.getString(MESSAGES_PREFIX + "resizeTitle"))
-						//.entry("togglerTip_closed", bundle.getString(MESSAGES_PREFIX + "expandTitle"));
+					jb.beginMap(pane.getClientId(context));
 
 						encodeClientBehaviors(context, pane, jb);
 
 					jb.endMap();
 				}
 			}
-*/
+			jb.endMap();
 
         jb.endMap().endArray();
 		jb.endFunction();
