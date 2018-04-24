@@ -34,6 +34,16 @@ public class DashboardPaneRenderer extends CoreRenderer {
 
 	@Override
 	public void decode(FacesContext context, UIComponent component) {
+
+		DashboardPane dashboardPane = (DashboardPane) component;
+		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+
+		String clientId = dashboardPane.getClientId(context);
+
+		if (params.containsKey(clientId + "_close")) {
+			dashboardPane.setClosed(true);
+		}
+
 		super.decodeBehaviors(context, component);
 	}
 
@@ -46,6 +56,12 @@ public class DashboardPaneRenderer extends CoreRenderer {
 		writer.startElement("div", component);
 
 		writer.writeAttribute("id", clientId, null);
+
+		if (dashboardPane.isClosed()) {
+			writer.writeAttribute("style", "display:none;", null);
+			writer.endElement("div");
+			return;
+		}
 
 		String baseClass = "ice-ace-dashboard-pane ui-widget ui-widget-content ui-corner-all";
 		String styleClass = dashboardPane.getStyleClass();
@@ -65,14 +81,44 @@ public class DashboardPaneRenderer extends CoreRenderer {
 		}
 	}
 
+    @Override
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+
+        if (context == null || component == null) {
+            throw new NullPointerException();
+        }
+
+		ResponseWriter writer = context.getResponseWriter();
+		DashboardPane dashboardPane = (DashboardPane) component;
+
+		if (dashboardPane.isClosed()) return;
+
+        if (component.getChildCount() > 0) {
+            Iterator<UIComponent> kids = component.getChildren().iterator();
+            while (kids.hasNext()) {
+                UIComponent kid = kids.next();
+                kid.encodeAll(context);
+            }
+        }
+    }
+
+    @Override
+    public boolean getRendersChildren() {
+        return true;
+    }
+
 	@Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		DashboardPane dashboardPane = (DashboardPane) component;
 
+		if (dashboardPane.isClosed()) return;
+
 		writer.endElement("div");
 
-		//encodeFooter(context, dashboardPane);
+        if (dashboardPane.getFooterText() != null || dashboardPane.getFacet("footer") != null) {
+			encodeFooter(context, dashboardPane);
+		}
 
 		writer.endElement("div");
 	}
@@ -100,22 +146,6 @@ public class DashboardPaneRenderer extends CoreRenderer {
 			writer.endElement("a");
 		}
 
-		// --- toggle button ---
-		if (dashboardPane.isToggleable()) {
-
-			String iconClass = "fa-caret-up";
-
-			writer.startElement("a", null);
-			writer.writeAttribute("href", "javascript:void(0);", null);
-			writer.writeAttribute("class", "ice-ace-dashboard-button-toggle", null);
-			writer.writeAttribute("role", "button", null);
-
-			writer.startElement("span", null);
-			writer.writeAttribute("class", "fa " + iconClass, null);
-			writer.endElement("span");
-			writer.endElement("a");
-		}
-
 		// --- header text ---
         writer.startElement("span", null);
 		writer.writeAttribute("id", dashboardPane.getClientId(context) + "_header", null);
@@ -135,27 +165,22 @@ public class DashboardPaneRenderer extends CoreRenderer {
         String footerText = dashboardPane.getFooterText();
         UIComponent footerFacet = dashboardPane.getFacet("footer");
         
-        if (footerText == null && footerFacet == null) return;
-        
         ResponseWriter writer = context.getResponseWriter();
 
 		writer.startElement("div", null);
+        writer.writeAttribute("class", "ui-widget-header ui-corner-bottom", null);
 
-		writer.startElement("div", null); // for paddings and theme styling
-        writer.writeAttribute("class", "ui-widget-header ui-corner-all", null);
-
-		// --- footer text ---
+		// --- header text ---
         writer.startElement("span", null);
-		writer.writeAttribute("id", dashboardPane.getClientId(context) + "_footer", null);
+		writer.writeAttribute("id", dashboardPane.getClientId(context) + "_header", null);
         
         if (footerFacet != null)
             footerFacet.encodeAll(context);
         else if (footerText != null)
             writer.writeText(footerText, null);
+		else writer.writeText("\u00A0", null);
         
         writer.endElement("span");
-
-        writer.endElement("div"); // for paddings and theme styling
 
         writer.endElement("div");
 	}

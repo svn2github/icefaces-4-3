@@ -50,7 +50,7 @@ public class DashboardRenderer extends CoreRenderer {
 		// update all sizes and positions of all child dashboard panes
 		if (requestParameterMap.containsKey(clientId + "_state")) {
 			String raw = requestParameterMap.get(clientId + "_state");
-			// TODO: save the submittedState in a transient property
+			dashboard.submittedState = raw; // save state for comparison during the render phase
 			try {
 				JSONArray array = new JSONArray(raw);
 				int length = array.length();
@@ -95,6 +95,8 @@ public class DashboardRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         Dashboard dashboard = (Dashboard) component;
 
+		// we use a separate script for the size and position data to avoid reinitializing the component
+		// every time the state is updated in the server
 		encodeSizeAndPositionData(context, dashboard);
 
 		encodeScript(context, dashboard);
@@ -119,53 +121,66 @@ public class DashboardRenderer extends CoreRenderer {
 		jb.beginArray();
 
 		int maxColumns = dashboard.getMaxColumns();
+		maxColumns = maxColumns < 1 || maxColumns > 100 ? 100 : maxColumns;
 		List<UIComponent> children = dashboard.getChildren();
 		// render panes' settings in the order they appear
 		for (int i = 0; i < children.size(); i++) {
 			UIComponent child = children.get(i);
 			if (child instanceof DashboardPane) {
 				DashboardPane pane = (DashboardPane) child;
+				if (!pane.isRendered() || pane.isClosed()) continue;
 				int row = pane.getRow();
 				int column = pane.getColumn();
 				int sizeX = pane.getSizeX();
 
 				// if not explicitly set, assign row and column position to pane
 				if (!(row > 0 && column > 0 && column + sizeX - 1 <= maxColumns)) {
-					System.out.println("* " + pane.getId());
 					assignPosition(pane, positions, maxColumns);
 				}
 
 				// render pane's size and position settings
 				jb.beginMap();
 				jb.entry("paneId", pane.getClientId(context));
-				jb.entry("sizeX", pane.getSizeX());
-				jb.entry("sizeY", pane.getSizeY());
-				jb.entry("row", pane.getRow());
-				jb.entry("column", pane.getColumn());
+				jb.entry("sizeX", "" + pane.getSizeX());
+				jb.entry("sizeY", "" + pane.getSizeY());
+				jb.entry("row", "" + pane.getRow());
+				jb.entry("column", "" + pane.getColumn());
 				jb.endMap();
 			}
 		}
 
 		jb.endArray();
 
-		writer.write("ice.ace.Dashboard.data['"+clientId+"'] = " + jb.toString() + ";");
+		String state = jb.toString();
+		state = state.replace('\'','\"');
 
-		// TODO: compare the generated state to the submittedState if available
-		// if there are changes, reinit or refresh component
+		writer.write("ice.ace.Dashboard.data['"+clientId+"'] = " + state + ";");
 
         writer.endElement("script");
+
+        writer.startElement("input", null);
+        writer.writeAttribute("type", "hidden", null);
+        writer.writeAttribute("id", clientId + "_state", null);
+        writer.writeAttribute("name", clientId + "_state", null);
+        writer.writeAttribute("value", state, null);
+        writer.endElement("input");
+
         writer.endElement("span");
+
+		dashboard.generatedState = state;
 	}
 
     protected List<boolean[]> createPositionsList(Dashboard dashboard) {
 		List<boolean[]> positions = new ArrayList<boolean[]>();
 
 		int maxColumns = dashboard.getMaxColumns();
+		maxColumns = maxColumns < 1 || maxColumns > 100 ? 100 : maxColumns;
 		List<UIComponent> children = dashboard.getChildren();
 		for (int i = 0; i < children.size(); i++) {
 			UIComponent child = children.get(i);
 			if (child instanceof DashboardPane) {
 				DashboardPane pane = (DashboardPane) child;
+				if (!pane.isRendered() || pane.isClosed()) continue;
 				int row = pane.getRow();
 				int column = pane.getColumn();
 				int sizeY = pane.getSizeY();
@@ -239,7 +254,7 @@ public class DashboardRenderer extends CoreRenderer {
 						if (!fits) break;
 					}
 
-					if (fits) {System.out.println("-> fits!");
+					if (fits) {
 						// mark occupied spaces in the positions list
 						for (int k = 0; k < sizeY; k++) {
 							boolean[] sizeRow = positions.get(i + k);
@@ -266,7 +281,6 @@ public class DashboardRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = dashboard.getClientId(context);
 
-		/*
 		Locale locale = context.getViewRoot().getLocale();
 		String bundleName = context.getApplication().getMessageBundle();
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
@@ -274,7 +288,9 @@ public class DashboardRenderer extends CoreRenderer {
 		if (classLoader == null) classLoader = bundleName.getClass().getClassLoader();
 		ResourceBundle bundle = ResourceBundle.getBundle(bundleName, locale, classLoader);
 		final String MESSAGES_PREFIX = "org.icefaces.ace.component.dashboard.";
-		*/
+
+        writer.startElement("span", null);
+        writer.writeAttribute("id", clientId + "_script", null);
 
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
@@ -291,7 +307,8 @@ public class DashboardRenderer extends CoreRenderer {
 				.entry("paneHeight", dashboard.getPaneHeight())
 				.entry("marginX", dashboard.getMarginX())
 				.entry("marginY", dashboard.getMarginY())
-				.entry("maxColumns", dashboard.getMaxColumns());
+				.entry("maxColumns", dashboard.getMaxColumns())
+				.entry("closeTitle", bundle.getString(MESSAGES_PREFIX + "closeTitle"));
 
 /*
 			String style = dashboard.getStyle();
@@ -305,6 +322,7 @@ public class DashboardRenderer extends CoreRenderer {
 			for (UIComponent child : dashboard.getChildren()) {
 				if (child.isRendered() && child instanceof DashboardPane) {
 					DashboardPane pane = (DashboardPane) child;
+					if (pane.isClosed()) continue;
 
 					jb.beginMap(pane.getClientId(context));
 
@@ -320,7 +338,17 @@ public class DashboardRenderer extends CoreRenderer {
 
 		writer.write(jb.toString());
 
+		// compare the generated state to the submitted state, if available
+		// if there are changes (made porgrammatically), re-initialize the component
+		if (dashboard.submittedState != null) {
+			if (!dashboard.submittedState.equals(dashboard.generatedState)) {
+				dashboard.setLastRefresh(System.currentTimeMillis());
+			}
+		}
+		writer.write(" // " + dashboard.getLastRefresh());
+
         writer.endElement("script");
+        writer.endElement("span");
 
 		// draggable script
         writer.startElement("span", null);

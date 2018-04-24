@@ -29,7 +29,7 @@ import javax.faces.event.PhaseId;
 import java.util.Map;
 
 public class DashboardPane extends DashboardPaneBase {
-
+/*
 	@Override
 	public void queueEvent(FacesEvent event) {
 		FacesContext context = FacesContext.getCurrentInstance();
@@ -39,15 +39,7 @@ public class DashboardPane extends DashboardPaneBase {
 		String clientId = this.getClientId(context);
 
 		if (clientId.equals(source)) {
-			if (eventName != null && eventName.equals("toggle") && event instanceof AjaxBehaviorEvent) {
-				boolean collapsed = Boolean.valueOf(params.get(clientId + "_collapsed"));
-				Visibility visibility = collapsed ? Visibility.HIDDEN : Visibility.VISIBLE;
-
-				setCollapsed(collapsed);
-				ToggleEvent toggleEvent = new ToggleEvent(this, ((AjaxBehaviorEvent) event).getBehavior(), visibility);
-				toggleEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
-				super.queueEvent(toggleEvent);
-			} else if (eventName != null && eventName.equals("close") && event instanceof AjaxBehaviorEvent) {;
+			if (eventName != null && eventName.equals("close") && event instanceof AjaxBehaviorEvent) {;
 				CloseEvent closeEvent = new CloseEvent(this, ((AjaxBehaviorEvent) event).getBehavior());
 				closeEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
 				super.queueEvent(closeEvent);
@@ -56,4 +48,5 @@ public class DashboardPane extends DashboardPaneBase {
 			super.queueEvent(event);
 		}
 	}
+*/
 }

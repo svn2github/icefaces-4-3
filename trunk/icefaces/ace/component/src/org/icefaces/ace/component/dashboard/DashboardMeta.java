@@ -36,7 +36,7 @@ import org.icefaces.resources.ICEResourceLibrary;
         componentType   = "org.icefaces.ace.component.Dashboard",
         rendererType    = "org.icefaces.ace.component.DashboardRenderer",
 		componentFamily = "org.icefaces.ace.Dashboard",
-		tlddoc = ""
+		tlddoc = "The Dashboard component is a container with panes that are resizable, draggable and closable. The panes are arranged in a grid with fixed base dimensions, and they can span multiple rows and/or columns. <p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/Dashboard\">Dashboard Wiki Documentation</a>."
         )
 @ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
@@ -48,10 +48,10 @@ import org.icefaces.resources.ICEResourceLibrary;
 })
 public class DashboardMeta extends UIPanelMeta {
 
-	@Property(tlddoc="Style to apply to the main container of the layout.")
+	@Property(tlddoc="Style to apply to the main container element.")
 	private String style;
 
-	@Property(tlddoc="Style class of the main container of the layout.")
+	@Property(tlddoc="Style class of the main container element.")
 	private String styleClass;
 
     @Property(tlddoc="Specifies whether the panes are draggable or not.", defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
@@ -72,6 +72,9 @@ public class DashboardMeta extends UIPanelMeta {
     @Property(tlddoc="The size of the vertical margins between panes, in pixels.", defaultValue = "10")
     private int marginY;
 
-    @Property(tlddoc="The maximum number of columns to allow in the dashboard. Set to 0 for an unrestricted amount of columns.", defaultValue = "5")
+    @Property(tlddoc="The maximum number of columns to allow in the dashboard. Valid values range from 1 to 100. Any other value will be treated as 100.", defaultValue = "5")
     private int maxColumns;
+
+	@Field
+	private Long lastRefresh;
 }

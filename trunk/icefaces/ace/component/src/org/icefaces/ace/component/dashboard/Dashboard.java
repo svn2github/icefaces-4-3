@@ -18,4 +18,6 @@ package org.icefaces.ace.component.dashboard;
 
 public class Dashboard extends DashboardBase {
 
+	transient String generatedState = null;
+	transient String submittedState = null;
 }
