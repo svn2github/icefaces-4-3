@@ -550,6 +550,14 @@ public class CentralDataList {
 							 "borderlayout", "borderLayout.xhtml", "BorderLayoutBean.java"),
 					new Demo(msgs("menu.ace.borderlayout.subMenu.nesting"), msgs("example.ace.borderlayout.nesting.description"),
 							 "borderlayout", "borderLayoutNesting.xhtml", "BorderLayoutNestingBean.java")),
+				new ComponentGroup("ace:dashboard", new DemoResource[] {
+						new DemoResource(DemoResource.Type.WIKI, "ace:dashboard", "Dashboard"),
+						new DemoResource(DemoResource.Type.WIKI, "ace:dashboardPane", "DashboardPane"),
+						new DemoResource(DemoResource.Type.TLD, "ace:dashboard", "dashboard.html"),
+						new DemoResource(DemoResource.Type.TLD, "ace:dashboardPane", "dashboardPane.html")
+				},
+					new Demo(msgs("overview"), msgs("example.ace.dashboard.description"),
+							 "dashboard", "dashboard.xhtml", "DashboardBean.java")),
 				new ComponentGroup("ace:drawerPanel", new DemoResource[] {
 						new DemoResource(DemoResource.Type.WIKI, "ace:drawerPanel", "DrawerPanel"),
 						new DemoResource(DemoResource.Type.TLD, "ace:drawerPanel", "drawerPanel.html")

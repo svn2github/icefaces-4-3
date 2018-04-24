@@ -99,4 +99,17 @@ public class AccordionPanelBean implements Serializable {
     public void setToDoList(LinkedHashMap <String, Integer> toDoList) {
         this.toDoList = toDoList;
     }
+
+
+	private int row = 3;
+	public int getRow() { return row; }
+	public void setRow(int row) { this.row = row; }
+
+	public void listener(javax.faces.event.AjaxBehaviorEvent event) {
+		setRow(5);
+	}
+
+	public void actionListener() {
+		setRow(5);
+	}
 }
