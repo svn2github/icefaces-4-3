@@ -557,7 +557,11 @@ public class CentralDataList {
 						new DemoResource(DemoResource.Type.TLD, "ace:dashboardPane", "dashboardPane.html")
 				},
 					new Demo(msgs("overview"), msgs("example.ace.dashboard.description"),
-							 "dashboard", "dashboard.xhtml", "DashboardBean.java")),
+							 "dashboard", "dashboard.xhtml", "DashboardBean.java"),
+					new Demo(msgs("menu.ace.dashboard.subMenu.statepersistence"), msgs("example.ace.dashboard.statepersistence.description"),
+							 "dashboard", "dashboardStatePersistence.xhtml", "DashboardStatePersistenceBean.java"),
+					new Demo(msgs("menu.ace.dashboard.subMenu.dynamicpanes"), msgs("example.ace.dashboard.dynamicpanes.description"),
+							 "dashboard", "dashboardDynamicPanes.xhtml", "DashboardDynamicPanesBean.java")),
 				new ComponentGroup("ace:drawerPanel", new DemoResource[] {
 						new DemoResource(DemoResource.Type.WIKI, "ace:drawerPanel", "DrawerPanel"),
 						new DemoResource(DemoResource.Type.TLD, "ace:drawerPanel", "drawerPanel.html")
