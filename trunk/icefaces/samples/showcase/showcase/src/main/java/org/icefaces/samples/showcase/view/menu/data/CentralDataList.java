@@ -764,6 +764,8 @@ public class CentralDataList {
 								 "fileentry", "fileEntryListener.xhtml", "FileEntryListenerBean.java"),
 						new Demo(msgs("menu.ace.fileentry.subMenu.validation"), msgs("example.ace.fileentry.valid.description"),
 								 "fileentry", "fileEntryValidation.xhtml", "FileEntryValidationOptionsBean.java"),
+						new Demo(msgs("menu.ace.fileentry.subMenu.validatetype"), msgs("example.ace.fileentry.validatetype.description"),
+								 "fileentry", "fileEntryValidateType.xhtml", "FileEntryValidateTypeBean.java"),
 						new Demo(msgs("menu.ace.fileentry.subMenu.callback"), msgs("example.ace.fileentry.callback.description"),
 								 "fileentry", "fileEntryCallback.xhtml", "FileEntryCallbackBean.java"))
 		));
