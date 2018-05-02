@@ -57,7 +57,9 @@
                             filterMatchMode="contains">
                     <ace:cellEditor>
                         <f:facet name="input">
-                            <ace:textEntry id="nameInput" value="#{car.name}"/>
+                            <ace:textEntry id="nameInput" value="#{car.name}" 
+								onkeydown="if (event.which == 27) ice.ace.jq(this).closest('td').dblclick();"
+								ondblclick="ice.ace.jq(this).closest('td').dblclick();"/>
                         </f:facet>
                         <f:facet name="output">
                             <h:outputText id="nameCell" value="#{car.name}"/>
@@ -71,7 +73,9 @@
                             filterMatchMode="contains">
                     <ace:cellEditor>
                         <f:facet name="input">
-                            <ace:textEntry id="chassisInput" value="#{car.chassis}"/>
+                            <ace:textEntry id="chassisInput" value="#{car.chassis}"
+								onkeydown="if (event.which == 27) ice.ace.jq(this).closest('td').dblclick();"
+								ondblclick="ice.ace.jq(this).closest('td').dblclick();"/>
                         </f:facet>
                         <f:facet name="output">
                             <h:outputText id="chassisCell" value="#{car.chassis}"/>
@@ -85,7 +89,9 @@
                             filterMatchMode="contains">
                     <ace:cellEditor>
                         <f:facet name="input">
-                            <ace:textEntry id="weightInput" value="#{car.weight}"/>
+                            <ace:textEntry id="weightInput" value="#{car.weight}"
+								onkeydown="if (event.which == 27) ice.ace.jq(this).closest('td').dblclick();"
+								ondblclick="ice.ace.jq(this).closest('td').dblclick();"/>
                         </f:facet>
                         <f:facet name="output">
                             <h:outputText id="weightCell" value="#{car.weight}lbs."/>
@@ -99,7 +105,9 @@
                             filterMatchMode="contains">
                     <ace:cellEditor>
                         <f:facet name="input">
-                            <ace:textEntry id="accelerationInput" value="#{car.acceleration}"/>
+                            <ace:textEntry id="accelerationInput" value="#{car.acceleration}"
+								onkeydown="if (event.which == 27) ice.ace.jq(this).closest('td').dblclick();"
+								ondblclick="ice.ace.jq(this).closest('td').dblclick();"/>
                         </f:facet>
                         <f:facet name="output">
                             <h:outputText id="accelerationCell" value="#{car.acceleration}"/>
@@ -111,7 +119,9 @@
                             filterBy="#{car.mpg}" filterMatchMode="contains">
                     <ace:cellEditor>
                         <f:facet name="input">
-                            <ace:textEntry id="mpgInput" value="#{car.mpg}"/>
+                            <ace:textEntry id="mpgInput" value="#{car.mpg}"
+								onkeydown="if (event.which == 27) ice.ace.jq(this).closest('td').dblclick();"
+								ondblclick="ice.ace.jq(this).closest('td').dblclick();"/>
                         </f:facet>
                         <f:facet name="output">
                             <h:outputText id="mpgCell" value="#{car.mpg}"/>
@@ -126,7 +136,9 @@
                     </f:facet>
                     <ace:cellEditor>
                         <f:facet name="input">
-                            <ace:textEntry id="costInput" value="#{car.cost}">
+                            <ace:textEntry id="costInput" value="#{car.cost}"
+								onkeydown="if (event.which == 27) ice.ace.jq(this).closest('td').dblclick();"
+								ondblclick="ice.ace.jq(this).closest('td').dblclick();">
                                 <f:convertNumber type="currency"
                                                  currencySymbol="$"
                                                  groupingUsed="true"
