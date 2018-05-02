@@ -28,11 +28,11 @@
         <ace:panel>
             <h:form id="example-form">
                 <h:panelGrid styleClass="centeredPanelGridWithBorderSpacing" columns="2">
-                    <h:outputText value="Accept File of Type:"/>
+                    <h:outputText value="Accept file of Type:"/>
 					<ace:selectMenu value="#{fileEntryValidateType.type}">
 						<ace:ajax execute="@all" render="@all" />
-						<f:selectItem itemValue="application/pdf" itemLabel="PDF File" />
-						<f:selectItem itemValue="image/*" itemLabel="All Images" />
+						<f:selectItem itemValue="application/pdf" itemLabel="PDF" />
+						<f:selectItem itemValue="image/*" itemLabel="Image (all types)" />
 						<f:selectItem itemValue="text/plain" itemLabel="Plain Text" />
 					</ace:selectMenu>
                 </h:panelGrid>
