@@ -3448,6 +3448,16 @@ ice.ace.DataTable.prototype.doSelectionEvent = function (type, deselection, elem
         }
 		params[_self.id + '_lastSelectedIndex'] = element.index();
 
+		// give focus to selected element after request is completed
+		var elementSelector;
+		if (type == 'row') {
+			elementSelector = ice.ace.escapeClientId(element.attr('id'));
+		} else if (type == 'cell') {
+			var rowId = ice.ace.escapeClientId(element.parent().attr('id'));
+			var columnIndex = element.index();
+			elementSelector = rowId + ' td:nth-child('+(columnIndex+1)+')';
+		}
+
         // If first row is in this selection, deselection, or will be implicitly deselected by singleSelection
         // resize the scrollable table. IE7 only now
         options.onsuccess = function (responseXML) {
@@ -3455,6 +3465,7 @@ ice.ace.DataTable.prototype.doSelectionEvent = function (type, deselection, elem
                 && (ice.ace.jq.inArray("0", _self.selection) > -1 || ice.ace.jq.inArray("0", _self.deselection) > -1
                 || (firstRowSelected && _self.isSingleSelection()))))
                 _self.resizeScrolling();
+			ice.ace.jq(elementSelector).focus();
         };
 
 
@@ -3476,7 +3487,9 @@ ice.ace.DataTable.prototype.doSelectionEvent = function (type, deselection, elem
             }
 
         ice.ace.AjaxRequest(options);
-    }
+    } else {
+		element.focus();
+	}
 };
 
 ice.ace.DataTable.prototype.doMultiRowSelectionEvent = function (lastIndex, current) {
@@ -3544,12 +3557,15 @@ ice.ace.DataTable.prototype.doMultiRowSelectionEvent = function (lastIndex, curr
 
         var firstRowSelected = tbody.children(':first').hasClass('ui-selected');
 
+		var elementSelector = ice.ace.escapeClientId(current.attr('id'));
+
         // If first row is in this selection, deselection, or will be implicitly deselected by singleSelection
         // resize the scrollable table.
             options.onsuccess = function (responseXML) {
                 if (self.cfg.scrollable && (ice.ace.jq.inArray("0", self.selection) > -1 || ice.ace.jq.inArray("0", self.deselection) > -1 || (firstRowSelected && self.isSingleSelection())))
                     self.resizeScrolling();
                 if (self.cfg.pinning) self.initializePinningState();
+				ice.ace.jq(elementSelector).focus();
                 return false;
             };
 
@@ -3565,7 +3581,9 @@ ice.ace.DataTable.prototype.doMultiRowSelectionEvent = function (lastIndex, curr
             }
 
         ice.ace.AjaxRequest(options);
-    }
+    } else {
+		current.focus();
+	}
 };
 
 
