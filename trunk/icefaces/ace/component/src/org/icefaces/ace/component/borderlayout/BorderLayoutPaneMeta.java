@@ -34,7 +34,7 @@ import javax.faces.component.UIComponent;
 		tlddoc = "The BorderLayoutPane component defines one of the five regions of a BorderLayout component. This component controls all aspects of a region in the BorderLayout, including sizes, state, and ajax events. <p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/BorderLayoutPane\">BorderLayoutPane Wiki Documentation</a>."
         )
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="toggle", javadoc="Fired when the pane either collapsed or expanded.", tlddoc="Fired when the pane either collapsed or expanded.", defaultRender="@all", defaultExecute="@this", argumentClass="org.icefaces.ace.event.ToggleEvent"),
+	@ClientEvent(name="toggle", javadoc="Fired when the pane is either collapsed or expanded.", tlddoc="Fired when the pane is either collapsed or expanded.", defaultRender="@all", defaultExecute="@this", argumentClass="org.icefaces.ace.event.ToggleEvent"),
 	@ClientEvent(name="close", javadoc="Fired when the pane is closed.", tlddoc="Fired when the pane is closed.", defaultRender="@all", defaultExecute="@this", argumentClass="org.icefaces.ace.event.CloseEvent")
 }, defaultEvent="toggle")
 public class BorderLayoutPaneMeta extends UIPanelMeta {
