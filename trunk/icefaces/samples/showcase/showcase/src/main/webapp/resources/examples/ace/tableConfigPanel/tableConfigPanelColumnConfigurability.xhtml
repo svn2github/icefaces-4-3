@@ -1,0 +1,109 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:ace="http://www.icefaces.org/icefaces/components"
+                xmlns:icecore="http://www.icefaces.org/icefaces/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/resources/templates/content-template.xhtml">
+    <ui:param name="title" value="#{msgs['example.ace.tableConfigPanel.title']}"/>
+    <ui:param name="description" value="#{msgs['example.ace.tableConfigPanel.description']}"/>                
+
+    <ui:define name="example">
+        <h:form id="carForm">
+            <ace:dataTable id="carTable"
+                           value="#{tableConfigPanelColumnConfigurabilityBean.carsData}"
+                           var="car"
+                           rows="10"
+                           columnOrdering="#{tableConfigPanelColumnConfigurabilityBean.columnOrder}"
+                           headerColumnOrdering="#{tableConfigPanelColumnConfigurabilityBean.columnHeaderOrder}">
+                <ace:tableConfigPanel id="tableConfig"
+                                      dragHandle=".ui-tableconf-header"
+                                      columnNameConfigurable="true"
+                                      columnVisibilityConfigurable="true"
+                                      columnOrderingConfigurable="true"
+                                      columnSortingConfigurable="true"
+                                      modal="true"
+                                      type="last-col">
+                </ace:tableConfigPanel>
+
+                        <ace:column id="id" headerText="#{tableConfigPanelColumnConfigurabilityBean.columns[0].name}" 
+								rendered="#{tableConfigPanelColumnConfigurabilityBean.columns[0].rendered}"
+								columnOrderingConfigurable="false"
+								columnVisibilityConfigurable="false"
+								columnNameConfigurable="false">
+                            #{car.id}
+                        </ace:column>
+                        <ace:column id="name" headerText="#{tableConfigPanelColumnConfigurabilityBean.columns[1].name}" 
+								rendered="#{tableConfigPanelColumnConfigurabilityBean.columns[1].rendered}" sortBy="#{car.name}"
+								sortPriority="#{tableConfigPanelColumnConfigurabilityBean.columns[1].sortPriority}"
+								sortAscending="#{tableConfigPanelColumnConfigurabilityBean.columns[1].sortAscending}"
+								columnOrderingConfigurable="false"
+								columnVisibilityConfigurable="false"
+								columnNameConfigurable="false"
+								columnSortingConfigurable="false">
+                            #{car.name}
+                        </ace:column>
+                        <ace:column id="chassis" headerText="#{tableConfigPanelColumnConfigurabilityBean.columns[2].name}" 
+								rendered="#{tableConfigPanelColumnConfigurabilityBean.columns[2].rendered}" sortBy="#{car.chassis}"
+								sortPriority="#{tableConfigPanelColumnConfigurabilityBean.columns[2].sortPriority}"
+								sortAscending="#{tableConfigPanelColumnConfigurabilityBean.columns[2].sortAscending}"
+								columnVisibilityConfigurable="false"
+								columnNameConfigurable="false">
+                            #{car.chassis}
+                        </ace:column>
+                        <ace:column id="weight" headerText="#{tableConfigPanelColumnConfigurabilityBean.columns[3].name}" 
+								rendered="#{tableConfigPanelColumnConfigurabilityBean.columns[3].rendered}" sortBy="#{car.weight}"
+								sortPriority="#{tableConfigPanelColumnConfigurabilityBean.columns[3].sortPriority}"
+								sortAscending="#{tableConfigPanelColumnConfigurabilityBean.columns[3].sortAscending}">
+                            #{car.weight}lbs.
+                        </ace:column>
+                        <ace:column id="accel" headerText="#{tableConfigPanelColumnConfigurabilityBean.columns[4].name}" 
+								rendered="#{tableConfigPanelColumnConfigurabilityBean.columns[4].rendered}" sortBy="#{car.acceleration}"
+								sortPriority="#{tableConfigPanelColumnConfigurabilityBean.columns[4].sortPriority}"
+								sortAscending="#{tableConfigPanelColumnConfigurabilityBean.columns[4].sortAscending}">
+                            #{car.acceleration}
+                        </ace:column>
+                        <ace:column id="mpg" headerText="#{tableConfigPanelColumnConfigurabilityBean.columns[5].name}" 
+								rendered="#{tableConfigPanelColumnConfigurabilityBean.columns[5].rendered}" sortBy="#{car.mpg}"
+								sortPriority="#{tableConfigPanelColumnConfigurabilityBean.columns[5].sortPriority}"
+								sortAscending="#{tableConfigPanelColumnConfigurabilityBean.columns[5].sortAscending}">
+                            #{car.mpg}
+                        </ace:column>
+                        <ace:column id="cost" headerText="#{tableConfigPanelColumnConfigurabilityBean.columns[6].name}" 
+								rendered="#{tableConfigPanelColumnConfigurabilityBean.columns[6].rendered}" sortBy="#{car.cost}"
+								sortPriority="#{tableConfigPanelColumnConfigurabilityBean.columns[6].sortPriority}"
+								sortAscending="#{tableConfigPanelColumnConfigurabilityBean.columns[6].sortAscending}">
+                            <h:outputText id="costCell" value="#{car.cost}">
+                                <f:convertNumber type="currency"
+                                                 currencySymbol="$"
+                                                 groupingUsed="true"
+                                                 minFractionDigits="2"
+                                                 maxFractionDigits="2"/>
+                            </h:outputText>
+                        </ace:column>
+            </ace:dataTable>
+			
+			<h:commandButton id="saveButton" value="Save Settings" actionListener="#{tableConfigPanelColumnConfigurabilityBean.saveSettings}" />
+			<h:commandButton id="restoreButton" value="Restore Saved Settings" actionListener="#{tableConfigPanelColumnConfigurabilityBean.restoreSavedSettings}" style="margin-left:10px;"/>
+			<h:commandButton id="defaultButton" value="Restore Default Settings" actionListener="#{tableConfigPanelColumnConfigurabilityBean.restoreDefaultSettings}" style="margin-left:10px;"/>
+            
+        </h:form>
+    </ui:define>
+</ui:composition>

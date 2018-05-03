@@ -488,7 +488,9 @@ public class CentralDataList {
 						new Demo(msgs("overview"), msgs("example.ace.tableConfigPanel.description"),
 								 "tableConfigPanel", "tableConfigPanel.xhtml", "TableConfigPanelBean.java"),
 						new Demo(msgs("menu.ace.tableConfigPanel.subMenu.advanced"), msgs("example.ace.tableConfigPanel.advanced.description"),
-								 "tableConfigPanel", "tableConfigPanelAdvanced.xhtml", "TableConfigPanelAdvancedBean.java"))
+								 "tableConfigPanel", "tableConfigPanelAdvanced.xhtml", "TableConfigPanelAdvancedBean.java"),
+						new Demo(msgs("menu.ace.tableConfigPanel.subMenu.columnConfigurability"), msgs("example.ace.tableConfigPanel.columnConfigurability.description"),
+								 "tableConfigPanel", "tableConfigPanelColumnConfigurability.xhtml", "TableConfigPanelColumnConfigurabilityBean.java"))
 		));
 
 		toReturn.add(new CategoryGroup(msgs("menu.ace.group.list.title"),
