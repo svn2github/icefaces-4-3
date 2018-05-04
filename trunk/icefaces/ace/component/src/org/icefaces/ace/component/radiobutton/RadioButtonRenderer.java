@@ -31,6 +31,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import java.io.IOException;
 import java.util.List;
@@ -59,8 +60,7 @@ public class RadioButtonRenderer extends InputRenderer {
         if (null==hiddenValue || hiddenValue.equals("null")){
             return;
         }else {
-            boolean submittedValue = isChecked(hiddenValue);
-            radioButton.setSubmittedValue(submittedValue);
+            radioButton.setSubmittedValue(hiddenValue);
         }
 
         decodeBehaviors(facesContext, radioButton);
@@ -310,11 +310,17 @@ public class RadioButtonRenderer extends InputRenderer {
     @Override
     public Object getConvertedValue(FacesContext facesContext, UIComponent uiComponent,
                                     Object submittedValue) throws ConverterException{
+
+		Converter converter = ((RadioButton) uiComponent).getConverter();
+        if(converter != null) {
+            return converter.getAsObject(facesContext, uiComponent, (String) submittedValue);
+        }
+
         if (submittedValue instanceof Boolean) {
             return submittedValue;
         }
         else {
-            return Boolean.valueOf(submittedValue.toString());
+            return new Boolean(isChecked(submittedValue.toString()));
         }
     }
 

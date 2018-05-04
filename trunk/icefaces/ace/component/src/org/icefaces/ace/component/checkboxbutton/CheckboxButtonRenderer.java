@@ -24,11 +24,11 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 
 import org.icefaces.ace.api.ButtonGroupMember;
@@ -55,8 +55,7 @@ public class CheckboxButtonRenderer extends InputRenderer {
         if (null==hiddenValue || hiddenValue.equals("null")){
             return;
         }else {
-            boolean submittedValue = isChecked(hiddenValue);
-            checkbox.setSubmittedValue(submittedValue);
+            checkbox.setSubmittedValue(hiddenValue);
         }
 
         decodeBehaviors(facesContext, checkbox);
@@ -288,11 +287,17 @@ public class CheckboxButtonRenderer extends InputRenderer {
     @Override
     public Object getConvertedValue(FacesContext facesContext, UIComponent uiComponent,
                                     Object submittedValue) throws ConverterException{
+
+		Converter converter = ((CheckboxButton) uiComponent).getConverter();
+        if(converter != null) {
+            return converter.getAsObject(facesContext, uiComponent, (String) submittedValue);
+        }
+
         if (submittedValue instanceof Boolean) {
             return submittedValue;
         }
         else {
-            return Boolean.valueOf(submittedValue.toString());
+            return new Boolean(isChecked(submittedValue.toString()));
         }
     }
 

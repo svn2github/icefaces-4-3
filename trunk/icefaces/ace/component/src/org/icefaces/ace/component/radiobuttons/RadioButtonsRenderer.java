@@ -75,6 +75,12 @@ public class RadioButtonsRenderer extends RadioButtonRenderer {
     }
 
 	public Object getConvertedValue(FacesContext facesContext, UIComponent uiComponent, Object submittedValue) throws ConverterException {
+
+		Converter converter = ((RadioButtons) uiComponent).getConverter();
+        if(converter != null) {
+            return converter.getAsObject(facesContext, uiComponent, (String) submittedValue);
+        }
+
 		return submittedValue == null ? "" : submittedValue.toString();
 	}
 
