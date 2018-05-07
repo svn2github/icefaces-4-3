@@ -174,7 +174,7 @@ ice.ace.ComboBox.prototype = {
         var self = this;
         this.hasFocus = false;
         this.changed = false;
-        this.active = false;
+        this.active = false; this.element.preventDefaultAction = false;
         this.index = -1;
 		if (!(typeof this.selectedIndex == 'number' && this.selectedIndex > -1)) this.selectedIndex = -1;
         this.rowClass = rowC;
@@ -192,7 +192,7 @@ ice.ace.ComboBox.prototype = {
 					self.downArrowButton.addClass('ui-state-hover');
 					self.calculateListPosition();
                     self.showEffect(update);
-					self.active = true;
+					self.active = true; self.element.preventDefaultAction = true;
                 } catch(e) {
                     //logger.info(e);
                 }
@@ -201,7 +201,7 @@ ice.ace.ComboBox.prototype = {
             function(element, update) {
 			self.downArrowButton.removeClass('ui-state-hover');
 			self.hideEffect(update);
-			self.active = false;
+			self.active = false; self.element.preventDefaultAction = false;
             };
 
         ice.ace.jq(this.update).hide();

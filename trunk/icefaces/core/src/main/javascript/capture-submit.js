@@ -26,9 +26,11 @@
                 if (keyMap) {
                     var elementID = keyMap[keyCode(e)];
                     if (elementID) {
-                        element = lookupElementById(elementID);
-                        cancel(e);
-                        submitExecuteForm(ev || window.event, element);
+						if (!element.preventDefaultAction) {
+							element = lookupElementById(elementID);
+							cancel(e);
+							submitExecuteForm(ev || window.event, element);
+						}
                         return false;
                     }
                 }

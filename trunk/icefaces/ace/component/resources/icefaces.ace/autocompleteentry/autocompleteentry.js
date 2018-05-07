@@ -138,7 +138,7 @@ ice.ace.Autocompleter.prototype = {
         var self = this;
         this.hasFocus = false;
         this.changed = false;
-        this.active = false;
+        this.active = false; this.element.preventDefaultAction = false;
         this.index = -1;
         this.entryCount = 0;
         this.rowClass = rowC;
@@ -391,7 +391,7 @@ ice.ace.Autocompleter.prototype = {
                     return;
                 case ice.ace.Autocompleter.keys.KEY_ESC:
                     this.hide();
-                    this.active = false;
+                    this.active = false; this.element.preventDefaultAction = false;
 					event.stopPropagation();
 					event.preventDefault();
                     return;
@@ -465,7 +465,7 @@ ice.ace.Autocompleter.prototype = {
                 case ice.ace.Autocompleter.keys.KEY_ESC:
                     if (ice.ace.Autocompleter.Browser.WebKit) {
                         this.hide();
-                        this.active = false;
+                        this.active = false; this.element.preventDefaultAction = false;
 					event.stopPropagation();
 					event.preventDefault();
                         return;
@@ -559,7 +559,7 @@ ice.ace.Autocompleter.prototype = {
 		var self = this;
         this.hideObserver = setTimeout(function () { self.hide(); }, 400);
         this.hasFocus = false;
-        this.active = false;
+        this.active = false; this.element.preventDefaultAction = false;
 		ice.setFocus('');
 		if (this.ajaxBlur) {
 			if (this.blurObserver) clearTimeout(this.blurObserver);
@@ -639,10 +639,10 @@ ice.ace.Autocompleter.prototype = {
                 }
             if (this.hasFocus) {
                 this.show();
-                this.active = true;
+                this.active = true; this.element.preventDefaultAction = true;
             }
         } else {
-            this.active = false;
+            this.active = false; this.element.preventDefaultAction = false;
             this.hide();
         }
     },
@@ -678,7 +678,7 @@ ice.ace.Autocompleter.prototype = {
 
     selectEntry: function() {
         var idx = -1;
-        this.active = false;
+        this.active = false; this.element.preventDefaultAction = false;
         if (this.index >= 0) {
             idx = this.index;
             this.updateElement(this.getCurrentEntry());
@@ -771,7 +771,7 @@ ice.ace.Autocompleter.prototype = {
             this.startIndicator();
             this.getUpdatedChoices(false, event, -1);
         } else {
-            this.active = false;
+            this.active = false; this.element.preventDefaultAction = false;
             this.hide();
             this.getUpdatedChoices(false, event, -1);
         }
