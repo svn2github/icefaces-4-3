@@ -83,6 +83,50 @@ ice.ace.tabset = {
             }
             ice.ace.tabset.consoleLog(false, 'tabSet.tabChange  currentIndex: ' + currentIndex);
             var tabIndexInfo = clientId + '='+ currentIndex;
+
+			// do automatic scrolling if tab is not fully visible
+			if (jsProps.scrollableTabs) {
+				var tab = ice.ace.jq(event.newValue._getLabelEl()).closest('li');
+				var middleDiv = tab.closest('div');
+				var root = ice.ace.jq(initElem);
+				var leftArrow = root.find('.ui-tabs-scrollable-left').first();
+				var rightArrow = root.find('.ui-tabs-scrollable-right').first();
+
+				var checkScroll = function() {
+					var width = middleDiv.width();
+					var scrollLeft = middleDiv.get(0).scrollLeft;
+					var scrollWidth = middleDiv.get(0).scrollWidth;
+
+					if (scrollLeft == 0) {
+						leftArrow.find('button').button('disable').removeClass('ui-state-focus ui-state-hover ui-state-active');
+					} else {
+						leftArrow.find('button').button('enable');
+					}
+					if ((width + scrollLeft) >= scrollWidth) {
+						rightArrow.find('button').button('disable').removeClass('ui-state-focus ui-state-hover ui-state-active');
+					} else {
+						rightArrow.find('button').button('enable');
+					}
+				};
+
+				var leftArrowWidth = leftArrow.outerWidth();
+				var rightArrowPositionLeft = rightArrow.position().left;
+				var middleDivWidth = middleDiv.outerWidth();
+				var tabPositionLeft = tab.position().left;
+				var tabWidth = tab.outerWidth();
+
+				if (tabPositionLeft < leftArrowWidth) {
+					// left arrow
+					var delta = leftArrowWidth - tabPositionLeft;
+					if (delta < 0) delta = (delta * -1) + leftArrowWidth;
+					middleDiv.animate({scrollLeft: (middleDiv.get(0).scrollLeft - delta - 10) + 'px'}, checkScroll);
+				} else if ((tabPositionLeft + tabWidth) > rightArrowPositionLeft) {
+					// right arrow
+					var delta = (tabPositionLeft + tabWidth) - rightArrowPositionLeft;
+					middleDiv.animate({scrollLeft: (middleDiv.get(0).scrollLeft + delta + 10) + 'px'}, checkScroll);
+				}
+			}
+
             var doOnSuccess = function() {
                 if (rootElem.suppressServerSideTransition) {
                     rootElem.suppressServerSideTransition = null;
@@ -905,8 +949,8 @@ ice.ace.tabset = {
 		var container = root.find('.ui-tabs-scrollable');
 		container.find('ul').css('white-space', 'nowrap');
 		var middleDiv = container.children('div');
-		var leftArrow = root.find('.ui-tabs-scrollable-left');
-		var rightArrow = root.find('.ui-tabs-scrollable-right');
+		var leftArrow = root.find('.ui-tabs-scrollable-left').first();
+		var rightArrow = root.find('.ui-tabs-scrollable-right').first();
 
 		var lastTab = container.find('li').last();
 		if (middleDiv.get(0).scrollLeft > 0
