@@ -48,10 +48,10 @@ public class BorderLayoutRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         BorderLayout borderLayout = (BorderLayout) component;
         String clientId = borderLayout.getClientId(context);
-        ComponentUtils.enableOnElementUpdateNotify(writer, clientId);
 
         writer.startElement("div", component);
         writer.writeAttribute("id", clientId, null);
+        ComponentUtils.enableOnElementUpdateNotify(writer, clientId);
 
 		String baseClass = "ice-ace-borderlayout";
 		String styleClass = borderLayout.getStyleClass();
