@@ -132,7 +132,13 @@ import java.util.List;
         @ClientEvent(name="unpin",
                      javadoc="Fired when a column is removed to the pinning region of the table.",
                      tlddoc="Fired when a column is removed to the pinning region of the table.",
-                     defaultRender="@this", defaultExecute="@this")}
+                     defaultRender="@this", defaultExecute="@this"),
+
+
+        @ClientEvent(name="find",
+                     javadoc="Fired for a find request.",
+                     tlddoc="Fired for a find request.",
+                     defaultRender="@all", defaultExecute="@all", argumentClass="org.icefaces.ace.event.DataTableFindEvent")}
         ,
         defaultEvent = "select"
 )

@@ -35,6 +35,7 @@ import org.icefaces.ace.component.row.Row;
 import org.icefaces.ace.component.rowexpansion.RowExpansion;
 import org.icefaces.ace.component.tableconfigpanel.TableConfigPanel;
 import org.icefaces.ace.event.DataTableCellClickEvent;
+import org.icefaces.ace.event.DataTableFindEvent;
 import org.icefaces.ace.event.SelectEvent;
 import org.icefaces.ace.event.TableFilterEvent;
 import org.icefaces.ace.event.UnselectEvent;
@@ -277,14 +278,20 @@ public class DataTable extends DataTableBase implements Serializable {
             Map<String, String> params =  context.getExternalContext()
                                                  .getRequestParameterMap();
             String eventName = params.get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
+			String source = params.get(Constants.PARTIAL_SOURCE_PARAM);
+			String clientId = this.getClientId(context);
 
-            if (eventName.equals("cellClick") || eventName.equals("cellDblClick")) {
-                int columnIndex = Integer.parseInt(params.get(getClientId(context) + "_colIndex"));
-                rowIndex = Integer.parseInt(params.get(getClientId(context) + "_rowIndex"));
-                Column column = getColumns().get(columnIndex);
-                event = new DataTableCellClickEvent((AjaxBehaviorEvent)event, column);
-            }
-        }
+			if (eventName != null && clientId.equals(source)) {
+				if (eventName.equals("cellClick") || eventName.equals("cellDblClick")) {
+					int columnIndex = Integer.parseInt(params.get(getClientId(context) + "_colIndex"));
+					rowIndex = Integer.parseInt(params.get(getClientId(context) + "_rowIndex"));
+					Column column = getColumns().get(columnIndex);
+					event = new DataTableCellClickEvent((AjaxBehaviorEvent)event, column);
+				} else if (eventName.equals("find")) {
+					event = new DataTableFindEvent((AjaxBehaviorEvent) event);
+				} 
+			}
+		}
 
         UIComponent parent = getParent();
         if (parent == null) {

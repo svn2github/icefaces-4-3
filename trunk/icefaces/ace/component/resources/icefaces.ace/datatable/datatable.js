@@ -4200,3 +4200,16 @@ ice.ace.DataTable.selectFirstInput = function(rootId) {
 		}, 150);
 	}
 };
+
+/* #########################################################################
+ ########################## Find Functionality #############################
+ ######################################################################### */
+
+ice.ace.DataTable.prototype.find = function () {
+
+	if (this.behaviors && this.behaviors.find) {
+
+		ice.ace.ab(this.behaviors.find);
+
+	}
+};
