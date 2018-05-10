@@ -70,7 +70,13 @@ public class DashboardPaneRenderer extends CoreRenderer {
 		}
 		writer.writeAttribute("class", baseClass, null);
 
+		writer.startElement("div", component); // for display: table;
+
+		writer.startElement("div", component); // for display: table-row;
+
 		encodeHeader(context, dashboardPane);
+
+		writer.endElement("div");
 
 		writer.startElement("div", null);
 		writer.writeAttribute("id", clientId + "_content", null);
@@ -117,8 +123,15 @@ public class DashboardPaneRenderer extends CoreRenderer {
 		writer.endElement("div");
 
         if (dashboardPane.getFooterText() != null || dashboardPane.getFacet("footer") != null) {
+
+			writer.startElement("div", component); // for display: table-row;
+
 			encodeFooter(context, dashboardPane);
+
+			writer.endElement("div");
 		}
+
+		writer.endElement("div"); // for display: table;
 
 		writer.endElement("div");
 	}

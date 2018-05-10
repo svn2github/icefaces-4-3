@@ -60,9 +60,13 @@ public class DashboardRenderer extends CoreRenderer {
 					UIComponent c = CoreUtils.findComponentByClientId(context.getViewRoot(), paneClientId);
 					if (c instanceof DashboardPane) {
 						DashboardPane dashboardPane = (DashboardPane) c;
+						dashboardPane.setOldSizeX(dashboardPane.getSizeX());
 						dashboardPane.setSizeX(pane.getInt("sizeX"));
+						dashboardPane.setOldSizeY(dashboardPane.getSizeY());
 						dashboardPane.setSizeY(pane.getInt("sizeY"));
+						dashboardPane.setOldRow(dashboardPane.getRow());
 						dashboardPane.setRow(pane.getInt("row"));
+						dashboardPane.setOldColumn(dashboardPane.getColumn());
 						dashboardPane.setColumn(pane.getInt("column"));
 					}
 				}
@@ -77,10 +81,10 @@ public class DashboardRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         Dashboard dashboard = (Dashboard) component;
         String clientId = dashboard.getClientId(context);
-        ComponentUtils.enableOnElementUpdateNotify(writer, clientId);
 
         writer.startElement("div", component);
         writer.writeAttribute("id", clientId, null);
+        ComponentUtils.enableOnElementUpdateNotify(writer, clientId);
 
 		String baseClass = "ice-ace-dashboard";
 		String styleClass = dashboard.getStyleClass();

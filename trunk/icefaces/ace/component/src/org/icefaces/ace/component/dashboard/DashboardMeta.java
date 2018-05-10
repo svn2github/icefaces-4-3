@@ -41,8 +41,6 @@ import org.icefaces.resources.ICEResourceLibrary;
 @ICEResourceLibrary(ACEResourceNames.ACE_LIBRARY)
 @ICEResourceDependencies({
 	@ICEResourceDependency(name = "fontawesome/font-awesome.css"),
-	@ICEResourceDependency(name = "dashboard/jquery.gridster.css"),
-	@ICEResourceDependency(name = "dashboard/dashboard.css"),
 	@ICEResourceDependency(name = "dashboard/jquery.gridster.js"),
 	@ICEResourceDependency(name = "dashboard/dashboard.js")
 })

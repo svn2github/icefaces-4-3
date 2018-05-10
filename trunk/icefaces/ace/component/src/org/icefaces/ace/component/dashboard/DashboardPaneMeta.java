@@ -33,11 +33,11 @@ import javax.faces.component.UIComponent;
 		componentFamily = "org.icefaces.ace.Dashboard",
 		tlddoc = "The DashboardPane component defines one of the panes of a Dashboard, which can include a header and a footer and and arbitrare number of child components and markup. <p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/DashboardPane\">DashboardPane Wiki Documentation</a>."
         )
-//, argumentClass="org.icefaces.ace.event.ToggleEvent"
+
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="dragStop", javadoc="Fired when the pane is dragged and dropped by the user.", tlddoc="Fired when the pane is dragged and dropped by the user.", defaultRender="@all", defaultExecute="@this"),
-	@ClientEvent(name="resize", javadoc="Fired when the pane is resized by the user.", tlddoc="Fired when the pane is resized by the user.", defaultRender="@all", defaultExecute="@this"),
-	@ClientEvent(name="close", javadoc="Fired when the pane is closed by the user.", tlddoc="Fired when the pane is closed by the user.", defaultRender="@all", defaultExecute="@this")
+	@ClientEvent(name="dragStop", javadoc="Fired when the pane is dragged and dropped by the user.", tlddoc="Fired when the pane is dragged and dropped by the user.", defaultRender="@all", defaultExecute="@this", argumentClass="org.icefaces.ace.event.DashboardDragStopEvent"),
+	@ClientEvent(name="resize", javadoc="Fired when the pane is resized by the user.", tlddoc="Fired when the pane is resized by the user.", defaultRender="@all", defaultExecute="@this", argumentClass="org.icefaces.ace.event.DashboardResizeEvent"),
+	@ClientEvent(name="close", javadoc="Fired when the pane is closed by the user.", tlddoc="Fired when the pane is closed by the user.", defaultRender="@all", defaultExecute="@this", argumentClass="org.icefaces.ace.event.CloseEvent")
 }, defaultEvent="dragStop")
 public class DashboardPaneMeta extends UIPanelMeta {
 
@@ -70,6 +70,18 @@ public class DashboardPaneMeta extends UIPanelMeta {
 
 	@Property(tlddoc="Style class of the main container of the pane (the one containing the header, content and footer).")
 	private String styleClass;
+
+    @Field
+    private Integer oldSizeX;
+
+    @Field
+    private Integer oldSizeY;
+
+    @Field
+    private Integer oldRow;
+
+    @Field
+    private Integer oldColumn;
 
     @Facets
     class FacetsMeta {

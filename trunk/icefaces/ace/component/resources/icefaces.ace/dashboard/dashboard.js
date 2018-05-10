@@ -10,8 +10,13 @@ this.jqId = ice.ace.escapeClientId(id);
 this.jq = ice.ace.jq(this.jqId);
 this.cfg = cfg;
 
+// --- tidy measures ---
+ice.onElementUpdate(id, function() { ice.ace.destroy(self.id); });
+
+// --- apply data-* attributes that are required by gridster ---
 this.applySizeAndPositionData();
 
+// --- gridster widget init ---
 this.gridster = this.jq.gridster({
 	max_cols: (this.cfg.maxColumns < 0 || this.cfg.maxColumns > 100 ? 100 : this.cfg.maxColumns),
 	extra_rows: 2,
@@ -20,6 +25,7 @@ this.gridster = this.jq.gridster({
 	widget_selector: 'div.ice-ace-dashboard-pane',
 	draggable: {
 		handle: 'div.ui-widget-header',
+		// --- dragStop event ---
 		stop: function(e, ui) {
 			self.updateSizeAndPositionData();
 			var paneId = ui.$player.attr('id');
@@ -37,6 +43,7 @@ this.gridster = this.jq.gridster({
 	resize: {
 		enabled: this.cfg.resizable,
 		handle_class: 'ice-ace-dashboard-resize-handle',
+		// --- resize event ---
 		stop: function(e, ui, pane) {
 			self.updateSizeAndPositionData();
 			var paneId = pane.attr('id');
@@ -53,12 +60,13 @@ this.gridster = this.jq.gridster({
 	}
 }).data('gridster');
 
-ice.ace.jq(this.jqId + ' > .ice-ace-dashboard-pane > .ui-widget-header > .ice-ace-dashboard-button-close')
+// --- close button and close event ---
+ice.ace.jq(this.jqId + ' > .ice-ace-dashboard-pane > div > div > .ui-widget-header > .ice-ace-dashboard-button-close')
 	.attr('title', this.cfg.closeTitle)
 	.on('click', function(e) {
 		self.updateSizeAndPositionData();
 		var pane = ice.ace.jq(e.target).closest('.ice-ace-dashboard-pane');
-		self.gridster.remove_widget(pane.get(0), function() {
+		self.gridster.remove_widget(pane.get(0), true, function() {
 			var paneId = pane.attr('id');
 			if (paneId) {
 				self.jq.append('<div id="'+paneId+'" style="display:none;"></div>'); // re-add empty div for dynamic update
@@ -68,6 +76,7 @@ ice.ace.jq(this.jqId + ' > .ice-ace-dashboard-pane > .ui-widget-header > .ice-ac
 						var params = {};
 						params[paneId + "_close"] = true;
 						paneCfg.behaviors.close.params = params;
+						paneCfg.behaviors.close.execute = self.id + ' ' + paneCfg.behaviors.close.execute ;
 						ice.ace.ab(paneCfg.behaviors.close);
 					}
 				}
@@ -120,4 +129,12 @@ ice.ace.Dashboard.prototype.enableDragging = function() {
 ice.ace.Dashboard.prototype.disableDragging = function() {
 	this.gridster.disable();
 	this.jq.removeClass('ice-ace-dashboard-draggable');
+};
+
+// --- destroy function ---
+ice.ace.Dashboard.prototype.destroy = function () {
+
+	this.gridster.destroy();
+
+	ice.ace.jq(this.jqId + ' > .ice-ace-dashboard-pane > div > div > .ui-widget-header > .ice-ace-dashboard-button-close').off();
 };

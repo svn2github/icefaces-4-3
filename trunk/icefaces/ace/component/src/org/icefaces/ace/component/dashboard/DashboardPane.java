@@ -17,8 +17,8 @@
 package org.icefaces.ace.component.dashboard;
 
 import org.icefaces.ace.event.CloseEvent;
-import org.icefaces.ace.event.ToggleEvent;
-import org.icefaces.ace.model.Visibility;
+import org.icefaces.ace.event.DashboardResizeEvent;
+import org.icefaces.ace.event.DashboardDragStopEvent;
 import org.icefaces.ace.util.Constants;
 
 import javax.faces.component.UIComponent;
@@ -29,7 +29,7 @@ import javax.faces.event.PhaseId;
 import java.util.Map;
 
 public class DashboardPane extends DashboardPaneBase {
-/*
+
 	@Override
 	public void queueEvent(FacesEvent event) {
 		FacesContext context = FacesContext.getCurrentInstance();
@@ -39,7 +39,18 @@ public class DashboardPane extends DashboardPaneBase {
 		String clientId = this.getClientId(context);
 
 		if (clientId.equals(source)) {
-			if (eventName != null && eventName.equals("close") && event instanceof AjaxBehaviorEvent) {;
+			if (eventName != null && eventName.equals("resize") && event instanceof AjaxBehaviorEvent) {
+
+				DashboardResizeEvent resizeEvent = new DashboardResizeEvent((AjaxBehaviorEvent) event);
+				resizeEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
+				super.queueEvent(resizeEvent);
+			} else if (eventName != null && eventName.equals("dragStop") && event instanceof AjaxBehaviorEvent) {
+
+				DashboardDragStopEvent dragStopEvent = new DashboardDragStopEvent((AjaxBehaviorEvent) event);
+				dragStopEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
+				super.queueEvent(dragStopEvent);
+			} else if (eventName != null && eventName.equals("close") && event instanceof AjaxBehaviorEvent) {
+
 				CloseEvent closeEvent = new CloseEvent(this, ((AjaxBehaviorEvent) event).getBehavior());
 				closeEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
 				super.queueEvent(closeEvent);
@@ -48,5 +59,4 @@ public class DashboardPane extends DashboardPaneBase {
 			super.queueEvent(event);
 		}
 	}
-*/
 }
