@@ -30,6 +30,7 @@ import org.icefaces.ace.component.datatable.DataTable;
 import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
 import org.icefaces.samples.showcase.util.FacesUtils;
 
+import org.icefaces.ace.event.DataTableFindEvent;
 import org.icefaces.ace.model.table.RowState;
 import org.icefaces.ace.model.table.RowStateMap;
 import org.icefaces.util.JavaScriptRunner;
@@ -78,7 +79,7 @@ public class DataTableFind implements Serializable {
         return getClass();
     }
 
-    public void find(javax.faces.event.ActionEvent e) {
+    public void find(DataTableFindEvent e) {
 		if ("row".equals(selectedFindMode)) {
 			findRow(e);
 		} else if ("cells".equals(selectedFindMode)) {
@@ -86,8 +87,8 @@ public class DataTableFind implements Serializable {
 		}
 	}
 
-    public void findRow(javax.faces.event.ActionEvent e) {
-        DataTable iceTable = ((DataTableBindings)(FacesUtils.getManagedBean("dataTableBindings"))).getTable(this.getClass());
+    public void findRow(DataTableFindEvent e) {
+        DataTable iceTable = e.getDataTable();
 
         DataTable.SearchType type = null;
         if (selectedSearchMode.equals("contains"))
@@ -203,8 +204,8 @@ public class DataTableFind implements Serializable {
         this.selectedFindMode = selectedFindMode;
     }
 
-    public void findCells(javax.faces.event.ActionEvent e) {
-        DataTable iceTable = ((DataTableBindings)(FacesUtils.getManagedBean("dataTableBindings"))).getTable(this.getClass());
+    public void findCells(DataTableFindEvent e) {
+        DataTable iceTable = e.getDataTable();
 
         DataTable.SearchType type = null;
         if (selectedSearchMode.equals("contains"))

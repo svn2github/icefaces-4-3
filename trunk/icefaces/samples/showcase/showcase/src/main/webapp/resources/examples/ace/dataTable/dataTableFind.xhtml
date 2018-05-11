@@ -63,8 +63,11 @@
                         <h:panelGrid columns="1">
                             <ace:pushButton id="findNext"
                                             value="Find Next"
-                                            actionListener="#{aceDataTableFind.find}"
-                                            style="float:right;" />
+                                            type="button"
+											onclick="ice.ace.instance('form:data').find();return false;"
+                                            style="float:right;">
+								<ace:ajax onStart="return false;" />
+                            </ace:pushButton>
                             <ace:pushButton id="reset"
                                             value="Reset"
                                             actionListener="#{aceDataTableFind.reset}"
@@ -83,8 +86,8 @@
                                    value="#{aceDataTableFind.cars}"
                                    rows="6"
                                    paginator="true"
-                                   binding="#{dataTableBindings.tables[aceDataTableFind.clazz]}"
                                    style="width:100%">
+						<ace:ajax event="find" listener="#{aceDataTableFind.find}" />
                         <ace:column id="id">
                             <f:facet name="header">ID</f:facet>
                             #{car.id}
