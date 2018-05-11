@@ -289,6 +289,7 @@ public class DataTable extends DataTableBase implements Serializable {
 					event = new DataTableCellClickEvent((AjaxBehaviorEvent)event, column);
 				} else if (eventName.equals("find")) {
 					event = new DataTableFindEvent((AjaxBehaviorEvent) event);
+					event.setPhaseId(PhaseId.INVOKE_APPLICATION);
 				} 
 			}
 		}
