@@ -4205,7 +4205,7 @@ ice.ace.DataTable.selectFirstInput = function(rootId) {
  ########################## Find Functionality #############################
  ######################################################################### */
 
-ice.ace.DataTable.prototype.find = function () {
+ice.ace.DataTable.prototype.ajaxFind = function () {
 
 	if (this.behaviors && this.behaviors.find) {
 

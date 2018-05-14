@@ -29,4 +29,16 @@ public class DataTableFindEvent extends AjaxBehaviorEvent {
 	public DataTable getDataTable() {
 		return (DataTable) getComponent();
 	}
+
+    public int findRow(String query, String[] fields, int startRow, DataTable.SearchType searchType, boolean caseSensitive) {
+		return ((DataTable) getComponent()).findRow(query, fields, startRow, searchType, caseSensitive);
+    }
+
+    public int findRow(String query, String[] fields, int startRow, DataTable.SearchType searchType) {
+        return findRow(query, fields, startRow, searchType, true);
+    }
+
+    public int findRow(String query, String[] fields, int startRow) {
+        return findRow(query, fields, startRow, DataTable.SearchType.CONTAINS, true);
+    }
 }
