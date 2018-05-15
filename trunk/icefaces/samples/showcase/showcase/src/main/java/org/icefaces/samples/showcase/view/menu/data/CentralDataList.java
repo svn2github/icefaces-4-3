@@ -213,6 +213,8 @@ public class CentralDataList {
 							 "date", "dateminmax.xhtml", "DateMinMaxBean.java"),
 					new Demo(msgs("menu.ace.dateentry.subMenu.selectableranges"), msgs("example.ace.dateentry.selectableranges.description"),
 							 "date", "dateselectableranges.xhtml", "DateSelectableRangesBean.java"),
+					new Demo(msgs("menu.ace.dateentry.subMenu.highlightdates"), msgs("example.ace.dateentry.highlightdates.description"),
+							 "date", "datehighlightdates.xhtml", "DateHighlightDatesBean.java"),
 					new Demo(msgs("menu.ace.dateentry.subMenu.navigator"), msgs("example.ace.dateentry.navigator.description"),
 							 "date", "datenavigator.xhtml", "DateNavigatorBean.java"),
 					new Demo(msgs("menu.ace.dateentry.subMenu.label"), msgs("example.ace.dateentry.label.description"),
