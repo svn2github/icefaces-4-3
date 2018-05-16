@@ -652,9 +652,7 @@ ice.ace.fileentry = {
 
 	displayInvalidFileTypeMessage : function(message) {
 		var container = document.createElement("DIV");
-		container.style.cssText = 'position: fixed;width: 250px;height: 100px;margin: auto;'
-			+ 'top: 0;left: 0;bottom: 0;right: 0;padding: 1em;z-index:1000;';
-		container.setAttribute('class', 'ui-widget ui-widget-content ui-corner-all ui-state-error');
+		container.setAttribute('class', 'ice-ace-fileentry-invalid-type-dialog ui-widget ui-widget-content ui-corner-all ui-state-error');
 		container.innerHTML = '<div><span style="float:right" class="ui-corner-all"'
 			+ 'onmouseover="this.setAttribute(\'class\', \'ui-corner-all ui-state-hover\');"'
 			+ 'onmouseout="this.setAttribute(\'class\', \'ui-corner-all\');"><span class="ui-icon ui-icon-closethick"'

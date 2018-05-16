@@ -65,6 +65,20 @@
 .ice-file-entry .start, .ice-file-entry .cancel {
 	vertical-align: top;
 }
+
+.ice-ace-fileentry-invalid-type-dialog {
+	position: fixed;
+	width: 250px;
+	height: 100px;
+	margin: auto;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	padding: 1em;
+	z-index: 1000;
+}
+
 /*
 .ice-file-entry .buttonbar .btn,
 .ice-file-entry .buttonbar .toggle {
