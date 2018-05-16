@@ -657,7 +657,7 @@ ice.ace.fileentry = {
 			+ 'onmouseover="this.setAttribute(\'class\', \'ui-corner-all ui-state-hover\');"'
 			+ 'onmouseout="this.setAttribute(\'class\', \'ui-corner-all\');"><span class="ui-icon ui-icon-closethick"'
 			+ 'onclick="document.body.removeChild(ice.ace.fileentry.invalidFileTypeMessage);"'
-			+ '>Close</span></span></div><div style="padding:1em;">'+message+'</div>';
+			+ '>Close</span></span></div><div>'+message+'</div>';
 		document.body.appendChild(container);
 		ice.ace.fileentry.invalidFileTypeMessage = container;
 	}

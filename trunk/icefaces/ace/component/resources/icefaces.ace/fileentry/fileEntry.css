@@ -79,6 +79,10 @@
 	z-index: 1000;
 }
 
+.ice-ace-fileentry-invalid-type-dialog > div:nth-child(2) {
+	padding: 1em;
+}
+
 /*
 .ice-file-entry .buttonbar .btn,
 .ice-file-entry .buttonbar .toggle {
