@@ -32,6 +32,7 @@ public class DataTableConstants {
     public static final String HEAD_TEXT_CLASS = "ui-header-text";
 
     public static final String PIN_COLUMN_CONTROL_CLASS = "ui-pin-control";
+    public static final String PINNING = "ui-datatabe-pinning";
 
     public static final String SORTABLE_COLUMN_CLASS = "ui-sortable-column";
     public static final String SORTABLE_COLUMN_CONTROL_CLASS = "ui-sortable-control";

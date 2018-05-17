@@ -278,14 +278,16 @@ public class DataTableHeadRenderer {
     private static void encodeRightSideControls(ResponseWriter writer, FacesContext context, DataTableRenderingContext tableContext, Column column, boolean renderConfButton) throws IOException {
         writer.write("&nbsp;");
 
+		boolean encodePinControls = tableContext.isColumnPinningEnabled() && tableContext.showPinningControls();
         writer.startElement(HTML.SPAN_ELEM, null);
-        writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.HEADER_RIGHT_CLASS, null);
+        writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.HEADER_RIGHT_CLASS
+			+ (encodePinControls ? " " + DataTableConstants.PINNING : ""), null);
 
         //Sort icon
         if (tableContext.isColumnSortable())
             encodeSortControl(writer, context, tableContext, column);
 
-        if (tableContext.isColumnPinningEnabled() && tableContext.showPinningControls())
+        if (encodePinControls)
             encodePinningControl(writer, context, tableContext, column);
 
         //Configurable last-col controls

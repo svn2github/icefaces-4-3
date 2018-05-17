@@ -2129,7 +2129,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
 		if (this.cfg.pinning) {
 			pinnedColumns = this.getPinnedColumns();
 			for (var i = 0; i < pinnedColumns.length; i++) {
-				this.unpinColumn(ice.ace.jq(pinnedColumns.get(i)).index() + 1);
+				this.unpinColumn(ice.ace.jq(pinnedColumns.get(i)).index() + 1, true);
 			}
 		}
 
@@ -2466,7 +2466,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
             this.pinningHolder = this.jqId + '_pinning';
             this.initializePinningState();
 			for (var i = 0; i < pinnedColumns.length; i++) {
-				this.pinColumn(ice.ace.jq(pinnedColumns.get(i)).index() + 1);
+				this.pinColumn(ice.ace.jq(pinnedColumns.get(i)).index() + 1, true);
 			}
         }
     }
@@ -2716,7 +2716,7 @@ ice.ace.DataTable.prototype.ie7UnpinColumn = function(i) {
     }
 };
 
-ice.ace.DataTable.prototype.unpinColumn = function(i) {
+ice.ace.DataTable.prototype.unpinColumn = function(i,fromResizeScrolling) {
     var safari = ice.ace.jq.browser.safari,
         chrome = ice.ace.jq.browser.chrome,
         ie8 = ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 8,
@@ -2798,9 +2798,11 @@ ice.ace.DataTable.prototype.unpinColumn = function(i) {
         };
         ice.ace.ab(ice.ace.extendAjaxArgs(this.behaviors.unpin, options));
     }
+
+	if (this.cfg.scrollable && !fromResizeScrolling && !ice.ace.jq.browser.mozilla) this.resizeScrolling();
 };
 
-ice.ace.DataTable.prototype.pinColumn = function(i) {
+ice.ace.DataTable.prototype.pinColumn = function(i,fromResizeScrolling) {
     var safari = ice.ace.jq.browser.safari,
         chrome = ice.ace.jq.browser.chrome,
         ie7 = ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 7,
@@ -3027,6 +3029,8 @@ ice.ace.DataTable.prototype.pinColumn = function(i) {
 		styleNode.appendChild(document.createTextNode(cssText));
 	}
 	head.appendChild(styleNode);
+
+	if (this.cfg.scrollable && !fromResizeScrolling && !ice.ace.jq.browser.mozilla) this.resizeScrolling();
 };
 
 ice.ace.DataTable.prototype.ie7PinColumn = function(i) {

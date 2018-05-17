@@ -79,6 +79,10 @@
     position: relative;
 }
 
+.ui-datatable .ui-header-right.ui-datatabe-pinning {
+    display: block;
+}
+
 .ui-sortable-control {
     vertical-align: middle;
     cursor:pointer;
