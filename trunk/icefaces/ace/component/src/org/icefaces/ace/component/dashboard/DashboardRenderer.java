@@ -189,6 +189,8 @@ public class DashboardRenderer extends CoreRenderer {
 				int column = pane.getColumn();
 				int sizeY = pane.getSizeY();
 				int sizeX = pane.getSizeX();
+				if (sizeY < 1) sizeY = 1;
+				if (sizeX < 1) sizeX = 1;
 				if (row > 0 && column > 0 && column + sizeX - 1 <= maxColumns) {
 					int size = positions.size();
 					if (row + sizeY - 1 > size) {
@@ -217,6 +219,8 @@ public class DashboardRenderer extends CoreRenderer {
 
 		int sizeY = pane.getSizeY();
 		int sizeX = pane.getSizeX();
+		if (sizeY < 1) sizeY = 1;
+		if (sizeX < 1) sizeX = 1;
 
 		// make sure no pane takes more columns than the maximum allowed
 		sizeX = sizeX > maxColumns ? maxColumns : sizeX;
