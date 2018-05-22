@@ -148,7 +148,7 @@ public class DashboardDynamicPanesBean implements Serializable {
 		Map<String, Object> sessionMap = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
 		Object o = sessionMap.get("DashboardDynamicPanesBean.state");
 		if (o == null) {
-			List<DashboardPaneState> states = new ArrayList<DashboardPaneState>(10);
+			List<DashboardPaneState> states = new ArrayList<DashboardPaneState>(30);
 			for (int i = 0; i < 5; i++) {
 				states.add(getRandomQuote());
 			}
@@ -164,11 +164,21 @@ public class DashboardDynamicPanesBean implements Serializable {
 		int semicolonIndex = item.indexOf(";");
 		String quote = item.substring(0, semicolonIndex);
 		String author = item.substring(semicolonIndex + 1);
-		return new DashboardPaneState(0, 0, 0, 0, false, quote, author);
+		return new DashboardPaneState(0, 0, 1, 1, false, quote, author);
 	}
 
 	public void addRandomQuote() {
 		this.states.add(getRandomQuote());
+	}
+
+	private int closed = 0;
+
+	public int getSize() {
+		return this.states.size() - this.closed;
+	}
+
+	public void closeListener() {
+		closed++;
 	}
 
 	private List<DashboardPaneState> states;

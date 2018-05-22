@@ -26,7 +26,8 @@
     <ui:define name="example">
         <h:form id="form">
 			<div style="text-align: center;">
-				<ace:pushButton value="Add Random Quote" actionListener="#{dashboardDynamicPanesBean.addRandomQuote}">
+				<ace:pushButton value="Add Random Quote" actionListener="#{dashboardDynamicPanesBean.addRandomQuote}"
+						disabled="#{dashboardDynamicPanesBean.size gt 29}">
 					<ace:ajax execute="@this" render="@form" />
 				</ace:pushButton>
 			</div>
@@ -40,7 +41,7 @@
 							closed="#{pane.closed}">
 						<ace:ajax event="dragStop" />
 						<ace:ajax event="resize" />
-						<ace:ajax event="close" />
+						<ace:ajax event="close" render="@form" listener="#{dashboardDynamicPanesBean.closeListener}" />
 						<h:outputText style="font-style:italic;" value="&quot;#{pane.quote}&quot;" />
 						<br />
 						<h:outputText value="- #{pane.author}" />
