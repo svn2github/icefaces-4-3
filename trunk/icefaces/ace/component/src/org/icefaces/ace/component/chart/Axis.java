@@ -42,6 +42,8 @@ public class Axis implements Serializable {
     private String formatString;
     private String tickInterval;
     private String tickPrefix;
+    private Boolean showTicks;
+    private Boolean showTickMarks;
 
     /**
      * Used by the ChartRenderer to produce a JSON representation of the configuration of this axis.
@@ -58,6 +60,8 @@ public class Axis implements Serializable {
         Boolean show = this.getShow();
         Integer tickAngle = this.getTickAngle();
         Boolean autoscale = this.getAutoscale();
+        Boolean showTicks = this.getShowTicks();
+        Boolean shwTickMarks = this.getShowTickMarks();
         String tickInterval = this.getTickInterval();
         String[] ticks = this.getTicks();
         Boolean drawMajorGridlines = this.getDrawMajorGridlines();
@@ -112,6 +116,12 @@ public class Axis implements Serializable {
                 json.entry("forceTickAt100", isForceTickAt100());
             json.endMap();
         }
+
+        if (showTicks != null)
+            json.entry("showTicks", showTicks);
+
+        if (showTickMarks != null)
+            json.entry("showTickMarks", showTickMarks);
 
         if (tickInterval != null)
             json.entry("tickInterval", tickInterval);
@@ -424,6 +434,38 @@ public class Axis implements Serializable {
      */
     public void setAutoscale(Boolean autoscale) {
         this.autoscale = autoscale;
+    }
+
+    /**
+     * Get if this axis will draw its scale so that it shares grid lines with other autoscaled axes.
+     * @return whether or not this axis is autoscaling
+     */
+    public Boolean getShowTicks() {
+        return showTicks;
+    }
+
+    /**
+     * Set if this axis will draw its scale so that it shares grid lines with other autoscaled axes.
+     * @param autoscale whether or not this axis is autoscaling
+     */
+    public void setShowTicks(Boolean showTicks) {
+        this.showTicks = showTicks;
+    }
+
+    /**
+     * Get if this axis will draw its scale so that it shares grid lines with other autoscaled axes.
+     * @return whether or not this axis is autoscaling
+     */
+    public Boolean getShowTickMarks() {
+        return showTickMarks;
+    }
+
+    /**
+     * Set if this axis will draw its scale so that it shares grid lines with other autoscaled axes.
+     * @param autoscale whether or not this axis is autoscaling
+     */
+    public void setShowTickMarks(Boolean showTickMarks) {
+        this.showTickMarks = showTickMarks;
     }
 
     /**
