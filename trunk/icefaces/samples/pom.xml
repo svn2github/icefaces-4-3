@@ -86,9 +86,9 @@
 
         <profile>
             <id>servlet</id>
-            <activation>
+          <activation>
                 <activeByDefault>true</activeByDefault>
-            </activation>
+            </activation> 
             <dependencies>
                 <dependency>
                     <groupId>org.glassfish</groupId>
@@ -127,6 +127,11 @@
                     <groupId>org.apache.myfaces.core</groupId>
                     <artifactId>myfaces-impl</artifactId>
                     <version>${myfaces.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>javax.enterprise</groupId>
+                    <artifactId>cdi-api</artifactId>
+                    <version>1.2</version>
                 </dependency>
             </dependencies>
         </profile>
