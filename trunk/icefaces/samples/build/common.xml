@@ -55,7 +55,7 @@
         <isset property="myfaces"/>
     </condition>
 
-    <property name="jsf.lib.dir" value="${jsf.impl.dir}/2.2" />
+    <property name="jsf.lib.dir" value="${jsf.impl.dir}/2.3" />
     <echo message="JSF lib dir: ${jsf.lib.dir}"/>
 
     <patternset id="lib.compile">
@@ -183,6 +183,7 @@
             <lib dir="${jsf.lib.dir}" erroronmissingdir="false">
                 <patternset refid="lib.distribute.jsf"/>
             </lib>
+
 
             <!-- Add the icefaces-ee-ext.jar only if it exists.  There are
                  two possible locations depending on the EE distribution

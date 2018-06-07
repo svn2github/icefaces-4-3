@@ -44,7 +44,7 @@
         <isset property="myfaces"/>
     </condition>
 
-    <property name="jsf.lib.dir" value="${jsf.impl.dir}/2.2" />
+    <property name="jsf.lib.dir" value="${jsf.impl.dir}/2.3" />
     <echo message="JSF lib dir: ${jsf.lib.dir}"/>
 
 	<!-- Check if release.type is set, and if so append it after the tertiary value -->
