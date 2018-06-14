@@ -5,12 +5,12 @@
  * 
  * About: Version
  * 
- * version: 1.0.4 
- * revision: 1120
+ * version: 1.0.8 
+ * revision: 1250
  * 
  * About: Copyright & License
  * 
- * Copyright (c) 2009-2012 Chris Leonello
+ * Copyright (c) 2009-2013 Chris Leonello
  * jqPlot is currently available for use in all personal or commercial projects 
  * under both the MIT and GPL version 2.0 licenses. This means that you can 
  * choose the license that best suits your project and use it accordingly.
@@ -225,16 +225,15 @@
                 return plot;
             }
             catch(e) {
-                var msg = $.jqplot.config.errorMessage || e.message || e;
+                var msg = $.jqplot.config.errorMessage || e.message;
                 $('#'+target).append('<div class="jqplot-error-message">'+msg+'</div>');
-                $('#'+target)
-                        .addClass('jqplot-error')
-                        .css('background', $.jqplot.config.errorBackground)
-                        .css('border', $.jqplot.config.errorBorder)
-                        .css('fontFamily', $.jqplot.config.errorFontFamily)
-                        .css('fontSize', $.jqplot.config.errorFontSize)
-                        .css('fontStyle', $.jqplot.config.errorFontStyle)
-                        .css('fontWeight', $.jqplot.config.errorFontWeight);
+                $('#'+target).addClass('jqplot-error');
+                document.getElementById(target).style.background = $.jqplot.config.errorBackground;
+                document.getElementById(target).style.border = $.jqplot.config.errorBorder;
+                document.getElementById(target).style.fontFamily = $.jqplot.config.errorFontFamily;
+                document.getElementById(target).style.fontSize = $.jqplot.config.errorFontSize;
+                document.getElementById(target).style.fontStyle = $.jqplot.config.errorFontStyle;
+                document.getElementById(target).style.fontWeight = $.jqplot.config.errorFontWeight;
             }
         }
         else {        
@@ -245,8 +244,8 @@
         }
     };
 
-    $.jqplot.version = "1.0.4";
-    $.jqplot.revision = "1120";
+    $.jqplot.version = "1.0.8";
+    $.jqplot.revision = "1250";
 
     $.jqplot.targetCounter = 1;
 
@@ -307,26 +306,22 @@
         };
 
         this.freeCanvas = function(idx) {
-            try {
-                if ($.jqplot.use_excanvas && window.G_vmlCanvasManager.uninitElement !== undefined) {
-                    // excanvas can't be reused, but properly unset
-                    window.G_vmlCanvasManager.uninitElement($.jqplot.CanvasManager.canvases[idx]);
-                    $.jqplot.CanvasManager.canvases[idx] = null;
-                }
-                else {
-                    var canvas = $.jqplot.CanvasManager.canvases[idx];
-                    canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
-                    $(canvas).unbind().removeAttr('class').removeAttr('style');
-                    // Style attributes seemed to be still hanging around.  wierd.  Some ticks
-                    // still retained a left: 0px attribute after reusing a canvas.
-                    $(canvas).css({left: '', top: '', position: ''});
-                    // setting size to 0 may save memory of unused canvases?
-                    canvas.width = 0;
-                    canvas.height = 0;
-                    $.jqplot.CanvasManager.free[idx] = true;
-                }
-            } catch (ex) {
-                //canvas might not exist anymore
+            if ($.jqplot.use_excanvas && window.G_vmlCanvasManager.uninitElement !== undefined) {
+                // excanvas can't be reused, but properly unset
+                window.G_vmlCanvasManager.uninitElement($.jqplot.CanvasManager.canvases[idx]);
+                $.jqplot.CanvasManager.canvases[idx] = null;
+            } 
+            else {
+                var canvas = $.jqplot.CanvasManager.canvases[idx];
+                canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+                $(canvas).unbind().removeAttr('class').removeAttr('style');
+                // Style attributes seemed to be still hanging around.  wierd.  Some ticks
+                // still retained a left: 0px attribute after reusing a canvas.
+                $(canvas).css({left: '', top: '', position: ''});
+                // setting size to 0 may save memory of unused canvases?
+                canvas.width = 0;
+                canvas.height = 0;
+                $.jqplot.CanvasManager.free[idx] = true;
             }
         };
         
@@ -400,7 +395,7 @@
         return $.jqplot.support_canvas_text.result;
     };
     
-    $.jqplot.use_excanvas = ($.browser.msie && !$.jqplot.support_canvas()) ? true : false;
+    $.jqplot.use_excanvas = ((!$.support.boxModel || !$.support.objectAll || !$support.leadingWhitespace) && !$.jqplot.support_canvas()) ? true : false;
     
     /**
      * 
@@ -516,7 +511,7 @@
     /**
      * Class: Axis
      * An individual axis object.  Cannot be instantiated directly, but created
-     * by the Plot oject.  Axis properties can be set or overriden by the 
+     * by the Plot object.  Axis properties can be set or overridden by the 
      * options passed in from the user.
      * 
      */
@@ -853,7 +848,7 @@
     /**
      * Class: Legend
      * Legend object.  Cannot be instantiated directly, but created
-     * by the Plot oject.  Legend properties can be set or overriden by the 
+     * by the Plot object.  Legend properties can be set or overridden by the 
      * options passed in from the user.
      */
     function Legend(options) {
@@ -1082,7 +1077,7 @@
     /**
      * Class: Title
      * Plot Title object.  Cannot be instantiated directly, but created
-     * by the Plot oject.  Title properties can be set or overriden by the 
+     * by the Plot object.  Title properties can be set or overridden by the 
      * options passed in from the user.
      * 
      * Parameters:
@@ -1096,7 +1091,7 @@
         // text of the title;
         this.text = text;
         // prop: show
-        // wether or not to show the title
+        // whether or not to show the title
         this.show = true;
         // prop: fontFamily
         // css font-family spec for the text.
@@ -1145,7 +1140,7 @@
     /**
      * Class: Series
      * An individual data series object.  Cannot be instantiated directly, but created
-     * by the Plot oject.  Series properties can be set or overriden by the 
+     * by the Plot object.  Series properties can be set or overridden by the 
      * options passed in from the user.
      */
     function Series(options) {
@@ -1164,7 +1159,7 @@
         // > }
 
         // prop: show
-        // wether or not to draw the series.
+        // whether or not to draw the series.
         this.show = true;
         // prop: xaxis
         // which x axis to use with this series, either 'xaxis' or 'x2axis'.
@@ -1238,16 +1233,16 @@
         // see <$.jqplot.MarkerRenderer>.
         this.markerOptions = {};
         // prop: showLine
-        // wether to actually draw the line or not.  Series will still be renderered, even if no line is drawn.
+        // whether to actually draw the line or not.  Series will still be renderered, even if no line is drawn.
         this.showLine = true;
         // prop: showMarker
-        // wether or not to show the markers at the data points.
+        // whether or not to show the markers at the data points.
         this.showMarker = true;
         // prop: index
         // 0 based index of this series in the plot series array.
         this.index;
         // prop: fill
-        // true or false, wether to fill under lines or in bars.
+        // true or false, whether to fill under lines or in bars.
         // May not be implemented in all renderers.
         this.fill = false;
         // prop: fillColor
@@ -1374,7 +1369,7 @@
             this.markerOptions.show = this.showMarker;
         }
         this.showMarker = this.markerOptions.show;
-        // the markerRenderer is called within it's own scaope, don't want to overwrite series options!!
+        // the markerRenderer is called within its own scope, don't want to overwrite series options!!
         this.markerRenderer.init(this.markerOptions);
     };
     
@@ -1529,15 +1524,15 @@
      * Object representing the grid on which the plot is drawn.  The grid in this
      * context is the area bounded by the axes, the area which will contain the series.
      * Note, the series are drawn on their own canvas.
-     * The Grid object cannot be instantiated directly, but is created by the Plot oject.  
-     * Grid properties can be set or overriden by the options passed in from the user.
+     * The Grid object cannot be instantiated directly, but is created by the Plot object.  
+     * Grid properties can be set or overridden by the options passed in from the user.
      */
     function Grid() {
         $.jqplot.ElemContainer.call(this);
         // Group: Properties
         
         // prop: drawGridlines
-        // wether to draw the gridlines on the plot.
+        // whether to draw the gridlines on the plot.
         this.drawGridlines = true;
         // prop: gridLineColor
         // color of the grid lines.
@@ -1558,7 +1553,7 @@
         // True to draw border around grid.
         this.drawBorder = true;
         // prop: shadow
-        // wether to show a shadow behind the grid.
+        // whether to show a shadow behind the grid.
         this.shadow = true;
         // prop: shadowAngle
         // shadow angle in degrees
@@ -1746,7 +1741,7 @@
         // animation in these situations can cause problems.
         this.animateReplot = false;
         // prop: axes
-        // up to 4 axes are supported, each with it's own options, 
+        // up to 4 axes are supported, each with its own options, 
         // See <Axis> for axis specific options.
         this.axes = {xaxis: new Axis('xaxis'), yaxis: new Axis('yaxis'), x2axis: new Axis('x2axis'), y2axis: new Axis('y2axis'), y3axis: new Axis('y3axis'), y4axis: new Axis('y4axis'), y5axis: new Axis('y5axis'), y6axis: new Axis('y6axis'), y7axis: new Axis('y7axis'), y8axis: new Axis('y8axis'), y9axis: new Axis('y9axis'), yMidAxis: new Axis('yMidAxis')};
         this.baseCanvas = new $.jqplot.GenericCanvas();
@@ -1762,7 +1757,8 @@
         this.data = [];
         // prop: dataRenderer
         // A callable which can be used to preprocess data passed into the plot.
-        // Will be called with 2 arguments, the plot data and a reference to the plot.
+        // Will be called with 3 arguments: the plot data, a reference to the plot,
+        // and the value of dataRendererOptions.
         this.dataRenderer;
         // prop: dataRendererOptions
         // Options that will be passed to the dataRenderer.
@@ -1825,7 +1821,6 @@
         this.legend = new Legend();
         // prop: noDataIndicator
         // Options to set up a mock plot with a data loading indicator if no data is specified.
-        this.negativeSeriesColors = $.jqplot.config.defaultNegativeColors;
         this.noDataIndicator = {    
             show: false,
             indicator: 'Loading Data...',
@@ -1844,16 +1839,19 @@
                 }
             }
         };
+        // prop: negativeSeriesColors 
+        // colors to use for portions of the line below zero.
+        this.negativeSeriesColors = $.jqplot.config.defaultNegativeColors;
         // container to hold all of the merged options.  Convienence for plugins.
         this.options = {};
         this.previousSeriesStack = [];
-        // Namespece to hold plugins.  Generally non-renderer plugins add themselves to here.
+        // Namespace to hold plugins.  Generally non-renderer plugins add themselves to here.
         this.plugins = {};
         // prop: series
         // Array of series object options.
         // see <Series> for series specific options.
         this.series = [];
-        // array of series indicies. Keep track of order
+        // array of series indices. Keep track of order
         // which series canvases are displayed, lowest
         // to highest, back to front.
         this.seriesStack = [];
@@ -1865,7 +1863,7 @@
         this.seriesColors = $.jqplot.config.defaultColors;
         // prop: sortData
         // false to not sort the data passed in by the user.
-        // Many bar, stakced and other graphs as well as many plugins depend on
+        // Many bar, stacked and other graphs as well as many plugins depend on
         // having sorted data.
         this.sortData = true;
         // prop: stackSeries
@@ -1892,7 +1890,7 @@
         // Mostly used to test if plot has never been dran (=0), has been successfully drawn
         // into a visible container once (=1) or draw more than once into a visible container.
         // Can use this in tests to see if plot has been visibly drawn at least one time.
-        // After plot has been visibly drawn once, it generally doesn't need redrawn if its
+        // After plot has been visibly drawn once, it generally doesn't need redrawing if its
         // container is hidden and shown.
         this._drawCount = 0;
         // sum of y values for all series in plot.
@@ -1968,7 +1966,7 @@
             // remove any error class that may be stuck on target.
             this.target.removeClass('jqplot-error');
             if (!this.target.get(0)) {
-                throw "No plot target specified";
+                throw new Error("No plot target specified");
             }
             
             // make sure the target is positioned by some means and set css
@@ -2027,7 +2025,7 @@
             this.eventCanvas._plotDimensions = this._plotDimensions;
             this.legend._plotDimensions = this._plotDimensions;
             if (this._height <=0 || this._width <=0 || !this._height || !this._width) {
-                throw "Canvas dimension not set";
+                throw new Error("Canvas dimension not set");
             }
             
             if (options.dataRenderer && $.isFunction(options.dataRenderer)) {
@@ -2045,7 +2043,7 @@
             if (data == null || $.isArray(data) == false || data.length == 0 || $.isArray(data[0]) == false || data[0].length == 0) {
                 
                 if (this.noDataIndicator.show == false) {
-                    throw "No Data";
+                    throw new Error("No data specified");
                 }
                 
                 else {
@@ -2210,7 +2208,7 @@
             this._width = this.target.width();
             
             if (this._height <=0 || this._width <=0 || !this._height || !this._width) {
-                throw "Target dimension not set";
+                throw new Error("Target dimension not set");
             }
             
             this._plotDimensions.height = this._height;
@@ -2366,7 +2364,7 @@
             this._width = this.target.width();
             
             if (this._height <=0 || this._width <=0 || !this._height || !this._width) {
-                throw "Target dimension not set";
+                throw new Error("Target dimension not set");
             }
             
             this._plotDimensions.height = this._height;
@@ -2929,7 +2927,7 @@
                 for (i=0, l=$.jqplot.preDrawHooks.length; i<l; i++) {
                     $.jqplot.preDrawHooks[i].call(this);
                 }
-                for (i=0, l=this.preDrawHooks.length; i<l; i++) {
+                for (i=0, l=this.preDrawHooks.hooks.length; i<l; i++) {
                     this.preDrawHooks.hooks[i].apply(this, this.preDrawSeriesHooks.args[i]);
                 }
                 // create an underlying canvas to be used for special features.
@@ -3301,7 +3299,7 @@
                                 minang = (j>0) ? s.gridData[j-1][1]+sm : sm;
                                 maxang = s.gridData[j][1];
                                 if (theta > minang && theta < maxang) {
-                                    return {seriesIndex:s.index, pointIndex:j, gridData:s.gridData[j], data:s.data[j]};
+                                    return {seriesIndex:s.index, pointIndex:j, gridData:[gridpos.x,gridpos.y], data:s.data[j]};
                                 }
                             }
                         }
@@ -3346,7 +3344,7 @@
                                 minang = (j>0) ? s.gridData[j-1][1]+sm : sm;
                                 maxang = s.gridData[j][1];
                                 if (theta > minang && theta < maxang) {
-                                    return {seriesIndex:s.index, pointIndex:j, gridData:s.gridData[j], data:s.data[j]};
+                                    return {seriesIndex:s.index, pointIndex:j, gridData:[gridpos.x,gridpos.y], data:s.data[j]};
                                 }
                             }
                         }
@@ -3911,7 +3909,7 @@
             return $.jqplot.hex2rgb(s, a);
         }
         else {
-            throw 'invalid color spec';
+            throw new Error('Invalid color spec');
         }
     };
     
@@ -4087,6 +4085,7 @@
 
     
 
+
     // class: $.jqplot.AxisLabelRenderer
     // Renderer to place labels on the axes.
     $.jqplot.AxisLabelRenderer = function(options) {
@@ -4095,7 +4094,7 @@
         // name of the axis associated with this tick
         this.axis;
         // prop: show
-        // wether or not to show the tick (mark and label).
+        // whether or not to show the tick (mark and label).
         this.show = true;
         // prop: label
         // The text or html for the label.
@@ -4164,10 +4163,10 @@
         // name of the axis associated with this tick
         this.axis;
         // prop: showMark
-        // wether or not to show the mark on the axis.
+        // whether or not to show the mark on the axis.
         this.showMark = true;
         // prop: showGridline
-        // wether or not to draw the gridline on the grid at this tick.
+        // whether or not to draw the gridline on the grid at this tick.
         this.showGridline = true;
         // prop: isMinorTick
         // if this is a minor tick.
@@ -4181,12 +4180,12 @@
         // will be stoked above and below axis, so total length will be twice this.
         this.markSize = 6;
         // prop: show
-        // wether or not to show the tick (mark and label).
+        // whether or not to show the tick (mark and label).
         // Setting this to false requires more testing.  It is recommended
         // to set showLabel and showMark to false instead.
         this.show = true;
         // prop: showLabel
-        // wether or not to show the label.
+        // whether or not to show the label.
         this.showLabel = true;
         this.label = null;
         this.value = null;
@@ -4218,7 +4217,7 @@
         // true to escape HTML entities in the label.
         this.escapeHTML = false;
         this._elem;
-		this._breakTick = false;
+        this._breakTick = false;
         
         $.extend(true, this, options);
     };
@@ -4278,9 +4277,9 @@
         if (this.textColor) {
             this._elem.css('color', this.textColor);
         }
-		if (this._breakTick) {
-			this._elem.addClass('jqplot-breakTick');
-		}
+        if (this._breakTick) {
+          this._elem.addClass('jqplot-breakTick');
+        }
         
         return this._elem;
     };
@@ -4354,8 +4353,8 @@
         this._elem.addClass('jqplot-grid-canvas');
         this._elem.css({ position: 'absolute', left: 0, top: 0 });
         
-		elem = plot.canvasManager.initCanvas(elem);
-		
+        elem = plot.canvasManager.initCanvas(elem);
+
         this._top = this._offsets.top;
         this._bottom = h - this._offsets.bottom;
         this._left = this._offsets.left;
@@ -4759,11 +4758,11 @@
 
     $.jqplot.LinePattern = function (ctx, pattern) {
 
-		var defaultLinePatterns = {
-			dotted: [ dotlen, $.jqplot.config.dotGapLength ],
-			dashed: [ $.jqplot.config.dashLength, $.jqplot.config.gapLength ],
-			solid: null
-		};   	
+        var defaultLinePatterns = {
+            dotted: [ dotlen, $.jqplot.config.dotGapLength ],
+            dashed: [ $.jqplot.config.dashLength, $.jqplot.config.gapLength ],
+            solid: null
+        };
 
         if (typeof pattern === 'string') {
             if (pattern[0] === '.' || pattern[0] === '-') {
@@ -5737,7 +5736,7 @@
                                     tempgd.push(gd[i]);
                                     this._areaPoints.push(gd[i]);
                                     // do we have an axis crossing?
-                                    if (pd[i][1] * pd[i+1][1] < 0) {
+                                    if (pd[i][1] * pd[i+1][1] <= 0) {
                                         if (pd[i][1] < 0) {
                                             isnegative = true;
                                             opts.fillStyle = negativeColor;
@@ -5991,13 +5990,13 @@
     function handleMove(ev, gridpos, datapos, neighbor, plot) {
         if (neighbor) {
             var ins = [neighbor.seriesIndex, neighbor.pointIndex, neighbor.data];
-            var evt1 = ice.ace.jq.Event('jqplotDataMouseOver');
+            var evt1 = jQuery.Event('jqplotDataMouseOver');
             evt1.pageX = ev.pageX;
             evt1.pageY = ev.pageY;
             plot.target.trigger(evt1, ins);
             if (plot.series[ins[0]].highlightMouseOver && !(ins[0] == plot.plugins.lineRenderer.highlightedSeriesIndex)) {
-                var evt = ice.ace.jq.Event('jqplotDataHighlight');
-		evt.which = ev.which;
+                var evt = jQuery.Event('jqplotDataHighlight');
+                evt.which = ev.which;
                 evt.pageX = ev.pageX;
                 evt.pageY = ev.pageY;
                 plot.target.trigger(evt, ins);
@@ -6013,8 +6012,8 @@
         if (neighbor) {
             var ins = [neighbor.seriesIndex, neighbor.pointIndex, neighbor.data];
             if (plot.series[ins[0]].highlightMouseDown && !(ins[0] == plot.plugins.lineRenderer.highlightedSeriesIndex)) {
-                var evt = ice.ace.jq.Event('jqplotDataHighlight');
-		evt.which = ev.which;
+                var evt = jQuery.Event('jqplotDataHighlight');
+                evt.which = ev.which;
                 evt.pageX = ev.pageX;
                 evt.pageY = ev.pageY;
                 plot.target.trigger(evt, ins);
@@ -6036,8 +6035,8 @@
     function handleClick(ev, gridpos, datapos, neighbor, plot) {
         if (neighbor) {
             var ins = [neighbor.seriesIndex, neighbor.pointIndex, neighbor.data];
-            var evt = ice.ace.jq.Event('jqplotDataClick');
-	    evt.which = ev.which;
+            var evt = jQuery.Event('jqplotDataClick');
+            evt.which = ev.which;
             evt.pageX = ev.pageX;
             evt.pageY = ev.pageY;
             plot.target.trigger(evt, ins);
@@ -6051,8 +6050,8 @@
             if (idx != null && plot.series[idx].highlightMouseDown) {
                 unhighlight(plot);
             }
-            var evt = ice.ace.jq.Event('jqplotDataRightClick');
-	    evt.which = ev.which;
+            var evt = jQuery.Event('jqplotDataRightClick');
+            evt.which = ev.which;
             evt.pageX = ev.pageX;
             evt.pageY = ev.pageY;
             plot.target.trigger(evt, ins);
@@ -6147,7 +6146,7 @@
             // call it within the scope of the axis.
             this.renderer.createTicks.call(this, plot);
             // fill a div with axes labels in the right direction.
-            // Need to pregenerate each axis to get it's bounds and
+            // Need to pregenerate each axis to get its bounds and
             // position it and the labels correctly on the plot.
             var dim=0;
             var temp;
@@ -7404,7 +7403,7 @@
         // Group: Properties
         
         // prop: show
-        // wether or not to show the marker.
+        // whether or not to show the marker.
         this.show = true;
         // prop: style
         // One of diamond, circle, square, x, plus, dash, filledDiamond, filledCircle, filledSquare
@@ -7419,7 +7418,7 @@
         // color of marker.  Will be set to color of series by default on init.
         this.color = '#666666';
         // prop: shadow
-        // wether or not to draw a shadow on the line
+        // whether or not to draw a shadow on the line
         this.shadow = true;
         // prop: shadowAngle
         // Shadow angle in degrees
@@ -7630,7 +7629,7 @@
         this.depth = 3;
         this.strokeStyle = 'rgba(0,0,0,0.1)';
         // prop: isarc
-        // wether the shadow is an arc or not.
+        // whether the shadow is an arc or not.
         this.isarc = false;
         
         $.extend(true, this, options);
@@ -7732,7 +7731,7 @@
         // whether to fill the shape.
         this.fill = false;
         // prop: isarc
-        // wether the shadow is an arc or not.
+        // whether the shadow is an arc or not.
         this.isarc = false;
         // prop: fillRect
         // true to draw shape as a filled rectangle.
@@ -7955,7 +7954,7 @@
         
             var pad = false, 
                 reverse = false,
-				s;
+                s;
             for (var i = 0; i< series.length; i++) {
                 s = series[i];
                 if (s._stack || s.renderer.constructor == $.jqplot.BezierCurveRenderer){
@@ -9288,7 +9287,7 @@
         return str;
     };
 
-    // Not gauranteed to work, even on canvas supporting browsers due to 
+    // Not guaranteed to work, even on canvas supporting browsers due to 
     // limitations with location.href and browser support.
     $.fn.jqplotSaveImage = function() {
         var imgData = $(this).jqplotToImageStr({});
@@ -9298,7 +9297,7 @@
 
     };
 
-    // Not gauranteed to work, even on canvas supporting browsers due to
+    // Not guaranteed to work, even on canvas supporting browsers due to
     // limitations with window.open and arbitrary data.
     $.fn.jqplotViewImage = function() {
         var imgStr = $(this).jqplotToImageElemStr({});
@@ -9328,12 +9327,12 @@
      * @author Chris Leonello
      * @date #date#
      * @version #VERSION#
-     * @copyright (c) 2010 Chris Leonello
+     * @copyright (c) 2010-2013 Chris Leonello
      * jsDate is currently available for use in all personal or commercial projects 
      * under both the MIT and GPL version 2.0 licenses. This means that you can 
      * choose the license that best suits your project and use it accordingly.
      * 
-     * <p>Ken's origianl Date Instance Methods and copyright notice:</p>
+     * <p>Ken's original Date Instance Methods and copyright notice:</p>
      * <pre>
      * Ken Snyder (ken d snyder at gmail dot com)
      * 2008-09-10
@@ -9621,7 +9620,7 @@
     
     jsDate.prototype.getIsoWeek = function() {
         var d = this.proxy;
-        var woy = d.getWeekOfYear();
+        var woy = this.getWeekOfYear();
         var dow1_1 = (new Date('' + d.getFullYear() + '/1/1')).getDay();
         // First week is 01 and not 00 as in the case of %U and %W,
         // so we add 1 to the final result except if day 1 of the year
@@ -10015,8 +10014,31 @@
             dayNames: ['Domingo','Segunda-feira','Ter&ccedil;a-feira','Quarta-feira','Quinta-feira','Sexta-feira','S&aacute;bado'],
             dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','S&aacute;b'],
             formatString: '%Y-%m-%d %H:%M:%S'
-        }
+        },
         
+        'pl': {
+            monthNames: ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'],
+            monthNamesShort: ['Sty', 'Lut', 'Mar', 'Kwi', 'Maj', 'Cze','Lip', 'Sie', 'Wrz', 'Paź', 'Lis', 'Gru'],
+            dayNames: ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'],
+            dayNamesShort: ['Ni', 'Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'Sb'],
+            formatString: '%Y-%m-%d %H:%M:%S'
+        },
+
+        'nl': {
+            monthNames: ['Januari','Februari','Maart','April','Mei','Juni','July','Augustus','September','Oktober','November','December'],
+            monthNamesShort: ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Aug','Sep','Okt','Nov','Dec'],
+            dayNames:','['Zondag','Maandag','Dinsdag','Woensdag','Donderdag','Vrijdag','Zaterdag'],
+            dayNamesShort: ['Zo','Ma','Di','Wo','Do','Vr','Za'],
+            formatString: '%Y-%m-%d %H:%M:%S'
+        },
+
+        'sv': {
+            monthNames: ['januari','februari','mars','april','maj','juni','juli','augusti','september','oktober','november','december'],
+          monthNamesShort: ['jan','feb','mar','apr','maj','jun','jul','aug','sep','okt','nov','dec'],
+            dayNames: ['söndag','måndag','tisdag','onsdag','torsdag','fredag','lördag'],
+            dayNamesShort: ['sön','mån','tis','ons','tor','fre','lör'],
+            formatString: '%Y-%m-%d %H:%M:%S'
+        }
     
     };
     
@@ -10981,15 +11003,18 @@
                       var method = ['toExponential', 'toFixed', 'toPrecision']['efg'.indexOf(type.toLowerCase())];
                       var textTransform = ['toString', 'toUpperCase']['eEfFgG'.indexOf(type) % 2];
                       var number_str = Math.abs(number)[method](precision);
-                      number_str = thousandSeparation ? thousand_separate(number_str): number_str;
+                      
+                      // Apply the decimal mark properly by splitting the number by the
+                      //   decimalMark, applying thousands separator, and then placing it
+                      //   back in.
+                      var parts = number_str.toString().split('.');
+                      parts[0] = thousandSeparation ? thousand_separate(parts[0]) : parts[0];
+                      number_str = parts.join($.jqplot.sprintf.decimalMark);
+                      
                       value = prefix + number_str;
                       var justified = justify(value, prefix, leftJustify, minWidth, zeroPad, htmlSpace)[textTransform]();
-
-                      if ($.jqplot.sprintf.decimalMark !== '.' && $.jqplot.sprintf.decimalMark !== $.jqplot.sprintf.thousandsSeparator) {
-                          return justified.replace(/\./, $.jqplot.sprintf.decimalMark);
-                      } else {
-                          return justified;
-                      }
+                      
+                      return justified;
                   }
             case 'p':
             case 'P':
@@ -11002,7 +11027,7 @@
                 var prefix = number < 0 ? '-' : positivePrefix;
 
                 var parts = String(Number(Math.abs(number)).toExponential()).split(/e|E/);
-                var sd = (parts[0].indexOf('.') != -1) ? parts[0].length - 1 : parts[0].length;
+                var sd = (parts[0].indexOf('.') != -1) ? parts[0].length - 1 : String(number).length;
                 var zeros = (parts[1] < 0) ? -parts[1] - 1 : 0;
                 
                 if (Math.abs(number) < 1) {
@@ -11058,12 +11083,12 @@
         return $.jqplot.getSignificantFigures(number).digitsRight;
     };
 
-})(ice.ace.jq);
+  
 
 
-var backCompat = ice.ace.jq.uiBackCompat !== false;
+    var backCompat = $.uiBackCompat !== false;
 
-    ice.ace.jq.jqplot.effects = {
+    $.jqplot.effects = {
         effect: {}
     };
 
@@ -11074,7 +11099,7 @@ var backCompat = ice.ace.jq.uiBackCompat !== false;
     /*********************************** EFFECTS **********************************/
     /******************************************************************************/
 
-    ice.ace.jq.extend( ice.ace.jq.jqplot.effects, {
+    $.extend( $.jqplot.effects, {
         version: "1.9pre",
 
         // Saves a set of properties in a data storage
@@ -11116,7 +11141,7 @@ var backCompat = ice.ace.jq.uiBackCompat !== false;
                     height: element.outerHeight(true),
                     "float": element.css( "float" )
                 },
-                wrapper = ice.ace.jq( "<div></div>" )
+                wrapper = $( "<div></div>" )
                     .addClass( "ui-effects-wrapper" )
                     .css({
                         fontSize: "100%",
@@ -11135,8 +11160,8 @@ var backCompat = ice.ace.jq.uiBackCompat !== false;
             element.wrap( wrapper );
 
             // Fixes #7595 - Elements lose focus when wrapped.
-            if ( element[ 0 ] === active || ice.ace.jq.contains( element[ 0 ], active ) ) {
-                ice.ace.jq( active ).focus();
+            if ( element[ 0 ] === active || $.contains( element[ 0 ], active ) ) {
+                $( active ).focus();
             }
 
             wrapper = element.parent(); //Hotfix for jQuery 1.4 since some change in wrap() seems to actually loose the reference to the wrapped element
@@ -11146,11 +11171,11 @@ var backCompat = ice.ace.jq.uiBackCompat !== false;
                 wrapper.css({ position: "relative" });
                 element.css({ position: "relative" });
             } else {
-                ice.ace.jq.extend( props, {
+                $.extend( props, {
                     position: element.css( "position" ),
                     zIndex: element.css( "z-index" )
                 });
-                ice.ace.jq.each([ "top", "left", "bottom", "right" ], function(i, pos) {
+                $.each([ "top", "left", "bottom", "right" ], function(i, pos) {
                     props[ pos ] = element.css( pos );
                     if ( isNaN( parseInt( props[ pos ], 10 ) ) ) {
                         props[ pos ] = "auto";
@@ -11176,8 +11201,8 @@ var backCompat = ice.ace.jq.uiBackCompat !== false;
                 element.parent().replaceWith( element );
 
                 // Fixes #7595 - Elements lose focus when wrapped.
-                if ( element[ 0 ] === active || ice.ace.jq.contains( element[ 0 ], active ) ) {
-                    ice.ace.jq( active ).focus();
+                if ( element[ 0 ] === active || $.contains( element[ 0 ], active ) ) {
+                    $( active ).focus();
                 }
             }
 
@@ -11190,7 +11215,7 @@ var backCompat = ice.ace.jq.uiBackCompat !== false;
     function _normalizeArguments( effect, options, speed, callback ) {
 
         // short path for passing an effect options object:
-        if ( ice.ace.jq.isPlainObject( effect ) ) {
+        if ( $.isPlainObject( effect ) ) {
             return effect;
         }
 
@@ -11203,33 +11228,33 @@ var backCompat = ice.ace.jq.uiBackCompat !== false;
         }
 
         // catch (effect, callback)
-        if ( ice.ace.jq.isFunction( options ) ) {
+        if ( $.isFunction( options ) ) {
             callback = options;
             speed = null;
             options = {};
         }
 
         // catch (effect, speed, ?)
-        if ( ice.ace.jq.type( options ) === "number" || ice.ace.jq.fx.speeds[ options ]) {
+        if ( $.type( options ) === "number" || $.fx.speeds[ options ]) {
             callback = speed;
             speed = options;
             options = {};
         }
 
         // catch (effect, options, callback)
-        if ( ice.ace.jq.isFunction( speed ) ) {
+        if ( $.isFunction( speed ) ) {
             callback = speed;
             speed = null;
         }
 
         // add options to effect
         if ( options ) {
-            ice.ace.jq.extend( effect, options );
+            $.extend( effect, options );
         }
 
         speed = speed || options.duration;
-        effect.duration = ice.ace.jq.fx.off ? 0 : typeof speed === "number"
-            ? speed : speed in ice.ace.jq.fx.speeds ? ice.ace.jq.fx.speeds[ speed ] : ice.ace.jq.fx.speeds._default;
+        effect.duration = $.fx.off ? 0 : typeof speed === "number"
+            ? speed : speed in $.fx.speeds ? $.fx.speeds[ speed ] : $.fx.speeds._default;
 
         effect.complete = callback || options.complete;
 
@@ -11238,14 +11263,14 @@ var backCompat = ice.ace.jq.uiBackCompat !== false;
 
     function standardSpeed( speed ) {
         // valid standard speeds
-        if ( !speed || typeof speed === "number" || ice.ace.jq.fx.speeds[ speed ] ) {
+        if ( !speed || typeof speed === "number" || $.fx.speeds[ speed ] ) {
             return true;
         }
 
         // invalid strings - treat as "normal" speed
-        if ( typeof speed === "string" && !ice.ace.jq.jqplot.effects.effect[ speed ] ) {
+        if ( typeof speed === "string" && !$.jqplot.effects.effect[ speed ] ) {
             // TODO: remove in 2.0 (#7115)
-            if ( backCompat && ice.ace.jq.jqplot.effects[ speed ] ) {
+            if ( backCompat && $.jqplot.effects[ speed ] ) {
                 return false;
             }
             return true;
@@ -11254,17 +11279,17 @@ var backCompat = ice.ace.jq.uiBackCompat !== false;
         return false;
     }
 
-    ice.ace.jq.fn.extend({
+    $.fn.extend({
         jqplotEffect: function( effect, options, speed, callback ) {
             var args = _normalizeArguments.apply( this, arguments ),
                 mode = args.mode,
                 queue = args.queue,
-                effectMethod = ice.ace.jq.jqplot.effects.effect[ args.effect ],
+                effectMethod = $.jqplot.effects.effect[ args.effect ],
 
                 // DEPRECATED: remove in 2.0 (#7115)
-                oldEffectMethod = !effectMethod && backCompat && ice.ace.jq.jqplot.effects[ args.effect ];
+                oldEffectMethod = !effectMethod && backCompat && $.jqplot.effects[ args.effect ];
 
-            if ( ice.ace.jq.fx.off || !( effectMethod || oldEffectMethod ) ) {
+            if ( $.fx.off || !( effectMethod || oldEffectMethod ) ) {
                 // delegate to the original method (e.g., .show()) if possible
                 if ( mode ) {
                     return this[ mode ]( args.duration, args.complete );
@@ -11278,15 +11303,15 @@ var backCompat = ice.ace.jq.uiBackCompat !== false;
             }
 
             function run( next ) {
-                var elem = ice.ace.jq( this ),
+                var elem = $( this ),
                     complete = args.complete,
                     mode = args.mode;
 
                 function done() {
-                    if ( ice.ace.jq.isFunction( complete ) ) {
+                    if ( $.isFunction( complete ) ) {
                         complete.call( elem[0] );
                     }
-                    if ( ice.ace.jq.isFunction( next ) ) {
+                    if ( $.isFunction( next ) ) {
                         next();
                     }
                 }
@@ -11321,11 +11346,11 @@ var backCompat = ice.ace.jq.uiBackCompat !== false;
     var rvertical = /up|down|vertical/,
         rpositivemotion = /up|left|vertical|horizontal/;
 
-    ice.ace.jq.jqplot.effects.effect.blind = function( o, done ) {
+    $.jqplot.effects.effect.blind = function( o, done ) {
         // Create element
-        var el = ice.ace.jq( this ),
+        var el = $( this ),
             props = [ "position", "top", "bottom", "left", "right", "height", "width" ],
-            mode = ice.ace.jq.jqplot.effects.setMode( el, o.mode || "hide" ),
+            mode = $.jqplot.effects.setMode( el, o.mode || "hide" ),
             direction = o.direction || "up",
             vertical = rvertical.test( direction ),
             ref = vertical ? "height" : "width",
@@ -11337,13 +11362,13 @@ var backCompat = ice.ace.jq.uiBackCompat !== false;
 
         // // if already wrapped, the wrapper's properties are my property. #6245
         if ( el.parent().is( ".ui-effects-wrapper" ) ) {
-            ice.ace.jq.jqplot.effects.save( el.parent(), props );
+            $.jqplot.effects.save( el.parent(), props );
         } else {
-            ice.ace.jq.jqplot.effects.save( el, props );
+            $.jqplot.effects.save( el, props );
         }
         el.show();
         top = parseInt(el.css('top'), 10);
-        wrapper = ice.ace.jq.jqplot.effects.createWrapper( el ).css({
+        wrapper = $.jqplot.effects.createWrapper( el ).css({
             overflow: "hidden"
         });
 
@@ -11375,12 +11400,12 @@ var backCompat = ice.ace.jq.uiBackCompat !== false;
                 if ( mode === "hide" ) {
                     el.hide();
                 }
-                ice.ace.jq.jqplot.effects.restore( el, props );
-                ice.ace.jq.jqplot.effects.removeWrapper( el );
+                $.jqplot.effects.restore( el, props );
+                $.jqplot.effects.removeWrapper( el );
                 done();
             }
         });
 
     };
 
-
+})(ice.ace.jq);
