@@ -176,7 +176,7 @@ ice.ace.fileentry = {
             //    i.contentDocument.document.XMLDocument :
             //    i.contentDocument.document;
             var d = i.contentDocument;
-            if ((d instanceof XMLDocument || "xmlEncoding" in d) && d.documentElement.nodeName != 'HTML') {
+            if (d.documentElement && d.documentElement.nodeName != 'HTML') {
                 var responseText;
                 if (window.XMLSerializer) {
                     var serializer = new XMLSerializer();
