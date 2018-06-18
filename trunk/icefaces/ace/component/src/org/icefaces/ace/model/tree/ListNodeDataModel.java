@@ -167,7 +167,7 @@ public class ListNodeDataModel extends NodeDataModel<TreeNode> implements Serial
             return new NodeEnumerationToNodeEntryIterator<TreeNode>(
                     getConverter(),
                     getKey(),
-                    getData().children() );
+                    (Enumeration<TreeNode>) getData().children());
     }
 
     @Override
