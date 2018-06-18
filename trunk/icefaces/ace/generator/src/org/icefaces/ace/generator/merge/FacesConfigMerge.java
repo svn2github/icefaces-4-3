@@ -227,7 +227,7 @@ public class FacesConfigMerge {
     private static void writeMerged(String outputFilePath) {
         try {
             FileWriter fw = new FileWriter(new File(outputFilePath));
-            OutputFormat format = new OutputFormat(hostFile);
+            OutputFormat format = new OutputFormat();
 
             format.setIndenting(true);
             format.setIndent(2);
