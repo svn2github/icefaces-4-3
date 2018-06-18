@@ -18,10 +18,10 @@
     <description>
         simple example build file
     </description>
-    <property file="./build.properties"/>    
+    <property file="./build.properties"/>
   <!-- set global properties for this build -->
   <property name="src" location="src"/>
-  <property name="component" location="../component"/>	
+  <property name="component" location="../component"/>
   <property name="build" location="build"/>
   <property name="dist"  location="dist"/>
   <property name="conf"  location="conf"/>
@@ -30,8 +30,8 @@
   <property name="mojarra.lib.dir" location="${lib.dir}/mojarra"/>
   <property name="myfaces.lib.dir" location="${lib.dir}/myfaces"/>
   <property name="myfaces.common.dir" value="${myfaces.lib.dir}/common" />
-  <property name="compile.source" value="1.5"/>
-  <property name="compile.target" value="1.5"/>
+  <property name="compile.source" value="1.6"/>
+  <property name="compile.target" value="10"/>
   <property name="compile.debug" value="true"/>
 
     <!-- Check which JSF implementation to use and set the appropriate sub-directory  -->
@@ -53,7 +53,7 @@
         <pathelement path="../generator/build"/>
       	<pathelement path="../component/build/meta"/>
   </path>
-    
+
   <target name="generate">
     <tstamp/>
     <java classname="org.icefaces.ace.generator.Generator"  classpathref="compile.run.classpath" fork="true"
@@ -95,10 +95,10 @@
                debug="${compile.debug}"
                includeantruntime="false">
        <classpath refid="compile.run.classpath"/>
-   </javac>    
+   </javac>
   </target>
-	
-  <target name="dist" depends="compile" 
+
+  <target name="dist" depends="compile"
         description="generate the distribution" >
     <!-- Create the distribution directory -->
     <mkdir dir="${dist}/lib"/>
@@ -109,7 +109,7 @@
   <target name="clean"
         description="clean up" >
 
-    
+
     <!-- Delete the ${build} and ${dist} directory trees -->
     <delete dir="${build}"/>
     <delete dir="${dist}"/>
