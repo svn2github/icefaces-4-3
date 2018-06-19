@@ -14,6 +14,8 @@
  * governing permissions and limitations under the License.
  */
 
+ice.mobi.DataViewEvents = {};
+
 (function(im) {
     var isTouchDevice = 'ontouchstart' in document.documentElement,
         indicatorSelector = "i.mobi-dv-si",
@@ -354,7 +356,22 @@
 						,100);
 					}
 				});
-                ice.mobi.addListener(element, "touchstart", isRowEvent(rowTouchStart));
+                ice.mobi.addListener(element, "touchstart", function(e) {
+					var d = new Date();
+					var n = d.getTime();
+					if (!ice.mobi.DataViewEvents[clientId] || ((ice.mobi.DataViewEvents[clientId] + 10) < n)) {
+						ice.mobi.DataViewEvents[clientId] = n;
+						isRowEvent(rowTouchStart)(e);
+					}
+				});
+				ice.mobi.addListener(element, "click", function(e) {
+					var d = new Date();
+					var n = d.getTime();
+					if (!ice.mobi.DataViewEvents[clientId] || ((ice.mobi.DataViewEvents[clientId] + 10) < n)) {
+						ice.mobi.DataViewEvents[clientId] = n;
+						isRowEvent(activateRow)(e);
+					}
+				});
             } else {
                 ice.mobi.addListener(element, "click", isRowEvent(activateRow));
             }
