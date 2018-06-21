@@ -28,6 +28,7 @@ import org.icefaces.impl.util.CoreUtils;
 import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
+import javax.faces.application.Application;
 import javax.faces.application.NavigationHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectItem;
@@ -36,6 +37,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
+import javax.faces.event.PhaseId;
+import javax.faces.event.PostValidateEvent;
+import javax.faces.event.PreValidateEvent;
 import javax.faces.model.*;
 import javax.xml.transform.Result;
 import java.sql.ResultSet;
@@ -332,6 +336,109 @@ public class ACEList extends ListBase {
         selectItemModel = isSelect;
     }
 
+	// cause to re-calculate client ID to include naming container ID
+	protected static void recalculateClientId(UIComponent component) {
+		component.setId(component.getId());
+		for (UIComponent child : component.getChildren()) {
+			recalculateClientId(child);
+		}
+	}
+
+    @Override
+    public void processDecodes(FacesContext context) {
+
+        if (context == null) {
+            throw new NullPointerException();
+        }
+        if (!isRendered()) {
+            return;
+        }
+
+        pushComponentToEL(context, this);
+        getDataModel();
+        iterate(context, PhaseId.APPLY_REQUEST_VALUES);
+        decode(context);
+        popComponentFromEL(context);
+
+    }
+
+	@Override
+    public void processValidators(FacesContext context) {
+
+        if (context == null) {
+            throw new NullPointerException();
+        }
+        if (!isRendered()) {
+            return;
+        }
+        pushComponentToEL(context, this);
+        Application app = context.getApplication();
+        app.publishEvent(context, PreValidateEvent.class, this);
+        iterate(context, PhaseId.PROCESS_VALIDATIONS);
+        app.publishEvent(context, PostValidateEvent.class, this);
+        popComponentFromEL(context);
+    }
+
+    private void iterate(FacesContext context, PhaseId phaseId) {
+
+		// Process each facet of this component exactly once
+		setRowIndex(-1);
+		if (getFacetCount() > 0) {
+			for (UIComponent facet : getFacets().values()) {
+				if (phaseId == PhaseId.APPLY_REQUEST_VALUES) {
+					facet.processDecodes(context);
+				} else if (phaseId == PhaseId.PROCESS_VALIDATIONS) {
+					facet.processValidators(context);
+				} else if (phaseId == PhaseId.UPDATE_MODEL_VALUES) {
+					facet.processUpdates(context);
+				} else {
+					throw new IllegalArgumentException();
+				}
+			}
+		}
+
+		// Iterate over children, once per row
+		int processed = 0;
+		int rowIndex = getFirst() - 1;
+		int rows = getRows();
+
+		while (true) {
+
+			// Have we processed the requested number of rows?
+			if ((rows > 0) && (++processed > rows)) {
+				break;
+			}
+
+			// Expose the current row in the specified request attribute
+			setRowIndex(++rowIndex);
+			if (!isRowAvailable()) {
+				break; // Scrolled past the last row
+			}
+
+			if (getChildCount() > 0) {
+				for (UIComponent kid : getChildren()) {
+					if (!kid.isRendered()) {
+						continue;
+					}
+					recalculateClientId(kid);
+					if (phaseId == PhaseId.APPLY_REQUEST_VALUES) {
+						kid.processDecodes(context);
+					} else if (phaseId == PhaseId.PROCESS_VALIDATIONS) {
+						kid.processValidators(context);
+					} else if (phaseId == PhaseId.UPDATE_MODEL_VALUES) {
+						kid.processUpdates(context);
+					} else {
+						throw new IllegalArgumentException();
+					}
+				}
+			}
+
+		}
+
+		// Clean up after ourselves
+		setRowIndex(-1);
+	}
+
 	// ---------------------
 	// ----- FILTERING -----
 	// ---------------------
@@ -362,7 +469,9 @@ public class ACEList extends ListBase {
             return;
         }
 
-		super.processUpdates(context);
+        pushComponentToEL(context, this);
+        iterate(context, PhaseId.UPDATE_MODEL_VALUES);
+        popComponentFromEL(context);
 
         pushComponentToEL(context, this);
 

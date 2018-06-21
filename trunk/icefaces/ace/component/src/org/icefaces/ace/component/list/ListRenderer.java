@@ -359,20 +359,12 @@ public class ListRenderer extends CoreRenderer {
         for (UIComponent component : list.getChildren()) {
             if (!(component instanceof UISelectItem ||
                     component instanceof UISelectItems)) {
-				recalculateClientId(component);
+				ACEList.recalculateClientId(component);
                 component.encodeAll(context);
 			}
         }
         writer.endElement(HTML.LI_ELEM);
     }
-
-	// cause to re-calculate client ID to include naming container ID
-	private void recalculateClientId(UIComponent component) {
-		component.setId(component.getId());
-		for (UIComponent child : component.getChildren()) {
-			recalculateClientId(child);
-		}
-	}
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
