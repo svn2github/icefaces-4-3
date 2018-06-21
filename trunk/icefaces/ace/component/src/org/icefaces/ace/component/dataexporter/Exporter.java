@@ -45,6 +45,7 @@ import javax.faces.component.ValueHolder;
 import javax.faces.component.html.HtmlCommandLink;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
+import javax.faces.model.SelectItem;
 
 import org.icefaces.ace.component.datatable.DataTable;
 import org.icefaces.ace.component.column.Column;
@@ -571,9 +572,15 @@ public abstract class Exporter {
 				Object rowData = list.getRowData();
                 if (rowVar != null) requestMap.put(rowVar, rowData);
 
-				for (UIComponent child : list.getChildren()) {
-					builder.append(exportValue(context, child));
+				if (rowData instanceof SelectItem) {
+					SelectItem item = (SelectItem) rowData;
+					builder.append(item.getLabel());
 					builder.append(" ");
+				} else {
+					for (UIComponent child : list.getChildren()) {
+						builder.append(exportValue(context, child));
+						builder.append(" ");
+					}
 				}
 				builder.append(" ");
 			}
