@@ -112,6 +112,7 @@ public class SimpleSelectOneMenu extends SimpleSelectOneMenuBase implements Focu
                 }
             }
         }
+		if (!isValid()) return;
 
         boolean found = SelectUtils.matchValue(facesContext,
                                                this,

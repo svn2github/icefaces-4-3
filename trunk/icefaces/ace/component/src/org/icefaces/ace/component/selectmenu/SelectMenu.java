@@ -160,6 +160,7 @@ public class SelectMenu extends SelectMenuBase implements NamingContainer, Focus
 	protected void validateValue(FacesContext facesContext, Object submittedValue) {
 	
 		super.validateValue(facesContext, submittedValue);
+		if (!isValid()) return;
 		
 		SelectItem item = null;
 		boolean found = false;
