@@ -1699,10 +1699,10 @@ ice.ace.DataTable.prototype.deselectAllCells = function () {
 ice.ace.DataTable.prototype.setupReorderableColumns = function () {
     var _self = this;
     ice.ace.jq(this.jqId + ' > div > table > thead').sortable({
-        items:'th.ui-reorderable-col', helper:'clone',
+        items:' > tr > th.ui-reorderable-col', helper:'clone',
         axis:'x', appendTo:this.jqId + ' thead',
         cursor:'move', placeholder:'ui-state-hover',
-        cancel:'.ui-header-right, :input, button, .ui-tableconf-button, .ui-header-text'})
+        cancel:'.ui-header-right, :input, button, .ui-tableconf-button'})
         .bind("sortstart", function (event, ui) {
             _self.reorderStart = ui.item.index();
         })
@@ -1711,6 +1711,14 @@ ice.ace.DataTable.prototype.setupReorderableColumns = function () {
             if (_self.reorderStart != _self.reorderEnd)
                 _self.reorderColumns(_self.reorderStart, _self.reorderEnd);
         });
+
+    ice.ace.jq(this.jqId + ' > div > table > thead > tr > th.ui-reorderable-col > div > span > span.ui-header-text')
+		.css('user-select', 'none')
+		.css('-o-user-select', 'none')
+		.css('-ms-user-select', 'none')
+		.css('-moz-user-select', 'none')
+		.css('-khtml-user-select', 'none')
+		.css('-webkit-user-select', 'none');
 };
 
 ice.ace.DataTable.prototype.setupRowExpansionEvents = function () {
