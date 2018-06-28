@@ -170,6 +170,8 @@ public class ListControlRenderer extends CoreRenderer {
 
             writer.startElement(HTML.SPAN_ELEM, null);
             writer.writeAttribute(HTML.CLASS_ATTR, "if-list-nctrl-" + code + " " + containerClass, "controlClass");
+            writer.writeAttribute(HTML.TABINDEX_ATTR, "0", null);
+            writer.writeAttribute(HTML.TABINDEX_ATTR, "0", null);
             writer.startElement(HTML.SPAN_ELEM, null);
             writer.writeAttribute(HTML.CLASS_ATTR, styleClass, property);
             writer.endElement(HTML.SPAN_ELEM);

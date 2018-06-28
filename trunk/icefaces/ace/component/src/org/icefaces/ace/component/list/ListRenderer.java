@@ -232,6 +232,7 @@ public class ListRenderer extends CoreRenderer {
 
             writer.startElement(HTML.SPAN_ELEM, null);
             writer.writeAttribute(HTML.CLASS_ATTR, itemStyleClass, "controlsItemClass");
+            writer.writeAttribute(HTML.TABINDEX_ATTR, "0", null);
             writer.startElement(HTML.SPAN_ELEM, null);
             writer.writeAttribute(HTML.CLASS_ATTR, iconStyleClass, property);
             writer.endElement(HTML.SPAN_ELEM);

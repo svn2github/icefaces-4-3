@@ -117,10 +117,11 @@ public class ListDecoder {
         List collection = null;
         if (value instanceof List) collection = (List) value;
         else if (value.getClass().isArray()) collection = Arrays.asList(value);
+		if (list.removedElements == null) list.removedElements = new ArrayList<Object>();
 
         for (int i = indexes.length-1; i > -1; i--) {
             int index = indexes[i];
-			collection.remove(index);
+			list.removedElements.add(collection.remove(index));
         }
 
         return this;

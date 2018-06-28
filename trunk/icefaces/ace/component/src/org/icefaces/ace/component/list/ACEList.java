@@ -18,6 +18,7 @@ package org.icefaces.ace.component.list;
 
 import org.icefaces.ace.event.ListMigrateEvent;
 import org.icefaces.ace.event.ListMoveEvent;
+import org.icefaces.ace.event.ListRemoveEvent;
 import org.icefaces.ace.event.ListSelectEvent;
 import org.icefaces.ace.json.JSONArray;
 import org.icefaces.ace.json.JSONException;
@@ -62,6 +63,7 @@ public class ACEList extends ListBase {
     boolean selectItemModel = false;
 	transient protected FilterState savedFilterState;
 	transient protected SortState savedSortState;
+	transient protected List<Object> removedElements = null;
 
     @Override
     protected DataModel getDataModel() {
@@ -311,7 +313,9 @@ public class ACEList extends ListBase {
 					ACEList srcList = (ACEList) CoreUtils.findComponentByClientId(context.getViewRoot(), srcListClientId);
 					event = new ListMigrateEvent((AjaxBehaviorEvent) event, records, srcList);
 				} catch (Exception e) { }
-            }
+            } else if (eventName.equals("remove")) {
+				event = new ListRemoveEvent((AjaxBehaviorEvent) event, removedElements);
+			}
         }
 
 		super.queueEvent(event);

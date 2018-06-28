@@ -79,8 +79,8 @@ import java.util.Set;
 			tlddoc="Fired when a change to the current filters occurs on the list.",
 			defaultRender="@all", defaultExecute="@this"),
 	@ClientEvent(name="remove",
-			javadoc="Fired when an item is removed from the List.",
-			tlddoc="Fired when an item is removed from the List.",
+			javadoc="Fired when an item is removed from the List. The listener method for this event can take an event object of the type org.icefaces.ace.event.ListRemoveEvent.",
+			tlddoc="Fired when an item is removed from the List. The listener method for this event can take an event object of the type org.icefaces.ace.event.ListRemoveEvent.",
 			defaultRender="@all", defaultExecute="@this")
     },
     defaultEvent = "select"
