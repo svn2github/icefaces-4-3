@@ -702,6 +702,17 @@ ice.ace.Schedule.prototype.sendNavigationRequest = function(event, year, month, 
 		document.getElementById(this.id + '_selectedDate').setAttribute('value', '');
 	}
 
+	var button = null;
+	if (type == 'next') {
+		button = this.jq.find('.schedule-button-next');
+	} else if (type == 'previous') {
+		button = this.jq.find('.schedule-button-previous');
+	}
+	if (button) {
+		ice.setFocus(button.attr('id'));
+		button.focus();
+	}
+
 	if ((type == 'next' && !behaviors.navNext) || (type == 'previous' && !behaviors.navPrevious) || 
 			(type == 'selection' && !behaviors.navSelection)) {
 		if (!this.cfg.isLazy) return;
@@ -853,8 +864,8 @@ ice.ace.Schedule.prototype.renderMonthView = function(data) {
 	var i, j;
 	var markup =
 	"<div class=\"schedule-title ui-state-active\">"
-		+"<div class=\"schedule-button-previous\" role=\"button\" aria-label=\"" + this.messages.AriaPreviousMonth + "\"><i class=\"fa fa-arrow-left\"></i></div>"
-		+"<div class=\"schedule-button-next\" role=\"button\" aria-label=\"" + this.messages.AriaNextMonth + "\"><i class=\"fa fa-arrow-right\"></i></div>"
+		+"<div class=\"schedule-button-previous\" id=\"" + this.id + "_previous\" role=\"button\" aria-label=\"" + this.messages.AriaPreviousMonth + "\"><i class=\"fa fa-arrow-left\"></i></div>"
+		+"<div class=\"schedule-button-next\" id=\"" + this.id + "_next\" role=\"button\" aria-label=\"" + this.messages.AriaNextMonth + "\"><i class=\"fa fa-arrow-right\"></i></div>"
 		+"<div class=\"schedule-showing\" aria-label=\"" + this.messages.AriaCurrentMonth + "\">" + this.getMonthName(currentMonth) + " " + currentYear + "</div>"
 	+"</div>"
 
@@ -1068,8 +1079,8 @@ ice.ace.Schedule.prototype.renderWeekView = function() {
 	var i, j;
 	var markup =
 	"<div class=\"schedule-title ui-state-active\">"
-		+"<div class=\"schedule-button-previous\" role=\"button\" aria-label=\"" + this.messages.AriaPreviousWeek + "\"><i class=\"fa fa-arrow-left\"></i></div>"
-		+"<div class=\"schedule-button-next\" role=\"button\" aria-label=\"" + this.messages.AriaNextWeek + "\"><i class=\"fa fa-arrow-right\"></i></div>"
+		+"<div class=\"schedule-button-previous\" id=\"" + this.id + "_previous\" role=\"button\" aria-label=\"" + this.messages.AriaPreviousWeek + "\"><i class=\"fa fa-arrow-left\"></i></div>"
+		+"<div class=\"schedule-button-next\" id=\"" + this.id + "_next\" role=\"button\" aria-label=\"" + this.messages.AriaNextWeek + "\"><i class=\"fa fa-arrow-right\"></i></div>"
 		+"<div class=\"schedule-showing\" aria-label=\"" + this.messages.AriaCurrentWeek + "\"></div>"
 	+"</div>"
 
@@ -1482,8 +1493,8 @@ ice.ace.Schedule.prototype.renderDayView = function() {
 	var i, j;
 	var markup =
 	"<div class=\"schedule-title ui-state-active\">"
-		+"<div class=\"schedule-button-previous\" role=\"button\" aria-label=\"" + this.messages.AriaPreviousDay + "\"><i class=\"fa fa-arrow-left\"></i></div>"
-		+"<div class=\"schedule-button-next\" role=\"button\" aria-label=\"" + this.messages.AriaNextDay + "\"><i class=\"fa fa-arrow-right\"></i></div>"
+		+"<div class=\"schedule-button-previous\" id=\"" + this.id + "_previous\" role=\"button\" aria-label=\"" + this.messages.AriaPreviousDay + "\"><i class=\"fa fa-arrow-left\"></i></div>"
+		+"<div class=\"schedule-button-next\" id=\"" + this.id + "_next\" role=\"button\" aria-label=\"" + this.messages.AriaNextDay + "\"><i class=\"fa fa-arrow-right\"></i></div>"
 		+"<div class=\"schedule-showing\" aria-label=\"" + this.messages.AriaCurrentDay + "\"></div>"
 	+"</div>"
 
