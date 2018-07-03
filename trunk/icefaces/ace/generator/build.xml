@@ -30,8 +30,8 @@
   <property name="mojarra.lib.dir" location="${lib.dir}/mojarra"/>
   <property name="myfaces.lib.dir" location="${lib.dir}/myfaces"/>
   <property name="myfaces.common.dir" value="${myfaces.lib.dir}/common" />
-  <property name="compile.source" value="1.6"/>
-  <property name="compile.target" value="1.6"/>
+  <property name="compile.source" value="1.8"/>
+  <property name="compile.target" value="1.8"/>
   <property name="compile.debug" value="true"/>
 
     <!-- Check which JSF implementation to use and set the appropriate sub-directory  -->
@@ -40,8 +40,8 @@
     </condition>
 
     <!-- Check which JSF version to use and set the appropriate sub-directory  -->
-    <condition property="jsf.ver.dir" value="2.1" else="2.2">
-        <isset property="jsf21"/>
+    <condition property="jsf.ver.dir" value="2.2" else="2.3">
+        <isset property="jsf22"/>
     </condition>
 
     <property name="jsf.lib.dir" value="${jsf.impl.dir}/${jsf.ver.dir}" />
