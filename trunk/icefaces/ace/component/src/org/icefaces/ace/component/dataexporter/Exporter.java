@@ -504,7 +504,10 @@ public abstract class Exporter {
 					Converter converterForType = context.getApplication().createConverter(valueType);
 					if (converterForType != null) return converterForType.getAsString(context, component, value);
 				}
-			} catch (Exception e) {}
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+				e.printStackTrace();
+			}
 
 			return value.toString();
 		} else if (component instanceof DataTable) {
@@ -558,7 +561,7 @@ public abstract class Exporter {
 				for (Row r : tailingRows) exportConditionalRowValues(builder, r);
 				builder.append(" ");
 			}
-			requestMap.remove(rowVar);
+			if (rowVar != null) requestMap.remove(rowVar);
 			return builder.toString();
         } else if (component instanceof ACEList) {
 			ACEList list = (ACEList) component;
@@ -584,7 +587,7 @@ public abstract class Exporter {
 				}
 				builder.append(" ");
 			}
-			requestMap.remove(rowVar);
+			if (rowVar != null) requestMap.remove(rowVar);
 			return builder.toString();
         } else if (component instanceof Repeat) {
 			Repeat repeat = (Repeat) component;
@@ -613,8 +616,8 @@ public abstract class Exporter {
 				}
 				builder.append(" ");
 			}
-			requestMap.remove(rowVar);
-			requestMap.remove(varStatus);
+			if (rowVar != null) requestMap.remove(rowVar);
+			if (rowVar != null) requestMap.remove(varStatus);
 			return builder.toString();
         } else if (component instanceof UIData) {
 			UIData uiData = (UIData) component;
@@ -636,7 +639,7 @@ public abstract class Exporter {
 				}
 				builder.append(" ");
 			}
-			requestMap.remove(rowVar);
+			if (rowVar != null) requestMap.remove(rowVar);
 			return builder.toString();
 		}
         

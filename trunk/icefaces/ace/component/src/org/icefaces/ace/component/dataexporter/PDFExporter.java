@@ -154,6 +154,8 @@ public class PDFExporter extends Exporter {
 			logger.severe("Exporting data to PDF format was attempted by a user, but the iText library was not found.");
 			return "unsupported format";
 		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
 			throw new IOException(e.getMessage());
 		}
 	}
