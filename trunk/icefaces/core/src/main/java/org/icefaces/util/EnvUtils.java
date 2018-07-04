@@ -295,11 +295,11 @@ public class EnvUtils {
                     java.lang.reflect.Method initMethod = MyfacesConfigClass.getMethod("getCurrentInstance", partype[0]);
                     Object myfacesConfigInstance = initMethod.invoke(null,ctx);
                     if (myfacesConfigInstance !=null){
-                        Object returnValue = method1.invoke(myfacesConfigInstance, noparams);
+                        Object returnValue = method1.invoke(myfacesConfigInstance, (Object[]) noparams);
                         java.lang.reflect.Method method2 = MyfacesConfigClass.getDeclaredMethod("isRefreshTransientBuildOnPSS", noparams);
-                        Object returnValue2 = method2.invoke(myfacesConfigInstance, noparams);
+                        Object returnValue2 = method2.invoke(myfacesConfigInstance, (Object[]) noparams);
                         java.lang.reflect.Method method3 = MyfacesConfigClass.getDeclaredMethod("isRefreshTransientBuildOnPSSAuto", noparams);
-                        Object returnValue3 = method3.invoke(myfacesConfigInstance, noparams);
+                        Object returnValue3 = method3.invoke(myfacesConfigInstance, (Object[]) noparams);
                         myFacesRefreshTransientProperty= (String.valueOf(returnValue2).equals("true") && String.valueOf(returnValue).equals("true"));
                     }
                 }

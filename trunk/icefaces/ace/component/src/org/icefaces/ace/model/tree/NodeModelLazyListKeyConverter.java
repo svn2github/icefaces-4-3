@@ -42,6 +42,6 @@ public class NodeModelLazyListKeyConverter<K> implements KeySegmentConverter<K> 
         for (int i = 0; i < segments.length; i++) {
             indexes[i] = Integer.parseInt(segments[i]);
         }
-        return new NodeKey(indexes);
+        return new NodeKey((Object[]) indexes);
     }
 }
