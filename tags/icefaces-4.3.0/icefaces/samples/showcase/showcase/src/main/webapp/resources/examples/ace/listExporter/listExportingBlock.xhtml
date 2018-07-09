@@ -1,0 +1,113 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:ace="http://www.icefaces.org/icefaces/components"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/resources/templates/content-template.xhtml">
+    <ui:param name="title" value="#{msgs['example.ace.list.block.title']}"/>
+    <ui:param name="description" value="#{msgs['example.ace.list.block.description']}"/>
+
+    <ui:param value="#{listExportingBlockBean}" name="backing" />
+
+    <ui:define name="example">
+        <h:form id="form">
+            <ace:panel header="Exporter Customization">
+                <h:panelGrid columns="2" cellspacing="6" cellpadding="6">
+                    <h:outputLabel for="multiIn" value="Export Selected Items Only:"/>
+                    <h:selectBooleanCheckbox id="multiIn" value="#{backing.selectedItemsOnly}">
+                        <f:ajax event="click" render="@this listExporter"/>
+                    </h:selectBooleanCheckbox>
+                </h:panelGrid>
+            </ace:panel>
+            <h:panelGroup style="padding: 0.5em;" layout="block">
+                <style type="text/css">
+                    .blockList {
+                        padding:.5em;
+                        font-size:85%;
+                    }
+                    .blockList .if-list-item {
+                        vertical-align: middle;
+                        display:inline-block;
+
+                        /* IE7 inline block hack */
+                        *display:inline;
+                        zoom:1;
+
+                        border:1px solid black;
+                        margin: .5em;
+                    }
+                    .blockList .if-list-plhld {
+                        display:inline-block;
+
+                        /* IE7 inline block hack */
+                        *display:inline;
+                        zoom:1;
+
+                        border:1px solid black;
+                    }
+                </style>
+
+                <ace:list id="firstCarList" value="#{backing.carList}"
+                          var="car" selectionMode="multiple"
+                          bodyClass="blockList"
+                          dropGroup="blockGroup">
+					<ace:listExporterValue name="Name" value="#{car.name}"/>
+					<ace:listExporterValue name="Chassis" value="#{car.chassis}"/>
+					<ace:listExporterValue name="Weight" value="#{car.weight}"/>
+					<ace:listExporterValue name="Accel" value="#{car.acceleration}"/>
+					<ace:listExporterValue name="MPG" value="#{car.mpg}"/>
+					<ace:listExporterValue name="Cost" value="#{car.cost}"/>
+                    <h:panelGrid columns="2" id="hurf">
+                        <f:facet name="header">
+                            <h:outputText value="#{car.name}" /><hr/>
+                        </f:facet>
+                        Chassis: <h:outputText value="#{car.chassis}" />
+                        Weight: <h:outputText value="#{car.weight}" />
+                        Accel: <h:outputText value="#{car.acceleration}" />
+                        MPG: <h:outputText value="#{car.mpg}" />
+                        Cost: <h:outputText value="#{car.cost}" />
+                    </h:panelGrid>
+                </ace:list>
+            </h:panelGroup>
+
+            <ace:panel>
+                <h:panelGrid columns="2" styleClass="centeredPanelGrid">
+                        <h:outputLabel for="typeIn" value="Export As:"/>
+                        <h:selectOneRadio id="typeIn" value="#{backing.type}" required="true">
+                            <f:ajax disabled="false"/>
+                            <f:selectItem itemValue="csv" itemLabel="CSV"/>
+                            <f:selectItem itemValue="pdf" itemLabel="PDF"/>
+                            <f:selectItem itemValue="xls" itemLabel="XLS"/>
+                            <f:selectItem itemValue="xlsx" itemLabel="XLSX"/>
+                            <f:selectItem itemValue="xml" itemLabel="XML"/>
+                        </h:selectOneRadio>
+                </h:panelGrid>
+                <h:panelGrid styleClass="centeredPanelGrid">
+					<ace:listExporter	id="listExporter"
+										label="Export File"
+										type="#{backing.type}"
+										target="firstCarList"
+										fileName="cars"
+										selectedItemsOnly="#{backing.selectedItemsOnly}"/>
+                </h:panelGrid>
+            </ace:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

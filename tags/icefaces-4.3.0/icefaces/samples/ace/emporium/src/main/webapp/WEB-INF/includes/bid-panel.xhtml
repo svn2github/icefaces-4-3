@@ -1,0 +1,80 @@
+<!--
+  ~ Copyright 2004-2015 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+-->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:ace="http://www.icefaces.org/icefaces/components"
+                xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
+                xmlns:icecore="http://www.icefaces.org/icefaces/core"
+                xmlns:emporium="http://xmlns.jcp.org/jsf/composite/components">
+    <!-- We position the defaultAction this way so we can easily grab the parent container and add an error message if needed -->
+    <!-- Note we don't use 'Escape' here to cancel the bid because it would interfere with our dialogs (like View History) -->
+    <icecore:defaultAction actionListener="#{auctionController.toggleFilter}" key="Enter"/>
+
+    <h:panelGrid id="submitParentWrapperId"
+                 columns="6"
+                 style="width: auto;" styleClass="center"
+                 rendered="#{bidBean.checkRenderBidPanel}">
+
+        <h:panelGroup>
+	        <mobi:largeView>
+	            <h:outputLabel for="bidIn" value="Bid on '#{bidBean.bidItem.name}':"/>
+	        </mobi:largeView>
+	        <mobi:smallView>
+	            <h:outputLabel for="bidIn" value="Bid:"/>
+	        </mobi:smallView>
+        </h:panelGroup>
+        
+        <ace:textEntry id="bidIn" value="#{bidBean.currentBid}"
+                       required="true" requiredMessage="Enter a valid bid."
+                       size="10">
+            <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+        </ace:textEntry>
+        
+        <h:panelGroup id="submitWrap">
+	        <mobi:largeView>
+		        <ace:pushButton id="submitBid" value="Submit"
+		                        actionListener="#{auctionController.submitBid}"
+		                        title="Submit your bid for the selected item"/>
+	        </mobi:largeView>
+	        <mobi:smallView>
+	            <ace:pushButton id="submitBid" value="Go"
+	                            actionListener="#{auctionController.submitBidAndClose}"
+	                            title="Submit your bid for the selected item"/>
+	        </mobi:smallView>
+        </h:panelGroup>
+        <h:panelGroup id="closeWrap">
+	        <mobi:largeView>
+		        <ace:pushButton value="Close" immediate="true"
+		                        actionListener="#{auctionController.cancelBid}"
+		                        title="Cancel your bid and unselect the item"/>
+	        </mobi:largeView>
+	        <mobi:smallView>
+	            <h:commandButton image="resources/images/remove.png" immediate="true"
+	                             actionListener="#{auctionController.cancelBid}"
+	                             title="Cancel your bid and unselect the item"/>
+	        </mobi:smallView>
+        </h:panelGroup>
+    </h:panelGrid>
+    
+	<h:panelGroup layout="block" styleClass="messagePadding">
+		<ace:message for="bidIn" />
+		<ace:message for="submitParentWrapperId" />
+	</h:panelGroup>
+	
+    <h:outputText value="Select a row to begin bidding." rendered="#{!bidBean.renderBidPanel}"/>
+</ui:composition>

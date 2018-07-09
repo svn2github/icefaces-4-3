@@ -1,0 +1,5 @@
+<my-locations-view name="my-locations" class="style-scope client-app-view iron-selected x-scope my-locations-view-0">
+
+    <template is="dom-if" class="style-scope my-locations-view"></template>
+    <template is="dom-if" class="style-scope my-locations-view"></template>
+</my-locations-view>

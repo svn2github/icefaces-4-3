@@ -1,0 +1,119 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:ace="http://www.icefaces.org/icefaces/components"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    template="/resources/templates/content-template.xhtml">
+    <ui:param name="title" value="#{msgs['example.ace.dataTable.filtering.title']}"/>
+    <ui:param name="description" value="#{msgs['example.ace.dataTable.filtering.description']}"/>
+
+    <ui:define name="example">
+        <h:form id="form">
+           <ace:dataTable id="carTableSingleRow"
+                          value="#{dataTableFiltering.carsData}"
+                          var="car">
+                <ace:column id="car" headerText="ID" filterBy="#{car.id}" filterMatchMode="contains">
+                    <h:outputText id="carCell" value="#{car.id}"/>
+                </ace:column>
+                <ace:column id="name" headerText="Name" filterBy="#{car.name}" filterMatchMode="contains">
+                    <h:outputText id="nameCell" value="#{car.name}"/>
+                </ace:column>
+                <ace:column id="chassis" headerText="Chassis" filterBy="#{car.chassis}" filterMatchMode="contains" filterValues="#{dataTableFiltering.filterValues}">
+					<f:facet name="filter">
+						<h:panelGrid columns="2">
+							<ace:checkboxButton id="cb1" value="#{dataTableFiltering.custom}">
+								<ace:ajax execute="@form" render="@form"/>
+							</ace:checkboxButton>
+							<ace:textEntry id="textEntry1" value="#{dataTableFiltering.customFilter}">
+								<ace:ajax execute="@form" render="@form"/>
+							</ace:textEntry>
+
+							<ace:checkboxButton id="cb2" value="#{dataTableFiltering.bus}">
+								<ace:ajax execute="@form" render="@form"/>
+							</ace:checkboxButton>
+							<h:outputText value="Bus" />
+
+							<ace:checkboxButton id="cb3" value="#{dataTableFiltering.luxury}">
+								<ace:ajax execute="@form" render="@form"/>
+							</ace:checkboxButton>
+							<h:outputText value="Luxury" />
+
+							<ace:checkboxButton id="cb4" value="#{dataTableFiltering.midSize}">
+								<ace:ajax execute="@form" render="@form"/>
+							</ace:checkboxButton>
+							<h:outputText value="Mid-Size" />
+
+							<ace:checkboxButton id="cb5" value="#{dataTableFiltering.motorcycle}">
+								<ace:ajax execute="@form" render="@form"/>
+							</ace:checkboxButton>
+							<h:outputText value="Motorcycle" />
+
+							<ace:checkboxButton id="cb6" value="#{dataTableFiltering.pickup}">
+								<ace:ajax execute="@form" render="@form"/>
+							</ace:checkboxButton>
+							<h:outputText value="Pickup" />
+
+							<ace:checkboxButton id="cb7" value="#{dataTableFiltering.semiTruck}">
+								<ace:ajax execute="@form" render="@form"/>
+							</ace:checkboxButton>
+							<h:outputText value="Semi-Truck" />
+
+							<ace:checkboxButton id="cb8" value="#{dataTableFiltering.stationWagon}">
+								<ace:ajax execute="@form" render="@form"/>
+							</ace:checkboxButton>
+							<h:outputText value="Station Wagon" />
+
+							<ace:checkboxButton id="cb9" value="#{dataTableFiltering.subcompact}">
+								<ace:ajax execute="@form" render="@form"/>
+							</ace:checkboxButton>
+							<h:outputText value="Subcompact" />
+
+							<ace:checkboxButton id="cb10" value="#{dataTableFiltering.van}">
+								<ace:ajax execute="@form" render="@form"/>
+							</ace:checkboxButton>
+							<h:outputText value="Van" />
+						</h:panelGrid>
+					</f:facet>
+                    <h:outputText id="chassisCell" value="#{car.chassis}"/>
+                </ace:column>
+                <ace:column id="weight" headerText="Weight" filterBy="#{car.weight}" filterMatchMode="contains">
+                    <h:outputText id="weightCell" value="#{car.weight}lbs."/>
+                </ace:column>
+                <ace:column id="acceleration" headerText="Accel"
+                            filterBy="#{car.acceleration}"
+                            filterOptions="#{dataTableFiltering.accelOptions}"
+                            >
+                    <h:outputText id="accelerationCell" value="#{car.acceleration}"/>
+                </ace:column>
+                <ace:column id="mpg" headerText="MPG" filterBy="#{car.mpg}" filterMatchMode="contains">
+                    <h:outputText id="mpgCell" value="#{car.mpg}"/>
+                </ace:column>
+                <ace:column id="cost" headerText="Cost" filterBy="#{car.cost}" filterMatchMode="contains">
+                    <h:outputText id="costCell" value="#{car.cost}">
+                        <f:convertNumber type="currency"
+                                         currencySymbol="$"
+                                         groupingUsed="true"
+                                         minFractionDigits="2"
+                                         maxFractionDigits="2"/>
+                    </h:outputText>
+                </ace:column>
+            </ace:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>

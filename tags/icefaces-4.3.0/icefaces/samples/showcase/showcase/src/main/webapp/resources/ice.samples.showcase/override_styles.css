@@ -1,0 +1,70 @@
+/*
+ * Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+
+/*
+This also overrides the indeterminate progress imagery. But the themes don't support that anyway.
+*/
+.ui-progressbar-value
+{
+    border: 1px solid #000000/*{borderColorHeader}*/;
+    color: black/*{fcHeader}*/;
+    font-weight: bold;
+}
+
+.ui-datepicker { 
+    width: 17em; 
+    padding: .2em .2em 0;
+    display: none;
+    font-size: 9pt;
+}
+
+.textEntryInputTable td {
+    padding-top: 8px;
+}
+
+.ui-datepicker-trigger {
+    border: 0;
+}
+
+.ui-notificationbar.ui-widget-content table {
+    color: inherit;
+}
+
+/* override demo_template.css paddings for <ul>, which affect menus */
+.content ul.wijmo-wijmenu-list {
+	padding: 0;
+}
+
+.menuContainer .ui-accordion-content {
+    font-size: 10pt;
+    padding: 10px 10px;
+    font-family: Arial,Helvetica,sans-serif;
+}
+
+.menuContainer .ui-accordion-header a{
+    font-size: 10pt;
+}
+
+.ui-combobox {
+	font-size: 8pt;
+}
+.ice-ace-radiobuttons.ui-widget {
+	font-size: 0.9em;
+}
+
+.ice-ace-checkboxbuttons.ui-widget {
+	font-size: 0.9em;
+}

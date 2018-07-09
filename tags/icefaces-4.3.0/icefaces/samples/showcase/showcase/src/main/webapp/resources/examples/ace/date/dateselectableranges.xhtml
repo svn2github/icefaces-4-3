@@ -1,0 +1,113 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html" 
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:ace="http://www.icefaces.org/icefaces/components"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets" 
+    template="/resources/templates/content-template.xhtml">
+    <ui:param name="title" value="#{msgs['example.ace.dateentry.minmax.title']}"/>
+    <ui:param name="description" value="#{msgs['example.ace.dateentry.minmax.description']}"/>
+
+    <ui:define name="example">
+        <h:form id="form">
+            <ace:panel>
+                <h:panelGrid style="text-align: center;" width="100%">
+                    <h:panelGroup>
+                        <h:outputLabel for="selectedOut" value="Selected Date: "/>
+                        <h:outputText id="selectedOut"
+                                      value="#{dateSelectableRangesBean.selectedDate}"
+                                      style="font-weight: bold;">
+                            <f:convertDateTime pattern="MMMM dd, yyyy"/>
+                        </h:outputText>
+                    </h:panelGroup>
+                </h:panelGrid>
+            </ace:panel>
+
+            <ace:panel style="margin: 10px 0;" header="First Range">
+				<h:panelGrid id="configurationPanel1" width="100%" columns="4"
+							 style="margin-left: auto; margin-right: auto; text-align: center;">
+					<!-- avoid setting a time zone on the calendars that are only used to specify date ranges -->
+					<h:outputLabel for="firstRangeStart" value="Start:"/>
+					<h:panelGroup layout="block" style="text-align: left;">
+						<ace:dateTimeEntry id="firstRangeStart" value="#{dateSelectableRangesBean.firstRangeStart}"
+										   pattern="MMM/dd/yyyy" validator="#{dateSelectableRangesBean.validateFirstRangeStart}"
+										   navigator="true"
+										   readOnlyInputText="true"
+										   renderAsPopup="true">
+							<ace:ajax/>
+						</ace:dateTimeEntry>
+					</h:panelGroup>
+					
+					<h:outputLabel for="firstRangeEnd" value="End:"/>
+					<h:panelGroup layout="block" style="text-align: left;">
+						<ace:dateTimeEntry id="firstRangeEnd" value="#{dateSelectableRangesBean.firstRangeEnd}"
+										   pattern="MMM/dd/yyyy" validator="#{dateSelectableRangesBean.validateFirstRangeEnd}"
+										   navigator="true"
+										   readOnlyInputText="true"
+										   renderAsPopup="true">
+							<ace:ajax/>
+						</ace:dateTimeEntry>
+					</h:panelGroup>
+				</h:panelGrid>
+            </ace:panel>
+
+            <ace:panel style="margin: 10px 0;" header="Second Range">
+				<h:panelGrid id="configurationPanel2" width="100%" columns="4"
+							 style="margin-left: auto; margin-right: auto; text-align: center;">
+					<!-- avoid setting a time zone on the calendars that are only used to specify date ranges -->
+					<h:outputLabel for="secondRangeStart" value="Start:"/>
+					<h:panelGroup layout="block" style="text-align: left;">
+						<ace:dateTimeEntry id="secondRangeStart" value="#{dateSelectableRangesBean.secondRangeStart}"
+										   pattern="MMM/dd/yyyy" validator="#{dateSelectableRangesBean.validateSecondRangeStart}"
+										   navigator="true"
+										   readOnlyInputText="true"
+										   renderAsPopup="true">
+							<ace:ajax/>
+						</ace:dateTimeEntry>
+					</h:panelGroup>
+					
+					<h:outputLabel for="secondRangeEnd" value="End:"/>
+					<h:panelGroup layout="block" style="text-align: left;">
+						<ace:dateTimeEntry id="secondRangeEnd" value="#{dateSelectableRangesBean.secondRangeEnd}"
+										   pattern="MMM/dd/yyyy" validator="#{dateSelectableRangesBean.validateSecondRangeEnd}"
+										   navigator="true"
+										   readOnlyInputText="true"
+										   renderAsPopup="true">
+							<ace:ajax/>
+						</ace:dateTimeEntry>
+					</h:panelGroup>
+				</h:panelGrid>
+            </ace:panel>
+
+            <h:panelGrid id="examplePanel" width="100%" columns="2"
+                         style="margin-left: auto; margin-right: auto; text-align: center;">
+                <h:outputLabel for="cal" value="Select a Date:"/>
+				<h:panelGroup layout="block" style="text-align: left;">
+					<ace:dateTimeEntry id="cal"
+									   value="#{dateSelectableRangesBean.selectedDate}"
+									   timeZone="UTC"
+									   pattern="MMM/dd/yyyy"
+									   selectableDateRanges="#{dateSelectableRangesBean.ranges}">
+						<ace:ajax/>
+					</ace:dateTimeEntry>
+				</h:panelGroup>
+            </h:panelGrid>
+            <ace:growlMessages  autoHide="true" for="@inView"/>
+        </h:form>
+    </ui:define>
+</ui:composition>

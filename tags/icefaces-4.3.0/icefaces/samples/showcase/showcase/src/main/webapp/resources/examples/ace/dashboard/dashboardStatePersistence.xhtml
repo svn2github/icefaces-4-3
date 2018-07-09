@@ -1,0 +1,142 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+    xmlns:ace="http://www.icefaces.org/icefaces/components"
+    xmlns:icecore="http://www.icefaces.org/icefaces/core"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    template="/resources/templates/content-template.xhtml">
+
+    <ui:define name="example">
+        <h:form id="form">
+			<ace:dashboard id="dashboardStatePersistance" maxColumns="3" resizable="true">
+				<ace:dashboardPane id="pane1" headerText="One" closable="true"
+						row="#{dashboardStatePersistenceBean.states[0].row}"
+						column="#{dashboardStatePersistenceBean.states[0].column}"
+						sizeY="#{dashboardStatePersistenceBean.states[0].sizeY}"
+						sizeX="#{dashboardStatePersistenceBean.states[0].sizeX}"
+						closed="#{dashboardStatePersistenceBean.states[0].closed}">
+					<ace:ajax event="dragStop" />
+					<ace:ajax event="resize" />
+					<ace:ajax event="close" />
+					<h:outputText value="Pane one content." />
+				</ace:dashboardPane>
+				<ace:dashboardPane id="pane2" headerText="Two" closable="true"
+						row="#{dashboardStatePersistenceBean.states[1].row}"
+						column="#{dashboardStatePersistenceBean.states[1].column}"
+						sizeY="#{dashboardStatePersistenceBean.states[1].sizeY}"
+						sizeX="#{dashboardStatePersistenceBean.states[1].sizeX}"
+						closed="#{dashboardStatePersistenceBean.states[1].closed}">
+					<ace:ajax event="dragStop" />
+					<ace:ajax event="resize" />
+					<ace:ajax event="close" />
+					<h:outputText value="Pane two content." />
+				</ace:dashboardPane>
+				<ace:dashboardPane id="pane3" headerText="Three" closable="true"
+						row="#{dashboardStatePersistenceBean.states[2].row}"
+						column="#{dashboardStatePersistenceBean.states[2].column}"
+						sizeY="#{dashboardStatePersistenceBean.states[2].sizeY}"
+						sizeX="#{dashboardStatePersistenceBean.states[2].sizeX}"
+						closed="#{dashboardStatePersistenceBean.states[2].closed}">
+					<ace:ajax event="dragStop" />
+					<ace:ajax event="resize" />
+					<ace:ajax event="close" />
+					<h:outputText value="Pane three content." />
+				</ace:dashboardPane>
+				<ace:dashboardPane id="pane4" headerText="Four" closable="true"
+						row="#{dashboardStatePersistenceBean.states[3].row}"
+						column="#{dashboardStatePersistenceBean.states[3].column}"
+						sizeY="#{dashboardStatePersistenceBean.states[3].sizeY}"
+						sizeX="#{dashboardStatePersistenceBean.states[3].sizeX}"
+						closed="#{dashboardStatePersistenceBean.states[3].closed}">
+					<ace:ajax event="dragStop" />
+					<ace:ajax event="resize" />
+					<ace:ajax event="close" />
+					<h:outputText value="Pane four content." />
+				</ace:dashboardPane>
+				<ace:dashboardPane id="pane5" headerText="Five" closable="true"
+						row="#{dashboardStatePersistenceBean.states[4].row}"
+						column="#{dashboardStatePersistenceBean.states[4].column}"
+						sizeY="#{dashboardStatePersistenceBean.states[4].sizeY}"
+						sizeX="#{dashboardStatePersistenceBean.states[4].sizeX}"
+						closed="#{dashboardStatePersistenceBean.states[4].closed}">
+					<ace:ajax event="dragStop" />
+					<ace:ajax event="resize" />
+					<ace:ajax event="close" />
+					<h:outputText value="Pane five content." />
+				</ace:dashboardPane>
+				<ace:dashboardPane id="pane6" headerText="Six" closable="true"
+						row="#{dashboardStatePersistenceBean.states[5].row}"
+						column="#{dashboardStatePersistenceBean.states[5].column}"
+						sizeY="#{dashboardStatePersistenceBean.states[5].sizeY}"
+						sizeX="#{dashboardStatePersistenceBean.states[5].sizeX}"
+						closed="#{dashboardStatePersistenceBean.states[5].closed}">
+					<ace:ajax event="dragStop" />
+					<ace:ajax event="resize" />
+					<ace:ajax event="close" />
+					<h:outputText value="Pane six content." />
+				</ace:dashboardPane>
+				<ace:dashboardPane id="pane7" headerText="Seven" closable="true"
+						row="#{dashboardStatePersistenceBean.states[6].row}"
+						column="#{dashboardStatePersistenceBean.states[6].column}"
+						sizeY="#{dashboardStatePersistenceBean.states[6].sizeY}"
+						sizeX="#{dashboardStatePersistenceBean.states[6].sizeX}"
+						closed="#{dashboardStatePersistenceBean.states[6].closed}">
+					<ace:ajax event="dragStop" />
+					<ace:ajax event="resize" />
+					<ace:ajax event="close" />
+					<h:outputText value="Pane seven content." />
+				</ace:dashboardPane>
+				<ace:dashboardPane id="pane8" headerText="Eight" closable="true"
+						row="#{dashboardStatePersistenceBean.states[7].row}"
+						column="#{dashboardStatePersistenceBean.states[7].column}"
+						sizeY="#{dashboardStatePersistenceBean.states[7].sizeY}"
+						sizeX="#{dashboardStatePersistenceBean.states[7].sizeX}"
+						closed="#{dashboardStatePersistenceBean.states[7].closed}">
+					<ace:ajax event="dragStop" />
+					<ace:ajax event="resize" />
+					<ace:ajax event="close" />
+					<h:outputText value="Pane eight content." />
+				</ace:dashboardPane>
+				<ace:dashboardPane id="pane9" headerText="Nine" closable="true"
+						row="#{dashboardStatePersistenceBean.states[8].row}"
+						column="#{dashboardStatePersistenceBean.states[8].column}"
+						sizeY="#{dashboardStatePersistenceBean.states[8].sizeY}"
+						sizeX="#{dashboardStatePersistenceBean.states[8].sizeX}"
+						closed="#{dashboardStatePersistenceBean.states[8].closed}">
+					<ace:ajax event="dragStop" />
+					<ace:ajax event="resize" />
+					<ace:ajax event="close" />
+					<h:outputText value="Pane nine content." />
+				</ace:dashboardPane>
+				<ace:dashboardPane id="pane10" headerText="Ten" closable="true"
+						row="#{dashboardStatePersistenceBean.states[9].row}"
+						column="#{dashboardStatePersistenceBean.states[9].column}"
+						sizeY="#{dashboardStatePersistenceBean.states[9].sizeY}"
+						sizeX="#{dashboardStatePersistenceBean.states[9].sizeX}"
+						closed="#{dashboardStatePersistenceBean.states[9].closed}">
+					<ace:ajax event="dragStop" />
+					<ace:ajax event="resize" />
+					<ace:ajax event="close" />
+					<h:outputText value="Pane ten content." />
+				</ace:dashboardPane>
+			</ace:dashboard>
+        </h:form>
+    </ui:define>
+</ui:composition>

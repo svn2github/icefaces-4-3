@@ -1,0 +1,67 @@
+/*
+ * Default Layout Theme
+ *
+ * Created for jquery.layout 
+ *
+ * Copyright (c) 2010 
+ *   Fabrizio Balliano (http://www.fabrizioballiano.net)
+ *   Kevin Dalman (http://allpro.net)
+ *
+ * Dual licensed under the GPL (http://www.gnu.org/licenses/gpl.html)
+ * and MIT (http://www.opensource.org/licenses/mit-license.php) licenses.
+ *
+ * Last Updated: 2010-02-10
+ * NOTE: For best code readability, view this with a fixed-space font and tabs equal to 4-chars
+ */
+
+.ice-ace-borderlayout {
+	height: 600px;
+	width: 100%;
+}
+
+.ice-ace-borderlayout .ui-layout-pane-padding {
+	padding:	5px;
+}
+
+.ice-ace-borderlayout .ui-layout-pane-scroll {
+	overflow:	auto;
+}
+
+.ice-ace-borderlayout .ui-layout-resizer	{
+	border-width:	0 !important;
+}
+
+.ice-ace-borderlayout .ui-layout-pane .ui-widget-header {
+	padding: 5px;
+}
+
+.ice-ace-borderlayout .ui-layout-pane-table > div {
+	display: table;
+}
+
+.ice-ace-borderlayout .ui-layout-pane-table > div > div {
+	display: table-row;
+}
+
+.ice-ace-borderlayout .ui-layout-pane > div {
+	height: 100%;
+	width: 100%;
+}
+
+.ice-ace-borderlayout .ui-layout-pane > div > div.ice-ace-boderlayout-content {
+	height: 100%;
+}
+
+.ice-ace-borderlayout .ice-ace-boderlayout-button-close {
+	float: right;
+}
+
+.ice-ace-borderlayout .ice-ace-boderlayout-button-toggle {
+	float: right;
+	margin-right: 5px;
+}
+
+.ice-ace-borderlayout .ui-layout-resizer,
+.ice-ace-borderlayout .ui-layout-toggler {
+	background-image: none !important;
+}

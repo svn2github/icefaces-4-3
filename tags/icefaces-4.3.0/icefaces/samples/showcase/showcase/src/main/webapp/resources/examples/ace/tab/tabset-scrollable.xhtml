@@ -1,0 +1,128 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html" 
+    xmlns:f="http://xmlns.jcp.org/jsf/core" 
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" 
+    xmlns:ace="http://www.icefaces.org/icefaces/components" 
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets" 
+    template="/resources/templates/content-template.xhtml">
+    <ui:param name="title" value="#{msgs['example.ace.tabSet.serverSide.title']}"/>
+    <ui:param name="description" value="#{msgs['example.ace.tabSet.serverSide.description']}"/>
+
+    <ui:define name="example">
+        <h:form id="form">
+			<h:outputLabel for="checkbox" value="Enable scrollable tabs: "/>
+			<ace:checkboxButton id="checkbox" value="#{tabScrollableBean.scrollableTabs}">
+				<ace:ajax execute="@form" render="@form" />
+			</ace:checkboxButton>
+			<ace:tabSet id="scrollableTabSet" scrollableTabs="#{tabScrollableBean.scrollableTabs}">
+				<ace:tabPane label="Tab 1">
+					<h:outputText value="Tab 1 Content"/>
+				</ace:tabPane>
+				<ace:tabPane label="Tab 2">
+					<h:outputText value="Tab 2 Content"/>
+				</ace:tabPane>
+				<ace:tabPane label="Tab 3">
+					<h:outputText value="Tab 3 Content"/>
+				</ace:tabPane>
+				<ace:tabPane label="Tab 4">
+					<h:outputText value="Tab 4 Content"/>
+				</ace:tabPane>
+				<ace:tabPane label="Tab 5">
+					<h:outputText value="Tab 5 Content"/>
+				</ace:tabPane>
+				<ace:tabPane label="Tab 6">
+					<h:outputText value="Tab 6 Content"/>
+				</ace:tabPane>
+				<ace:tabPane label="Tab 7">
+					<h:outputText value="Tab 7 Content"/>
+				</ace:tabPane>
+				<ace:tabPane label="Tab 8">
+					<h:outputText value="Tab 8 Content"/>
+				</ace:tabPane>
+				<ace:tabPane label="Tab 9">
+					<h:outputText value="Tab 9 Content"/>
+				</ace:tabPane>
+				<ace:tabPane label="Tab 10">
+					<h:outputText value="Tab 10 Content"/>
+				</ace:tabPane>
+				<ace:tabPane label="Tab 11">
+					<h:outputText value="Tab 11 Content"/>
+				</ace:tabPane>
+				<ace:tabPane label="Tab 12">
+					<h:outputText value="Tab 12 Content"/>
+				</ace:tabPane>
+				<ace:tabPane label="Tab 13">
+					<h:outputText value="Tab 13 Content"/>
+				</ace:tabPane>
+				<ace:tabPane label="Tab 14">
+					<h:outputText value="Tab 14 Content"/>
+				</ace:tabPane>
+				<ace:tabPane label="Tab 15">
+					<h:outputText value="Tab 15 Content"/>
+				</ace:tabPane>
+				<ace:tabPane label="Tab 16">
+					<h:outputText value="Tab 16 Content"/>
+				</ace:tabPane>
+				<ace:tabPane label="Tab 17">
+					<h:outputText value="Tab 17 Content"/>
+				</ace:tabPane>
+				<ace:tabPane label="Tab 18">
+					<h:outputText value="Tab 18 Content"/>
+				</ace:tabPane>
+				<ace:tabPane label="Tab 19">
+					<h:outputText value="Tab 19 Content"/>
+				</ace:tabPane>
+				<ace:tabPane label="Tab 20">
+					<h:outputText value="Tab 20 Content"/>
+				</ace:tabPane>
+				<ace:tabPane label="Tab 21">
+					<h:outputText value="Tab 21 Content"/>
+				</ace:tabPane>
+				<ace:tabPane label="Tab 22">
+					<h:outputText value="Tab 22 Content"/>
+				</ace:tabPane>
+				<ace:tabPane label="Tab 23">
+					<h:outputText value="Tab 23 Content"/>
+				</ace:tabPane>
+				<ace:tabPane label="Tab 24">
+					<h:outputText value="Tab 24 Content"/>
+				</ace:tabPane>
+				<ace:tabPane label="Tab 25">
+					<h:outputText value="Tab 25 Content"/>
+				</ace:tabPane>
+				<ace:tabPane label="Tab 26">
+					<h:outputText value="Tab 26 Content"/>
+				</ace:tabPane>
+				<ace:tabPane label="Tab 27">
+					<h:outputText value="Tab 27 Content"/>
+				</ace:tabPane>
+				<ace:tabPane label="Tab 28">
+					<h:outputText value="Tab 28 Content"/>
+				</ace:tabPane>
+				<ace:tabPane label="Tab 29">
+					<h:outputText value="Tab 29 Content"/>
+				</ace:tabPane>
+				<ace:tabPane label="Tab 30">
+					<h:outputText value="Tab 30 Content"/>
+				</ace:tabPane>
+			</ace:tabSet>
+		</h:form>
+
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,67 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html" 
+    xmlns:f="http://xmlns.jcp.org/jsf/core" 
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" 
+    xmlns:ace="http://www.icefaces.org/icefaces/components" 
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets" 
+    template="/resources/templates/content-template.xhtml">
+    
+    <ui:define name="example">
+        <style type="text/css">
+            .ice-ace-radiobutton button {
+                height:24px;
+                width:24px;
+            }
+
+            .ice-ace-radiobutton button.ui-state-hover {
+                background: url("#{resource['css/images/radio-selected-gray.png']}") no-repeat;
+                border:none;
+            }
+
+            .ice-ace-radiobutton button.ice-ace-radiobutton-selected {
+                background: url("#{resource['css/images/radio-selected.png']}") no-repeat;
+                border:none;
+            }
+
+            .ice-ace-radiobutton button {
+                background: url("#{resource['css/images/radio-unselected.png']}") no-repeat;
+            }
+
+            .ice-ace-radiobutton .fa {
+                background: transparent;
+				visibility: hidden;
+            }
+        </style>
+
+        <h:form id= "form" style="text-align: center">
+            <ace:panel>
+				<ace:buttonGroup id="buttonGroup1" header="ace:radioButton Overview" mutuallyExclusive="true">
+					<h:panelGrid columns="2" width="100%" columnClasses="col50,col50">
+						<ace:radioButton id="button1" value="#{radioButton.selected1}" label="#{radioButton.boxValueDescription1}" labelPosition="top">
+							<ace:ajax execute="@form" event="activate" render="@all"/>
+						</ace:radioButton>
+						<ace:radioButton id="button2" value="#{radioButton.selected2}" label="#{radioButton.boxValueDescription2}" labelPosition="top">
+							<ace:ajax execute="@form" event="activate" render="@all"/>
+						</ace:radioButton>
+					</h:panelGrid>
+				</ace:buttonGroup>
+            </ace:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

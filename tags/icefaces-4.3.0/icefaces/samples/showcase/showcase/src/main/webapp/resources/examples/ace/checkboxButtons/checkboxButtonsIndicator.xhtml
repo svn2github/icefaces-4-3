@@ -1,0 +1,95 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:ace="http://www.icefaces.org/icefaces/components"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    template="/resources/templates/content-template.xhtml">
+
+    <ui:define name="example">
+        <h:form id="inputForm">
+            <ace:panel header="Indicator Customization">
+                <h:panelGrid width="60%" columns="1" cellpadding="6" cellspacing="6">
+                     <ace:checkboxButton id="requiredIn"
+										 label="Required?"
+										 labelPosition="left"
+										 value="#{checkboxButtonsIndicatorBean.required}">
+                         <ace:ajax execute="@form" render="@all"/>
+                     </ace:checkboxButton>
+
+                     <ace:textEntry id="requiredText"
+								  label="Required Indicator Text:"
+								  labelPosition="left"
+								  value="#{checkboxButtonsIndicatorBean.requiredText}"
+                                  disabled="#{!checkboxButtonsIndicatorBean.required}">
+                         <ace:ajax execute="@this" render="@all"/>
+                     </ace:textEntry>
+
+                     <ace:textEntry id="optionalText"
+									label="Optional Indicator Text:"
+									labelPosition="left"
+									value="#{checkboxButtonsIndicatorBean.optionalText}"
+                                    disabled="#{checkboxButtonsIndicatorBean.required}">
+                         <ace:ajax execute="@this" render="@all"/>
+                     </ace:textEntry>
+
+                     <ace:simpleSelectOneMenu id="positionIn"
+							label="Indicator Position:"
+							labelPosition="left"
+							value="#{checkboxButtonsIndicatorBean.position}">
+						<ace:ajax execute="@this" />
+						<f:selectItem itemLabel="Top" itemValue="top" />
+						<f:selectItem itemLabel="Bottom" itemValue="bottom" />
+						<f:selectItem itemLabel="Right" itemValue="right" />
+						<f:selectItem itemLabel="Left" itemValue="left" />
+						<f:selectItem itemLabel="None" itemValue="none" />
+                     </ace:simpleSelectOneMenu>
+                </h:panelGrid>
+            </ace:panel>
+        </h:form>
+        
+        <h:form id="demoForm">
+            <ace:panel header="Checkbox Buttons">
+			    <h:panelGrid columns="1" >
+				    <h:panelGroup>
+				        <ace:checkboxButtons id="checkboxButtonsIndicator" header="ace:checkboxButtons with indicator" mutuallyExclusive="true" value="#{checkboxButtonsIndicatorBean.selected}"
+					                   required="#{checkboxButtonsIndicatorBean.required}"
+					                   requiredIndicator="#{checkboxButtonsIndicatorBean.requiredText}"
+					                   optionalIndicator="#{checkboxButtonsIndicatorBean.optionalText}"
+					                   indicatorPosition="#{checkboxButtonsIndicatorBean.position}">
+					               <f:selectItem itemLabel="One" itemValue="One" />
+					               <f:selectItem itemLabel="Two" itemValue="Two" />
+					               <f:selectItem itemLabel="Three" itemValue="Three" />
+					               <f:selectItem itemLabel="Four" itemValue="Four" />
+					               <f:selectItem itemLabel="Five" itemValue="Five" />
+					               <ace:ajax />
+				        </ace:checkboxButtons>
+				    </h:panelGroup>
+					<h:panelGroup>
+				        <ace:message for="checkboxButtonsIndicator" />
+				    </h:panelGroup>
+				    <h:panelGroup>
+                        The selected checkbox is:
+					    <h:outputText id="checkboxDescriptionIndicator" value="#{checkboxButtonsIndicatorBean.selectedString}" style="font-weight: bold;"/>
+				    </h:panelGroup>
+			    </h:panelGrid>
+            </ace:panel>
+        </h:form>
+        
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,129 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+    xmlns:ace="http://www.icefaces.org/icefaces/components"
+    xmlns:icecore="http://www.icefaces.org/icefaces/core"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    template="/resources/templates/content-template.xhtml">
+    <ui:param name="title" value="#{msgs['example.ace.menuBar.effect.title']}"/>
+    <ui:param name="description" value="#{msgs['example.ace.menuBar.effect.description']}"/>
+
+    <ui:define name="example">
+        <h:form id="form">
+            <ace:panel>
+                <h:panelGrid style="width: 100%" columns="2"> 
+                    <h:panelGrid columns="2" styleClass="centeredPanelGrid">
+                        <h:outputLabel value="Effect Type: " for="effectType"/>
+                        <ace:simpleSelectOneMenu    id="effectType"
+                                            value="#{menuBarEffect.effectName}">
+                            <f:selectItems value="#{menuBarEffect.availableEffects}"
+                                           var="type"
+                                           itemValue="#{type.value}"
+                                           itemLabel="#{type.key}"/>
+                            <ace:ajax execute="@this" render="@form" />
+                        </ace:simpleSelectOneMenu>
+                    </h:panelGrid>
+                    
+                    <h:panelGrid columns="2" styleClass="centeredPanelGrid">
+                        <h:outputLabel id="effectDurLbl" value="Effect Duration (#{menuBarEffect.effectDuration} ms): " for="effectDuration"/>
+                        <h:panelGroup>
+                            <ace:sliderEntry id="effectDuration"
+                                                 clickableRail="true"
+                                                 min="100"
+                                                 max="1100"
+                                                 value="#{menuBarEffect.effectDuration}"
+                                                 showLabels="true"
+                                                 stepPercent="25">
+                                <ace:ajax event="slideEnd" execute="@this" render="@form" />
+                            </ace:sliderEntry>
+                        </h:panelGroup>
+                        <h:outputLabel id="hideDelay" value="Hide Delay (#{menuBarEffect.hideDelay} ms):" for="hideDelaycntrl"/>
+                      <h:panelGroup>
+                          <ace:sliderEntry id="hideDelaycntrl"
+                                             clickableRail="true"
+                                             min="100"
+                                             max="1100"
+                                             value="#{menuBarEffect.hideDelay}"
+                                             showLabels="true"
+                                             stepPercent="25">
+                              <ace:ajax event="slideEnd" execute="@this" render="@form" />
+                          </ace:sliderEntry>
+                      </h:panelGroup>
+                      <h:outputLabel id="showDelay" value="Show Delay (#{menuBarEffect.showDelay} ms):" for="showDelaycntrl"/>
+                      <h:panelGroup>
+                              <ace:sliderEntry id="showDelaycntrl"
+                                             clickableRail="true"
+                                             min="100"
+                                             max="1100"
+                                             value="#{menuBarEffect.showDelay}"
+                                             showLabels="true"
+                                             stepPercent="25">
+                              <ace:ajax event="slideEnd" execute="@this" render="@form" />
+                          </ace:sliderEntry>
+                      </h:panelGroup>
+                    </h:panelGrid>
+                </h:panelGrid>
+            </ace:panel>
+            
+            <br/>
+            
+           <ace:menuBar id="menuBar"
+						autoSubmenuDisplay="true"
+					    effect="#{menuBarEffect.effectName}"
+                        showDelay="#{menuBarEffect.showDelay}"
+                        hideDelay="#{menuBarEffect.hideDelay}"
+					    effectDuration="#{menuBarEffect.effectDuration}">
+                 
+                 <ace:menuItem value="Home" url="http://www.icefaces.org" target="_blank" icon="ui-icon ui-icon-home" />
+                 <ace:submenu label="File" icon="ui-icon ui-icon-document">  
+                     <ace:submenu label="New" icon="ui-icon ui-icon-contact">  
+                         <ace:menuItem value="Window"/>  
+                         <ace:menuItem value="Tab"/>  
+                     </ace:submenu>
+                     <ace:menuItem value="Open"/>
+                     <ace:menuItem value="Close"/>
+                     <ace:menuItem value="Print"/>
+                     <ace:menuItem value="Quit"/>
+                 </ace:submenu>
+            
+                 <ace:submenu label="Edit" icon="ui-icon ui-icon-pencil">  
+                     <ace:menuItem value="Undo" icon="ui-icon ui-icon-arrowreturnthick-1-w"/>  
+                     <ace:menuItem value="Redo" icon="ui-icon ui-icon-arrowreturnthick-1-e"/>
+                     <ace:menuItem value="Cut"/>
+                     <ace:menuItem value="Copy"/>
+                     <ace:menuItem value="Paste"/>
+                     <ace:menuItem value="Find"/>
+                 </ace:submenu>
+                 
+                 <ace:submenu label="Tools" icon="ui-icon ui-icon-gear">  
+                     <ace:menuItem value="Downloads"/>
+                     <ace:menuItem value="Error Console"/>
+                     <ace:menuItem value="Page Info"/>
+                 </ace:submenu>
+                 
+                 <ace:submenu label="Help" icon="ui-icon ui-icon-help">
+                     <ace:menuItem value="Contents"/>
+                     <ace:menuItem value="Translate"/>
+                     <ace:menuItem value="About"/>
+                 </ace:submenu>
+             </ace:menuBar>
+        </h:form>
+    </ui:define>
+</ui:composition>

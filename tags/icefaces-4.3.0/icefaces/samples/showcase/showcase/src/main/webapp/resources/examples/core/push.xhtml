@@ -1,0 +1,72 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ace="http://www.icefaces.org/icefaces/components"
+                xmlns:icecore="http://www.icefaces.org/icefaces/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/resources/templates/content-template.xhtml">
+
+    <ui:define name="example">
+        <icecore:push group="#{pushWindowScopeBean.group}"/>
+        <h:form>
+            <ace:selectMenu value="#{pushWindowScopeBean.strategyIndex}" label="Select push strategy:" labelPosition="left"
+                            actionListener="#{pushWindowScopeBean.updateStrategy}">
+                <f:selectItem itemValue="0" itemLabel="-"/>
+                <f:selectItem itemValue="1" itemLabel="Update page every second"/>
+                <f:selectItem itemValue="2" itemLabel="Update page every 2 seconds 5 times"/>
+                <f:selectItem itemValue="3" itemLabel="Update page once after 3 second delay"/>
+                <ace:ajax execute="@this" render="@all"/>
+            </ace:selectMenu>
+            <ace:panel>
+                <ace:chart id="chart"
+                           animated="false"
+                           value="#{pushWindowScopeBean.barData}"
+                           stackSeries="false"
+                           defaultAxesConfig="#{pushWindowScopeBean.defaultAxis}"
+                           xAxis="#{pushWindowScopeBean.axisX}"
+                           yAxis="#{pushWindowScopeBean.axisY}"
+                           legend="true"
+                           legendPlacement="OUTSIDE_GRID"
+                           highlighter="true"
+                           highlighterLocation="N"
+                           highlighterShowMarker="false"
+                           highlighterBringSeriesToFront="true"/>
+
+                <ace:dataTable id="table"
+                               value="#{pushWindowScopeBean.items}"
+                               var="item"
+                               paginatorPosition="bottom"
+                               rows="10">
+                    <ace:column headerText="A">
+                        <h:outputText value="#{item.a}"/>
+                    </ace:column>
+                    <ace:column headerText="B">
+                        <h:outputText value="#{item.b}"/>
+                    </ace:column>
+                    <ace:column headerText="C">
+                        <h:outputText value="#{item.c}"/>
+                    </ace:column>
+                    <ace:column headerText="D">
+                        <h:outputText value="#{item.d}"/>
+                    </ace:column>
+                </ace:dataTable>
+            </ace:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

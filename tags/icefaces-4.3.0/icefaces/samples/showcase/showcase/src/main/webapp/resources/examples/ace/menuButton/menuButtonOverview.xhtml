@@ -1,0 +1,58 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+    xmlns:ace="http://www.icefaces.org/icefaces/components"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    template="/resources/templates/content-template.xhtml">
+    <ui:param name="title" value="#{msgs['example.ace.menuButton.title']}"/>
+    <ui:param name="description" value="#{msgs['example.ace.menuButton.description']}"/>
+
+    <ui:define name="example">
+        <h:form id="form">
+            
+            <ace:panel  header="Menu Selections Log">
+                    <h:dataTable id="message" value="#{menuButtonBean.list}" var="message">
+                        <h:column>
+                            <h:outputText id="msg" value="#{message}"/>
+                        </h:column>
+                    </h:dataTable>
+            </ace:panel>
+            <br/>
+            <ace:menuButton id="menuButton" effect="slide" effectDuration="200" value="Menu Button">
+                <ace:menuItem id="cut" value="Cut" actionListener="#{menuButtonBean.fireAction}">
+                    <ace:ajax event="activate" execute="@this" render="message" />
+                </ace:menuItem>
+                <ace:menuItem id="copy" value="Copy" actionListener="#{menuButtonBean.fireAction}">
+                    <ace:ajax event="activate" execute="@this" render="message" />
+                </ace:menuItem>
+                <ace:menuItem id="paste" value="Paste" actionListener="#{menuButtonBean.fireAction}">
+                    <ace:ajax event="activate" execute="@this" render="message" />
+                </ace:menuItem>
+                <ace:menuItem id="find" value="Find" actionListener="#{menuButtonBean.fireAction}">
+                    <ace:ajax event="activate" execute="@this" render="message" />
+                </ace:menuItem>
+                
+                <ace:menuItem value="ICEfaces" url="http://www.icefaces.org" target="_blank" icon="ui-icon ui-icon-home"/>
+                <ace:menuItem value="ICEpdf" url="http://www.icepdf.org" target="_blank" icon="ui-icon ui-icon-home"/>
+            </ace:menuButton>
+            
+        </h:form>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,192 @@
+/*
+ * Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+
+.if-list .if-list-body {
+    /* Scroll by default if contents exceed fixed size. */
+    overflow:auto;
+}
+
+.if-list .if-list-body {
+    min-height: 1.6em;
+    min-width: 100px;
+    margin: 3px 0 0 0;
+    padding: 0;
+}
+
+.if-list .if-list-item {
+    margin: 0 3px 3px 3px;
+    padding: 0.3em;
+    padding-left: 1.5em;
+    padding-right: 1em;
+}
+
+.if-list .if-list-item.disabled {
+    cursor: default;
+    background: #dfdfdf;
+}
+
+.if-list .if-list-item.if-pntr {
+    cursor:pointer;
+}
+
+.if-list .if-list-plhld {
+    height: 1.6em;
+    line-height: 1.6em;
+}
+
+.if-list .if-list-head {
+    margin: 3px;
+    padding: 0.3em;
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+.if-list .if-list-ctrls {
+    margin: 3px;
+    padding: 0.3em;
+    padding-left: 1em;
+    padding-right: 1em;
+    text-align: center;
+}
+
+.if-list .if-list-filter {
+	text-align: center;
+}
+
+.if-list .if-list-filter-button {
+	text-align: center;
+	background-color: #fff;
+	color: #666;
+	border: 1px solid #999;
+	padding: 3px 0;
+    width: 98%;
+}
+
+.if-list .if-list-filter-facet {
+	position: absolute;
+}
+
+.if-list-ctrl-spcr {
+    width:25%;
+    /* IE7 width fix */
+    *width: 24%;
+    display:inline-block;
+}
+
+.if-list .if-list-ctrl {
+    display:inline-block;
+}
+
+.if-list .if-list-foot {
+    margin: 3px;
+    padding: 0.3em;
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+/* Miniturized style */
+.if-list.if-mini.ui-widget {
+    font-size:8pt;
+    display:inline-block;
+
+    /* IE7 inline block hack */
+    *display:inline;
+    zoom:1;
+
+    overflow-y:auto;
+}
+
+.if-list.if-mini.ui-widget > ul {
+    display: block;
+    height: 10em;
+}
+
+.if-list.if-mini.ui-widget .if-list-item {
+    margin:0 2px 2px 2px;
+    padding:0;
+    padding-left:0.5em;
+    *margin-right:18px;
+}
+/********************/
+
+.if-list .if-list-sort {
+	text-align: center;
+}
+
+.if-list .ui-sortable-control {
+    vertical-align: middle;
+    cursor:pointer;
+}
+
+.if-list .if-list-sort .ui-sortable-list-icon {
+    vertical-align: middle;
+    display: inline-block;
+    width:16px;
+    height:1.7em;
+    margin-left: 5px;
+    position:relative;
+}
+
+.if-list .ui-sortable-list-icon .ui-icon-triangle-1-n {
+    position:absolute;
+    top:-2px;
+    left:1px;
+}
+.ui-sortable-list-icon .ui-icon-triangle-1-n {
+    /* IE 8 */
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+    /* IE 5-7 */
+    filter: alpha(opacity=20);
+    /* Netscape */
+    -moz-opacity: 0.33;
+    /* Safari 1.x */
+    -khtml-opacity: 0.33;
+    /* Good browsers */
+    opacity: 0.33;
+}
+.if-list .ui-sortable-list-icon .ui-icon-triangle-1-n.ui-toggled {
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+    filter: alpha(opacity=100);
+    -moz-opacity: 1;
+    -khtml-opacity: 1;
+    opacity: 1;
+}
+
+.if-list .ui-sortable-list-icon .ui-icon-triangle-1-s {
+    position:absolute;
+    bottom:-1px;
+    *left:0px;
+}
+.if-list .ui-sortable-list-icon .ui-icon-triangle-1-s {
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+    filter: alpha(opacity=20);
+    -moz-opacity: 0.33;
+    -khtml-opacity: 0.33;
+    opacity: 0.33;
+}
+.if-list .ui-sortable-list-icon .ui-icon-triangle-1-s.ui-toggled {
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+    filter: alpha(opacity=100);
+    -moz-opacity: 1;
+    -khtml-opacity: 1;
+    opacity: 1;
+}
+.if-list input.if-list-filter {
+	width: 100%;
+}
+.if-list div.if-list-filter {
+	padding: 0.5em;
+}

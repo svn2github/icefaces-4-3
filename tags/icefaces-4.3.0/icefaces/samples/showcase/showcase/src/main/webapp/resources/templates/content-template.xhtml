@@ -1,0 +1,107 @@
+<!--
+  ~ Copyright 2004-2014 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:ace="http://www.icefaces.org/icefaces/components"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <div class="example">
+        <ace:panel id="examplePanel" styleClass="containerPanelStyle">
+            <div class="content">
+                <h:panelGroup layout="block" styleClass="desc"
+                              rendered="#{userMenuState.selectedDemo.description ne null}">
+                    <h:outputText value="#{userMenuState.selectedDemo.description}" escape="false" nospan="true"/>
+                </h:panelGroup>
+                <h:panelGroup layout="block" styleClass="instance">
+                    <ui:insert name="example"/>
+                </h:panelGroup>
+            </div>
+            <f:facet name="header">
+                <table style="width: 100%; margin: 0; padding: 0; border: 0;">
+                    <tr>
+                        <td>
+                            <h:outputText
+                                    value="#{userMenuState.selectedComponent.name} - #{userMenuState.selectedDemo.name}"
+                                    escape="false"/>
+                        </td>
+                        <td>
+                            <c:if test="#{userMenuState.selectedComponent.hasResources}">
+                                <h:form style="float: right;">
+                                    <ace:menuBar direction="down left" styleClass="documentation-menu">
+                                        <ace:multiColumnSubmenu label="Documentation">
+                                            <ace:menuColumn>
+                                                <ace:submenu label="WIKI Documentation">
+                                                    <c:forEach items="#{userMenuState.selectedComponent.resources}"
+                                                               var="wiki">
+                                                        <c:if test="#{wiki.isWiki}">
+                                                            <ace:menuItem
+                                                                    value="#{empty wiki.name ? userMenuState.selectedComponent.name : wiki.name}"
+                                                                    url="#{wiki.path}" urlEncoding="none"
+                                                                    target="_blank"/>
+                                                        </c:if>
+                                                    </c:forEach>
+                                                </ace:submenu>
+                                            </ace:menuColumn>
+                                            <ace:menuColumn>
+                                                <ace:submenu label="TLD Documentation">
+                                                    <c:forEach items="#{userMenuState.selectedComponent.resources}"
+                                                               var="tld">
+                                                        <c:if test="#{tld.isTld}">
+                                                            <ace:menuItem
+                                                                    value="#{empty tld.name ? userMenuState.selectedComponent.name : tld.name}"
+                                                                    url="#{tld.path}" urlEncoding="none"
+                                                                    target="_blank"/>
+                                                        </c:if>
+                                                    </c:forEach>
+                                                </ace:submenu>
+                                            </ace:menuColumn>
+                                        </ace:multiColumnSubmenu>
+                                    </ace:menuBar>
+                                </h:form>
+                            </c:if>
+                        </td>
+                    </tr>
+                </table>
+            </f:facet>
+        </ace:panel>
+
+        <c:if test="#{userMenuState.selectedDemo.hasManySources}">
+            <h:form id="sourceCodeForm">
+                <ace:panel id="sourceCodePanel" collapsed="#{userMenuState.sourceCodeCollapsed}" toggleable="true"
+                           header="Source Code" styleClass="containerPanelStyle rimeHeightAdjustment"
+                           toggleSpeed="0">
+                    <ace:ajax event="toggle" execute="@this"/>
+                    <div class="resources">
+                        <ace:tabSet clientSide="true" selectedIndex="0"
+                                    rendered="#{!userMenuState.sourceCodeCollapsed}">
+                            <c:forEach items="#{userMenuState.selectedDemo.sources}"
+                                       var="exSource">
+                                <ace:tabPane label="#{exSource.name}">
+                                    <div style="background-color:#fff;width:660px;overflow:auto;">
+                                        <h:outputText escape="false"
+                                                      value="#{sourceCodeLoaderConnection[exSource.path]}"/>
+                                    </div>
+                                </ace:tabPane>
+                            </c:forEach>
+                        </ace:tabSet>
+                    </div>
+                </ace:panel>
+            </h:form>
+        </c:if>
+    </div>
+</ui:composition>

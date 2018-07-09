@@ -1,0 +1,67 @@
+.ice-ace-dashboard-content.ui-widget-content {
+	border: 0;
+}
+
+.ice-ace-dashboard-pane > div > div > .ui-widget-header.ui-corner-top {
+	border-top: 0;
+	border-left: 0;
+	border-right: 0;
+	padding: 4px;
+}
+
+.ice-ace-dashboard-pane > div > div > .ui-widget-header.ui-corner-bottom {
+	border-bottom: 0;
+	border-left: 0;
+	border-right: 0;
+	padding: 4px;
+}
+
+.ice-ace-dashboard-draggable > .ice-ace-dashboard-pane > div > div > .ui-widget-header.ui-corner-top {
+	cursor: move;
+}
+
+.ice-ace-dashboard-pane > div {
+	display: table;
+	width: 100%;
+	height: 100%;
+	border-spacing: 0;
+	border-collapse: collapse;
+}
+
+.ice-ace-dashboard-pane > div > div {
+	display: table-row;
+}
+
+.ice-ace-dashboard-pane > div > .ui-widget-content {
+	padding: 2px;
+	height: 100%;
+}
+
+.ice-ace-dashboard-pane > div > div > .ui-widget-header > .ice-ace-dashboard-button-close {
+	float: right;
+	padding: 0 4px 1px 4px;
+}
+
+.ice-ace-dashboard-resize-handle {
+	position: absolute;
+	z-index: 1;
+	/* copied from 'fa' class */
+	display: inline-block;
+	font: normal normal normal 14px/1 FontAwesome;
+	font-size: inherit;
+	text-rendering: auto;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.ice-ace-dashboard-resize-handle-both {
+	bottom: 2px;
+	right: 2px;
+	cursor: se-resize;
+	z-index: 20;
+}
+
+/* copied from 'fa-expand' class */
+.ice-ace-dashboard-resize-handle-both:before {
+	content: "\f065";
+}

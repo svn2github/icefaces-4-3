@@ -1,0 +1,249 @@
+/*
+ * Copyright 2004-2015 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+
+/* Overrides */
+.ice-blockui-overlay {
+	background-color: transparent;
+}
+
+.ui-simpleselectonemenu .ui-inputfield {
+	/* Match the padding of other input fields (like textEntry), instead of setting to 0 */
+	padding: 4px;
+}
+
+.ui-datatable-odd {
+    background-color: #EEEEEE !important;
+}
+
+.ui-datatable tr {
+	height: 25px;
+}
+
+.ui-datatable-header {
+	overflow-y: hidden;
+}
+
+.ui-notificationbar {
+    height: 65px;
+    overflow-y: scroll;
+    padding: 0;
+    background: rgba(255, 255, 255, 0.9);
+    color: rgba(0, 0, 0, 0.9);
+}
+
+.ui-notificationbar, .shadowDialog {
+    box-shadow: 30px 10px 20px #777777;
+}
+
+.ui-tabset .ui-tabs-nav li,
+.ui-tabset .ui-tabs-nav div {
+	width: 125px;
+}
+
+.ui-tabset .ui-tabs-nav div {
+	text-align: center;
+}
+
+.ui-tabset .ui-tabs-nav div em {
+	float: none;
+	display: block;
+}
+
+.ui-datatable-state-active-hover {
+    opacity: 1;
+}
+
+.ui-column-filter {
+	max-width: 150px;
+}
+
+.ace-radio-buttons-override {
+	border: 0;
+	background: transparent;
+	text-align: left;
+}
+
+/* Page Styles */
+.emporiumContainer {
+	margin: 30px 15px 5px 15px;
+	min-width: 800px;
+}
+
+.emporiumTable {
+    width: 100%;
+    min-width: 800px;
+}
+
+.headerText, .headerTextSmall {
+    color: #034F83;
+    text-shadow: 2px 4px 3px rgba(100, 100, 100, 0.4), 0 0 5px rgba(100, 180, 255, 1);
+}
+
+.headerText {
+    font-size: 32px;
+    padding: 0 0 20px 12px;
+}
+
+.headerTextSmall {
+	font-size: 16px;
+	padding: 5px 0 0 5px;
+}
+
+.notificationBarWrap {
+	padding: 10px;
+}
+
+.notificationBarChat {
+	height: 200px;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+}
+
+.updateC {
+	background: rgba(50, 50, 200, 0.3);
+}
+
+/* Width Auto */
+.wX {
+	width: auto;
+}
+
+.w10 {
+	width: 10%;
+}
+
+.w15 {
+	width: 15%;
+}
+
+.w25 {
+	width: 25%;
+}
+
+.w30, .w30R {
+	width: 30%;
+}
+
+.w50 {
+	width: 50%;
+}
+
+.w75 {
+	width: 75%;
+}
+
+.w90 {
+	width: 90%;
+}
+
+.w100 {
+	width: 100%;
+}
+
+.center {
+	margin: 0 auto;
+}
+
+.floatR, .aboutImage, .itemImage {
+	float: right;
+}
+
+.floatL {
+	float: left;
+}
+
+.alignR, .w30R {
+	text-align: right !important;
+}
+
+.alignL {
+	text-align: left !important;
+}
+
+.valignTop {
+	vertical-align: top;
+}
+
+.chatMessages .ui-datatable-odd, .chatMessages .ui-datatable-even {
+	background-color: #FFFFFF !important;
+}
+
+.chatMessages .ui-col-0, .chatMessages .ui-col-1, .chatMessages .ui-col-2 {
+	border: none !important;
+}
+
+.postTable input[type="text"], .postTable select, .postTable textarea {
+	width: 200px;
+	padding: 4px;
+	margin: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.positionButton {
+	padding-right: 2px;
+}
+
+.hidden {
+	display: none !important;
+	height: 0;
+}
+
+.aboutImage {
+	background-color: rgba(50, 50, 90, 0.3);
+	border-radius: 50px;
+	margin: 10px;
+	padding: 20px;
+}
+
+.messagePadding .ui-faces-message {
+	line-height: 30px;
+}
+
+.itemImage, .itemImageS {
+	border: 3px outset #777777;
+}
+
+.itemImage {
+	width: 150px;
+	height: 150px;
+}
+
+.itemImageS {
+	width: 50px;
+	height: 50px;
+}
+
+.authNote {
+	font-size: 10px;
+	padding-bottom: 8px;
+	vertical-align: middle;
+}
+
+.submitMonitorWrap {
+	float: right;
+	position: relative;
+	z-index: 5;
+	padding: 7px 10px 0 0;
+}
+
+/* Image Item Loop */
+.iil {
+	width: 75px;
+	height: 75px;
+	border: 1px solid black;
+}
