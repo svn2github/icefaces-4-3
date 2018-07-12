@@ -2096,6 +2096,8 @@ ice.ace.Schedule.prototype.addNavigationListeners = function() {
 			e.stopPropagation();
 		}
 	});
+	previousButton.get(0).submitOnEnter = 'disabled';
+	nextButton.get(0).submitOnEnter = 'disabled';
 	// set up navigation dialog
 	var currentDateNode = ice.ace.jq(this.jqId).find('.schedule-showing');
 	currentDateNode.on('click', function() {
