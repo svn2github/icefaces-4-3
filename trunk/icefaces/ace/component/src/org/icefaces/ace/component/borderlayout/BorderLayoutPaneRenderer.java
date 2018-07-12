@@ -55,6 +55,7 @@ public class BorderLayoutPaneRenderer extends CoreRenderer {
 
 		writer.startElement("div", component);
 
+		writer.writeAttribute("id", clientId, null);
 		String baseClass = "ice-ace-boderlayout-" + position + " ui-layout-pane-scroll";
 		if (!borderLayoutPane.isNesting()) baseClass += " ui-widget-content ui-layout-pane-table ui-layout-pane-padding";
 		String styleClass = borderLayoutPane.getStyleClass();
