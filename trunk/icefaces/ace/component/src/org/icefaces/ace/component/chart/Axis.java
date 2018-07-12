@@ -61,7 +61,7 @@ public class Axis implements Serializable {
         Integer tickAngle = this.getTickAngle();
         Boolean autoscale = this.getAutoscale();
         Boolean showTicks = this.getShowTicks();
-        Boolean shwTickMarks = this.getShowTickMarks();
+        Boolean showTickMarks = this.getShowTickMarks();
         String tickInterval = this.getTickInterval();
         String[] ticks = this.getTicks();
         Boolean drawMajorGridlines = this.getDrawMajorGridlines();
@@ -437,7 +437,7 @@ public class Axis implements Serializable {
     }
 
     /**
-     * Get if this axis will draw its scale so that it shares grid lines with other autoscaled axes.
+     * Get if the ticks (both marks and labels) are shown or not.
      * @return whether or not this axis is autoscaling
      */
     public Boolean getShowTicks() {
@@ -445,7 +445,7 @@ public class Axis implements Serializable {
     }
 
     /**
-     * Set if this axis will draw its scale so that it shares grid lines with other autoscaled axes.
+     * Set to true to show the ticks (both marks and labels).
      * @param autoscale whether or not this axis is autoscaling
      */
     public void setShowTicks(Boolean showTicks) {
@@ -453,7 +453,7 @@ public class Axis implements Serializable {
     }
 
     /**
-     * Get if this axis will draw its scale so that it shares grid lines with other autoscaled axes.
+     *  Get if the tick marks (line crossing grid) are shown or not.
      * @return whether or not this axis is autoscaling
      */
     public Boolean getShowTickMarks() {
@@ -461,7 +461,7 @@ public class Axis implements Serializable {
     }
 
     /**
-     * Set if this axis will draw its scale so that it shares grid lines with other autoscaled axes.
+     * Set to true to show the tick marks (line crossing grid).
      * @param autoscale whether or not this axis is autoscaling
      */
     public void setShowTickMarks(Boolean showTickMarks) {
