@@ -31,7 +31,7 @@ import javax.faces.component.UIComponent;
         componentType   = "org.icefaces.ace.component.DashboardPane",
         rendererType    = "org.icefaces.ace.component.DashboardPaneRenderer",
 		componentFamily = "org.icefaces.ace.Dashboard",
-		tlddoc = "The DashboardPane component defines one of the panes of a Dashboard, which can include a header and a footer and and arbitrare number of child components and markup. <p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/DashboardPane\">DashboardPane Wiki Documentation</a>."
+		tlddoc = "The DashboardPane component defines one of the panes of a Dashboard, which can include a header and a footer and an arbitrary number of child components and markup. <p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/DashboardPane\">DashboardPane Wiki Documentation</a>."
         )
 
 @ClientBehaviorHolder(events = {

@@ -194,6 +194,7 @@ ice.ace.tabset = {
 				ice.ace.tabset.resizeMaps(contentParent);
 				ice.ace.tabset.resizeTables(contentParent);
 				ice.ace.tabset.resizeSchedules(contentParent);
+				ice.ace.tabset.resizeBorderLayouts(contentParent);
                 cachedNewTab = null;
                 ice.ace.tabset.consoleLog(false, 'tabSet.tabChange.doOnSuccess  EXIT');
             };
@@ -225,6 +226,7 @@ ice.ace.tabset = {
 				ice.ace.tabset.resizeMaps(contentParent);
 				ice.ace.tabset.resizeTables(contentParent);
 				ice.ace.tabset.resizeSchedules(contentParent);
+				ice.ace.tabset.resizeBorderLayouts(contentParent);
             } else {
                 var targetElement = ice.ace.tabset.getTabIndexField(rootElem, true);
                 if(targetElement) {
@@ -413,6 +415,7 @@ ice.ace.tabset = {
 		}
 		ice.ace.tabset.resizeTables(initElem);
 		ice.ace.tabset.resizeSchedules(initElem);
+		ice.ace.tabset.resizeBorderLayouts(initElem);
 
        ice.ace.tabset.consoleLog(true, "ace:tabSet - ID: " + clientId + " - initialize - " + (new Date().getTime() - initializeStartTime) + "ms");
    },
@@ -904,6 +907,21 @@ ice.ace.tabset = {
 					var schedule = ice.ace.instance(id);
 					if (schedule) {
 						schedule.render();
+					}
+				}
+			});
+		}, 1);
+	},
+
+	resizeBorderLayouts : function(root) {
+		var layouts = ice.ace.jq(root).find('.ice-ace-borderlayout');
+		setTimeout(function(){
+			layouts.each(function(){
+				var id = this.id;
+				if (id) {
+					var layout = ice.ace.instance(id);
+					if (layout) {
+						layout.layout.resizeAll()
 					}
 				}
 			});
