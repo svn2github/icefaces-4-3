@@ -1416,8 +1416,8 @@ ice.ace.DataTable.prototype.setupSelectionHover = function () {
         });
 
     this.element
-        .off('mouseenter, focus', selector)
-        .on('mouseenter, focus', selector, function (e) {
+        .off('mouseenter focus', selector)
+        .on('mouseenter focus', selector, function (e) {
             var src = ice.ace.jq(e.currentTarget);
 
             src.siblings().removeClass('ui-state-hover ui-datatable-state-active-hover');
