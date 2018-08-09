@@ -71,7 +71,7 @@ ice.ace.ProgressBar.prototype.startIndeterminateState = function() {
 ice.ace.ProgressBar.prototype.start = function() {
     var _self = this;
 	
-    if(this.cfg.usePolling) {
+    if(this.cfg.usePolling && !this.cfg.disabled) {
 		
         this.progressPoll = setInterval(function() {
             var options = {
