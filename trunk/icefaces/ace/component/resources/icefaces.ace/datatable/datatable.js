@@ -2471,6 +2471,9 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
 		bodyTable.removeClass('ui-datatable-scrollable-invisible');
 
         if (this.cfg.pinning) {
+			if (window[this.id + '_pinnedFilteringRequest']) {
+				this.currentPinRegionOffset = 0;
+			}
             this.pinningHolder = this.jqId + '_pinning';
             this.initializePinningState();
 			for (var i = 0; i < pinnedColumns.length; i++) {
@@ -3340,6 +3343,13 @@ ice.ace.DataTable.prototype.filter = function (evn) {
     params[this.id + "_filtering"] = true;
     params[this.id + "_filteredColumn"] = ice.ace.jq(input).attr('id');
     options.params = params;
+
+	if (this.cfg.pinning) {
+		window[this.id + '_pinnedFilteringRequest'] = true;
+        options.onsuccess = function (responseXML) {
+			setTimeout(function(){window[_self.id + '_pinnedFilteringRequest'] = false;}, 250);
+        };
+	}
 
     if (this.behaviors)
         if (this.behaviors.filter) {
