@@ -362,6 +362,21 @@ ice.ace.DataTable.prototype.destroy = function() {
         delete this.paginator;
     }
 
+	// Remove pinning dynamic stylesheets
+	var table = ice.ace.jq(this.jqId + ' > div.ui-datatable-scrollable-body > table');
+    if (table.length == 0) table = ice.ace.jq(this.jqId + ' > div > table');
+    var columns = table.find('> tbody > tr:first-child > td');
+
+	var numCols = columns.size();
+	for (var i = 0; i < numCols; i++) {
+		var cssid = this.id + '_pin' + i;
+		var styleNode = document.getElementById(cssid);
+		if (styleNode) styleNode.innerHTML = '';
+	}
+	var cssid = this.id + '_pin_offset';
+	var styleNode = document.getElementById(cssid);
+	if (styleNode) styleNode.innerHTML = '';
+
     var clientState = {scrollTop : this.scrollTop, scrollLeft : this.scrollLeft};
 
     return clientState;
