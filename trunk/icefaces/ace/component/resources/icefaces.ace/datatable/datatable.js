@@ -2152,7 +2152,10 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
 
 		var pinnedColumns;
 		if (this.cfg.pinning) {
-			pinnedColumns = this.getPinnedColumns();
+			if (window[this.id + '_pinnedFilteringRequest'])
+				pinnedColumns = window[this.id + '_pinnedFilteringRequest']
+			else 
+				pinnedColumns = this.getPinnedColumns();
 			for (var i = 0; i < pinnedColumns.length; i++) {
 				this.unpinColumn(ice.ace.jq(pinnedColumns.get(i)).index() + 1, true);
 			}
@@ -3393,7 +3396,7 @@ ice.ace.DataTable.prototype.filter = function (evn) {
     options.params = params;
 
 	if (this.cfg.pinning) {
-		window[this.id + '_pinnedFilteringRequest'] = true;
+		window[this.id + '_pinnedFilteringRequest'] = this.getPinnedColumns();
         options.oncomplete = function (responseXML) {
 			setTimeout(function(){window[_self.id + '_pinnedFilteringRequest'] = false;}, 250);
         };
