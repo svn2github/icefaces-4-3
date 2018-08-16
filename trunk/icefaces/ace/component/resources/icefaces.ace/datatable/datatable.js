@@ -363,19 +363,21 @@ ice.ace.DataTable.prototype.destroy = function() {
     }
 
 	// Remove pinning dynamic stylesheets
-	var table = ice.ace.jq(this.jqId + ' > div.ui-datatable-scrollable-body > table');
-    if (table.length == 0) table = ice.ace.jq(this.jqId + ' > div > table');
-    var columns = table.find('> tbody > tr:first-child > td');
+	if (!window[this.id + '_pinnedFilteringRequest']) {
+		var table = ice.ace.jq(this.jqId + ' > div.ui-datatable-scrollable-body > table');
+		if (table.length == 0) table = ice.ace.jq(this.jqId + ' > div > table');
+		var columns = table.find('> tbody > tr:first-child > td');
 
-	var numCols = columns.size();
-	for (var i = 0; i < numCols; i++) {
-		var cssid = this.id + '_pin' + i;
+		var numCols = columns.size();
+		for (var i = 0; i < numCols; i++) {
+			var cssid = this.id + '_pin' + i;
+			var styleNode = document.getElementById(cssid);
+			if (styleNode) styleNode.innerHTML = '';
+		}
+		var cssid = this.id + '_pin_offset';
 		var styleNode = document.getElementById(cssid);
 		if (styleNode) styleNode.innerHTML = '';
 	}
-	var cssid = this.id + '_pin_offset';
-	var styleNode = document.getElementById(cssid);
-	if (styleNode) styleNode.innerHTML = '';
 
     var clientState = {scrollTop : this.scrollTop, scrollLeft : this.scrollLeft};
 
@@ -2381,6 +2383,12 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
             for (var i = 0; i < realHeadCols.length; i++) {
                 realHeadColumn = ice.ace.jq(realHeadCols[i]);
 
+				if (window[this.id + '_pinnedFilteringRequest']) {
+					var cssid = this.id + '_pin' + i;
+					var styleNode = document.getElementById(cssid);
+					if (styleNode && styleNode.innerHTML != '') continue;
+				}
+
                 var realHeadColumnWidth = dupeHeadColumnWidths[i];
 
                 if (i == 0) {
@@ -2398,6 +2406,12 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
 
             for (var i = 0; i < realFootCols.length; i++) {
                 realFootColumn = ice.ace.jq(realFootCols[i]);
+
+				if (window[this.id + '_pinnedFilteringRequest']) {
+					var cssid = this.id + '_pin' + i;
+					var styleNode = document.getElementById(cssid);
+					if (styleNode && styleNode.innerHTML != '') continue;
+				}
 
                 // Work around webkit bug described here: https://bugs.webkit.org/show_bug.cgi?id=13339
                 var realFootColumnWidth = (safari && ice.ace.jq.browser.version < 6)
@@ -2489,10 +2503,29 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
 			if (window[this.id + '_pinnedFilteringRequest']) {
 				this.currentPinRegionOffset = 0;
 			}
+			// remove any explicitly set heights
+			for (var i = 0; i < realHeadCols.length; i++) {
+				realHeadColumn = ice.ace.jq(realHeadCols[i]);
+				realHeadColumn.parent().css('height', '');
+			}
             this.pinningHolder = this.jqId + '_pinning';
             this.initializePinningState();
 			for (var i = 0; i < pinnedColumns.length; i++) {
 				this.pinColumn(ice.ace.jq(pinnedColumns.get(i)).index() + 1, true);
+			}
+			
+			// if there are pinned columns, make sure all header cells have the same height
+			if (pinnedColumns.length) {
+				var maxHeight = 0;
+				for (var i = 0; i < realHeadCols.length; i++) {
+					realHeadColumn = ice.ace.jq(realHeadCols[i]);
+					var height = realHeadColumn.parent().height();
+					if (height > maxHeight) maxHeight = height;
+				}
+				for (var i = 0; i < realHeadCols.length; i++) {
+					realHeadColumn = ice.ace.jq(realHeadCols[i]);
+					realHeadColumn.parent().height(maxHeight);
+				}
 			}
         }
     }
@@ -3361,7 +3394,7 @@ ice.ace.DataTable.prototype.filter = function (evn) {
 
 	if (this.cfg.pinning) {
 		window[this.id + '_pinnedFilteringRequest'] = true;
-        options.onsuccess = function (responseXML) {
+        options.oncomplete = function (responseXML) {
 			setTimeout(function(){window[_self.id + '_pinnedFilteringRequest'] = false;}, 250);
         };
 	}
