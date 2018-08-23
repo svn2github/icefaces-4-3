@@ -337,9 +337,14 @@ public class TreeRenderer extends CoreRenderer {
         writer.endElement(HTML.IMG_ELEM);
 
 		writer.startElement(HTML.SPAN_ELEM, null);
-		writer.writeAttribute(HTML.CLASS_ATTR, iconClass, null);
-		if (leaf)
-			writer.writeAttribute(HTML.STYLE_ATTR, "background-position:-160px 0;", null);
+		UIComponent iconFacet = tree.getFacet("icon");
+        if (iconFacet != null && iconFacet.isRendered()) {
+            iconFacet.encodeAll(FacesContext.getCurrentInstance());
+		} else {
+			writer.writeAttribute(HTML.CLASS_ATTR, iconClass, null);
+			if (leaf)
+				writer.writeAttribute(HTML.STYLE_ATTR, "background-position:-160px 0;", null);
+		}
 		writer.endElement(HTML.SPAN_ELEM);
 
         writer.endElement(HTML.DIV_ELEM);

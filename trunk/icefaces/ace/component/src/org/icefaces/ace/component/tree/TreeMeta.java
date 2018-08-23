@@ -25,6 +25,7 @@ import org.icefaces.ace.resources.ACEResourceNames;
 import org.icefaces.resources.ICEResourceDependencies;
 import org.icefaces.resources.ICEResourceDependency;
 import org.icefaces.resources.ICEResourceLibrary;
+import javax.faces.component.UIComponent;
 
 @Component(
         tagName = "tree",
@@ -156,4 +157,10 @@ public class TreeMeta extends UIDataMeta {
 
 	@Property(tlddoc = "Access key that, when pressed, transfers focus to this component.")
 	String accesskey;
+
+    @Facets
+    class FacetsMeta {
+        @Facet(tlddoc = "An optional facet that is rendered in place of the default expanded, contracted, and leaf icons. It is advised that all the elements rendered by this facet be inline elements, in order to ensure a proper look of the tree.")
+        UIComponent icon;
+    }
 }
