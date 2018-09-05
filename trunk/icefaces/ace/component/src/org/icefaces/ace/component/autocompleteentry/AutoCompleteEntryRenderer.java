@@ -23,6 +23,7 @@ import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.component.PassthroughAttributes;
 import org.icefaces.render.MandatoryResourceComponent;
 import org.icefaces.util.EnvUtils;
+import org.icefaces.impl.util.DOMUtils;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
@@ -485,6 +486,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
                     }
                     itemLabel = itemLabel == null ? itemValue.toString() : itemLabel;
                     if (satisfiesFilter(itemLabel, text, filterMatchMode, autoCompleteEntry)) {
+						itemLabel = item.isEscape() ? DOMUtils.escapeAttribute(itemLabel) : itemLabel;
                         sb.append("<div style=\"border: 0;\">");
 
                         sb.append("<span class=\"informal\">"); // span to display
@@ -576,6 +578,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
                         }
                     }
                     itemLabel = itemLabel == null ? itemValue.toString() : itemLabel;
+					itemLabel = item.isEscape() ? DOMUtils.escapeAttribute(itemLabel) : itemLabel;
 
                     sb.append("<div style=\"border: 0;\">");
 

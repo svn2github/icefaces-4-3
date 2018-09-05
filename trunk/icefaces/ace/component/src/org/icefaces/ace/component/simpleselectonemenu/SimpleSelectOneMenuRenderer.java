@@ -23,6 +23,7 @@ import org.icefaces.component.PassthroughAttributes;
 import org.icefaces.impl.util.DOMUtils;
 import org.icefaces.render.MandatoryResourceComponent;
 import org.icefaces.util.EnvUtils;
+import org.icefaces.impl.util.DOMUtils;
 
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
@@ -190,6 +191,7 @@ public class SimpleSelectOneMenuRenderer extends InputRenderer {
 					selectedFound = true;
 				}
 				itemLabel = itemLabel == null ? itemValue.toString() : itemLabel;
+				itemLabel = item.isEscape() ? DOMUtils.escapeAttribute(itemLabel) : itemLabel;
                 boolean isSelected = String.valueOf(convertedValue).equals(itemValue);
                 if (item.isDisabled() || (!isSelected && readonly)) {
 					sb.append("<option disabled=\"disabled\" value=\"" + (itemValue == null ? "" : itemValue) + "\"" + selected + role + ">").append(itemLabel).append("</option>");

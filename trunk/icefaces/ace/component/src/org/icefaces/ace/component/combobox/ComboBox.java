@@ -110,7 +110,8 @@ public class ComboBox extends ComboBoxBase implements NamingContainer, Focusable
                                     ((UISelectItem) nextSelectItemChild).getItemValue(),
                                     ((UISelectItem) nextSelectItemChild).getItemLabel(),
                                     ((UISelectItem) nextSelectItemChild).getItemDescription(),
-                                    ((UISelectItem) nextSelectItemChild).isItemDisabled()));
+                                    ((UISelectItem) nextSelectItemChild).isItemDisabled(),
+                                    ((UISelectItem) nextSelectItemChild).isItemEscaped()));
                 }
             } else if (nextSelectItemChild instanceof UISelectItems) {
                 Object selectItemsValue =

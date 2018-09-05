@@ -24,6 +24,7 @@ import org.icefaces.render.MandatoryResourceComponent;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.util.EnvUtils;
 import org.icefaces.ace.event.TextChangeEvent;
+import org.icefaces.impl.util.DOMUtils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
@@ -391,6 +392,7 @@ public class SelectMenuRenderer extends InputRenderer {
 					}
 
 					itemLabel = itemLabel == null ? itemValue.toString() : itemLabel;
+					itemLabel = item.isEscape() ? DOMUtils.escapeAttribute(itemLabel) : itemLabel;
 					itemLabel = "".equals(itemLabel.trim()) ? "&nbsp;" : itemLabel;
 
 					String styleClass = "";

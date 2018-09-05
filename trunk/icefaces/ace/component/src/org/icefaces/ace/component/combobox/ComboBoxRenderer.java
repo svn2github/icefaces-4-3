@@ -22,6 +22,7 @@ import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.component.PassthroughAttributes;
 import org.icefaces.render.MandatoryResourceComponent;
 import org.icefaces.util.EnvUtils;
+import org.icefaces.impl.util.DOMUtils;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
@@ -414,6 +415,7 @@ public class ComboBoxRenderer extends InputRenderer {
 
 					if (itemValue == null) itemValue = "";
 					itemLabel = itemLabel == null ? itemValue.toString() : itemLabel;
+					itemLabel = item.isEscape() ? DOMUtils.escapeAttribute(itemLabel) : itemLabel;
 
 					writer.startElement("div", null);
 					writer.writeAttribute("style", "border: 0;", null);

@@ -111,7 +111,8 @@ public class AutoCompleteEntry extends AutoCompleteEntryBase implements NamingCo
                                     ((UISelectItem) nextSelectItemChild).getItemValue(),
                                     ((UISelectItem) nextSelectItemChild).getItemLabel(),
                                     ((UISelectItem) nextSelectItemChild).getItemDescription(),
-                                    ((UISelectItem) nextSelectItemChild).isItemDisabled()));
+                                    ((UISelectItem) nextSelectItemChild).isItemDisabled(),
+                                    ((UISelectItem) nextSelectItemChild).isItemEscaped()));
                 }
             } else if (nextSelectItemChild instanceof UISelectItems) {
                 Object selectItemsValue =
