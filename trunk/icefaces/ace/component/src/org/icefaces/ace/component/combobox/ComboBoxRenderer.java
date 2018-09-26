@@ -427,7 +427,7 @@ public class ComboBoxRenderer extends InputRenderer {
 					// label span
 					writer.startElement("span", null);
 					writer.writeAttribute("class", LABEL_CLASS, null);
-					writer.writeText(itemLabel, null);
+					writer.write(itemLabel);
 					writer.endElement("span");
 					// value span
 					writer.startElement("span", null);
