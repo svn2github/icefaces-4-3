@@ -420,6 +420,10 @@ public class DataTableMeta extends UIDataMeta {
     @Property(tlddoc="Enable to display all members of groups (as defined by ace:column groupBy) that contain a matching row during filtering.")
     private boolean groupedFilterResults;
 
+    @Property(tlddoc = "Read-only property indicating the number of filtered rows currently being displayed on the table. If no filtering is taking place, the value will be -1. Note that the output component or expression bound to this property has to be rendered inside or after this data table component, in order for the value to be accurate and updated.",
+            defaultValue = "-1",
+            defaultValueType = DefaultValueType.EXPRESSION)
+    private Integer filteredRows;
 
 
 

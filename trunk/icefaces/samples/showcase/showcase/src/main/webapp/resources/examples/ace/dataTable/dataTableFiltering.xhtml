@@ -25,9 +25,10 @@
 
     <ui:define name="example">
         <h:form id="form">
-           <ace:dataTable id="carTableSingleRow"
+           <ace:dataTable id="carTableSingleRow" filteredRows="#{dataTableFiltering.filteredRows}"
                           value="#{dataTableFiltering.carsData}"
                           var="car">
+				<ace:ajax event="filter" render="@form" />
                 <ace:column id="car" headerText="ID" filterBy="#{car.id}" filterMatchMode="contains">
                     <h:outputText id="carCell" value="#{car.id}"/>
                 </ace:column>
@@ -114,6 +115,7 @@
                     </h:outputText>
                 </ace:column>
             </ace:dataTable>
+		<h:outputText value="Total number of filtered rows: #{dataTableFiltering.filteredRows}" />
         </h:form>
     </ui:define>
 </ui:composition>

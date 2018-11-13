@@ -1614,6 +1614,11 @@ public class DataTable extends DataTableBase implements Serializable {
         }
     }
 
+	@Override
+	public void setFilteredRows(Integer filteredRows) {}
+
+	protected void setFilteredRowsProxy(Integer filteredRows) { super.setFilteredRows(filteredRows); }
+
     protected void loadLazyData() {
         LazyDataModel model = (LazyDataModel) getDataModel();
 		Object load = null;

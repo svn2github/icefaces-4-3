@@ -101,6 +101,10 @@ public class DataTableRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException{
         DataTable table = (DataTable) component;
 
+		List filteredRows = table.getFilteredData();
+		if (filteredRows == null) table.setFilteredRowsProxy(-1);
+		else table.setFilteredRowsProxy(filteredRows.size());
+
         if (table.isPaginator())
             table.calculatePage();
 
