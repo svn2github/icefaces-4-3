@@ -60,6 +60,15 @@ public class DataTableRowState implements Serializable {
     public void setCarsData(List<Car> carsData) { this.carsData = carsData; }
     
     /////////////---- ACTION LISTENERS BEGIN
+    public void selectAllRows(ActionEvent e) {
+        stateMap.setAllSelected(true);
+    }
+    public void deselectAllRows(ActionEvent e) {
+        for (Object rowData : stateMap.getSelected()) {
+            RowState s = stateMap.get(rowData);
+            s.setSelected(false);
+        }
+    }
     public void enableAllSelection(ActionEvent e) {
         stateMap.setAllSelectable(true); 
     }

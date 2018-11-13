@@ -1463,6 +1463,10 @@ ice.ace.DataTable.prototype.setupSelectionHover = function () {
         });
 };
 
+ice.ace.DataTable.prototype.selectAllRowsOnPage = function () {
+	this.selectAllRows();
+};
+
 ice.ace.DataTable.prototype.selectAllRows = function () {
 
 	if (this.cfg.selectionMode != 'multiple') return;
@@ -1525,6 +1529,10 @@ ice.ace.DataTable.prototype.selectAllRows = function () {
 
         ice.ace.AjaxRequest(options);
     }
+};
+
+ice.ace.DataTable.prototype.deselectAllRowsOnPage = function () {
+	this.deselectAllRows();
 };
 
 ice.ace.DataTable.prototype.deselectAllRows = function () {
