@@ -99,7 +99,51 @@ public class DataTableDecoder {
             table.queueEvent(unselectEvent);
 
             if (treeModel != null) treeModel.setRootIndex(null);
-        }
+        } else if (table.isSelectAllRowsInTableRequest(context)) {
+            Object model = table.getDataModel();
+			RowStateMap stateMap = table.getStateMap();
+
+			// load all rows in the state map if not already there
+			for (Object rowData : table.getDataModel()) {
+				stateMap.get(rowData);
+			}
+
+			stateMap.setAllSelected(true);
+
+			List selected = stateMap.getSelected();
+			Object[] objs = new Object[selected.size()];
+			int i = 0;
+
+			for (Object rowData : selected) {
+				objs[i++] = rowData;
+			}
+
+            SelectEvent selectEvent = new SelectEvent(table, objs);
+            selectEvent.setPhaseId(PhaseId.INVOKE_APPLICATION);
+            table.queueEvent(selectEvent);
+		} else if (table.isDeselectAllRowsInTableRequest(context)) {
+            Object model = table.getDataModel();
+			RowStateMap stateMap = table.getStateMap();
+
+			// load all rows in the state map if not already there
+			for (Object rowData : table.getDataModel()) {
+				stateMap.get(rowData);
+			}
+
+			List selected = stateMap.getSelected();
+			Object[] objs = new Object[selected.size()];
+			int i = 0;
+
+			for (Object rowData : selected) {
+				RowState s = stateMap.get(rowData);
+				s.setSelected(false);
+				objs[i++] = rowData;
+			}
+
+            SelectEvent selectEvent = new SelectEvent(table, objs);
+            selectEvent.setPhaseId(PhaseId.INVOKE_APPLICATION);
+            table.queueEvent(selectEvent);
+		}
 
         table.setRowIndex(-1);
     }

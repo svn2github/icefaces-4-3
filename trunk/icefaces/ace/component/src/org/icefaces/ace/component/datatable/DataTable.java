@@ -1068,6 +1068,8 @@ public class DataTable extends DataTableBase implements Serializable {
     protected boolean isFilterRequest(FacesContext x)             { return isIdPrefixedParamSet("_filtering", x); }
     protected boolean isInstantSelectionRequest(FacesContext x)   { return isIdPrefixedParamSet("_instantSelectedRowIndexes", x); }
     protected boolean isInstantUnselectionRequest(FacesContext x) { return isIdPrefixedParamSet("_instantUnselectedRowIndexes", x); }
+    protected boolean isSelectAllRowsInTableRequest(FacesContext x)   { return isIdPrefixedParamSet("_selectAllRowsInTable", x); }
+    protected boolean isDeselectAllRowsInTableRequest(FacesContext x) { return isIdPrefixedParamSet("_deselectAllRowsInTable", x); }
     protected boolean isScrollingRequest(FacesContext x)          { return isIdPrefixedParamSet("_scrolling", x); }
     protected boolean isTableFeatureRequest(FacesContext x)       { return isColumnReorderRequest(x) || isScrollingRequest(x) || isInstantUnselectionRequest(x) || isInstantSelectionRequest(x) || isPaginationRequest(x) || isFilterRequest(x) || isSortRequest(x) || isTableConfigurationRequest(x); }
 

@@ -1531,6 +1531,40 @@ ice.ace.DataTable.prototype.selectAllRows = function () {
     }
 };
 
+ice.ace.DataTable.prototype.selectAllRowsInTable = function () {
+    var self = this;
+	var options = {
+		source: self.id,
+		execute: self.id,
+		formId: self.cfg.formId
+	};
+
+	var params = {};
+	params[self.id + '_selectAllRowsInTable'] = true;
+
+	// If first row is in this selection, deselection, or will be implicitly deselected by singleSelection
+	// resize the scrollable table.
+	if (self.cfg.scrollable) {
+		options.onsuccess = function (responseXML) {
+			self.resizeScrolling();
+			return false;
+		};
+	}
+
+	options.params = params;
+
+	if (this.behaviors)
+		if (this.behaviors.select) {
+			ice.ace.ab(ice.ace.extendAjaxArgs(
+					this.behaviors.select,
+					ice.ace.clearExecRender(options)
+					));
+			return;
+		}
+
+	ice.ace.AjaxRequest(options);
+};
+
 ice.ace.DataTable.prototype.deselectAllRowsOnPage = function () {
 	this.deselectAllRows();
 };
@@ -1587,9 +1621,9 @@ ice.ace.DataTable.prototype.deselectAllRows = function () {
         options.params = params;
 
         if (this.behaviors)
-            if (this.behaviors.select) {
+            if (this.behaviors.deselect) {
                 ice.ace.ab(ice.ace.extendAjaxArgs(
-                        this.behaviors.select,
+                        this.behaviors.deselect,
                         ice.ace.clearExecRender(options)
                         ));
                 return;
@@ -1597,6 +1631,40 @@ ice.ace.DataTable.prototype.deselectAllRows = function () {
 
         ice.ace.AjaxRequest(options);
     }
+};
+
+ice.ace.DataTable.prototype.deselectAllRowsInTable = function () {
+    var self = this;
+	var options = {
+		source: self.id,
+		execute: self.id,
+		formId: self.cfg.formId
+	};
+
+	var params = {};
+	params[self.id + '_deselectAllRowsInTable'] = true;
+
+	// If first row is in this selection, deselection, or will be implicitly deselected by singleSelection
+	// resize the scrollable table.
+	if (self.cfg.scrollable) {
+		options.onsuccess = function (responseXML) {
+			self.resizeScrolling();
+			return false;
+		};
+	}
+
+	options.params = params;
+
+	if (this.behaviors)
+		if (this.behaviors.deselect) {
+			ice.ace.ab(ice.ace.extendAjaxArgs(
+					this.behaviors.deselect,
+					ice.ace.clearExecRender(options)
+					));
+			return;
+		}
+
+	ice.ace.AjaxRequest(options);
 };
 
 ice.ace.DataTable.prototype.selectAllCellsOnPage = function () {
