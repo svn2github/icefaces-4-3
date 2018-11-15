@@ -100,9 +100,9 @@ public class DataTableFiltering implements Serializable {
 	public boolean isVan() { return van; }
 	public void setVan(boolean van) { this.van = van; }
 
-	private Integer filteredRows;
-	public Integer getFilteredRows() { return filteredRows; }
-	public void setFilteredRows(Integer filteredRows) { this.filteredRows = filteredRows; }
+	private Integer currentRowCount;
+	public Integer getCurrentRowCount() { return currentRowCount; }
+	public void setCurrentRowCount(Integer currentRowCount) { this.currentRowCount = currentRowCount; }
 
 	public List<String> getFilterValues() {
 		List<String> filterValues = new ArrayList<String>();

@@ -102,8 +102,8 @@ public class DataTableRenderer extends CoreRenderer {
         DataTable table = (DataTable) component;
 
 		List filteredRows = table.getFilteredData();
-		if (filteredRows == null) table.setFilteredRowsProxy(-1);
-		else table.setFilteredRowsProxy(filteredRows.size());
+		if (filteredRows != null) table.setCurrentRowCountProxy(filteredRows.size());
+		else table.setCurrentRowCountProxy(table.getDataModel().getRowCount());
 
         if (table.isPaginator())
             table.calculatePage();

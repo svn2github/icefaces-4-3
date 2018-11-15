@@ -1617,9 +1617,9 @@ public class DataTable extends DataTableBase implements Serializable {
     }
 
 	@Override
-	public void setFilteredRows(Integer filteredRows) {}
+	public void setCurrentRowCount(Integer currentRowCount) {}
 
-	protected void setFilteredRowsProxy(Integer filteredRows) { super.setFilteredRows(filteredRows); }
+	protected void setCurrentRowCountProxy(Integer currentRowCount) { super.setCurrentRowCount(currentRowCount); }
 
     protected void loadLazyData() {
         LazyDataModel model = (LazyDataModel) getDataModel();
