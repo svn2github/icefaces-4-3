@@ -1485,8 +1485,11 @@ ice.ace.Schedule.prototype.renderWeekEvents = function() {
 	// add selected styling
 	var selectedDate = document.getElementById(this.id + '_selectedDate').getAttribute('value');
 	this.jqRoot.find('.schedule-selected').removeClass('schedule-selected');
-	var dow = this.extractDayOfWeek(this.jqRoot.find('.schedule-calendar-day-' + selectedDate).get(0));
-	this.jqRoot.find('.schedule-dow-header.schedule-dow-' + dow).addClass('schedule-selected');
+	var dowNode = this.jqRoot.find('.schedule-calendar-day-' + selectedDate).get(0);
+	if (dowNode) {
+		var dow = this.extractDayOfWeek(dowNode);
+		this.jqRoot.find('.schedule-dow-header.schedule-dow-' + dow).addClass('schedule-selected');
+	}
 };
 
 ice.ace.Schedule.prototype.renderDayView = function() {
@@ -1765,7 +1768,7 @@ ice.ace.Schedule.prototype.markUsedTimeSlots = function(timeSlots, startingTimeS
 };
 
 ice.ace.Schedule.prototype.timeSlotIndexMap = {'0000':0, '0030':1, '0100':2, '0130':3, '0200':4, '0230':5,
-	'0300':6, '0330':7, '0400':8, '0430':9, '0500':10, '0530':11, '0600':12, '0630':13, '7000':14, '0730':15,
+	'0300':6, '0330':7, '0400':8, '0430':9, '0500':10, '0530':11, '0600':12, '0630':13, '0700':14, '0730':15,
 	'0800':16, '0830':17, '0900':18, '0930':19, '1000':20, '1030':21, '1100':22, '1130':23, '1200':24, '1230':25,
 	'1300':26, '1330':27, '1400':28, '1430':29, '1500':30, '1530':31, '1600':32, '1630':33, '1700':34, '1730':35,
 	'1800':36, '1830':37, '1900':38, '1930':39, '2000':40, '2030':41, '2100':42, '2130':43, '2200':44, '2230':45,
