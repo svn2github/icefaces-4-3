@@ -4122,7 +4122,7 @@
             // 1. The position of the helper is absolute, so it's position is calculated based on the next positioned parent
             // 2. The actual offset parent is a child of the scroll parent, and the scroll parent isn't the document, which means that
             //    the scroll is included in the initial calculation of the offset of the parent, and never recalculated upon drag
-            if(this.cssPosition == 'absolute' && this.scrollParent[0] != document && $.ui.contains(this.scrollParent[0], this.offsetParent[0])) {
+            if(this.cssPosition == 'absolute' && this.scrollParent[0] != document && $.ui.contains(this.scrollParent[0], this.offsetParent[0]) && (window.navigator.userAgent.indexOf("Edge") == -1)) { // ICE-11424
                 po.left += this.scrollParent.scrollLeft();
                 po.top += this.scrollParent.scrollTop();
             }
