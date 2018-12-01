@@ -2937,13 +2937,15 @@ ice.ace.DataTable.prototype.unpinColumn = function(i,fromResizeScrolling) {
 	}
 	if (!tableOffsetStyleNodeExists) head.appendChild(tableOffsetStyleNode);
 
-    // Send request
-    if (this.behaviors && this.behaviors.unpin) {
-        var options = {
-            source: this.id
-        };
-        ice.ace.ab(ice.ace.extendAjaxArgs(this.behaviors.unpin, options));
-    }
+	if (!fromResizeScrolling) {
+		// Send request
+		if (this.behaviors && this.behaviors.unpin) {
+			var options = {
+				source: this.id
+			};
+			ice.ace.ab(ice.ace.extendAjaxArgs(this.behaviors.unpin, options));
+		}
+	}
 
 	if (this.cfg.scrollable && !fromResizeScrolling && !ice.ace.jq.browser.mozilla) this.resizeScrolling();
 };
@@ -3136,14 +3138,16 @@ ice.ace.DataTable.prototype.pinColumn = function(i,fromResizeScrolling) {
 
     tbody.parent().bind('scroll', this.columnPinScrollListener[i]);
 
-    // Send request
-    if (!isInit && this.behaviors && this.behaviors.pin) {
-        var options = {
-            source: this.id
-        };
+	if (!fromResizeScrolling) {
+		// Send request
+		if (!isInit && this.behaviors && this.behaviors.pin) {
+			var options = {
+				source: this.id
+			};
 
-        ice.ace.ab(ice.ace.extendAjaxArgs(this.behaviors.pin, options));
-    }
+			ice.ace.ab(ice.ace.extendAjaxArgs(this.behaviors.pin, options));
+		}
+	}
 
     // Add table offset
 	var tableOffsetId = this.id + '_pin_offset';
