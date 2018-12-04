@@ -69,4 +69,8 @@ public class DataTableFilteringDates implements Serializable {
 	private Object maxDate;
 	public Object getMaxDate() { return maxDate; }
 	public void setMaxDate(Object maxDate) { this.maxDate = maxDate; }
+
+	private Integer currentRowCount;
+	public Integer getCurrentRowCount() { return currentRowCount; }
+	public void setCurrentRowCount(Integer currentRowCount) { this.currentRowCount = currentRowCount; }
 }

@@ -25,9 +25,10 @@
 
     <ui:define name="example">
         <h:form id="form">
-           <ace:dataTable id="eventsTable"
+           <ace:dataTable id="eventsTable" currentRowCount="#{dataTableFilteringDates.currentRowCount}"
                           value="#{dataTableFilteringDates.events}"
                           var="event">
+				<ace:ajax event="filter" render="@form" />
                 <ace:column id="car" headerText="Event ID">
                     <h:outputText id="eventId" value="#{event.id}"/>
                 </ace:column>
@@ -42,6 +43,7 @@
 					</h:outputText>
                 </ace:column>
             </ace:dataTable>
+            <h:outputText value="Current row count: #{dataTableFilteringDates.currentRowCount}" />
         </h:form>
     </ui:define>
 </ui:composition>

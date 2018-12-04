@@ -79,4 +79,8 @@ public class DataTableFilteringRanges implements Serializable {
 	private Object maxCost;
 	public Object getMaxCost() { return maxCost; }
 	public void setMaxCost(Object maxCost) { this.maxCost = maxCost; }
+
+	private Integer currentRowCount;
+	public Integer getCurrentRowCount() { return currentRowCount; }
+	public void setCurrentRowCount(Integer currentRowCount) { this.currentRowCount = currentRowCount; }
 }
