@@ -3192,7 +3192,29 @@ ice.ace.DataTable.prototype.pinColumn = function(i,fromResizeScrolling) {
 	}
 	head.appendChild(styleNode);
 
-	if (this.cfg.scrollable && !fromResizeScrolling && !ice.ace.jq.browser.mozilla) this.resizeScrolling();
+	if (this.cfg.scrollable && !fromResizeScrolling) {
+		if (!ice.ace.jq.browser.mozilla) this.resizeScrolling();
+		else {
+			var pinnedColumns = this.getPinnedColumns()
+
+			var realHeadColumn;
+			var realHeadCols = ice.ace.jq(this.jqId + ' > div.ui-datatable-scrollable-header:first > table > thead > tr > th > .ui-header-column').get().reverse();
+
+			// if there are pinned columns, make sure all header cells have the same height
+			if (pinnedColumns.length) {
+				var maxHeight = 0;
+				for (var i = 0; i < realHeadCols.length; i++) {
+					realHeadColumn = ice.ace.jq(realHeadCols[i]);
+					var height = realHeadColumn.parent().height();
+					if (height > maxHeight) maxHeight = height;
+				}
+				for (var i = 0; i < realHeadCols.length; i++) {
+					realHeadColumn = ice.ace.jq(realHeadCols[i]);
+					realHeadColumn.parent().height(maxHeight);
+				}
+			}
+		}
+	}
 };
 
 ice.ace.DataTable.prototype.ie7PinColumn = function(i) {
