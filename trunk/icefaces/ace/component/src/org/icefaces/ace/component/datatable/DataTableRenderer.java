@@ -476,6 +476,7 @@ public class DataTableRenderer extends CoreRenderer {
 				json.entry("liveScrollBufferPages", table.getLiveScrollBufferPages());
 				json.entry("rowsPerPage", table.getRows());
 				json.entry("initialPage", table.getPage());
+				json.entry("liveScrollingRequest", table.getLiveScrollingRequest(context));
 			}
             json.entry("scrollStep", table.getRows());
             json.entry("scrollLimit", table.getRowCount());

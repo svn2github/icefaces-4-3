@@ -1884,6 +1884,14 @@ ice.ace.DataTable.prototype.setupScrolling = function () {
 
 		// just to allow live scrolling up right away
 		setTimeout(function(){if (!_self.scrollTop || (scrollBody.scrollTop() == 0)) scrollBody.scrollTop(1)},100);
+
+		if (this.cfg.liveScrollingRequest) {
+			if (this.cfg.liveScrollingRequest == 'down') {
+				setTimeout(function() { _self.adjustLiveScrollingDown(); }, 100);
+			} else if (this.cfg.liveScrollingRequest == 'up') {
+				setTimeout(function() { _self.adjustLiveScrollingUp(); }, 100);
+			}
+		}
 	}
 
     scrollBody.bind('scroll', function () {
@@ -1939,40 +1947,13 @@ ice.ace.DataTable.prototype.setupScrolling = function () {
 
 						var params = {};
 						params[_self.id + "_paging"] = true;
+						params[_self.id + "_liveScrollingDown"] = true;
 						params[_self.id + "_rows"] = rowsPerPage;
 						params[_self.id + "_page"] = currentPage + 1 + bufferPages;
 
 						options.params = params;
 
 						options.onsuccess = function (responseXML) {
-							_self.addFillerSpaceToEnableScrolling();
-
-							// move scroll handle up to account for newly added rows
-							if (_self.cfg.liveScrollBufferPages) {
-								var rows = _self.element.find(_self.bodyTableSelector).children('tr');
-								var bufferPages = _self.cfg.liveScrollBufferPages;
-								var currentPage = _self.cfg.initialPage + 1 + bufferPages;
-								var rowsPerPage = _self.cfg.rowsPerPage;
-								var numAddedRows = rowsPerPage * (bufferPages + 1);
-								var addedRowsHeights = 0;
-								var count = 0;
-								var i = 1; // because we use the negative value
-								while (count <= numAddedRows && i <= rows.size()) {
-									var currentRow = ice.ace.jq(rows.get(-i));
-									// only count main rows, but add the heights of all rows in between
-									if (currentRow.hasClass('ui-datatable-odd') 
-										|| currentRow.hasClass('ui-datatable-even')) count++;
-									if (count > numAddedRows) break;
-									addedRowsHeights += currentRow.outerHeight();
-									i++;
-								}
-								var scrollChange = $this[0].scrollHeight - addedRowsHeights - $this.innerHeight();
-								scrollChange = scrollChange < 1 ? 1 : scrollChange; // prevent an immediate upwards live scroll request
-								_self.element.find(_self.scrollBodySelector).scrollTop(scrollChange);
-							}
-
-							if (_self.cfg.scrollable) _self.resizeScrolling();
-
 							setTimeout(function() { window['liveScrollInProgress' + _self.id] = false; }, 350);
 						};
 
@@ -1999,43 +1980,13 @@ ice.ace.DataTable.prototype.setupScrolling = function () {
 
 						var params = {};
 						params[_self.id + "_paging"] = true;
+						params[_self.id + "_liveScrollingUp"] = true;
 						params[_self.id + "_rows"] = rowsPerPage;
 						params[_self.id + "_page"] = currentPage - 1 - bufferPages;
 
 						options.params = params;
 
 						options.onsuccess = function (responseXML) {
-							_self.addFillerSpaceToEnableScrolling();
-
-							// move scroll handle down to account for newly added rows
-							if (_self.cfg.liveScrollBufferPages) {
-								var rows = _self.element.find(_self.bodyTableSelector).children('tr');
-								var bufferPages = _self.cfg.liveScrollBufferPages;
-								var currentPage = _self.cfg.initialPage - 1 - bufferPages;
-								currentPage = currentPage == 0 ? 1 : currentPage;
-								var rowsPerPage = _self.cfg.rowsPerPage;
-								var numAddedRows = rowsPerPage * (currentPage > bufferPages ? bufferPages + 1 : currentPage);
-								var addedRowsHeights = 0;
-								var count = 0;
-								var i = 0;
-								while (count <= numAddedRows && i < rows.size()) {
-									var currentRow = ice.ace.jq(rows.get(i));
-									// only count main rows, but add the heights of all rows in between
-									if (currentRow.hasClass('ui-datatable-odd')
-										|| currentRow.hasClass('ui-datatable-even')) count++;
-									if (count > numAddedRows) break;
-									addedRowsHeights += currentRow.outerHeight();
-									i++;
-								}
-								var scrollChange = addedRowsHeights;
-								if ((addedRowsHeights + $this.innerHeight() + 1) >= $this[0].scrollHeight) {
-									scrollChange = $this[0].scrollHeight - $this.innerHeight() - 1; // prevent an immediate downwards live scroll request
-								}
-								_self.element.find(_self.scrollBodySelector).scrollTop(scrollChange);
-							}
-
-							if (_self.cfg.scrollable) _self.resizeScrolling();
-
 							setTimeout(function() { window['liveScrollInProgress' + _self.id] = false; }, 350);
 						};
 
@@ -2063,6 +2014,67 @@ ice.ace.DataTable.prototype.setupScrolling = function () {
     if (window.console && this.cfg.devMode) {
         console.log("ace:dataTable - ID: " + this.id + " - setupScrolling - " + (new Date().getTime() - startTime)/1000 + "s");
     }
+};
+
+ice.ace.DataTable.prototype.adjustLiveScrollingDown = function () {
+	this.addFillerSpaceToEnableScrolling();
+
+	// move scroll handle up to account for newly added rows
+	if (this.cfg.liveScrollBufferPages) {
+		var rows = this.element.find(this.bodyTableSelector).children('tr');
+		var bufferPages = this.cfg.liveScrollBufferPages;
+		var currentPage = this.cfg.initialPage + 1 + bufferPages;
+		var rowsPerPage = this.cfg.rowsPerPage;
+		var numAddedRows = rowsPerPage * (bufferPages + 1);
+		var addedRowsHeights = 0;
+		var count = 0;
+		var i = 1; // because we use the negative value
+		while (count <= numAddedRows && i <= rows.size()) {
+			var currentRow = ice.ace.jq(rows.get(-i));
+			// only count main rows, but add the heights of all rows in between
+			if (currentRow.hasClass('ui-datatable-odd') 
+				|| currentRow.hasClass('ui-datatable-even')) count++;
+			if (count > numAddedRows) break;
+			addedRowsHeights += currentRow.outerHeight();
+			i++;
+		}
+		var scrollBody = this.element.find(this.scrollBodySelector);
+		var scrollChange = scrollBody[0].scrollHeight - addedRowsHeights - scrollBody.innerHeight();
+		scrollChange = scrollChange < 1 ? 1 : scrollChange; // prevent an immediate upwards live scroll request
+		this.element.find(this.scrollBodySelector).scrollTop(scrollChange);
+	}
+};
+
+ice.ace.DataTable.prototype.adjustLiveScrollingUp = function () {
+	this.addFillerSpaceToEnableScrolling();
+
+	// move scroll handle down to account for newly added rows
+	if (this.cfg.liveScrollBufferPages) {
+		var rows = this.element.find(this.bodyTableSelector).children('tr');
+		var bufferPages = this.cfg.liveScrollBufferPages;
+		var currentPage = this.cfg.initialPage - 1 - bufferPages;
+		currentPage = currentPage == 0 ? 1 : currentPage;
+		var rowsPerPage = this.cfg.rowsPerPage;
+		var numAddedRows = rowsPerPage * (currentPage > bufferPages ? bufferPages + 1 : currentPage);
+		var addedRowsHeights = 0;
+		var count = 0;
+		var i = 0;
+		while (count <= numAddedRows && i < rows.size()) {
+			var currentRow = ice.ace.jq(rows.get(i));
+			// only count main rows, but add the heights of all rows in between
+			if (currentRow.hasClass('ui-datatable-odd')
+				|| currentRow.hasClass('ui-datatable-even')) count++;
+			if (count > numAddedRows) break;
+			addedRowsHeights += currentRow.outerHeight();
+			i++;
+		}
+		var scrollChange = addedRowsHeights;
+		var scrollBody = this.element.find(this.scrollBodySelector);
+		if ((addedRowsHeights + scrollBody.innerHeight() + 1) >= scrollBody[0].scrollHeight) {
+			scrollChange = scrollBody[0].scrollHeight - scrollBody.innerHeight() - 1; // prevent an immediate downwards live scroll request
+		}
+		this.element.find(this.scrollBodySelector).scrollTop(scrollChange);
+	}
 };
 
 ice.ace.DataTable.prototype.addFillerSpaceToEnableScrolling = function () {

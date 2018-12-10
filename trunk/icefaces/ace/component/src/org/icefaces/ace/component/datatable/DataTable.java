@@ -1072,6 +1072,11 @@ public class DataTable extends DataTableBase implements Serializable {
     protected boolean isDeselectAllRowsInTableRequest(FacesContext x) { return isIdPrefixedParamSet("_deselectAllRowsInTable", x); }
     protected boolean isScrollingRequest(FacesContext x)          { return isIdPrefixedParamSet("_scrolling", x); }
     protected boolean isTableFeatureRequest(FacesContext x)       { return isColumnReorderRequest(x) || isScrollingRequest(x) || isInstantUnselectionRequest(x) || isInstantSelectionRequest(x) || isPaginationRequest(x) || isFilterRequest(x) || isSortRequest(x) || isTableConfigurationRequest(x); }
+    protected String getLiveScrollingRequest(FacesContext x) {
+		if (isIdPrefixedParamSet("_liveScrollingUp", x)) return "up";
+		if (isIdPrefixedParamSet("_liveScrollingDown", x)) return "down";
+		return "";
+	}
 
 	protected boolean isRowExpansionRequest(FacesContext x) {
 		Iterator<String> names = x.getExternalContext().getRequestParameterNames();
