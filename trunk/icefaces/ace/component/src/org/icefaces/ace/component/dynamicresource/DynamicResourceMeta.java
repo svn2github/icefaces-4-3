@@ -45,7 +45,7 @@ public class DynamicResourceMeta {
     @Property(tlddoc="The image path that will be used to display an image for link instead of text.")
     private String image;
 
-    @Property(tlddoc="The type of link to render: link (default) image: renders a link with an image (must be used with the image attribute) button: renders a button with the text from value")
+    @Property(tlddoc="The type of link to render: \"link\", a text link (default); \"image\", renders a link with an image (must be used with the \"image\" attribute); \"button\", renders a button with the text of the \"label\" attribute. Note that only the \"button\" type submits the form when activated, which makes it suitable to serve dynamic resources that are generated based on user-specified input values in the form.")
     private String type;
 
     @Property(tlddoc="The label to be displayed for the resource. The label will be used for the text of the link or button. If an image is used, the label will be used as the alt attribute value of the image element.")
