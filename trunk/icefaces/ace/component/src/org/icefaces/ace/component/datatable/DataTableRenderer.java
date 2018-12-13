@@ -322,6 +322,7 @@ public class DataTableRenderer extends CoreRenderer {
                             DataTableConstants.SCROLLABLE_BODY_CLASS;
 
             writer.startElement(HTML.DIV_ELEM, null);
+            writer.writeAttribute(HTML.TABINDEX_ATTR, "0", null);
             writer.writeAttribute(HTML.CLASS_ATTR, scrollClass, null);
             writer.writeAttribute(HTML.STYLE_ELEM, "height:" + tableContext.getScrollHeight() + "px", null);
             writer.startElement(HTML.TABLE_ELEM, null);

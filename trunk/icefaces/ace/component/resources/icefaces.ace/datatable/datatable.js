@@ -1886,10 +1886,12 @@ ice.ace.DataTable.prototype.setupScrolling = function () {
 		setTimeout(function(){if (!_self.scrollTop || (scrollBody.scrollTop() == 0)) scrollBody.scrollTop(1)},100);
 
 		if (this.cfg.liveScrollingRequest) {
+			scrollBody.focus();
+
 			if (this.cfg.liveScrollingRequest == 'down') {
-				setTimeout(function() { _self.adjustLiveScrollingDown(); }, 100);
+				setTimeout(function() { _self.adjustLiveScrollingDown(); }, 110);
 			} else if (this.cfg.liveScrollingRequest == 'up') {
-				setTimeout(function() { _self.adjustLiveScrollingUp(); }, 100);
+				setTimeout(function() { _self.adjustLiveScrollingUp(); }, 110);
 			}
 		}
 	}
